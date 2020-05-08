@@ -1,0 +1,239 @@
+.merchant {
+    .merchant__name {
+        text-align: center;
+    }
+
+    .merchant__username {
+        text-align: center;
+        font-size: .9rem;
+    }
+
+    .merchant__profile-container {
+        position: relative;
+
+        .merchant__profile {
+            position: absolute;
+            top: 25px;
+            left: 72px;
+            width: 138px;
+            height: 138px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .merchant__profile-background {
+            display: block;
+            width: 230px;
+            height: 230px;
+        }
+    }
+
+    .merchant-background {
+        background-color: #fff;
+        height: 300px;
+
+        .merchant-background__banner {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+        }
+    }
+
+    .merchant__nav-item {
+        background: rgba(255, 255, 255, .6);
+
+        .merchant__nav-link {
+            color: #000;
+        }
+    }
+}
+
+.float-banner {
+    position: fixed;
+    right: 0px;
+    z-index: 999;
+    top: calc(10% + 70px);
+    border-radius: 5px 0 0 5px;
+    background-color: #fff;
+
+    .float-icon {
+        font-size: 1.2rem;
+        color: #282C35;
+        display: block;
+        text-align: center;
+        padding: 10px;
+        transition: all ease .1s;
+
+        &:hover {
+            cursor: pointer;
+            background-color: #ebecf0;
+        }
+    }
+}
+
+.discount-items-container,
+.new-items-container {
+    background-color: #fff;
+    width: 100%;
+    max-height: 360px;
+
+    ::ng-deep .swiper-pagination-bullet-active {
+        border: 0;
+        background-color: #282C35;
+    }
+
+    ::ng-deep .swiper-button-prev,
+    ::ng-deep .swiper-button-next {
+        &::after {
+            font-size: 1rem;
+            color: #CCCCCC;
+        }
+    }
+}
+
+.information-container {
+    background-color: #fff;
+    width: 100%;
+
+    ::ng-deep .swiper-pagination-bullet-active {
+        border: 0;
+        background-color: #282C35;
+    }
+
+    ::ng-deep .swiper-slide {
+        overflow: hidden !important;
+    }
+}
+
+.category-container {
+    .category-container__dropdown {
+        border: 0;
+        width: 250px;
+        border-radius: 19rem;
+        padding-top: .5rem;
+        padding-left: 1.25rem;
+    }
+}
+
+.items-container {
+    background: #fff;
+    min-height: 400px;
+}
+
+.info__container,
+.contact__container,
+.opening-info__container{
+    border-bottom: 1px solid #eee;
+}
+
+.contact__container {
+    .contact__icon {
+        width: 40px;
+        line-height: 30px;
+        height: 30px;
+        background-color: #f7f7f7;
+        color: #282C35;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .contact__detail {
+        line-height: 30px;
+        display: block;
+    }
+}
+
+.opening-info__container {
+    display: block;
+
+    table {
+        font-size: .9rem;
+        td:first-child {
+            vertical-align: top;
+        }
+    }
+}
+
+.qrcode__container {
+    .qrcode {
+        width: calc(150px + 2rem);
+        height: calc(150px + 2rem);
+        background-color: #f7f7f7;
+    }
+}
+
+.social-media__container {
+    .social-media__icon {
+        width: 40px;
+        line-height: 30px;
+        height: 30px;
+        background-color: #f7f7f7;
+        color: #282C35;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .social-media__detail {
+        line-height: 30px;
+        display: block;
+    }
+}
+
+.share-media__container {
+    .share-media__icon {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 50%;
+        background-color: #f7f7f7;
+        color: #fff;
+        text-align: center;
+        margin-right: .5rem;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        display: inline-block;
+
+        &.fb {
+            background-color: rgb(59, 89, 152);
+        }
+
+        &.twitter {
+            background-color: rgb(29, 161, 242);
+        }
+
+        &.linkedin {
+            background-color: rgb(0, 119, 181);
+        }
+
+        &.email {
+            background-color: #888;
+        }
+    }
+}
+
+@media(max-width: 1200px) {
+    .merchant {
+        .merchant__profile-container {
+            .merchant__profile{ 
+                left: 50px;
+            }
+        }
+    }
+}
+
+@media(max-width: 992px) {
+    .merchant {
+        .merchant__profile-container {
+            .merchant__profile{ 
+                border-radius: 50%;
+                padding: .5rem;
+                box-shadow: 0 0 3px #ccc;
+            }
+            .merchant__profile-background,
+            .merchant__name,
+            .merchant__username {
+                display: none;
+            }
+        }
+    }
+}

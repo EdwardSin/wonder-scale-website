@@ -1,0 +1,128 @@
+header {
+  position: fixed;
+  z-index: 9999;
+  width: 100%;
+  height: 80px;
+  background-color: #282C35;
+  transition: all ease .5s;
+
+  &.header__collapsed {
+    height: 50px;
+
+    .user-container__link {
+      line-height: 50px;
+    }
+
+    .header__searchbar {
+      margin-top: 11px;
+      height: 28px;
+    }
+
+    .header__searchbar-icon{
+      top: 1rem;
+    }
+
+    .header__icon {
+      width: 50px;
+      height: 50px;
+    }
+
+    .nav {
+      line-height: 50px;
+      margin-left: .5rem;
+      .nav-item{
+          padding: 0 .5rem;
+      }
+    }
+  }
+
+  .header__icon {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    padding: .5rem;
+    padding-right: 1.5rem;
+    transition: all ease .5s;
+    cursor: pointer;
+
+    img {
+      height: 100%;
+    }
+  }
+
+  .header__searchbar {
+    margin-top: 21px;
+    background-color: rgba(255, 255, 255, .2);
+    border: 0;
+    color: #fff;
+    transition: all .5s ease;
+    width: 300px;
+    padding-right: 3rem;
+
+    &::placeholder {
+      color: #fff;
+    }
+  }
+  .header__searchbar-icon{
+    position: absolute;
+    font-size: 1rem;
+    color: #fff;
+    top: 2rem;
+    right: 1rem;
+    transition: top ease .5s;
+  }
+
+  .nav {
+    line-height: 80px;
+    margin-left: 1rem;
+    .nav-item {
+      font-weight: normal;
+      padding: 0 1rem;
+      transition: background-color ease .15s;
+      .nav-link{
+        color: #fff;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, .1);
+      }
+    }
+
+    .nav-link {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+.user-container {
+  float: right;
+  background-color: rgba(255, 255, 255, .2);
+
+  .user-container__link {
+    font-size: 1rem;
+    line-height: 80px;
+    color: #fff;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    transition: all .5s ease, color .1s ease;
+    &:hover{
+      color: #aaa;
+    }
+    &:visited{
+      color: #fff;
+    }
+  }
+
+  .user-container__text {
+    color: white;
+  }
+}
+
+.header__padding {
+  padding-top: 80px;
+
+  &.header__padding-collapsed {
+    padding-top: 50px;
+  }
+}

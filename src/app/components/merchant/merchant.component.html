@@ -1,0 +1,269 @@
+<div *ngIf="shop && !loading.isRunning(); else loadingTemplate">
+    <div class="row no-gutters merchant mb-3">
+        <div class="col">
+            <div class="merchant__profile-container">
+                <img *ngIf="shop?.profileImage" class="merchant__profile" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile-image" />
+                <img class="merchant__profile-background my-1 center" src="assets/images/png/icon-with-profile-image.png" alt="profile-background" />
+                <p class="merchant__name mb-0 text-break">{{ shop?.name }}</p>
+                <p class="merchant__username mb-0">@{{ shop?.username }}</p>
+            </div>
+        </div>
+        <div class="col-lg-9 merchant-background position-relative">
+            <img class="merchant-background__banner" *ngIf="shop?.bannerImage" [src]="environment.IMAGE_URL + shop?.bannerImage" alt="banner" />
+            <ul class="merchant__nav nav position-absolute" style="bottom: 0; right: 0">
+                <li class="merchant__nav-item nav-item">
+                    <a (click)="scrollTo('new-items')" class="merchant__nav-link nav-link">New</a>
+                </li>
+                <li class="merchant__nav-item nav-item">
+                    <a (click)="scrollTo('info')" class="merchant__nav-link nav-link">Info</a>
+                </li>
+                <li class="merchant__nav-item nav-item">
+                    <a (click)="scrollTo('items')" class="merchant__nav-link nav-link">Items</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="float-banner">
+        <span class="float-icon far fa-star"></span>
+        <span (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
+        <span (click)="isQRCodeModalOpened = true" class="float-icon fas fa-qrcode"></span>
+        <span (click)="isInformationModalOpened = true" class="float-icon fas fa-info-circle"></span>
+        <a *ngIf="shop?.location.coordinates?.length" target="_blank" href="http://www.google.com/maps/place/{{shop?.location?.coordinates[1]}},{{shop?.location?.coordinates[0]}}">
+            <span class="float-icon" style="height: 39px; padding: 5px;">
+                <img style="width: 23px; vertical-align: text-top;" src="assets/images/png/icon.png" alt="logo location" />
+            </span>
+        </a>
+    </div>
+
+    <div id="new-items" class="new-items-container mb-3">
+        <swiper [config]="{breakpoints: {'992': {slidesPerView: 4, spaceBetween: 10, slidesPerGroup: 4}, '768': { slidesPerView: 3, spaceBetween: 10, slidesPerGroup: 3}, '425': {slidesPerView: 2, spaceBetween: 10, slidesPerGroup: 2}}, slidesPerView: 1}">
+            <item [item]="item" [index]="i" *ngFor="let item of newItems; let i = index" class="mb-5"></item>
+        </swiper>
+    </div>
+
+    <div id="info" class="information-container mb-3" *ngIf="shop?.informationImages?.length > 0">
+        <swiper [config]="{navigation: false, autoHeight: true}">
+            <div *ngFor="let image of shop?.informationImages">
+                <img class="d-block center swiper-container__image" style="width:100%;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
+            </div>
+        </swiper>
+    </div>
+
+    <div id="discount-items" *ngIf="discountItems.length" class="discount-items-container mb-3">
+        <swiper [config]="{breakpoints: {'992': {slidesPerView: 4, spaceBetween: 10}}, slidesPerView: 1}">
+            <item [routerLink]="['/item', item._id]" [item]="item" [index]="i" *ngFor="let item of discountItems; let i = index" class="mb-5"></item>
+        </swiper>
+    </div>
+
+    <div id="items" class="category-container mb-3">
+        <mat-select class="form-control category-container__dropdown" [(value)]="selectedCategory" (selectionChange)="getItemsByCategoryId(selectedCategory)">
+            <mat-option [value]="'all'">All</mat-option>
+            <mat-option [value]="category?._id" *ngFor="let category of categories">{{ category?.name }}</mat-option>
+        </mat-select>
+    </div>
+
+    <div class="items-container">
+        <ng-container *ngIf="!itemLoading.isRunning() && items?.length; else itemLoadingTemplate">
+            <div class="row no-gutters mb-4">
+                <item [routerLink]="['/item', item._id]" [item]="item" *ngFor="let item of items" class="mb-5"></item>
+            </div>
+            <pagination class="pb-4" [totalNo]="items.length"></pagination>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noShopTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
+</ng-template>
+<ng-template #itemLoadingTemplate>
+    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 10rem"></ws-spinner>
+</ng-template>
+
+<ng-template #noShopTemplate>
+    <h6 class="text-center">Shop is not found.</h6>
+</ng-template>
+<ng-template #noItemTemplate>
+    <h6 class="text-center">No item.</h6>
+</ng-template>
+
+
+<ws-modal *ngIf="isInformationModalOpened" [id]="'information'" [(isOpened)]="isInformationModalOpened" (isOpenedChange)="showQrcode()">
+    <ng-container modalBody *ngIf="shop; else loadingTemplate">
+        <div class="row no-gutters">
+            <div class="col pr-3">
+                <div class="info__container mb-2 pb-2" *ngIf="shop?.description">
+                    <h4>Introduction:</h4>
+                    <p class="info__text ml-3 mb-0">{{ shop?.description }}</p>
+                </div>
+                <div class="contact__container mb-2 pb-2">
+                    <h4>Contact:</h4>
+                    <div class="row no-gutters mb-2 ml-3" *ngIf="shop?.phone?.length">
+                        <span class="contact__icon fas fa-phone mr-2"></span>
+                        <div class="d-inline-block">
+                            <span class="contact__detail" *ngFor="let phone of shop?.phone">
+                                <a href="tel: {{phone}}">{{ phone }}</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row no-gutters mb-2 ml-3" *ngIf="shop?.email?.length">
+                        <span class="contact__icon fas fa-envelope mr-2"></span>
+                        <div class="d-inline-block">
+                            <span class="contact__detail" *ngFor="let email of shop?.email">
+                                <a href="mailto: {{email}}">{{ email }}</a></span>
+                        </div>
+                    </div>
+                    <div class="row no-gutters mb-2 ml-3" *ngIf="shop?.website?.length">
+                        <span class="contact__icon fas fa-globe mr-2"></span>
+                        <div class="d-inline-block">
+                            <span class="contact__detail" *ngFor="let website of shop?.website">
+                                <a href="{{ website }}">{{ website }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="opening-info__container mb-2 pb-2">
+                    <h4>Opening hour:</h4>
+                    <table class="ml-3" *ngIf="shop.openingInfoType == 'selected_hours'">
+                        <tr *ngFor="let day of shop?.openingInfo">
+                            <td>{{ day.day }}</td>
+                            <td><span class="d-block" *ngFor="let time of day.time">{{ time.openingHour }} - {{ time.closeHour}}</span></td>
+                        </tr>
+                    </table>
+                    <div *ngIf="shop.openingInfoType == 'temporary_closed'">
+                        <span>Temporary Closed</span>
+                    </div>
+                    <div *ngIf="shop.openingInfoType == 'always_open'">
+                        <span>Always Open</span>
+                    </div>
+                    <div *ngIf="shop.openingInfoType == 'no_hour_available'">
+                        <span>No Hour Available</span>
+                    </div>
+                </div>
+            </div>
+            <div class="qrcode__container mb-4 mt-3 pl-lg-3">
+                <div class="qrcode border p-3"></div>
+            </div>
+        </div>
+        <div class="d-block" *ngIf="shop?.location?.coordinates?.length">
+            <h4>Find Location:</h4>
+            <agm-map class="w-100" style="height: 300px" [longitude]="shop?.location?.coordinates[0]" [latitude]="shop?.location?.coordinates[1]" [zoom]="14" [gestureHandling]="'greedy'"
+            [mapDraggable]="false" [maxZoom]="17" [minZoom]="11" [streetViewControl]="false" panControl="false" zoomControl="false">
+                <agm-marker [longitude]="shop?.location?.coordinates[0]" [latitude]="shop?.location?.coordinates[1]"></agm-marker>
+            </agm-map>
+        </div>
+    </ng-container>
+</ws-modal>
+<ws-modal [id]="'qr-code'" *ngIf="isQRCodeModalOpened" [(isOpened)]="isQRCodeModalOpened" (isOpenedChange)="showQrcode()">
+    <div modalBody class="row no-gutters">
+        <div class="qrcode__container mb-4 mt-3 pl-3">
+            <div class="qrcode border p-3"></div>
+        </div>
+        <div class="social-media__container row no-gutters col px-4 pt-3">
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-facebook-f mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-instagram mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-twitter mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-whatsapp mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-facebook-messenger mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-google-plus-g mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-youtube mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-snapchat mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-telegram mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2 col-sm-6" *ngIf="shop?.phone?.length">
+                <span class="social-media__icon fab fa-weibo mr-2"></span>
+                <div class="d-inline-block">
+                    <span class="social-media__detail" *ngFor="let phone of shop?.phone">
+                        <a href="{{ phone }}">{{ phone }}</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</ws-modal>
+<ws-modal *ngIf="isShareModalOpened" [maxWidth]="500" [(isOpened)]="isShareModalOpened">
+    <div modalBody class="share-media__container">
+        <h4>Share:</h4>
+        <!-- <swiper class="py-4 d-block" [config]="{slidesPerView: 7, spaceBetween: 10, slidesPerGroup: 7, navigation: false, pagination: false}"> -->
+            <a class="share-media__icon fb" href="javascript:void(0)" (click)="shareShop()">
+                <span class="fab fa-facebook-f"></span>
+            </a>
+            <a class="share-media__icon twitter" target="_blank" href="{{'https://twitter.com/intent/tweet?text=Welcome to view my page now. https://www.wonderscale.com/shops/' + shop?._id }}">
+                <span class="fab fa-twitter"></span>
+            </a>
+            <a class="share-media__icon email" href="{{'mailto:?body=https://www.wonderscale.com/shop/' + this.shop._id}}">
+                <span class="fas fa-envelope"></span>
+            </a>
+        <!-- </swiper> -->
+        <div class="input-group">
+            <input class="form-control" style='background-color: #fff' readonly [value]="'https://merchant.wonderscale.com/shop/' + shop?._id" />
+            <div class="input-group-append">
+                <button class="input-group-text" [cdkCopyToClipboard]="'https://merchant.wonderscale.com/shop/' + shop?._id">
+                    <span class="fas fa-copy"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</ws-modal>
