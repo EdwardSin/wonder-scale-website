@@ -1,0 +1,17 @@
+<ul *ngIf="pager?.pages?.length > 1" class="pagination">
+    <li>
+        <button class="pagination__previous" [disabled]="pager.currentPage == 1" (click)="setPage(pager.currentPage - 1)">
+            <span class="pagination__previous-icon fas fa-chevron-left"></span>
+        </button>
+    </li>
+    <li *ngFor="let page of pager.pages">
+        <button class="pagination__button" [class.selected]="pager.currentPage == page" (click)="setPage(page)">
+            <span class="pagination__button-text">{{page}}</span>
+        </button>
+    </li>
+    <li>
+        <button class="pagination__next" [disabled]="pager.currentPage == pager.totalPages" (click)="setPage(pager.currentPage + 1)">
+            <span class="pagination__next-icon fas fa-chevron-right"></span>
+        </button>
+    </li>
+</ul>
