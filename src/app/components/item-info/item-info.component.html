@@ -1,34 +1,57 @@
 
-<div class="item-info__profile-container row no-gutters mb-4">
-    <div class="item-info__profile"></div>
-    <div class="col">
+<div *ngIf="!loading.isRunning() && item; else loadingTemplate" class="item-info__profile-container row no-gutters mb-2">
+    <div class="item-info__profile mb-2">
+        <swiper *ngIf="profileImages.length" #galleryThumbs [(index)]="selectedProfileIndex" [config]="{
+            pagination: false,
+            navigation: false}">
+            <img style="width: 100%; object-fit: contain;" *ngFor="let image of profileImages" [src]="environment.IMAGE_URL + image" alt="image"/>
+        </swiper>
+        <div class="w-100 px-4 d-none d-sm-block" style="margin-top: -110px; position: relative; z-index: 9999">
+            <span *ngFor="let image of profileImages; let i = index" class="item-info__profile-image-container mr-1 mb-1 clickable">
+                <img class="item-info__profile-image" (click)="selectProfileImage(image)" [src]="environment.IMAGE_URL + image" alt="image"/>
+                <span *ngIf="i == selectedProfileIndex" class="item-info__profile-image__overlay"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-md px-md-4 mb-2">
         <div class="item-info__details">
             <div class="row no-gutters">
-                <p class="item-info__details__name d-inline-block text-break">Spot Set 2019 New Children's Summer Thin Tops Big Boy Casual Short Sleeve Two-piece Set
-                    <span class="item-info__details__new-banner badge badge-danger ml-2">New</span>
+                <p class="item-info__details__name d-inline-block text-break">{{ item?.name }}
+                    <span *ngIf="item?.isEntityNew" class="item-info__details__new-banner badge badge-danger ml-2">New</span>
                 </p>
             </div>
-            <p class="item-info__details__price mb-2 d-inline-block">RM 240.00</p><span class="badge badge-warning ml-2" style="font-size: .8rem; vertical-align: text-top;">20%</span>
-            <p class="item-info__details__original-price font-weight-bold" style="text-decoration: line-through;">RM 300.00</p>
+            <p class="item-info__details__price mb-1" *ngIf="item?.currency && item?.isOffer"><span>{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</p>
+            <p class="item-info__details__price mb-1" *ngIf="item?.currency && !item?.isOffer"><span>{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+            <p class="mb-3" *ngIf="item?.currency && item?.isOffer">
+                <span class="item-info__details__original-price d-inline-block">
+                    <span>{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                <span class="badge badge-warning ml-2" style="font-size: .8rem; vertical-align: text-top;">{{ discount }}%</span>
+            </p>
+            
+            <p class="item-info__details__quantity">Quantity: {{ quantity }}</p>
             <div class="row no-gutters">
-                <div class="item-info__item-type mr-3" *ngFor="let itemType of itemTypes">
-                    <!-- <img class="" src="" alt="item index"/> -->
+                <div class="item-info__item-type mr-3" *ngFor="let itemType of item?.types" (click)="selectItemType(itemType)">
+                    <img class="w-100 h-100" [src]="environment.IMAGE_URL + itemType.images[0]" alt="item index"/>
+                    <span *ngIf="itemType == selectedType" class="item-info__item-type__overlay"></span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="float-banner">
-    <span class="float-icon far fa-star"></span>
-    <span class="float-icon fas fa-share-alt"></span>
-    <span class="float-icon fas fa-qrcode"></span>
-    <span [routerLink]="['/shop']" class="float-icon fas fa-store"></span>
-    <span class="float-icon" style="height: 39px; padding: 5px;"><img style="width: 23px; vertical-align: text-top;" src="assets/images/png/icon.png" alt="logo location" /></span>
-</div>
-<div class="item-info__container">
+<float-banner [element]="item?.shop" [type]="'item'"></float-banner>
+<div *ngIf="!loading.isRunning()" class="item-info__container">
     <div class="item-info__description">
-        <h4 class="mb-3">Description:</h4>
+        <h5 class="mb-3">Description:</h5>
     </div>
-    <div class="item-info__description-image mb-4" *ngFor="let descriptionImage of descriptionImages">
+    <div class="item-info__description-image mb-4" *ngFor="let descriptionImage of item?.descriptionImages">
+        <img [src]="environment.IMAGE_URL + descriptionImage" alt="description image" />
     </div>
 </div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
+</ng-template>
+
+<ng-template #noItemTemplate>
+    <h6 class="text-center">Item is not found!</h6>
+</ng-template>
