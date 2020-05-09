@@ -26,6 +26,7 @@ import { FormsModule } from '@angular/forms';
 import { WsModalComponent } from './elements/ws-modal/ws-modal.component';
 import { WsCurrencyPipe } from './pipes/ws-currency.pipe';
 import { WsDiscountconverterPipe } from './pipes/ws-discountconverter.pipe';
+import { FloatBannerComponent } from './elements/float-banner/float-banner.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -56,7 +57,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     PaginationComponent,
     WsModalComponent,
     WsDiscountconverterPipe,
-    WsCurrencyPipe
+    WsCurrencyPipe,
+    FloatBannerComponent
   ],
   imports: [
     BrowserModule,

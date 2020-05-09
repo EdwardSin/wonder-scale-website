@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from '@objects/item';
 import { environment } from '@environments/environment';
 import { CurrencyService } from '@services/general/currency.service';
+import { ItemService } from '@services/http/item.service';
 
 @Component({
   selector: 'item',
