@@ -3,14 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Shop } from 'src/app/objects/shop';
 import { takeUntil, finalize, map } from 'rxjs/operators';
 import { Subject, combineLatest, timer } from 'rxjs';
-import { ShopService } from '@services/http/shop.service';
-import { ItemService } from '@services/http/item.service';
-import { CategoryService } from '@services/http/category.service';
+import { ShopService } from '@services/http/public/shop.service';
+import { ItemService } from '@services/http/public/item.service';
+import { CategoryService } from '@services/http/public/category.service';
 import { environment } from '@environments/environment';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
 import { WsLoading } from 'src/app/elements/ws-loading/ws-loading';
-import { CurrencyService } from '@services/general/currency.service';
+import { CurrencyService } from '@services/http/general/currency.service';
 import { FacebookService, InitParams, UIParams } from 'ngx-facebook';
 
 @Component({

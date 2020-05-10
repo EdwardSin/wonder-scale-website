@@ -1,18 +1,42 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation } from '@angular/core';
 import * as _ from 'lodash';
+import { SharedUserService } from '@services/shared/shared-user.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { User } from '@objects/user';
+import { AuthenticationService } from '@services/http/general/authentication.service';
+import { AuthUserService } from '@services/http/general/auth-user.service';
+import { Router } from '@angular/router';
+import { SharedLoadingService } from '@services/shared/shared-loading.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements OnInit {
   didScroll: boolean;
   isShrink: boolean;
   changeHeaderOn: number = 200;
-  constructor() { }
+  user: User;
+  private ngUnsubscribe: Subject<any> = new Subject;
+  constructor(private authUserService: AuthUserService,
+    private sharedLoadingService: SharedLoadingService,
+    private router: Router,
+    private sharedUserService: SharedUserService,
+    private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(result => {
+        this.user = result;
+      })
+    this.authenticationService.isAuthenticated().then(result => {
+      if (result) {
+        this.getUser();
+      }
+    })
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -32,5 +56,26 @@ export class HeaderComponent implements OnInit {
   }
   scrollY() {
     return window.pageYOffset || document.documentElement.scrollTop;
+  }
+  getUser() {
+    this.authUserService.getUser().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(user => {
+        if(user) {
+          this.sharedUserService.user.next(user);
+        }
+      })
+  }
+  logout() {
+    this.sharedLoadingService.screenLoading.next({loading: true, label: 'Logging out...'});
+    this.authenticationService.logout().then(result => {
+      setTimeout(() => {
+        this.sharedLoadingService.screenLoading.next({loading: false});
+        this.router.navigate(['']);
+      }, 500);
+    });
+  }
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

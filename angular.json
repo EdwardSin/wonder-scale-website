@@ -33,8 +33,10 @@
               "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
               "src/assets/vendor/fontawesome/css/all.min.css",
               "src/styles.scss",
-              "src/assets/scss/general.scss",
-              "src/assets/scss/theme.scss"
+              "src/assets/scss/styles.scss",
+              "src/assets/scss/theme.scss",
+              "src/assets/scss/modal.scss",
+              "src/assets/scss/general.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

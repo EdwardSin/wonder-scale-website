@@ -1,10 +1,11 @@
 header {
   position: fixed;
-  z-index: 9999;
+  z-index: 998;
   width: 100%;
   height: 80px;
   background-color: #282C35;
   transition: all ease .5s;
+  user-select: none;
 
   &.header__collapsed {
     height: 50px;
@@ -26,12 +27,23 @@ header {
       width: 50px;
       height: 50px;
     }
-
+    .dropdown-menu{
+      margin-top: 28px;
+      right:0;
+      left: inherit;
+    }
     .nav {
       line-height: 50px;
       margin-left: .5rem;
       .nav-item{
           padding: 0 .5rem;
+      }
+    }
+    .user-container__profile-container{
+      padding: .7rem 1rem;
+      .user-container__profile{
+        width: 30px;
+        height: 30px;
       }
     }
   }
@@ -109,9 +121,46 @@ header {
     &:hover{
       color: #aaa;
     }
-    &:visited{
-      color: #fff;
+  }
+  .user-container__profile-container {
+    display: inline-block;
+    padding: .95rem 2rem;
+    transition: background-color ease .5s;
+    cursor: pointer;
+    .user-container__profile {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        user-select: none;
+        transition: all ease .5s;
     }
+    .user-container__chevron-icon{
+      margin-left: .5rem;
+    }
+    
+    &:hover {
+        background-color: rgba(209, 209, 240, 0.2);
+    }
+  }
+  .dropdown-menu{
+    margin-top: 58px;
+    right:0;
+    left: inherit;
+    z-index: 999;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: margin-top ease .5s;
+    .dropdown-item{
+      font-size: .9rem;
+      padding-top: .5rem;
+      padding-bottom: .5rem;
+    }
+    .dropdown-divider{
+      margin: 0;
+    }
+  }
+  .dropdown-toggle::after{
+    display: none;
   }
 
   .user-container__text {

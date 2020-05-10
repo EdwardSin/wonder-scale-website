@@ -14,9 +14,27 @@
             </ul>
         </div>
         <div class="user-container">
-            <a class="user-container__link" href="javascript:void(0)">Login</a>
-            <span class="user-container__text">|</span>
-            <a class="user-container__link" href="javacript:void(0)">Sign-up</a>
+            <div *ngIf="!user">
+                <a class="user-container__link" href="javascript:void(0)"
+                [routerLink]="['', {outlets: { modal: 'login'}}]">Login</a>
+                <span class="user-container__text">|</span>
+                <a class="user-container__link" href="javacript:void(0)"
+                [routerLink]="['', {outlets: { modal: 'register'}}]">Sign-up</a>
+            </div>
+            <div *ngIf="user" class="btn-group" mdbDropdown>
+                <div mdbDropdownToggle class="user-container__profile-container dropdown-toggle">
+                  <img class='user-container__profile mr-1' src="{{user?.profileImage}}" alt="profile" />
+                  <span class="user-container__chevron-icon fas fa-chevron-down" style="color: #888; font-size: .6rem; vertical-align: sub"></span>
+                </div>
+                <div class="dropdown-menu dropdown-primary">
+                  <a href="javascript:void(0)" class="dropdown-item">{{user?.firstName}} {{user?.lastName}}
+                  </a>
+                  <div class="divider dropdown-divider"></div>
+                  <a class="dropdown-item" [routerLink]="['profile']">Settings</a>
+                  <div class="divider dropdown-divider"></div>
+                  <a class="dropdown-item" (click)="logout()">Logout</a>
+                </div>
+            </div>
         </div>
     </div>
 </header>

@@ -4,7 +4,12 @@
 
 - v1.0.1000                                 -
 ---------------------------------------------
+- 2020-05-10                                -
+---------------------------------------------
+.: WSW: Story: Authentication Module (WSW-8)
+
+---------------------------------------------
 - 2020-05-09                                -
 ---------------------------------------------
-.: WSM: Task: User allows to view shop online (WSW-2)
-.: WSM: Story: Item Module (WSW-6)
+.: WSW: Task: User allows to view shop online (WSW-2)
+.: WSW: Story: Item Module (WSW-6)

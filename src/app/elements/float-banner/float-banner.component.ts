@@ -37,7 +37,7 @@ export class FloatBannerComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes && this.element) {
       if (this.type == 'shop') {
-        this.link = 'https://www.wonderscale.com/shop/' + this.element._id;
+        this.link = 'https://www.wonderscale.com/shops/' + this.element._id;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
