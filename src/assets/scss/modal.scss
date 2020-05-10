@@ -1,0 +1,127 @@
+@import './variables.scss';
+
+.modal {
+  display: block;
+  z-index: 1000;
+  .modal-wrap {
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    overflow: auto;
+  }
+
+  .modal-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    z-index: 1;
+
+    .fas.fa-times {
+      font-size: 1.2rem;
+      width: 40px;
+      line-height: 40px;
+      border-radius: 50%;
+      transition: background-color ease .1s;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, .2) !important;
+      }
+    }
+  }
+
+  .modal-body {
+    animation: create-box .5s;
+    vertical-align: middle;
+    z-index: 1000;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    display: table;
+    min-width: 100% !important;
+    padding: 0;
+    overflow: scroll;
+
+    .modal-body-content {
+      max-width: 800px;
+      width: 100vw !important;
+      margin: 48px 0 80px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .modal-header {
+      position: relative;
+      font-size: 1.3rem;
+      border-radius: .25rem .25rem 0 0;
+      border-bottom: none;
+      color: map-get($ws-color, white);
+      width: 100%;
+      padding: .6em;
+      background-color: map-get($ws-color, secondary);
+    }
+
+    .modal-content {
+      padding: 2rem 4rem;
+      border-radius: .25rem !important;
+      background-color: #fff !important;
+      border: 0 !important;
+      margin-left: auto;
+      margin-right: auto;
+
+      /*background-color: rgba(152,150,153, 0.6);
+                box-shadow: inset 0px 15px 10px -10px #999999;*/
+      &::-webkit-scrollbar {
+        display: none;
+        width: 5px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+        border-radius: 10px;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 10px;
+      }
+
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+        background: transparent;
+      }
+    }
+  }
+}
+
+.modalOpen .modal {
+
+  width: 100%;
+  height: 100%;
+  display: block;
+  //overflow-y: auto;
+}
+
+.hover {
+  &:hover {
+    text-decoration: underline
+  }
+}
+
+@media(max-width: 992px) {
+  .modal .modal-body .modal-body-content {
+    // width: fit-content !important;
+    max-width: 100vw !important;
+  }
+
+  .modal .modal-body .modal-content {
+    padding: 2rem;
+  }
+}

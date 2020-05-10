@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { ItemService } from '@services/http/item.service';
+import { ItemService } from '@services/http/public/item.service';
 import { Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { Item } from '@objects/item';
@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment';
 import * as _ from 'lodash';
 import { SwiperDirective } from 'ngx-swiper-wrapper';
-import { CurrencyService } from '@services/general/currency.service';
+import { CurrencyService } from '@services/http/general/currency.service';
 import { WsLoading } from 'src/app/elements/ws-loading/ws-loading';
 
 @Component({

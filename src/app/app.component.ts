@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { CurrencyService } from '@services/general/currency.service';
+import { CurrencyService } from '@services/http/general/currency.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Currency } from '@objects/currency';
+import { SharedLoadingService } from '@services/shared/shared-loading.service';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +12,11 @@ import { Currency } from '@objects/currency';
 })
 export class AppComponent {
   title = 'wonder-scale-website';
+  screenLoading: boolean;
+  loadingLabel: string = 'Loading...';
   private ngUnsubscribe: Subject<any> = new Subject;
-  constructor(private currencyService: CurrencyService) {
+  constructor(private currencyService: CurrencyService,
+    private sharedLoadingService: SharedLoadingService) {
     this.currencyService
       .getCurrency()
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -30,6 +34,10 @@ export class AppComponent {
           })
         }
       });
+    this.sharedLoadingService.screenLoading.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.screenLoading = result.loading;
+      this.loadingLabel = result.label;
+    });
   }
   scrollTo() {
     window.scrollTo(0, 0);
