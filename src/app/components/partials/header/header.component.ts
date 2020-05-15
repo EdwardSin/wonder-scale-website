@@ -8,6 +8,7 @@ import { AuthenticationService } from '@services/http/general/authentication.ser
 import { AuthUserService } from '@services/http/general/auth-user.service';
 import { Router } from '@angular/router';
 import { SharedLoadingService } from '@services/shared/shared-loading.service';
+import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 
 @Component({
   selector: 'app-header',
@@ -25,12 +26,16 @@ export class HeaderComponent implements OnInit {
     private sharedLoadingService: SharedLoadingService,
     private router: Router,
     private sharedUserService: SharedUserService,
+    private authFollowService: AuthFollowService,
     private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(result => {
         this.user = result;
+        if (result) {
+          this.getFavoriteItems();
+        }
       })
     this.authenticationService.isAuthenticated().then(result => {
       if (result) {
@@ -64,6 +69,11 @@ export class HeaderComponent implements OnInit {
           this.sharedUserService.user.next(user);
         }
       })
+  }
+  getFavoriteItems() {
+    this.authFollowService.getFollowItemsIds().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.sharedUserService.favoriteItems.next(result.result);
+    })
   }
   logout() {
     this.sharedLoadingService.screenLoading.next({loading: true, label: 'Logging out...'});

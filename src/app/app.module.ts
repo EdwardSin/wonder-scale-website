@@ -16,7 +16,6 @@ import { HeaderComponent } from './components/partials/header/header.component';
 import { MerchantComponent } from './components/merchant/merchant.component';
 import { HomeComponent } from './components/home/home.component';
 import { ItemInfoComponent } from './components/item-info/item-info.component';
-import { SavedComponent } from './components/saved/saved.component';
 import { ItemComponent } from './elements/item/item.component';
 import { WsLoadingComponent } from './elements/ws-loading/ws-loading.component';
 import { WsLoadingButtonComponent } from './elements/ws-loading-button/ws-loading-button.component';
@@ -40,6 +39,10 @@ import { AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider, SocialLo
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { WsToastComponent } from '@elements/ws-toast/ws-toast.component';
 import { WsLoadingScreenComponent } from '@elements/ws-loading-screen/ws-loading-screen.component';
+import { FavoriteComponent } from './components/favorite/favorite.component';
+import { PageComponent } from './elements/page/page.component';
+import { ClickoutsideDirective } from './directives/clickoutside.directive';
+import { WsLimitCtrlPipe } from './pipes/ws-limit-ctrl.pipe';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -85,7 +88,6 @@ export function provideConfig() {
     MerchantComponent,
     HomeComponent,
     ItemInfoComponent,
-    SavedComponent,
     ItemComponent,
     LoginComponent,
     RegisterComponent,
@@ -104,7 +106,11 @@ export function provideConfig() {
     WsDiscountconverterPipe,
     WsCurrencyPipe,
     FloatBannerComponent,
-    WsLoadingScreenComponent
+    WsLoadingScreenComponent,
+    FavoriteComponent,
+    PageComponent,
+    ClickoutsideDirective,
+    WsLimitCtrlPipe
   ],
   imports: [
     BrowserModule,

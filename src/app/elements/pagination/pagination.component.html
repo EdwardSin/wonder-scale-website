@@ -1,4 +1,4 @@
-<ul *ngIf="pager?.pages?.length > 1" class="pagination">
+<ul *ngIf="pager?.pages?.length > 1 || isDisplayed" class="pagination">
     <li>
         <button class="pagination__previous" [disabled]="pager.currentPage == 1" (click)="setPage(pager.currentPage - 1)">
             <span class="pagination__previous-icon fas fa-chevron-left"></span>
@@ -10,7 +10,7 @@
         </button>
     </li>
     <li>
-        <button class="pagination__next" [disabled]="pager.currentPage == pager.totalPages" (click)="setPage(pager.currentPage + 1)">
+        <button class="pagination__next" [disabled]="pager.currentPage == pager.totalPages || pager.pages.length == 0" (click)="setPage(pager.currentPage + 1)">
             <span class="pagination__next-icon fas fa-chevron-right"></span>
         </button>
     </li>

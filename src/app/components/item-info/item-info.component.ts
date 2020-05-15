@@ -35,7 +35,7 @@ export class ItemInfoComponent implements OnInit {
     private itemService: ItemService) { }
 
   ngOnInit(): void {
-    let id = '5e9bdad2d9a77041fc88abc3' || this.route.snapshot.params.id;
+    let id = this.route.snapshot.params.id;
     this.getItemById(id);
   }
   ngAfterViewInit() {

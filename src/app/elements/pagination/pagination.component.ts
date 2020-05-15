@@ -8,20 +8,25 @@ import * as _ from 'lodash';
   styleUrls: ['./pagination.component.scss']
 })
 export class PaginationComponent implements OnInit {
-  @Input() pageSize = 30;
-  @Input() pageNo = 1;
-  @Input() scrollto = '#paginated';
-  @Input() totalNo: number;
+  @Input() pageSize: number = 30;
+  @Input() total: number = 0;
+  @Input() isDisplayed: boolean;
+  @Input() currentPage: number = 1;
   @Output() getPageNumber = new EventEmitter();
   pager: any = {};
-
-  private ngUnsubscribe: Subject<any> = new Subject();
   constructor(private ref: ChangeDetectorRef) { }
   ngOnInit() { }
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['totalNo'] && !!this.totalNo) {
-      this.setPage(this.pageNo);
-      this.pager.currentPage = this.pageNo;
+    if (changes['total']) {
+      if (!!this.total) {
+        this.setPage(this.currentPage);
+      } else {
+        this.pager.pages = []
+      }
+      this.pager.currentPage = this.currentPage;
+    }
+    if (changes['currentPage']) {
+      this.pager.currentPage = this.currentPage;
     }
   }
   getPager(totalItems: number, currentPage: number = 1, pageSize: number = 20) {
@@ -69,12 +74,11 @@ export class PaginationComponent implements OnInit {
   }
 
   setPage(page: number) {
-    // if (page < 1 || page > this.pager.totalPages) {
-    //   return;
-    // }
+    if (page < 1 || page > this.pager.totalPages) {
+      return;
+    }
     // get pager object from service
-    this.pager = this.getPager(this.totalNo, page, this.pageSize);
-
+    this.pager = this.getPager(this.total, page, this.pageSize);
     // get current page of items
     //this.displayItems = this.items.slice(this.pager.startIndex, this.pager.endIndex + 1);
     this.getPageNumber.emit(page);

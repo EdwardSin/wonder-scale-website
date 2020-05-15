@@ -2,10 +2,14 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Shop } from '@objects/shop';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
 import * as $ from 'jquery';
+import * as _ from 'lodash';
 import { FacebookService, UIParams, InitParams } from 'ngx-facebook';
 import { environment } from '@environments/environment';
 import { WsLoading } from '../ws-loading/ws-loading';
-import { Item } from '@objects/item';
+import { AuthFollowService } from '@services/http/auth/auth-follow.service';
+import { takeUntil, map } from 'rxjs/operators';
+import { Subject, combineLatest, timer } from 'rxjs';
+import { SharedUserService } from '@services/shared/shared-user.service';
 
 @Component({
   selector: 'float-banner',
@@ -16,6 +20,7 @@ export class FloatBannerComponent implements OnInit {
   @Input() element;
   @Input() type: 'item' | 'shop';
   loading: WsLoading = new WsLoading;
+  isShownLocation: boolean;
   isShareModalOpened: boolean;
   isQRCodeModalOpened: boolean;
   isInformationModalOpened: boolean;
@@ -23,9 +28,15 @@ export class FloatBannerComponent implements OnInit {
   shareLinkThroughFB: string;
   shareLinkThroughTwitter: string;
   shareLinkThroughEmail: string;
-  constructor(private facebookService: FacebookService) { 
+  medias;
+  saved: boolean;
+  private ngUnsubscribe: Subject<any> = new Subject;
+  constructor(private facebookService: FacebookService,
+    private authFollowService: AuthFollowService,
+    private sharedUserService: SharedUserService
+    ) { 
     let initParams: InitParams = {
-      appId: '246047829574930',
+      appId: environment.FACEBOOK_APP_ID,
       xfbml: true,
       version: 'v2.8'
     };
@@ -33,21 +44,78 @@ export class FloatBannerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes && this.element) {
       if (this.type == 'shop') {
+        this.isFollowedShop();
         this.link = 'https://www.wonderscale.com/shops/' + this.element._id;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
+        if (this.element['location'] && this.element['location']['coordination'] && this.element['location']['coordination'].length) {
+          this.isShownLocation = this.element['location']['coordination'][0] == 0 && this.element['location']['coordination'][1] == 0;
+        }
+        if (this.element.media && this.element.media.length) {
+          this.medias = _.groupBy(this.element.media, 'type');
+        }
       } else {
+        this.isFollowedItem();
         this.link = 'https://www.wonderscale.com/item/' + this.element._id;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
+        if (this.element['shop']['location'] && this.element['shop']['location']['coordination'] && this.element['shop']['location']['coordination'].length) {
+          this.isShownLocation = this.element['shop']['location']['coordination'][0] == 0 && this.element['shop']['location']['coordination'][1] == 0;
+        }
       }
     }
+  }
+  isFollowedShop() {
+    this.authFollowService.isFollowedShop(this.element._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.saved = result['result'];
+    })
+  }
+  isFollowedItem() {
+    this.authFollowService.isFollowedItem(this.element._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.saved = result['result'];
+    })
+  }
+  saveShop() {
+    combineLatest(timer(500),
+    this.authFollowService.followShop(this.element._id))
+    .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.saved = result['result'];
+    });
+  }
+  saveItem() {
+    combineLatest(timer(500),
+    this.authFollowService.followItem(this.element._id))
+    .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.saved = result['result'];
+      let favoriteItems = this.sharedUserService.favoriteItems.value;
+      favoriteItems = _.uniq(favoriteItems);
+      favoriteItems.push(this.element._id);
+      this.sharedUserService.favoriteItems.next(favoriteItems);
+    });
+  }
+  unsaveShop() {
+    combineLatest(timer(500),
+    this.authFollowService.unfollowShop(this.element._id))
+    .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.saved = result['result'];
+    });
+  }
+  unsaveItem() {
+    combineLatest(timer(500),
+    this.authFollowService.unfollowItem(this.element._id))
+    .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.saved = result['result'];
+      let favoriteItems = this.sharedUserService.favoriteItems.value;
+      favoriteItems = _.filter(favoriteItems, (id) => id != this.element._id);
+      this.sharedUserService.favoriteItems.next(favoriteItems);
+    });
   }
   shareThroughFB() {
     let params: UIParams = {
