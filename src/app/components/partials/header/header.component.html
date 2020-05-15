@@ -30,6 +30,7 @@
                   <a href="javascript:void(0)" class="dropdown-item">{{user?.firstName}} {{user?.lastName}}
                   </a>
                   <div class="divider dropdown-divider"></div>
+                  <a class="dropdown-item" [routerLink]="['favorite']">Favorites</a>
                   <a class="dropdown-item" [routerLink]="['profile']">Settings</a>
                   <div class="divider dropdown-divider"></div>
                   <a class="dropdown-item" (click)="logout()">Logout</a>
@@ -38,4 +39,4 @@
         </div>
     </div>
 </header>
-<div class="header__padding" [class.header__padding-collapsed]="isShrink"></div>
+<div class="header__padding"></div>

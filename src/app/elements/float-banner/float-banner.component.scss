@@ -13,7 +13,11 @@
         text-align: center;
         padding: 10px;
         transition: all ease .1s;
-
+        &.selected{
+            color: rgba(255, 0, 0, .5);
+            background-color: #ddd;
+            border-radius: 5px 0 0 0;
+        }
         &:hover {
             cursor: pointer;
             background-color: #ebecf0;

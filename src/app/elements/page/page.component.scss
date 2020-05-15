@@ -1,12 +1,11 @@
 :host{
     width: 212px;
     transition: transform ease .2s;
-    user-select: none;
     &:hover{
         transform: scale(1.03);
         cursor: pointer;
     }
-    .item__favorite-icon.fa-heart{
+    .page__favorite-icon.fa-heart{
         color: #fff;
         position: absolute;
         font-size: 1.5rem;
@@ -14,11 +13,10 @@
         top: 1rem;
         filter: drop-shadow(0 0 1px #888);
         &.selected{
-            animation: enlarge .5s;
             color: rgba(255, 0, 0, .5);
         }
     }
-    .item__remove-icon.fa-times{
+    .page__remove-icon.fa-times{
         color: #282C35;
         position: absolute;
         right: 1rem;
@@ -28,7 +26,7 @@
             color: #4d5466;
         }
     }
-    .item__image{
+    .page__image{
         position: relative;
         text-align: center;
         max-width: 212px;
@@ -37,7 +35,7 @@
         margin-right: auto;
         user-select: none;
     }
-    .item__name{
+    .page__name{
         font-size: .9rem;
         height: 42px;
         overflow-wrap: break-word;
@@ -47,23 +45,12 @@
         padding-left: .5rem;
         padding-right: .5rem;
     }
-    .item__price{
-        display: inline-block;
-        border-radius: 1.5rem;
-        color: #fff;
-        padding: .05rem .5rem;
-        font-size: .8rem;
-        background-color: #282C35;
-    }
-    .item__discount-price{
-        font-size: .8rem;
-    }
 }
 
 @media(max-width:768px) {
     :host{
         width: calc(44vw - 1rem);
-        .item__image {
+        .page__image {
             width: calc(44vw - 1rem);
             height: calc(44vw - 1rem);
             max-width: calc(44vw - 1rem);
@@ -73,7 +60,7 @@
 @media(max-width:425px) {
     :host{
         width: calc(50vw - 1rem);
-        .item__image {
+        .page__image {
             width: calc(50vw - 1rem);
             height: calc(50vw - 1rem);
             max-width: calc(50vw - 1rem);

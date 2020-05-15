@@ -19,9 +19,14 @@
         justify-content: center;
     }
     &.selected{
+        color: #fff;
         background-color: #282C35;
         &:hover{
             background-color: #4d5466;
         }
     }
+}
+
+button[aria-label=Close] {
+    display: none !important;
 }

@@ -10,8 +10,9 @@ import { environment } from '@environments/environment';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
 import { WsLoading } from 'src/app/elements/ws-loading/ws-loading';
-import { CurrencyService } from '@services/http/general/currency.service';
-import { FacebookService, InitParams, UIParams } from 'ngx-facebook';
+import { AuthFollowService } from '@services/http/auth/auth-follow.service';
+import { SharedUserService } from '@services/shared/shared-user.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'merchant',
@@ -31,9 +32,11 @@ export class MerchantComponent implements OnInit {
   shop: Shop;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private route: ActivatedRoute, private shopService: ShopService,
+    private authFollowService: AuthFollowService,
+    private sharedUserService: SharedUserService,
     private categoryService: CategoryService,
     private itemService: ItemService) { 
-    let shopId = '5e9075d93e9b545504b29f53' || this.route.snapshot.params.id;
+    let shopId = this.route.snapshot.params.id;
     this.getShopById(shopId);
     this.getAllItemsById(shopId);
     this.getNewItemsById(shopId);
@@ -74,6 +77,7 @@ export class MerchantComponent implements OnInit {
     this.itemLoading.start();
     if (value == 'all') {
       this.items = this.allItems;
+      this.itemLoading.stop()
     } else {
       combineLatest(timer(500),
         this.itemService.getItemsByCategoryId(value))
