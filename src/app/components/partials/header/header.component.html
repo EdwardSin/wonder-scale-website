@@ -27,11 +27,11 @@
                   <span class="user-container__chevron-icon fas fa-chevron-down" style="color: #888; font-size: .6rem; vertical-align: sub"></span>
                 </div>
                 <div class="dropdown-menu dropdown-primary">
-                  <a href="javascript:void(0)" class="dropdown-item">{{user?.firstName}} {{user?.lastName}}
+                  <a href="javascript:void(0)" class="dropdown-item" style="pointer-events: none;">{{user?.firstName}} {{user?.lastName}}
                   </a>
                   <div class="divider dropdown-divider"></div>
                   <a class="dropdown-item" [routerLink]="['favorite']">Favorites</a>
-                  <a class="dropdown-item" [routerLink]="['profile']">Settings</a>
+                  <a class="dropdown-item" [routerLink]="['settings']">Settings</a>
                   <div class="divider dropdown-divider"></div>
                   <a class="dropdown-item" (click)="logout()">Logout</a>
                 </div>

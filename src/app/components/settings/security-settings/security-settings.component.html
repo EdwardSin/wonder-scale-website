@@ -1,0 +1,34 @@
+<div *ngIf="!loading.isRunning() && user; else loadingTemplate" [formGroup]="form" class="security-settings">
+    <div *ngIf="user.existsPassword" class="security-settings__form-group mb-3 row no-gutters">
+        <label class="col-lg-3 security-settings__label">Old Password:</label>
+        <input name="oldPassword" type="password" class="security-settings__input form-control form-control-sm" formControlName="oldPassword" />
+    </div>
+    <div class="security-settings__form-group mb-2 row no-gutters">
+        <label class="col-lg-3 security-settings__label">New Password:</label>
+        <input name="password" type="password" class="security-settings__input form-control form-control-sm" formControlName="password" />
+    </div>
+    <ul class="offset-lg-3 pl-3 font-9 text-muted list-unstyled">
+        <li [class.text-success]="!password.errors?.minlength && !password.errors?.required" class="p-0">At
+          least
+          8
+          characters</li>
+        <li [class.text-success]="!password.errors?.Uppercase && !password.errors?.required" class="p-0">At
+          least
+          1
+          uppercase</li>
+        <li [class.text-success]="!password.errors?.Digit && !password.errors?.required" class="p-0">At least 1
+          digit</li>
+      </ul>
+    <div class="security-settings__form-group mb-3 row no-gutters">
+        <label class="col-lg-3 security-settings__label">Confirm Password:</label>
+        <input name="confirmPassword" type="password" class="security-settings__input form-control form-control-sm" formControlName="confirmPassword" />
+    </div>
+    <div class="offset-lg-3" style="width: 312px">
+        <button [disabled]="passwordLoading.isRunning()" class="btn btn-sm btn-controller float-right" (click)="editPassword()">
+            <ws-spinner *ngIf="passwordLoading.isRunning()" class="mr-2" [width]="15" [height]="15" [borderWidth]="3" ></ws-spinner>Change Password</button>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning();" class="text-center d-block w-100" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
+</ng-template>

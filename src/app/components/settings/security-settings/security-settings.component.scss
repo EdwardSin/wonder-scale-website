@@ -1,0 +1,18 @@
+.security-settings{
+    .security-settings__form-group{
+        .security-settings__label{
+            font-size: .9rem;
+            display: inline-block;
+            margin-bottom: 0;
+            line-height: 31px;
+            vertical-align: middle;
+        }
+        .security-settings__input{
+            font-size: 2rem;
+            height: 31px;
+            display: inline-block;
+            width: 312px;
+            border: 1px solid #ddd;
+        }
+    }
+}

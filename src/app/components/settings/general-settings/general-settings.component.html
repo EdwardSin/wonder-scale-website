@@ -1,0 +1,56 @@
+<div *ngIf="!loading.isRunning() && user; else loadingTemplate" [formGroup]="form" class="general-settings">
+    <div class="general-settings__form-group mb-3 row no-gutters">
+        <label class="col-lg-3 general-settings__label">First Name:</label>
+        <input name="firstName" class="general-settings__input form-control form-control-sm" formControlName="firstName" />
+    </div>
+    <div class="general-settings__form-group mb-3 row no-gutters">
+        <label class="col-lg-3 general-settings__label">Last Name:</label>
+        <input name="lastName" class="general-settings__input form-control form-control-sm" formControlName="lastName" />
+    </div>
+    <div class="general-settings__form-group mb-3 row no-gutters">
+        <label class="col-lg-3 general-settings__label">Email:</label>
+        <input name="email" class="general-settings__input form-control form-control-sm" formControlName="email" />
+    </div>
+    <div class="general-settings__form-group mb-3 row no-gutters">
+        <label class="col-lg-3 general-settings__label">Tel:</label>
+        <input name="tel" class="general-settings__input form-control form-control-sm" formControlName="tel" />
+    </div>
+    <div class="general-settings__form-group mb-3 row no-gutters">
+        <label class="col-lg-3 general-settings__label">Gender:</label>
+        <mat-select name="gender" class="general-settings__input form-control form-control-sm" formControlName="gender">
+            <mat-option [value]="''">Select gender</mat-option>
+            <mat-option [value]="'male'">male</mat-option>
+            <mat-option [value]="'female'">female</mat-option>
+        </mat-select>
+    </div>
+    <div class="general-settings__form-group mb-3 row no-gutters">
+        <label class="col-lg-3 general-settings__label">Date of Birth:</label>
+        <div class='input-group col d-inline-block'>
+            <!-- <div class="ws-input mt-0 mr-1"> -->
+              <mat-select class="general-settings__select form-control form-control-sm" placeholder="Date" formControlName="date">
+                <mat-option [value]="n" *ngFor="let n of dateSelector.dates">{{n}}
+                </mat-option>
+              </mat-select>
+            <!-- </div>
+            <div class="ws-input mt-0 mr-1"> -->
+              <mat-select class="general-settings__select form-control form-control-sm" placeholder="Month" formControlName="month">
+                <mat-option [value]="n" *ngFor="let n of dateSelector.months">{{n}}
+                </mat-option>
+              </mat-select>
+            <!-- </div>
+            <div class="ws-input mt-0"> -->
+              <mat-select class="general-settings__select form-control form-control-sm" placeholder="Year" formControlName="year">
+                <mat-option [value]="n" *ngFor="let n of dateSelector.years">{{n}}
+                </mat-option>
+              </mat-select>
+            <!-- </div> -->
+          </div>
+    </div>
+    <div class="offset-lg-3" style="width: 312px">
+        <button class="btn btn-sm btn-controller float-right" (click)="editGeneralInfo()">Save</button>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <ws-spinner *ngIf="loading.isRunning();" class="text-center d-block w-100" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
+</ng-template>

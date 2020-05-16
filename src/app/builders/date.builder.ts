@@ -5,7 +5,7 @@ export class DateBuilder {
         return Array(31).fill(0).map((x, i) => ("0" + (i + 1)).slice(-2));
     }
     public static getMonths(): Array<string>{
-        return Object.keys(Constants.months);
+        return Object.values(Constants.months);
     }
     public static getYears(): Array<string>{
         let years = [];

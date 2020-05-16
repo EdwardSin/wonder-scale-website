@@ -43,6 +43,10 @@ import { FavoriteComponent } from './components/favorite/favorite.component';
 import { PageComponent } from './elements/page/page.component';
 import { ClickoutsideDirective } from './directives/clickoutside.directive';
 import { WsLimitCtrlPipe } from './pipes/ws-limit-ctrl.pipe';
+import { SettingsComponent } from './components/settings/settings.component';
+import { ProfileSettingsComponent } from './components/settings/profile-settings/profile-settings.component';
+import { GeneralSettingsComponent } from './components/settings/general-settings/general-settings.component';
+import { SecuritySettingsComponent } from './components/settings/security-settings/security-settings.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -110,7 +114,11 @@ export function provideConfig() {
     FavoriteComponent,
     PageComponent,
     ClickoutsideDirective,
-    WsLimitCtrlPipe
+    WsLimitCtrlPipe,
+    SettingsComponent,
+    ProfileSettingsComponent,
+    GeneralSettingsComponent,
+    SecuritySettingsComponent
   ],
   imports: [
     BrowserModule,
