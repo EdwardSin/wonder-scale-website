@@ -1,0 +1,25 @@
+.general-settings{
+    .general-settings__form-group{
+        .general-settings__label{
+            font-size: .9rem;
+            display: inline-block;
+            margin-bottom: 0;
+            line-height: 31px;
+            vertical-align: middle;
+        }
+        .general-settings__input{
+            display: inline-block;
+            width: 312px;
+            border: 1px solid #ddd;
+        }
+    }
+    .general-settings__select{
+        width: 104px;
+    }
+}
+
+@media(max-width: 992px) {
+    .general-settings__select {
+        width: 33.33%;
+    }
+}

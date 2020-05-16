@@ -10,6 +10,11 @@ import { ActivateComponent } from '@components/feature/authentication/activate/a
 import { LoginComponent } from '@components/feature/authentication/login/login.component';
 import { VisitorGuard } from './guards/visitor.guard';
 import { FavoriteComponent } from '@components/favorite/favorite.component';
+import { AuthGuard } from './guards/auth.guard';
+import { SettingsComponent } from '@components/settings/settings.component';
+import { ProfileSettingsComponent } from '@components/settings/profile-settings/profile-settings.component';
+import { GeneralSettingsComponent } from '@components/settings/general-settings/general-settings.component';
+import { SecuritySettingsComponent } from '@components/settings/security-settings/security-settings.component';
 
 
 const routes: Routes = [{
@@ -42,13 +47,24 @@ const routes: Routes = [{
   outlet: 'modal'
 }, {
   path: 'favorite',
-  component: FavoriteComponent
+  component: FavoriteComponent,
+  canActivate: [AuthGuard]
 }, {
   path: 'shops/:id',
   component: MerchantComponent
 }, {
   path: 'items/:id',
   component: ItemInfoComponent
+}, {
+  path: 'settings',
+  component: SettingsComponent,
+  canActivate: [AuthGuard],
+  children: [
+    {path: '', redirectTo: 'profile', pathMatch: 'full'},
+    {path: 'profile', component: ProfileSettingsComponent},
+    {path: 'general', component: GeneralSettingsComponent},
+    {path: 'security', component: SecuritySettingsComponent}
+  ]
 }];
 
 @NgModule({

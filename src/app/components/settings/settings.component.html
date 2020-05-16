@@ -1,0 +1,17 @@
+<div class="settings__container row no-gutters">
+    <div class="settings__navigation col-lg-3">
+        <div class="d-inline-block settings__navigation-container" (clickOutside)="isNavigationDisplayed = false">
+            <button *ngIf="isMobileSize" class="btn btn-controller d-inline-block mb-3" (click)="isNavigationDisplayed = !isNavigationDisplayed">
+                <span class="fas fa-bars"></span>
+            </button>
+            <ul *ngIf="!isMobileSize || isMobileSize && isNavigationDisplayed" class="list-unstyled settings__navigation-list">
+                <li><a class="settings__navigation-link" [routerLink]="['/settings/profile']" routerLinkActive="selected" href="javascript:void(0)">Profile</a></li>
+                <li><a class="settings__navigation-link" [routerLink]="['/settings/general']" routerLinkActive="selected" href="javascript:void(0)">General</a></li>
+                <li><a class="settings__navigation-link" [routerLink]="['/settings/security']" routerLinkActive="selected" href="javascript:void(0)">Security</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="settings__details-container col-lg-9 px-lg-4">
+        <router-outlet></router-outlet>
+    </div>
+</div>

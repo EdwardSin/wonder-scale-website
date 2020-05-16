@@ -53,7 +53,6 @@ export class FavoriteComponent implements OnInit {
     private screenService: ScreenService,
     private authFollowService: AuthFollowService) { 
       this.mapController = new MapController(gpsService);
-      this.isMobileSize = this.screenService.isMobileSize();
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
@@ -89,10 +88,9 @@ export class FavoriteComponent implements OnInit {
           }
         }
     });
-  }
-  @HostListener('window:resize')
-  onResize() {
-    this.isMobileSize = this.screenService.isMobileSize();
+    this.screenService.isMobileSize.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.isMobileSize = result;
+    })
   }
   ngOnInit(): void {
   }

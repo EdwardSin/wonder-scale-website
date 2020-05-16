@@ -64,9 +64,9 @@ export class HeaderComponent implements OnInit {
   }
   getUser() {
     this.authUserService.getUser().pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(user => {
-        if(user) {
-          this.sharedUserService.user.next(user);
+      .subscribe(result => {
+        if(result) {
+          this.sharedUserService.user.next(result.result);
         }
       })
   }
