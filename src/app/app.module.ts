@@ -4,11 +4,13 @@ import { AgmCoreModule } from '@agm/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SwiperModule, SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { FacebookModule } from 'ngx-facebook';
+import { FacebookModule } from '@jemys89/ngx-facebook';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -127,10 +129,12 @@ export function provideConfig() {
     ReactiveFormsModule,
     HttpClientModule,
     MatSelectModule,
+    MatSliderModule,
     AppRoutingModule,
     MatCheckboxModule,
     SwiperModule,
     ClipboardModule,
+    DragDropModule,
     SocialLoginModule,
     MDBBootstrapModule.forRoot(),
     FacebookModule.forRoot(),

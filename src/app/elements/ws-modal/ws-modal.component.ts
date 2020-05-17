@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@
 export class WsModalComponent implements OnInit {
   @Input() id: string;
   @Input() noHeader: boolean;
-  @Input() clickClose: boolean = true;
+  @Input() isCloseIconDisplayed: boolean = true;
   @Input() maxWidth: number = 800;
   _isOpened: boolean;
   @Input() get isOpened() { return this._isOpened; }
