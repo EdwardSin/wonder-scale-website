@@ -1,13 +1,13 @@
 <header [class.header__collapsed]="isShrink">
     <div class="row no-gutters">
         <div class="float-left col row no-gutters">
-            <div [routerLink]="['/']" class="header__icon">
+            <div [routerLink]="['/']" class="header__icon nooutline">
                 <img class="w-100" style="object-fit: contain;" src="assets/images/png/icon.png" alt="logo" />
             </div>
             <!-- <div class="position-relative d-block d-lg-none">
                 <span class="fas fa-search header__searchbar-icon" style="margin-left: 2rem; font-size: 2rem"></span>
             </div> -->
-            <div *ngIf="isMobileSize !user" class="position-relative col-sm-auto col pr-2">
+            <div *ngIf="isMobileSize && user" class="position-relative col-sm-auto col pr-2">
                 <input #headerKeyword class="form-control header__searchbar" placeholder="Search..." (keydown.enter)="navigateTo()" [(ngModel)]="keyword"/>
                 <span class="header__searchbar-icon fas fa-search" [routerLink]="['/search']" [queryParams]="{keyword: keyword}"></span>
             </div>
