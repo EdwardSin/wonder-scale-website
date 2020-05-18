@@ -1,0 +1,22 @@
+.search__container{
+    padding: 1.5rem;
+    min-height: 100vh;
+    background-color: #fff;
+    .search__searchbar{
+        width: 300px;
+        .search__searchbar__input{
+            background-color: #f7f7f7;
+            border: 0;
+        }
+        .search__searchbar__button{
+            background-color: #f7f7f7;
+            border: 0;
+        }
+    }
+}
+
+@media(max-width:992px) {
+    .search__container {
+        padding: 1rem;
+    }
+}

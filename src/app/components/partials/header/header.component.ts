@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import { takeUntil } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { AuthUserService } from '@services/http/general/auth-user.service';
 import { Router } from '@angular/router';
 import { SharedLoadingService } from '@services/shared/shared-loading.service';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
+import { ScreenService } from '@services/general/screen.service';
 
 @Component({
   selector: 'app-header',
@@ -20,11 +21,15 @@ export class HeaderComponent implements OnInit {
   didScroll: boolean;
   isShrink: boolean;
   changeHeaderOn: number = 200;
+  keyword: string = '';
   user: User;
+  isMobileSize: boolean;
+  @ViewChild('headerKeyword') headerKeyword: ElementRef;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private authUserService: AuthUserService,
     private sharedLoadingService: SharedLoadingService,
     private router: Router,
+    private screenService: ScreenService,
     private sharedUserService: SharedUserService,
     private authFollowService: AuthFollowService,
     private authenticationService: AuthenticationService) { }
@@ -41,6 +46,10 @@ export class HeaderComponent implements OnInit {
       if (result) {
         this.getUser();
       }
+    })
+    this.screenService.isMobileSize.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
+      this.isMobileSize = result;
     })
   }
 
@@ -74,6 +83,10 @@ export class HeaderComponent implements OnInit {
     this.authFollowService.getFollowItemsIds().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.sharedUserService.favoriteItems.next(result.result);
     })
+  }
+  navigateTo() {
+    this.headerKeyword.nativeElement.blur();
+    this.router.navigate(['/search'], {queryParams: {keyword: this.keyword}});
   }
   logout() {
     this.sharedLoadingService.screenLoading.next({loading: true, label: 'Logging out...'});

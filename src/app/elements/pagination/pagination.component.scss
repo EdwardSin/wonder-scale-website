@@ -32,3 +32,15 @@
         }
     }
 }
+
+@media(max-width: 992px) {
+    :host{
+        width: calc(100vw - 2rem);
+        overflow-x: auto;
+        .pagination{
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}

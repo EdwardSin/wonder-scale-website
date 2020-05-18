@@ -78,5 +78,13 @@
             height: calc(50vw - 1rem);
             max-width: calc(50vw - 1rem);
         }
+        &.item__fit-screen {
+            width: 100vw;
+            .item__image{
+                width: 100vw;
+                max-height: 200px;
+                max-width: 100vw;
+            }
+        }
     }
 }

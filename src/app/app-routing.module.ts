@@ -15,11 +15,15 @@ import { SettingsComponent } from '@components/settings/settings.component';
 import { ProfileSettingsComponent } from '@components/settings/profile-settings/profile-settings.component';
 import { GeneralSettingsComponent } from '@components/settings/general-settings/general-settings.component';
 import { SecuritySettingsComponent } from '@components/settings/security-settings/security-settings.component';
+import { SearchComponent } from '@components/search/search.component';
 
 
 const routes: Routes = [{
   path: '',
   component: HomeComponent
+}, {
+  path: 'search',
+  component: SearchComponent
 }, {
   path: 'login',
   component: LoginComponent,
