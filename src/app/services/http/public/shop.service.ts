@@ -17,4 +17,17 @@ export class ShopService {
   getShopById(id): Observable<Result<Shop>> {
     return this.http.get<Result<Shop>>('/api/shops/' + id);
   }
+  getShopsByKeyword(keyword='', page='1', order='', orderBy='asc'): Observable<Result<Array<Shop>>> {
+    return this.http.get<Result<Array<Shop>>>('/api/shops/search', {
+      params: {
+        keyword,
+        page,
+        order,
+        orderBy
+      }
+    });
+  }
+  getRecommandedShops(): Observable<Result<Array<Shop>>> {
+    return this.http.get<Result<Array<Shop>>>('/api/shops/random');
+  }
 }

@@ -26,7 +26,7 @@
 
     <div *ngIf="newItems?.length" id="new-items" class="new-items-container mb-3">
         <swiper [config]="{breakpoints: {'425': {slidesPerView: 2, spaceBetween: 10, slidesPerGroup: 2}, '768': { slidesPerView: 3, spaceBetween: 10, slidesPerGroup: 3}, '992': {slidesPerView: 4, spaceBetween: 10, slidesPerGroup: 4}}, slidesPerView: 1}">
-            <item [item]="item" [index]="i" *ngFor="let item of newItems; let i = index" class="mb-5"></item>
+            <item [item]="item" [index]="i" *ngFor="let item of newItems; let i = index" class="mb-5 item__fit-screen"></item>
         </swiper>
     </div>
 
@@ -40,7 +40,7 @@
 
     <div id="discount-items" *ngIf="discountItems.length" class="discount-items-container mb-3">
         <swiper [config]="{breakpoints: {'992': {slidesPerView: 4, spaceBetween: 10}}, slidesPerView: 1}">
-            <item [routerLink]="['/items', item._id]" [item]="item" [index]="i" *ngFor="let item of discountItems; let i = index" class="mb-5"></item>
+            <item [item]="item" [index]="i" *ngFor="let item of discountItems; let i = index" class="mb-5 item__fit-screen"></item>
         </swiper>
     </div>
 

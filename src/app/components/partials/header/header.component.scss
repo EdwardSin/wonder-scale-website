@@ -53,7 +53,6 @@ header {
     width: 80px;
     height: 80px;
     padding: .5rem;
-    padding-right: 1.5rem;
     transition: all ease .5s;
     cursor: pointer;
 
@@ -68,9 +67,13 @@ header {
     border: 0;
     color: #fff;
     transition: all .5s ease;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     padding-right: 3rem;
-
+    &:focus{
+      background-color: rgba(255, 255, 255, .2);
+      color: #fff;
+    }
     &::placeholder {
       color: #fff;
     }
@@ -173,5 +176,12 @@ header {
 
   &.header__padding-collapsed {
     padding-top: 50px;
+  }
+}
+
+
+@media(max-width:992px) {
+  .user-container{
+    background-color: transparent;
   }
 }

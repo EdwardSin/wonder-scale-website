@@ -27,13 +27,15 @@
 <ws-modal *ngIf="isInformationModalOpened" [id]="'information'" [(isOpened)]="isInformationModalOpened" (isOpenedChange)="showQrcode()">
     <ng-container modalBody *ngIf="element; else loadingTemplate">
         <div class="row no-gutters">
-            <div class="col pr-3">
+            <div class="col-lg pr-3 order-12 order-lg-1">
                 <div class="info__container mb-2 pb-2" *ngIf="element?.description">
                     <h4>Introduction:</h4>
                     <p class="info__text ml-3 mb-0">{{ element?.description }}</p>
                 </div>
-                <div class="contact__container mb-2 pb-2">
-                    <h4>Contact:</h4>
+                <div class="contact__container mb-2 pb-2" *ngIf="(element?.phone?.length + element?.email?.length + element?.website?.length) > 0">
+                    <h4>
+                        Contact:
+                    </h4>
                     <div class="row no-gutters mb-2 ml-3" *ngIf="element?.phone?.length">
                         <span class="contact__icon fas fa-phone mr-2"></span>
                         <div class="d-inline-block">
@@ -77,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            <div class="qrcode__container mb-4 mt-3 pl-lg-3">
+            <div class="qrcode__container center col-auto mb-4 mt-3 pl-lg-3 order-1 order-lg-12">
                 <div class="qrcode border p-3"></div>
             </div>
         </div>
@@ -92,10 +94,10 @@
 </ws-modal>
 <ws-modal [id]="'qr-code'" *ngIf="isQRCodeModalOpened" [maxWidth]="310" [(isOpened)]="isQRCodeModalOpened" (isOpenedChange)="showQrcode()">
     <div modalBody class="row no-gutters">
-        <div class="qrcode__container mb-4 mt-3 pl-3">
+        <div class="qrcode__container mb-4 mt-3 col-auto center" [class.pl-3]="element?.media?.length">
             <div class="qrcode border p-3"></div>
         </div>
-        <div class="social-media__container row no-gutters col px-4 pt-3" *ngIf="element?.media?.length">
+        <div class="social-media__container row no-gutters col-sm px-4 pt-3" *ngIf="element?.media?.length">
             <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.facebook?.length">
                 <span class="social-media__icon fab fa-facebook-f mr-2"></span>
                 <div class="d-inline-block">

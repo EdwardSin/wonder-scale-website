@@ -49,6 +49,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { ProfileSettingsComponent } from './components/settings/profile-settings/profile-settings.component';
 import { GeneralSettingsComponent } from './components/settings/general-settings/general-settings.component';
 import { SecuritySettingsComponent } from './components/settings/security-settings/security-settings.component';
+import { SearchComponent } from './components/search/search.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -116,11 +118,13 @@ export function provideConfig() {
     FavoriteComponent,
     PageComponent,
     ClickoutsideDirective,
+    AutofocusDirective,
     WsLimitCtrlPipe,
     SettingsComponent,
     ProfileSettingsComponent,
     GeneralSettingsComponent,
-    SecuritySettingsComponent
+    SecuritySettingsComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
