@@ -27,10 +27,10 @@
             <label class="col-lg-3 general-settings__label">Email:</label>
             <input name="email" class="general-settings__input form-control form-control-sm" formControlName="email" />
         </div>
-        <div class="general-settings__form-group mb-3 row no-gutters">
+        <!-- <div class="general-settings__form-group mb-3 row no-gutters">
             <label class="col-lg-3 general-settings__label">Tel:</label>
             <input name="tel" class="general-settings__input form-control form-control-sm" formControlName="tel" />
-        </div>
+        </div> -->
         <div class="general-settings__form-group mb-3 row no-gutters">
             <label class="col-lg-3 general-settings__label">Gender:</label>
             <mat-select name="gender" class="general-settings__input form-control form-control-sm" formControlName="gender">
@@ -63,7 +63,8 @@
               </div>
         </div>
         <div class="offset-lg-3" style="width: 312px">
-            <button class="btn btn-sm btn-controller float-right" (click)="editGeneralInfo()">Save</button>
+            <ws-loading-button [loading]="updateLoading.isRunning()" [class]="'btn btn-sm btn-controller float-right'" (click)="editGeneralInfo()">
+                Save</ws-loading-button>
         </div>
     </div>
 </div>
