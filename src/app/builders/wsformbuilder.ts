@@ -39,7 +39,7 @@ export class WSFormBuilder {
             firstName: ["", [Validators.required, Validators.maxLength(40)]],
             lastName: ["", [Validators.required, Validators.maxLength(40)]],
             username: ["", [Validators.required, Validators.maxLength(30)]],
-            tel: ["", [Validators.required, Validators.maxLength(20)]],
+            tel: ["", [Validators.maxLength(20)]],
             gender: ["", [Validators.required, GenderValidation.Valid]],
             // passwordGroup: formBuilder.group(
             //     {

@@ -30,6 +30,7 @@ export class ProfileSettingsComponent implements OnInit {
   isProfileUploaderOpened: boolean;
   loading: WsLoading = new WsLoading;
   uploadLoading: WsLoading = new WsLoading;
+  updateLoading: WsLoading = new WsLoading;
   environment = environment;
   previewImage;
   croppieObj;
@@ -145,14 +146,15 @@ export class ProfileSettingsComponent implements OnInit {
         email: form.value.email,
         receiveInfo: form.value.receiveInfo ? true : false
       };
-      this.authUserService.editGeneral(user).pipe(takeUntil(this.ngUnsubscribe))
+      this.updateLoading.start();
+      this.authUserService.editGeneral(user).pipe(takeUntil(this.ngUnsubscribe),
+      finalize(() => this.updateLoading.stop()))
       .subscribe(result => {
         let user = result['result'];
         this.sharedUserService.user.next({
           firstName: user.firstName,
           lastName: user.lastName,
           profileImage: user.profileImage,
-
         });
         WsToastService.toastSubject.next({ content: "Details are updated successfully!", type: 'success' });
       }, err => {
@@ -171,7 +173,6 @@ export class ProfileSettingsComponent implements OnInit {
     let dateController = this.form.get('date');
     let monthController = this.form.get('month');
     let yearController = this.form.get('year');
-
     if (!this.nameValidator.validate(firstNameController, lastNameController)) {
       if (this.nameValidator.errors.firstName) {
         WsToastService.toastSubject.next({ content: this.nameValidator.errors.firstName, type: 'danger' });
@@ -185,10 +186,10 @@ export class ProfileSettingsComponent implements OnInit {
       WsToastService.toastSubject.next({ content: this.emailValidator.errors.email, type: 'danger' });
       return;
     }
-    else if (!this.telValidator.validate(telController)) {
-      WsToastService.toastSubject.next({ content: this.telValidator.errors.tel, type: 'danger' });
-      return;
-    }
+    // else if (!this.telValidator.validate(telController)) {
+    //   WsToastService.toastSubject.next({ content: this.telValidator.errors.tel, type: 'danger' });
+    //   return;
+    // }
     else if (!this.genderValidator.validate(genderController)) {
       WsToastService.toastSubject.next({ content: this.genderValidator.errors.gender, type: 'danger' });
       return;
