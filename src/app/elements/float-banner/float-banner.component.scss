@@ -31,6 +31,9 @@
 .contact__container,
 .opening-info__container{
     border-bottom: 1px solid #eee;
+    .info__text{
+        white-space: pre-wrap;
+    }
 }
 
 .contact__container {
