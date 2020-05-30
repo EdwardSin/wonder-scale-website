@@ -1,16 +1,18 @@
 <div *ngIf="shop && !loading.isRunning(); else loadingTemplate">
     <div class="row no-gutters merchant mb-3">
-        <div class="col">
+        <div class="col-lg">
             <div class="merchant__profile-container">
                 <img *ngIf="shop?.profileImage" class="merchant__profile" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile-image" />
-                <img class="merchant__profile-background my-1 center" src="assets/images/png/icon-with-profile-image.png" alt="profile-background" />
-                <p class="merchant__name mb-0 text-break">{{ shop?.name }}</p>
-                <p class="merchant__username mb-0">@{{ shop?.username }}</p>
+                <img class="d-none d-lg-block merchant__profile-background my-1 center" src="assets/images/png/icon-with-profile-image.png" alt="profile-background" />
+                <div class="merchant__name-container">
+                    <p class="merchant__name mb-0 text-break">{{ shop?.name }}</p>
+                    <p class="merchant__username mb-0">@{{ shop?.username }}</p>
+                </div>
             </div>
         </div>
         <div class="col-lg-9 merchant-background position-relative">
             <img class="merchant-background__banner" *ngIf="shop?.bannerImage" [src]="environment.IMAGE_URL + shop?.bannerImage" alt="banner" />
-            <ul class="merchant__nav nav position-absolute" style="bottom: 0; right: 0">
+            <ul class="merchant__nav nav">
                 <li *ngIf="false && newItems.length" class="merchant__nav-item nav-item">
                     <a (click)="scrollTo('new-items')" class="merchant__nav-link nav-link">New</a>
                 </li>

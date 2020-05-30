@@ -140,7 +140,7 @@ export class FloatBannerComponent implements OnInit {
         image.addEventListener('load', e => {
           setTimeout(() => {
             this.renderProfileImageToQrcode(image, 150);
-          }, 300);
+          }, 500);
         });
       });
     });
