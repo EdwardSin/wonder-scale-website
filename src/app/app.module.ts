@@ -51,6 +51,8 @@ import { GeneralSettingsComponent } from './components/settings/general-settings
 import { SecuritySettingsComponent } from './components/settings/security-settings/security-settings.component';
 import { SearchComponent } from './components/search/search.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
+import { ListItemComponent } from './elements/list-item/list-item.component';
+import { ListItemInfoComponent } from './components/list-item-info/list-item-info.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -124,7 +126,9 @@ export function provideConfig() {
     ProfileSettingsComponent,
     GeneralSettingsComponent,
     SecuritySettingsComponent,
-    SearchComponent
+    SearchComponent,
+    ListItemComponent,
+    ListItemInfoComponent
   ],
   imports: [
     BrowserModule,

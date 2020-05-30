@@ -5,7 +5,7 @@
     <span *ngIf="type == 'item'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
     <span *ngIf="type == 'shop'" (click)="isQRCodeModalOpened = true" class="float-icon fas fa-qrcode"></span>
     <span *ngIf="type == 'shop'" (click)="isInformationModalOpened = true" class="float-icon fas fa-info-circle"></span>
-    <span *ngIf="type == 'item'" [routerLink]="['/shops', element?.shop?._id]" class="float-icon fas fa-store"></span>
+    <span *ngIf="type == 'item'" [routerLink]="['/shop']" [queryParams]="{id: element?.shop?._id}" class="float-icon fas fa-store"></span>
     <a *ngIf="type == 'item' && isShownLocation" target="_blank" href="http://www.google.com/maps/place/{{element?.shop?.location?.coordinates[1]}},{{element?.shop?.location?.coordinates[0]}}">
         <span class="float-icon" style="height: 39px; padding: 5px;">
             <img style="width: 23px; vertical-align: text-top;" src="assets/images/png/icon.png" alt="logo location" />
@@ -68,13 +68,13 @@
                             <td><span class="d-block" *ngFor="let time of day.time">{{ time.openingHour }} - {{ time.closeHour}}</span></td>
                         </tr>
                     </table>
-                    <div *ngIf="element?.openingInfoType == 'temporary_closed'">
+                    <div class="pl-3" *ngIf="element?.openingInfoType == 'temporary_closed'">
                         <span>Temporary Closed</span>
                     </div>
-                    <div *ngIf="element?.openingInfoType == 'always_open'">
+                    <div class="pl-3" *ngIf="element?.openingInfoType == 'always_open'">
                         <span>Always Open</span>
                     </div>
-                    <div *ngIf="element?.openingInfoType == 'no_hour_available'">
+                    <div class="pl-3" *ngIf="element?.openingInfoType == 'no_hour_available'">
                         <span>No Hour Available</span>
                     </div>
                 </div>
@@ -94,11 +94,11 @@
 </ws-modal>
 <ws-modal [id]="'qr-code'" *ngIf="isQRCodeModalOpened" [maxWidth]="310" [(isOpened)]="isQRCodeModalOpened" (isOpenedChange)="showQrcode()">
     <div modalBody class="row no-gutters">
-        <div class="qrcode__container mb-4 mt-3 col-auto center" [class.pl-3]="element?.media?.length">
+        <div class="qrcode__container mb-4 mt-3 col-auto center">
             <div class="qrcode border p-3"></div>
         </div>
-        <div class="social-media__container row no-gutters col-sm px-4 pt-3" *ngIf="element?.media?.length">
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.facebook?.length">
+        <div class="social-media__container row no-gutters col-sm px-4" *ngIf="element?.media?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.facebook?.length">
                 <span class="social-media__icon fab fa-facebook-f mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.facebook">
@@ -106,7 +106,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.instagram?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.instagram?.length">
                 <span class="social-media__icon fab fa-instagram mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.instagram">
@@ -114,7 +114,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.twitter?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.twitter?.length">
                 <span class="social-media__icon fab fa-twitter mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.twitter">
@@ -122,7 +122,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.whatsapp?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.whatsapp?.length">
                 <span class="social-media__icon fab fa-whatsapp mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.whatsapp">
@@ -130,7 +130,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.fbmessenger?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.fbmessenger?.length">
                 <span class="social-media__icon fab fa-facebook-messenger mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.fbmessenger">
@@ -138,7 +138,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.google?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.google?.length">
                 <span class="social-media__icon fab fa-google-plus-g mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.google">
@@ -146,7 +146,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.youtube?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.youtube?.length">
                 <span class="social-media__icon fab fa-youtube mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.youtube">
@@ -154,7 +154,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.snapchat?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.snapchat?.length">
                 <span class="social-media__icon fab fa-snapchat mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.snapchat">
@@ -162,7 +162,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.telegram?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.telegram?.length">
                 <span class="social-media__icon fab fa-telegram mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.telegram">
@@ -170,7 +170,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.weibo?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.weibo?.length">
                 <span class="social-media__icon fab fa-weibo mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.weibo">
@@ -178,7 +178,7 @@
                     </span>
                 </div>
             </div>
-            <div class="row no-gutters mb-2 col-sm-6" *ngIf="medias?.weixin?.length">
+            <div class="row no-gutters mb-2" *ngIf="medias?.weixin?.length">
                 <span class="social-media__icon fab fa-weixin mr-2"></span>
                 <div class="d-inline-block">
                     <span class="social-media__detail" *ngFor="let media of medias?.weixin">

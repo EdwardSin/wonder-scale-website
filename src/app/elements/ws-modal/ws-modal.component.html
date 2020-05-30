@@ -4,7 +4,7 @@
         <div class="modal-body">
             <div class="modal-body-content" [style.max-width.px]="maxWidth">
                 <div class="px-lg-5 px-3 pb-4 pt-3 modal-content">
-                    <span *ngIf="isCloseIconDisplayed" class="modal__close-icon fas fa-times" (click)="isOpened = false"></span>
+                    <span *ngIf="isCloseIconDisplayed" class="modal__close-icon fas fa-times" (click)="isOpened = false; closeCallback()"></span>
                     <ng-content select="[modalBody]"></ng-content>
                 </div>
             </div>

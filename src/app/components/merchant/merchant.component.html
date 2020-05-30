@@ -11,7 +11,7 @@
         <div class="col-lg-9 merchant-background position-relative">
             <img class="merchant-background__banner" *ngIf="shop?.bannerImage" [src]="environment.IMAGE_URL + shop?.bannerImage" alt="banner" />
             <ul class="merchant__nav nav position-absolute" style="bottom: 0; right: 0">
-                <li *ngIf="newItems.length" class="merchant__nav-item nav-item">
+                <li *ngIf="false && newItems.length" class="merchant__nav-item nav-item">
                     <a (click)="scrollTo('new-items')" class="merchant__nav-link nav-link">New</a>
                 </li>
                 <li *ngIf="shop?.informationImages.length" class="merchant__nav-item nav-item">
@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div *ngIf="newItems?.length" id="new-items" class="new-items-container mb-3">
+    <div *ngIf="false && newItems?.length" id="new-items" class="new-items-container mb-3">
         <swiper [config]="{breakpoints: {'425': {slidesPerView: 2, spaceBetween: 10, slidesPerGroup: 2}, '768': { slidesPerView: 3, spaceBetween: 10, slidesPerGroup: 3}, '992': {slidesPerView: 4, spaceBetween: 10, slidesPerGroup: 4}}, slidesPerView: 1}">
             <item [item]="item" [index]="i" *ngFor="let item of newItems; let i = index" class="mb-5 item__fit-screen"></item>
         </swiper>
@@ -38,7 +38,7 @@
         </swiper>
     </div>
 
-    <div id="discount-items" *ngIf="discountItems.length" class="discount-items-container mb-3">
+    <div id="discount-items" *ngIf="false && discountItems.length" class="discount-items-container mb-3">
         <swiper [config]="{breakpoints: {'992': {slidesPerView: 4, spaceBetween: 10}}, slidesPerView: 1}">
             <item [item]="item" [index]="i" *ngFor="let item of discountItems; let i = index" class="mb-5 item__fit-screen"></item>
         </swiper>
@@ -47,14 +47,19 @@
     <div id="items" class="category-container mb-3">
         <mat-select class="form-control category-container__dropdown" [(value)]="selectedCategory" (selectionChange)="getItemsByCategoryId(selectedCategory)">
             <mat-option [value]="'all'">All</mat-option>
+            <mat-option *ngIf="newItems.length" [value]="'new'">New</mat-option>
+            <mat-option *ngIf="discountItems.length" [value]="'Discount'">Discount</mat-option>
             <mat-option [value]="category?._id" *ngFor="let category of categories">{{ category?.name }}</mat-option>
         </mat-select>
     </div>
 
     <div class="items-container">
         <ng-container *ngIf="!itemLoading.isRunning() && items?.length; else itemLoadingTemplate">
-            <div class="row no-gutters mb-4">
-                <item [item]="item" *ngFor="let item of items" class="mb-5"></item>
+            <div *ngIf="false" class="row no-gutters mb-4">
+                <!-- <item [item]="item" *ngFor="let item of items" class="mb-5"></item> -->
+            </div>
+            <div *ngIf="items.length" class="w-100">
+                <list-item [item]="item" *ngFor="let item of items"></list-item>
             </div>
             <pagination class="pb-4" [total]="items.length"></pagination>
         </ng-container>
@@ -74,5 +79,5 @@
     <h6 class="text-center">Shop is not found.</h6>
 </ng-template>
 <ng-template #noItemTemplate>
-    <h6 class="text-center py-5">No item.</h6>
+    <h6 class="text-center" style="padding: 6rem 0;">No item</h6>
 </ng-template>

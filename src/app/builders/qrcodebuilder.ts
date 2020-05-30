@@ -1,8 +1,10 @@
+import { environment } from '@environments/environment';
+
 declare var jQuery: any;
 
 export class QRCodeBuilder{
 
-    static URL = "https://www.wonderscale.com/";
+    static URL = environment.URL;
     public static createQRcode(target, username, id, option = {}){
         let code = QRCodeBuilder.URL + username + '?id=' + id;
         (<any>jQuery(target)).qrcode({width: option['width'] || 196, height: option['height']|| 196, foreground:"#000", 

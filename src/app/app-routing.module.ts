@@ -16,6 +16,7 @@ import { ProfileSettingsComponent } from '@components/settings/profile-settings/
 import { GeneralSettingsComponent } from '@components/settings/general-settings/general-settings.component';
 import { SecuritySettingsComponent } from '@components/settings/security-settings/security-settings.component';
 import { SearchComponent } from '@components/search/search.component';
+import { ListItemInfoComponent } from '@components/list-item-info/list-item-info.component';
 
 
 const routes: Routes = [{
@@ -54,8 +55,12 @@ const routes: Routes = [{
   component: FavoriteComponent,
   canActivate: [AuthGuard]
 }, {
-  path: 'shops/:id',
+  path: 'shop',
   component: MerchantComponent
+}, {
+  path: 'item',
+  component: ListItemInfoComponent,
+  outlet: 'modal'
 }, {
   path: 'items/:id',
   component: ItemInfoComponent
@@ -72,7 +77,7 @@ const routes: Routes = [{
 }];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })],
+  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

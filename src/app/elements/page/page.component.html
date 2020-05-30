@@ -1,6 +1,6 @@
 <div class="page__image mb-1 p-1">
-    <img [routerLink]="['/shops', item._id]" class="w-100 h-100" style="object-fit: contain;" *ngIf="item?.profileImage" [src]="environment.IMAGE_URL + item.profileImage" alt="{{ 'item' + index }}" />
+    <img [routerLink]="['/shop']" [queryParams]="{id: item?._id}" class="w-100 h-100" style="object-fit: contain;" *ngIf="item?.profileImage" [src]="environment.IMAGE_URL + item.profileImage" alt="{{ 'item' + index }}" />
     <span *ngIf="removable" (click)="removeFollow()" class="page__remove-icon fas fa-times"></span>
     <span *ngIf="savable" [class.selected]="follow" class="page__favorite-icon fas fa-heart"></span>
 </div>
-<p [routerLink]="['/shops', item._id]" class="page__name mb-1 text-center">{{ item?.name }} </p>
+<p [routerLink]="['/shop']" [queryParams]="{id: item?._id}" class="page__name mb-1 text-center">{{ item?.name }} </p>

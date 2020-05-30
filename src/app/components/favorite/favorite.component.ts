@@ -52,6 +52,7 @@ export class FavoriteComponent implements OnInit {
     private gpsService: WsGpsService,
     private screenService: ScreenService,
     private authFollowService: AuthFollowService) { 
+      window.scrollTo(0, 0);
       this.mapController = new MapController(gpsService);
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(event => {

@@ -10,6 +10,7 @@ export class WsModalComponent implements OnInit {
   @Input() noHeader: boolean;
   @Input() isCloseIconDisplayed: boolean = true;
   @Input() maxWidth: number = 800;
+  @Input() closeCallback: Function = () => {};
   _isOpened: boolean;
   @Input() get isOpened() { return this._isOpened; }
   @Output() isOpenedChange: EventEmitter<boolean> = new EventEmitter;

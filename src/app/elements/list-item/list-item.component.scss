@@ -1,0 +1,82 @@
+:host {
+    padding: 1rem 1rem .5rem 1rem;
+    display: block;
+
+    .list-item__container {
+        box-shadow: 0 0 3px #ccc;
+        width: 100%;
+        border-radius: 2px;
+        transition: box-shadow ease .2s;
+        cursor: pointer;
+
+        .list-item__image-container {
+            text-align: center;
+            width: 72px;
+            height: 72px;
+            background-color: #f7f7f7;
+            overflow: hidden;
+            color: #ccc;
+            transition: all ease .1s;
+            cursor: pointer;
+
+            &:hover {
+                color: rgba(0, 0, 0, .8);
+            }
+        }
+
+        .list-item__image {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+        }
+
+        .list-item-icon-right {
+            font-size: 1.7rem;
+            text-align: center;
+            padding: 22px;
+            transition: all ease .1s;
+            color: #ccc;
+            cursor: pointer;
+
+            &.selected {
+                color: rgba(255, 0, 0, .5);
+                background-color: #ddd;
+            }
+
+            &:hover {
+                color: rgba(255, 0, 0, .3);
+            }
+        }
+
+        .list-item__middle {
+            padding: .5rem 1rem;
+            height: 72px;
+
+            .list-item__text {
+                font-weight: bold;
+                height: 23px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .list-item__price {
+                display: inline-block;
+                border-radius: 1.5rem;
+                color: #fff;
+                padding: .05rem .5rem;
+                font-size: .8rem;
+                background-color: #282C35;
+            }
+
+            .list-item__discount-price {
+                font-size: .8rem;
+                display: inline-block;
+                margin-right: 1rem;
+            }
+        }
+
+        &:hover {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+        }
+    }
+}

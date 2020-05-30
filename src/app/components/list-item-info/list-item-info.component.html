@@ -1,0 +1,89 @@
+<ws-modal [closeCallback]="closeModal.bind(this)" [maxWidth]="520">
+    <div class="py-3" modalBody>
+        <div *ngIf="item && !loading.isRunning(); else loadingTemplate">
+            <div class="list-item-info">
+                <h1 class="list-item-info__title h5 mb-3">{{ item?.name }} 
+                    <span *ngIf="item?.isEntityNew" class="list-item-info__details__new-banner badge badge-danger ml-2">New</span>
+                </h1>
+                <div class="list-item-info__details">
+                    <div class="list-item-info__icons">
+                        <span class="list-item-info__icon fas fa-heart" [ngClass]="saved? 'fas selected': ''" (click)="saved? unsaveItem(): saveItem()"></span>
+                        <span class="list-item-info__icon fas fa-share-alt" (click)="isShareModalOpened = true"></span>
+                        <span class="list-item-info__icon fas fa-store" [routerLink]="['/shop']" [queryParams]="{id: item?.shop?._id}"></span>
+                    </div>
+                    <div class="list-item-info__price-container">
+                        <p class="d-inline-block mr-2" *ngIf="item?.currency && item?.isOffer">
+                            <!-- <span class="badge badge-warning mr-2" style="font-size: .8rem; vertical-align: text-top;">{{ discount }}%</span> -->
+                            <span class="list-item-info__details__original-price d-inline-block">
+                                <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                        </p>
+                        <p class="list-item-info__details__price mb-1" *ngIf="item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                        <p class="list-item-info__details__price mb-1" *ngIf="item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</p>
+                        <p *ngIf="item?.quantity" class="list-item-info__details__quantity">Quantity: {{ quantity }}</p>
+                        <!-- <div class="row no-gutters">
+                            <div class="list-item-info__item-type mr-3" *ngFor="let itemType of item?.types" (click)="selectItemType(itemType)">
+                                <img class="w-100 h-100" [src]="environment.IMAGE_URL + itemType.images[0]" alt="item index"/>
+                                <span *ngIf="itemType == selectedType" class="list-item-info__item-type__overlay"></span>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <p *ngIf="item?.description" class="list-item-info__description">{{ item?.description }}</p>
+                <div class="list-item-info__profile-container row no-gutters">
+                    <div class="list-item-info__profile mb-2">
+                        <swiper *ngIf="profileImages.length" #galleryThumbs [(index)]="selectedProfileIndex" [config]="{
+                            pagination: false,
+                            navigation: false}">
+                            <img style="width: 100%; object-fit: contain;" *ngFor="let image of profileImages" [src]="environment.IMAGE_URL + image" alt="image"/>
+                        </swiper>
+                        <div class="w-100 py-3" style="position: relative; z-index: 1">
+                            <span *ngFor="let image of profileImages; let i = index" class="list-item-info__profile-image-container mr-1 mb-1 clickable">
+                                <img class="list-item-info__profile-image" (click)="selectProfileImage(image)" [src]="environment.IMAGE_URL + image" alt="image"/>
+                                <span *ngIf="i == selectedProfileIndex" class="list-item-info__profile-image__overlay"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div *ngIf="false && item?.description" class="list-item-info__container">
+                    <div class="list-item-info__description-image mb-4" *ngFor="let descriptionImage of item?.descriptionImages">
+                        <img [src]="environment.IMAGE_URL + descriptionImage" alt="description image" />
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</ws-modal>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 15vh; padding-bottom:15vh"></ws-spinner>
+</ng-template>
+
+<ng-template #noItemTemplate>
+    <h6 class="text-center mb-0" style="padding-top:28.588vh; padding-bottom:28.588vh">Item not found.</h6>
+</ng-template>
+
+<ws-modal *ngIf="isShareModalOpened" [maxWidth]="500" [(isOpened)]="isShareModalOpened">
+    <div modalBody class="share-media__container">
+        <h4>Share:</h4>
+        <!-- <swiper class="py-4 d-block" [config]="{slidesPerView: 7, spaceBetween: 10, slidesPerGroup: 7, navigation: false, pagination: false}"> -->
+            <a class="share-media__icon fb" href="javascript:void(0)" (click)="shareThroughFB()">
+                <span class="fab fa-facebook-f"></span>
+            </a>
+            <a class="share-media__icon twitter" target="_blank" href="{{ shareLinkThroughTwitter }}">
+                <span class="fab fa-twitter"></span>
+            </a>
+            <a class="share-media__icon email" href="{{ shareLinkThroughEmail }}">
+                <span class="fas fa-envelope"></span>
+            </a>
+        <!-- </swiper> -->
+        <div class="input-group">
+            <input class="form-control" style='background-color: #fff' readonly [value]="link" />
+            <div class="input-group-append">
+                <button class="input-group-text" [cdkCopyToClipboard]="link">
+                    <span class="fas fa-copy"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</ws-modal>
