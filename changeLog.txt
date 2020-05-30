@@ -1,0 +1,47 @@
+---------------------------------------------
+- Wonder Scale Website                      -
+---------------------------------------------
+
+- v1.0.1000                                 -
+---------------------------------------------
+- 2020-05-30                                -
+---------------------------------------------
+.: WSW: Task: Update shop page layout (WSW-2)
+.: WSW: Task: Update favorite page (WSW-7)
+.: WSW: Task: Change favicon (WSW-22)
+.: WSW: Task: Update shop mobile page layout (WSW-2)
+.: WSW: Task: Update list item info (WSW-2)
+.: WSW: Task: Save shop in searching page (WSW-7)
+
+---------------------------------------------
+- 2020-05-29                                -
+---------------------------------------------
+.: WSW: Task: Update profile settings (WSW-1)
+.: WSW: Task: Disabled email changing (WSW-1)
+
+---------------------------------------------
+- 2020-05-18                                -
+---------------------------------------------
+.: WSW: Story: Searching Page Module (WSW-12)
+
+---------------------------------------------
+- 2020-05-17                                -
+---------------------------------------------
+.: WSW: Task: Profile Image Upload (WSW-4)
+
+---------------------------------------------
+- 2020-05-16                                -
+---------------------------------------------
+.: WSW: Story: Favorite Module (WSW-7)
+.: WSW: Story: User Settings Module (WSW-1)
+
+---------------------------------------------
+- 2020-05-10                                -
+---------------------------------------------
+.: WSW: Story: Authentication Module (WSW-8)
+
+---------------------------------------------
+- 2020-05-09                                -
+---------------------------------------------
+.: WSW: Task: User allows to view shop online (WSW-2)
+.: WSW: Story: Item Module (WSW-6)

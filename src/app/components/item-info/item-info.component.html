@@ -1,0 +1,57 @@
+
+<div *ngIf="!loading.isRunning() && item; else loadingTemplate" class="item-info__profile-container row no-gutters mb-2">
+    <div class="item-info__profile mb-2">
+        <swiper *ngIf="profileImages.length" #galleryThumbs [(index)]="selectedProfileIndex" [config]="{
+            pagination: false,
+            navigation: false}">
+            <img style="width: 100%; object-fit: contain;" *ngFor="let image of profileImages" [src]="environment.IMAGE_URL + image" alt="image"/>
+        </swiper>
+        <div class="w-100 px-4 d-none d-sm-block" style="margin-top: -110px; position: relative; z-index: 9999">
+            <span *ngFor="let image of profileImages; let i = index" class="item-info__profile-image-container mr-1 mb-1 clickable">
+                <img class="item-info__profile-image" (click)="selectProfileImage(image)" [src]="environment.IMAGE_URL + image" alt="image"/>
+                <span *ngIf="i == selectedProfileIndex" class="item-info__profile-image__overlay"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-md px-md-4 mb-2 px-3">
+        <div class="item-info__details">
+            <div class="row no-gutters">
+                <p class="item-info__details__name d-inline-block text-break">{{ item?.name }}
+                    <span *ngIf="item?.isEntityNew" class="item-info__details__new-banner badge badge-danger ml-2">New</span>
+                </p>
+            </div>
+            <p class="item-info__details__price mb-1" *ngIf="item?.currency && item?.isOffer"><span>{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</p>
+            <p class="item-info__details__price mb-1" *ngIf="item?.currency && !item?.isOffer"><span>{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+            <p class="mb-3" *ngIf="item?.currency && item?.isOffer">
+                <span class="item-info__details__original-price d-inline-block">
+                    <span>{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                <span class="badge badge-warning ml-2" style="font-size: .8rem; vertical-align: text-top;">{{ discount }}%</span>
+            </p>
+            
+            <p class="item-info__details__quantity">Quantity: {{ quantity }}</p>
+            <div class="row no-gutters">
+                <div class="item-info__item-type mr-3" *ngFor="let itemType of item?.types" (click)="selectItemType(itemType)">
+                    <img class="w-100 h-100" [src]="environment.IMAGE_URL + itemType.images[0]" alt="item index"/>
+                    <span *ngIf="itemType == selectedType" class="item-info__item-type__overlay"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<float-banner [element]="item" [type]="'item'"></float-banner>
+<div *ngIf="!loading.isRunning()" class="item-info__container">
+    <div class="item-info__description">
+        <h5 class="mb-3">Description:</h5>
+    </div>
+    <div class="item-info__description-image mb-4" *ngFor="let descriptionImage of item?.descriptionImages">
+        <img [src]="environment.IMAGE_URL + descriptionImage" alt="description image" />
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
+</ng-template>
+
+<ng-template #noItemTemplate>
+    <h6 class="text-center">Item is not found!</h6>
+</ng-template>

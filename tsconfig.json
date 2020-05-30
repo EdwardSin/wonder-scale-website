@@ -11,6 +11,41 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
+    "paths": {
+      "@services/*": [
+        "src/app/services/*"
+      ],
+      "@constants/*": [
+        "src/app/constants/*"
+      ],
+      "@objects/*": [
+        "src/app/objects/*"
+      ],
+      "@wstypes/*": [
+        "src/app/types/*"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ],
+      "@elements/*": [
+        "src/app/elements/*"
+      ],
+      "@environments/*": [
+        "src/environments/*"
+      ],
+      "@enum/*": [
+        "src/app/enum/*"
+      ],
+      "@builders/*": [
+        "src/app/builders/*"
+      ],
+      "@helpers/*": [
+        "src/app/helpers/*"
+      ],
+      "@validations/*": [
+        "src/app/validations/*"
+      ]
+    },
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -21,6 +56,7 @@
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
+    "strictInjectionParameters": true,
+    "enableIvy": false
   }
 }

@@ -1,0 +1,9 @@
+@import '~@angular/material/theming';
+@import url( 'https://fonts.googleapis.com/css?family=Roboto:400,700|Material+Icons');
+
+@include mat-core();
+
+$app-primary: mat-palette($mat-grey, 900);
+$app-accent: mat-palette($mat-pink);
+$app-theme: mat-light-theme($app-primary, $app-accent);
+@include angular-material-theme($app-theme);

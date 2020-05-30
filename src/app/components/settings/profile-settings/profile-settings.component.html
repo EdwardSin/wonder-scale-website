@@ -1,0 +1,93 @@
+<h1 class="h5 ">Profile</h1>
+<div class="row no-gutters" *ngIf="!loading.isRunning() && user; else loadingTemplate">
+    <div class="profile-settings py-4 col-lg-3">
+        <div class="profile-settings__profile-image-container">
+            <img class="profile-settings__profile-image" [src]="user.profileImage" alt="profile image" />
+            <div class="profile-settings__profile-image-upload" mdbDropdown>
+                <button class="profile-settings__profile-image-upload-button nooutline" mdbDropdownToggle>
+                    <span class="fas fa-camera"></span>
+                </button>
+                <div class="dropdown-menu dropdown-primary" style="top: 15px; left: 15px">
+                    <a href="javascript:void(0)" class="dropdown-item" (click)="isProfileUploaderOpened = true">Upload</a>
+                    <a href="javascript:void(0)" (click)="removeProfileImage()" class="dropdown-item">Remove</a>
+                </div>
+            </div>    
+        </div>
+    </div>
+    <div [formGroup]="form" class="general-settings col-lg-9" style="padding-bottom: 5rem">
+        <div class="general-settings__form-group mb-3 row no-gutters">
+            <label class="col-lg-3 general-settings__label">First Name:</label>
+            <input name="firstName" class="general-settings__input form-control form-control-sm" formControlName="firstName" />
+        </div>
+        <div class="general-settings__form-group mb-3 row no-gutters">
+            <label class="col-lg-3 general-settings__label">Last Name:</label>
+            <input name="lastName" class="general-settings__input form-control form-control-sm" formControlName="lastName" />
+        </div>
+        <div class="general-settings__form-group mb-3 row no-gutters">
+            <label class="col-lg-3 general-settings__label">Email:</label>
+            <input disabled name="email" class="general-settings__input form-control form-control-sm" formControlName="email" />
+        </div>
+        <!-- <div class="general-settings__form-group mb-3 row no-gutters">
+            <label class="col-lg-3 general-settings__label">Tel:</label>
+            <input name="tel" class="general-settings__input form-control form-control-sm" formControlName="tel" />
+        </div> -->
+        <div class="general-settings__form-group mb-3 row no-gutters">
+            <label class="col-lg-3 general-settings__label">Gender:</label>
+            <mat-select name="gender" class="general-settings__input form-control form-control-sm" formControlName="gender">
+                <mat-option [value]="''">Select gender</mat-option>
+                <mat-option [value]="'male'">male</mat-option>
+                <mat-option [value]="'female'">female</mat-option>
+            </mat-select>
+        </div>
+        <div class="general-settings__form-group mb-3 row no-gutters">
+            <label class="col-lg-3 general-settings__label">Date of Birth:</label>
+            <div class='input-group col d-inline-block'>
+                <!-- <div class="ws-input mt-0 mr-1"> -->
+                  <mat-select class="general-settings__select form-control form-control-sm" placeholder="Date" formControlName="date">
+                    <mat-option [value]="n" *ngFor="let n of dateSelector.dates">{{n}}
+                    </mat-option>
+                  </mat-select>
+                <!-- </div>
+                <div class="ws-input mt-0 mr-1"> -->
+                  <mat-select class="general-settings__select form-control form-control-sm" placeholder="Month" formControlName="month">
+                    <mat-option [value]="n" *ngFor="let n of dateSelector.months">{{n}}
+                    </mat-option>
+                  </mat-select>
+                <!-- </div>
+                <div class="ws-input mt-0"> -->
+                  <mat-select class="general-settings__select form-control form-control-sm" placeholder="Year" formControlName="year">
+                    <mat-option [value]="n" *ngFor="let n of dateSelector.years">{{n}}
+                    </mat-option>
+                  </mat-select>
+                <!-- </div> -->
+              </div>
+        </div>
+        <div class="offset-lg-3" style="width: 312px">
+            <ws-loading-button [loading]="updateLoading.isRunning()" [class]="'btn btn-sm btn-controller float-right'" (click)="editGeneralInfo()">
+                Save</ws-loading-button>
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning();" class="text-center d-block w-100" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
+</ng-template>
+
+<ws-modal *ngIf="isProfileUploaderOpened" [isCloseIconDisplayed]="false" [(isOpened)]="isProfileUploaderOpened" [maxWidth]="400">
+    <div class="pt-3" modalBody>
+        <div class='preview-image__container center'>
+            <span class="preview-image__remove-icon fas fa-times" (click)="removePreviewImage()"></span>
+            <div *ngIf="!previewImage" onclick="document.getElementById('id-profile-image-upload').click()" class="preview-image__text-container">
+                <span class="preview-image__text-icon fas fa-image"></span>
+                <span class="preview-image__text">Upload Image</span>
+            </div>
+            <img *ngIf="previewImage" id="id-preview-image" class="preview-image" [src]="previewImage" alt="preview profile image" />
+        </div>
+        <div class="float-right mt-5">
+            <button class="btn btn-controller mr-1" (click)="uploadImage()" [disabled]="!previewImage">
+                <ws-spinner *ngIf="uploadLoading?.isRunning()" [width]="15" [height]="15" [borderWidth]="3"  class="mr-2"></ws-spinner>Upload</button>
+            <button class="btn btn-controller" (click)="isProfileUploaderOpened = false">Cancel</button>
+        </div>
+        <input hidden id="id-profile-image-upload" type="file" name="profile-image" (change)="fileChangeEvent($event)"/>
+    </div>
+</ws-modal>

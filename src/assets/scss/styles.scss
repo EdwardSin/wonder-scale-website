@@ -1,0 +1,329 @@
+@import './variables.scss';
+
+.ws-bg-secondary{
+    background-color: map-get($ws-color, secondary);
+}
+.ws-bg-primary{
+    background-color: map-get($ws-color, primary);
+}
+.ws-bg-light-grey-1{
+    background-color: map-get($ws-color, light-grey-1);
+}
+.ws-bg-light-grey-4{
+    background-color: map-get($ws-color, light-grey-4);
+}
+.ws-bg-dark-grey {
+    background-color: map-get($ws-color, dark-grey);
+}
+.ws-bg-offer{
+    background-color: map-get($ws-color, offer);
+}
+.ws-bg-grey{
+    background-color: grey;
+}
+.ws-bg-clear{
+    background-color: map-get($ws-color, clear);
+}
+.ws-primary{
+    color: map-get($ws-color, primary);
+}
+.ws-secondary{
+    color: map-get($ws-color, secondary);
+}
+.ws-dark-color{
+    color: map-get($ws-color, dark);
+}
+.ws-clear-color{
+    color: map-get($ws-color, clear);
+}
+.ws-grey{
+    color: map-get($ws-color, grey);
+}
+.ws-light-grey-1{
+    color: map-get($ws-color, light-grey-1);
+}
+.ws-link {
+    cursor: pointer;
+    color: map-get($ws-color, primary);
+    font-weight:normal;
+    user-select: none;
+    &:hover {
+        color: map-get($ws-color, primary-hover);
+        text-decoration: underline;
+    }
+}
+div.nooutline:focus,
+button.nooutline:focus,
+li.nooutline:focus,
+input.nooutline:focus,
+span.nooutline:focus,
+textarea.nooutline:focus,
+select.nooutline:focus,
+.nooutline:focus {
+    outline: none;
+    outline: 0;
+    box-shadow: none;
+}
+.font-7{
+    font-size: .7rem;
+}
+.font-8{
+    font-size: .8rem;
+}
+.font-9{
+    font-size: .9rem;
+}
+.font-12 {
+    font-size: 1.2rem;
+}
+.ws-white{
+    color: white;
+}
+.settings-header{
+    padding: 20px 0px 10px 0;
+    position: relative;
+    border-bottom: 1px solid #e5e5e5;
+    button.btn-expand{
+        margin: 0;
+        position:absolute;top: 20px;
+        right: 6px;
+        min-width: 80px;
+        font-size: 14px;
+        color: #000;
+        background-color: #fff;
+        text-transform: unset;
+        border: 1px solid #e5e5e5;
+        border-radius: 3px;
+        box-shadow: none;
+        transition: background-color ease .1s;
+        padding: 6px 10px;
+        &:hover{
+            background-color: #f0f0f0;
+            border-color: #e3e3e3;
+            color: #2e2e2e;
+        }
+        &:active{
+            box-shadow: none !important;
+            background-color: #eaeaea;
+        }
+    }
+}
+.ws-input{
+    background-color: #f5f5f5; 
+    border-radius: 5px;
+    display: block;
+    padding: 0;
+    margin-top: .75rem;
+    border: 1px solid #ddd;
+    .input-group-prepend {
+        color: #6c757d;
+        padding: .3rem .5rem .3rem .35rem; 
+        border-right: 2px solid #ddd;
+        font-size: .9rem;
+    }
+    input, textarea, select, mat-select{
+        outline: none;
+        width: 100%;
+        border: 0;
+    }
+}
+
+.ws-circle-button {
+    padding: .25rem;
+    position: relative;
+    display: inline-block;
+    &:first-child{
+        padding-left: 0;
+    }
+    .dropdown-menu{
+        position: absolute;
+        // top: -10px;
+        left: inherit;
+        .dropdown-item {
+            font-size: .8rem;
+            &:hover{
+                color: #000;
+                background-color: #ebecf0;
+            }
+        }
+    }
+    .btn.btn-controller {
+        border-radius: 5px;
+        width: 38px;
+        height: 30px;
+        padding: 0;
+        margin: 0;
+        background-color: map-get($ws-color, light-grey-4);
+        color: #505f79;
+        transition: background-color .2s ease-out, color .2s ease-out;
+        &:hover {
+            background-color: #ebecf0;
+        }
+        span {
+            display: block;
+            justify-content: center;
+        }
+        &.btn-selected-item {
+            color: map-get($ws-color, clear);
+            background-color: map-get($ws-color, primary);
+        }
+    }
+    
+}
+
+ws-loading{
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    display: block;
+    text-align: center;
+}
+.fa-sync-alt{
+    &.loading{
+        animation: rotate 8s infinite;
+    }
+}
+.settings-label{
+    margin-bottom: .25rem;
+    font-weight: bold;
+    font-size: .9rem;
+}
+.settings-input{
+    margin-bottom: .5rem;
+}
+.btn-second{
+    border-radius: 4px;
+    font-size: .9rem;
+    transition: background-color .2s ease-out, color .2s ease-out;
+    background-color: map-get($ws-color, secondary);
+    color: map-get($ws-color, white);
+    &:hover{
+        background-color: map-get($ws-color, secondary-hover);
+        color: map-get($ws-color, white);
+    }
+    &:active{
+        background-color: map-get($ws-color, secondary);
+    }
+}
+.btn-main{
+    background-color: map-get($ws-color, primary);
+    color: map-get($ws-color, white);
+    &:hover{
+        background-color: map-get($ws-color, primary-hover);
+        color: map-get($ws-color, white);
+    }
+    &:active{
+        background-color: map-get($ws-color, primary);
+    }
+}
+.ws-title{
+    font-size: 1.3rem;
+    font-weight: normal;
+}
+.ws-subtitle{
+    font-size: 1.2rem;
+    font-weight: normal;
+}
+.ws-drag-list {
+    // width: 1000px;
+    max-width: 100%;
+    min-height: 60px;
+    display: flex;
+    flex-direction: row;
+    background: white;
+    overflow: hidden;
+}
+
+.ws-drag-box {
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    cursor: move;
+    //background: white;
+    font-size: 14px;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    //box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    z-index: 1001 !important;
+    list-style: none;
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.ws-drag-box:last-child {
+    border: none;
+}
+
+.ws-drag-h-list.cdk-drop-list-dragging .ws-drag-h-box:not(.cdk-drag-placeholder) .ws-drag-list.cdk-drop-list-dragging .ws-drag-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.clickable{
+    cursor: pointer;
+}
+// body{
+//     overflow: hidden;
+// }
+button{
+    cursor: pointer;
+}
+a.default{
+    color: #000;
+    font-weight:normal;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+a.primary{
+    color: map-get($ws-color, primary) !important;
+    &:hover{
+        color: map-get($ws-color, primary-hover);
+        text-decoration: underline;
+    }
+}
+.center{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tippy-backdrop{
+    background-color: lightsteelblue;
+}
+.btn-feature{
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    padding: 3rem 1rem;
+    background-color: #f5f5f5;
+    user-select: none;
+    &:hover{
+        background-color: #ddd
+    }   
+    &.selected{
+        background-color: #ddd
+    }
+}
+.badge.ws-bg-secondary{
+    color: white;
+}
+
+
+@media(max-width: 992px){
+    body{
+        overflow: auto;
+    }
+}
