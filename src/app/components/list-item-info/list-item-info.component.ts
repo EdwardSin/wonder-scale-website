@@ -147,6 +147,11 @@ export class ListItemInfoComponent implements OnInit {
   closeModal() {
     this.router.navigate(['', {outlets: {modal: null}}], {queryParams: {item_id: null}, queryParamsHandling: 'merge'});
   }
+  navigateToShop() {
+    this.router.navigate(['', {outlets: {modal: null}}]).then(() => {
+      this.router.navigate(['/shop'], { queryParams: {id: this.item.shop._id}});
+    })
+  }
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

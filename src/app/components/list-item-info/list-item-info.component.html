@@ -9,7 +9,7 @@
                     <div class="list-item-info__icons">
                         <span class="list-item-info__icon fas fa-heart" [ngClass]="saved? 'fas selected': ''" (click)="saved? unsaveItem(): saveItem()"></span>
                         <span class="list-item-info__icon fas fa-share-alt" (click)="isShareModalOpened = true"></span>
-                        <span class="list-item-info__icon fas fa-store" [routerLink]="['/shop']" [queryParams]="{id: item?.shop?._id}"></span>
+                        <span class="list-item-info__icon fas fa-store" (click)="navigateToShop()"></span>
                     </div>
                     <div class="list-item-info__price-container">
                         <p class="d-inline-block mr-2" *ngIf="item?.currency && item?.isOffer">

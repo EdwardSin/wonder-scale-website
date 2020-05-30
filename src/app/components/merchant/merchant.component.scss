@@ -40,14 +40,22 @@
         }
     }
 
-    .merchant__nav-item {
-        background-color: rgba(255, 255, 255, .6);
-        transition: background-color ease .2s;
-        .merchant__nav-link {
-            color: #000;
-        }
-        &:hover{
-            background-color: rgba(255, 255, 255, .8);
+    .merchant__nav {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        .merchant__nav-item {
+            background-color: rgba(255, 255, 255, .6);
+            transition: background-color ease .2s;
+
+            .merchant__nav-link {
+                color: #000;
+            }
+
+            &:hover {
+                background-color: rgba(255, 255, 255, .8);
+            }
         }
     }
 }
@@ -100,10 +108,11 @@
     min-height: 30vh;
     background: #fff;
 }
+
 @media(max-width: 1200px) {
     .merchant {
         .merchant__profile-container {
-            .merchant__profile{ 
+            .merchant__profile {
                 left: 50px;
             }
         }
@@ -113,16 +122,39 @@
 @media(max-width: 992px) {
     .merchant {
         .merchant__profile-container {
-            .merchant__profile{ 
-                left: 25px;
+            padding: 1rem 2rem;
+            background-color: #fff;
+
+            .merchant__profile {
+                width: 60px;
+                height: 60px;
+                position: static;
                 border-radius: 50%;
-                padding: .5rem;
                 box-shadow: 0 0 3px #ccc;
             }
-            .merchant__profile-background,
-            .merchant__name,
-            .merchant__username {
-                display: none;
+
+            .merchant__name-container {
+                display: inline-block;
+                vertical-align: middle;
+                padding: 0 1rem;
+            }
+        }
+
+        .merchant-background {
+            height: 100%;
+
+            .merchant-background__banner {
+                width: 100vw;
+                height: calc(100vw * 0.361);
+            }
+
+            .merchant__nav {
+                position: relative;
+                background-color: #fff;
+                .merchant__nav-item{
+                    background-color: rgba(0, 0, 0, .05);
+                    border-right: 1px solid #fff;
+                }
             }
         }
     }
