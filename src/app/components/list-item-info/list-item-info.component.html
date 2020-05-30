@@ -28,14 +28,15 @@
                         </div> -->
                     </div>
                 </div>
-                <div class="clearfix"></div>
+                <div class="clearfix mb-3"></div>
                 <p *ngIf="item?.description" class="list-item-info__description">{{ item?.description }}</p>
-                <div class="list-item-info__profile-container row no-gutters">
+                <div *ngIf="profileImages.length" class="list-item-info__profile-container row no-gutters">
                     <div class="list-item-info__profile mb-2">
-                        <swiper *ngIf="profileImages.length" #galleryThumbs [(index)]="selectedProfileIndex" [config]="{
+                        <swiper #galleryThumbs [(index)]="selectedProfileIndex" [config]="{
+                            centeredSlides: true,
                             pagination: false,
                             navigation: false}">
-                            <img style="width: 100%; object-fit: contain;" *ngFor="let image of profileImages" [src]="environment.IMAGE_URL + image" alt="image"/>
+                            <img style="width: 100%; object-fit: contain; height: initial" *ngFor="let image of profileImages" [src]="environment.IMAGE_URL + image" alt="image"/>
                         </swiper>
                         <div class="w-100 py-3" style="position: relative; z-index: 1">
                             <span *ngFor="let image of profileImages; let i = index" class="list-item-info__profile-image-container mr-1 mb-1 clickable">
