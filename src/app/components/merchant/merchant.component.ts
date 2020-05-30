@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Shop } from 'src/app/objects/shop';
 import { takeUntil, finalize, map } from 'rxjs/operators';
 import { Subject, combineLatest, timer } from 'rxjs';
@@ -13,6 +13,7 @@ import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import * as _ from 'lodash';
+import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
 @Component({
   selector: 'merchant',
@@ -31,7 +32,8 @@ export class MerchantComponent implements OnInit {
   itemLoading: WsLoading = new WsLoading;
   shop: Shop;
   private ngUnsubscribe: Subject<any> = new Subject;
-  constructor(private route: ActivatedRoute, private shopService: ShopService,
+  constructor(private router: Router, 
+    private route: ActivatedRoute, private shopService: ShopService,
     private authFollowService: AuthFollowService,
     private sharedUserService: SharedUserService,
     private categoryService: CategoryService,
@@ -45,11 +47,19 @@ export class MerchantComponent implements OnInit {
     this.getNewItemsById(shopId);
     this.getDiscountItemsById(shopId);
     this.getCategoriesById(shopId);
+
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
+      }
+    });
   }
   getShopById(id) {
     this.loading.start();
     this.shopService.getShopById(id).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       this.shop = result.result;
+      DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
     });
   }
   getAllItemsById(id) {
@@ -114,5 +124,9 @@ export class MerchantComponent implements OnInit {
     else {
       window.scrollTo(0, 0);
     }
+  }
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

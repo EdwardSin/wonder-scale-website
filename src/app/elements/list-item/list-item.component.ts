@@ -70,4 +70,8 @@ export class ListItemComponent implements OnInit {
     event.stopPropagation();
     this.router.navigate(['', {outlets: {modal: 'item'}}], {queryParams: {item_id: this.item._id}, queryParamsHandling: 'merge'});
   }
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

@@ -19,6 +19,7 @@ import * as moment from 'moment';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 declare var jQuery: any;
 import * as $ from 'jquery';
+import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
 @Component({
   selector: 'profile-settings',
@@ -46,7 +47,7 @@ export class ProfileSettingsComponent implements OnInit {
   constructor(private authUserService: AuthUserService,
     private sharedUserService: SharedUserService,
     private sanitization: DomSanitizer) { 
-      
+      DocumentHelper.setWindowTitleWithWonderScale('Profile');
     this.form = WSFormBuilder.createInfoForm();
     this.getProfile();
   }

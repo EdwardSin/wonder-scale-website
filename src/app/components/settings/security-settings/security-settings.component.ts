@@ -8,6 +8,7 @@ import { PasswordValidator } from '@validations/user-validation/password.validat
 import { FormGroup } from '@angular/forms';
 import { WsToastService } from '@elements/ws-toast/ws-toast.service';
 import { WSFormBuilder } from '@builders/wsformbuilder';
+import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
 @Component({
   selector: 'security-settings',
@@ -22,6 +23,7 @@ export class SecuritySettingsComponent implements OnInit {
   passwordValidator = new PasswordValidator;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private authUserService: AuthUserService) { 
+    DocumentHelper.setWindowTitleWithWonderScale('Security');
     this.form = WSFormBuilder.createPasswordForm();
     this.getProfile();
   }
@@ -72,6 +74,10 @@ export class SecuritySettingsComponent implements OnInit {
       return;
     }
     return true;
+  }
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
   get password() { return this.form.get("password"); }
 }

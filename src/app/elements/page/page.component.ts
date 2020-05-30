@@ -32,4 +32,8 @@ export class PageComponent implements OnInit {
       this.followChanged.emit(true);
     });
   }
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

@@ -163,4 +163,8 @@ export class FloatBannerComponent implements OnInit {
       context.restore();
     }
   }
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }
