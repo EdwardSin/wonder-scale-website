@@ -2,8 +2,8 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Shop } from '@objects/shop';
 import { environment} from '@environments/environment';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
+import { Subject, timer, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'page',
@@ -23,13 +23,32 @@ export class PageComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  followClicked(follow) {
-    this.followChanged.emit(follow);
+  followClicked(event) {
+    event.stopPropagation();
+    if(this.follow) {
+      this.unsaveShop();
+    } else {
+      this.saveShop();
+    }
   }
   removeFollow() {
     this.authFollowService.unfollowShop(this.item._id).pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(result => {
       this.followChanged.emit(true);
+    });
+  }
+  saveShop() {
+    combineLatest(timer(500),
+    this.authFollowService.followShop(this.item._id))
+    .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.follow = result['result'];
+    });
+  }
+  unsaveShop() {
+    combineLatest(timer(500),
+    this.authFollowService.unfollowShop(this.item._id))
+    .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.follow = result['result'];
     });
   }
   ngOnDestroy(){
