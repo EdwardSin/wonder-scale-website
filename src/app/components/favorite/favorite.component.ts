@@ -10,6 +10,7 @@ import { environment } from '@environments/environment';
 import { MapController, MapCircle } from '@objects/map.controller';
 import { WsGpsService } from '@services/general/ws-gps.service';
 import { ScreenService } from '@services/general/screen.service';
+import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
 @Component({
   selector: 'favorite',
@@ -72,6 +73,7 @@ export class FavoriteComponent implements OnInit {
               } else if (this.selected == 'item') {
                 this.getFollowItems(this.queryParams);
               }
+              DocumentHelper.setWindowTitleWithWonderScale('Favorite ' + this.selected);
             }
             this.isFavoriteModalOpened = this.route.snapshot.queryParams['modal'] == 'true';
             if (typeof(sessionStorage) !== undefined) {
@@ -254,7 +256,7 @@ export class FavoriteComponent implements OnInit {
       this.mapController.mapPoint.longitude = this.temp.longitude;
     });
   }
-  ngOnDestory() {
+  ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

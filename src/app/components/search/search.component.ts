@@ -7,6 +7,7 @@ import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { ShopService } from '@services/http/public/shop.service';
 import * as _ from 'lodash';
 import { Shop } from '@objects/shop';
+import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
 @Component({
   selector: 'search',
@@ -40,6 +41,11 @@ export class SearchComponent implements OnInit {
             order: queryParams['order'],
             orderBy: queryParams['orderBy']
           }
+          if (this.queryParams.keyword) {
+            DocumentHelper.setWindowTitleWithWonderScale(this.queryParams.keyword);
+          } else {
+            DocumentHelper.setWindowTitleWithWonderScale('Search');
+          }
           this.getShopsByKeyword(this.queryParams);
         }
       });
@@ -67,5 +73,9 @@ export class SearchComponent implements OnInit {
   navigateTo(obj) {
     obj = { ...this.queryParams, ...obj }
     this.router.navigate([], { queryParams: obj, queryParamsHandling: 'merge' });
+  }
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

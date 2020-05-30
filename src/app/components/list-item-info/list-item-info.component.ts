@@ -11,6 +11,7 @@ import { WsLoading } from 'src/app/elements/ws-loading/ws-loading';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import { FacebookService, UIParams } from '@jemys89/ngx-facebook';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
+import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
 @Component({
   selector: 'list-item-info',
@@ -53,6 +54,7 @@ export class ListItemInfoComponent implements OnInit {
     this.loading.start();
     this.itemService.getItemWithSellerById(id).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       this.item = result.result;
+      DocumentHelper.setWindowTitleWithWonderScale(this.item.name);
       if (this.item.types.length > 0) {
         this.item.types = this.item.types.map(type => {
           return {
@@ -145,7 +147,7 @@ export class ListItemInfoComponent implements OnInit {
   closeModal() {
     this.router.navigate(['', {outlets: {modal: null}}], {queryParams: {item_id: null}, queryParamsHandling: 'merge'});
   }
-  onDestory() {
+  ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

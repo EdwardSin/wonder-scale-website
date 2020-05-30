@@ -87,7 +87,7 @@ export class ItemInfoComponent implements OnInit {
       this.selectProfileImage(this.selectedType['images'][0]);
     }
   }
-  onDestory() {
+  ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

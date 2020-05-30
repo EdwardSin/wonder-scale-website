@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
 @Component({
   selector: 'home',
@@ -9,7 +10,9 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   keyword: string = '';
-  constructor(private router: Router) { }
+  constructor(private router: Router) { 
+    DocumentHelper.setWindowTitle('Wonder Scale');
+  }
 
   ngOnInit(): void {
   }
