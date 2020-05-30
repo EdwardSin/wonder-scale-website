@@ -32,7 +32,7 @@ export class ListItemComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.sharedUserService.favoriteItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.sharedUserService.followItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.followItems = result;
       if (this.item) {
         this.follow = this.followItems.includes(this.item._id);
@@ -46,8 +46,8 @@ export class ListItemComponent implements OnInit {
   }
   removeFollow() {
     this.authFollowService.unfollowItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      let favoriteItems = _.filter(this.followItems, (id) => id != this.item._id);
-      this.sharedUserService.favoriteItems.next(favoriteItems);
+      let followItems = _.filter(this.followItems, (id) => id != this.item._id);
+      this.sharedUserService.followItems.next(followItems);
       this.followChanged.emit(true);
     });
   }
@@ -55,14 +55,14 @@ export class ListItemComponent implements OnInit {
     event.stopPropagation();
     if (this.follow) {
       this.authFollowService.unfollowItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        let favoriteItems = _.filter(this.followItems, (id) => id != this.item._id);
-        this.sharedUserService.favoriteItems.next(favoriteItems);
+        let followItems = _.filter(this.followItems, (id) => id != this.item._id);
+        this.sharedUserService.followItems.next(followItems);
       });
     } else {
       this.authFollowService.followItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.followItems.push(this.item._id)
-        let favoriteItems = _.uniq(this.followItems);
-        this.sharedUserService.favoriteItems.next(favoriteItems);
+        let followItems = _.uniq(this.followItems);
+        this.sharedUserService.followItems.next(followItems);
       });
     }
   }

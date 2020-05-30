@@ -94,10 +94,10 @@ export class FloatBannerComponent implements OnInit {
     this.authFollowService.followItem(this.element._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
-      let favoriteItems = this.sharedUserService.favoriteItems.value;
-      favoriteItems = _.uniq(favoriteItems);
-      favoriteItems.push(this.element._id);
-      this.sharedUserService.favoriteItems.next(favoriteItems);
+      let followItems = this.sharedUserService.followItems.value;
+      followItems = _.uniq(followItems);
+      followItems.push(this.element._id);
+      this.sharedUserService.followItems.next(followItems);
     });
   }
   unsaveShop() {
@@ -112,9 +112,9 @@ export class FloatBannerComponent implements OnInit {
     this.authFollowService.unfollowItem(this.element._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
-      let favoriteItems = this.sharedUserService.favoriteItems.value;
-      favoriteItems = _.filter(favoriteItems, (id) => id != this.element._id);
-      this.sharedUserService.favoriteItems.next(favoriteItems);
+      let followItems = this.sharedUserService.followItems.value;
+      followItems = _.filter(followItems, (id) => id != this.element._id);
+      this.sharedUserService.followItems.next(followItems);
     });
   }
   shareThroughFB() {

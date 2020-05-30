@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
       .subscribe(result => {
         this.user = result;
         if (result) {
-          this.getFavoriteItems();
+          this.getFollowItems();
         }
       })
     this.authenticationService.isAuthenticated().then(result => {
@@ -79,9 +79,9 @@ export class HeaderComponent implements OnInit {
         }
       })
   }
-  getFavoriteItems() {
+  getFollowItems() {
     this.authFollowService.getFollowItemsIds().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.sharedUserService.favoriteItems.next(result.result);
+      this.sharedUserService.followItems.next(result.result);
     })
   }
   navigateTo() {
