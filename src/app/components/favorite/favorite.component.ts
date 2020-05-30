@@ -36,7 +36,8 @@ export class FavoriteComponent implements OnInit {
     longitude: 0
   }
   queryParams: any = {
-    selected: 'page',
+    selected: '',
+    keyword: '',
     page: 1
   };
   selectedPage;
@@ -44,7 +45,7 @@ export class FavoriteComponent implements OnInit {
   total: number = 0;
   isMobileSize: boolean;
   rendered: boolean;
-  isFavoriteModalHidden: boolean;
+  isFavoriteModalHidden: boolean = true;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private route: ActivatedRoute, 
     private router: Router,
@@ -57,35 +58,35 @@ export class FavoriteComponent implements OnInit {
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
-          this.queryParams = this.route.snapshot.queryParams;
-          
-          if (!this.isFavoriteModalOpened) {
-            this.queryParams = {
-                          selected: this.queryParams['selected'] || 'page',
-                          keyword: this.queryParams['keyword'] || '',
-                          page: this.queryParams['page'] || 1, 
-                          order: this.queryParams['order'],
-                          orderBy: this.queryParams['orderBy']}
-            this.selected = this.queryParams['selected'];
-            if (this.selected == 'page') {
-              this.getFollowShops(this.queryParams);
-            } else if (this.selected == 'item') {
-              this.getFollowItems(this.queryParams);
+          let item_id = this.queryParams.item_id;
+          if (!item_id && !this.isEqualParams(this.queryParams, this.route.snapshot.queryParams)) {
+            this.queryParams = this.route.snapshot.queryParams;
+            if (this.isFavoriteModalHidden) {
+              this.queryParams = {
+                            selected: this.queryParams['selected'] || 'page',
+                            keyword: this.queryParams['keyword'] || '',
+                            page: this.queryParams['page'] || 1}
+              this.selected = this.queryParams['selected'];
+              if (this.selected == 'page') {
+                this.getFollowShops(this.queryParams);
+              } else if (this.selected == 'item') {
+                this.getFollowItems(this.queryParams);
+              }
             }
-          }
-          this.isFavoriteModalOpened = this.route.snapshot.queryParams['modal'] == 'true';
-          if (typeof(sessionStorage) !== undefined) {
-            let favoriteSearchingCache = JSON.parse(sessionStorage.getItem('favoriteSearchingCache'));
-            if (favoriteSearchingCache && this.isFavoriteModalOpened) {
-              this.modalType = favoriteSearchingCache.type;
-              this.mapController.zoom = favoriteSearchingCache.zoom;
-              this.mapController.mapPoint = { latitude: favoriteSearchingCache.latitude, longitude: favoriteSearchingCache.longitude };
-              this.mapController.mapCircle.latitude = favoriteSearchingCache.latitude;
-              this.mapController.mapCircle.longitude = favoriteSearchingCache.longitude;
-            } else {
-              sessionStorage.removeItem('favoriteSearchingCache');
+            this.isFavoriteModalOpened = this.route.snapshot.queryParams['modal'] == 'true';
+            if (typeof(sessionStorage) !== undefined) {
+              let favoriteSearchingCache = JSON.parse(sessionStorage.getItem('favoriteSearchingCache'));
+              if (favoriteSearchingCache && this.isFavoriteModalOpened) {
+                this.modalType = favoriteSearchingCache.type;
+                this.mapController.zoom = favoriteSearchingCache.zoom;
+                this.mapController.mapPoint = { latitude: favoriteSearchingCache.latitude, longitude: favoriteSearchingCache.longitude };
+                this.mapController.mapCircle.latitude = favoriteSearchingCache.latitude;
+                this.mapController.mapCircle.longitude = favoriteSearchingCache.longitude;
+              } else {
+                sessionStorage.removeItem('favoriteSearchingCache');
+              }
+              this.getCurrentPosition();
             }
-            this.getCurrentPosition();
           }
         }
     });
@@ -108,6 +109,11 @@ export class FavoriteComponent implements OnInit {
         }
       });
     } 
+  }
+  isEqualParams(queryParams, latestQueryParams) {
+    return queryParams.selected == latestQueryParams.selected &&
+          queryParams.keyword == latestQueryParams.keyword &&
+          queryParams.page + '' == latestQueryParams.page;
   }
   navigateTo(obj) {
     obj = {...this.queryParams, ...obj}
