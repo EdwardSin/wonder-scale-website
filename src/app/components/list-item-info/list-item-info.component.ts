@@ -103,10 +103,10 @@ export class ListItemInfoComponent implements OnInit {
     this.authFollowService.followItem(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
-      let favoriteItems = this.sharedUserService.favoriteItems.value;
-      favoriteItems = _.uniq(favoriteItems);
-      favoriteItems.push(this.item._id);
-      this.sharedUserService.favoriteItems.next(favoriteItems);
+      let followItems = this.sharedUserService.followItems.value;
+      followItems = _.uniq(followItems);
+      followItems.push(this.item._id);
+      this.sharedUserService.followItems.next(followItems);
     });
   }
   unsaveItem() {
@@ -114,9 +114,9 @@ export class ListItemInfoComponent implements OnInit {
     this.authFollowService.unfollowItem(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
-      let favoriteItems = this.sharedUserService.favoriteItems.value;
-      favoriteItems = _.filter(favoriteItems, (id) => id != this.item._id);
-      this.sharedUserService.favoriteItems.next(favoriteItems);
+      let followItems = this.sharedUserService.followItems.value;
+      followItems = _.filter(followItems, (id) => id != this.item._id);
+      this.sharedUserService.followItems.next(followItems);
     });
   }
   shareThroughFB() {
