@@ -66,7 +66,7 @@
           <mat-option [value]="'item'">Item</mat-option>
         </mat-select>
         <div class="items-modal-container" *ngIf="!modalLoading?.isRunning() && displayModalItems?.length; else modalLoadingTemplate">
-            <a [routerLink]="['/shops', shop?._id]" class="row no-gutters border-bottom p-2 clickable" style="color: black" *ngFor="let shop of displayModalItems">
+            <a [routerLink]="['/shop']" [queryParams]="{id: shop?._id}" class="row no-gutters border-bottom p-2 clickable" style="color: black" *ngFor="let shop of displayModalItems">
                 <img style="width: 50px; height: 50px;" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile image" />
                 <div class="px-2">
                     <p class="mb-0" style="font-size: 1.1rem">{{ shop?.name }}</p>
@@ -94,7 +94,7 @@
                 [latitude]="result?.location?.coordinates[1]" (markerClick)="selectMarker(result)">
                 <agm-info-window [isOpen]="selectedPage == result">
                   <img  style="width: 25px; height: 25px;" [src]="environment.IMAGE_URL + result?.profileImage" alt="profile image" />
-                  <a [routerLink]="['/shops', result?._id]" class="clickable d-inline-block pl-2" style="color: #000">{{result?.name}}</a>
+                  <a [routerLink]="['/shop']" [queryParams]="{id: result?._id}" class="clickable d-inline-block pl-2" style="color: #000">{{result?.name}}</a>
                   <p *ngIf="result?.description && result?.description !== ''">{{result?.description | limitTo: '30'}}</p>
                   <a *ngIf="result?.location?.coordinates[0] == 0 && result?.location?.coordinates[1] == 0" target="_blank"
                     href="http://www.google.com/maps/place/{{result?.location?.coordinates[1]}},{{result?.location?.coordinates[0]}}"

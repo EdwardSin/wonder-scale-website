@@ -50,7 +50,7 @@ export class FloatBannerComponent implements OnInit {
     if (changes && this.element) {
       if (this.type == 'shop') {
         this.isFollowedShop();
-        this.link = 'https://www.wonderscale.com/shops/' + this.element._id;
+        this.link = environment.URL + 'shop?id=' + this.element._id;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
@@ -62,7 +62,7 @@ export class FloatBannerComponent implements OnInit {
         }
       } else {
         this.isFollowedItem();
-        this.link = 'https://www.wonderscale.com/item/' + this.element._id;
+        this.link = environment.URL + 'item/' + this.element._id;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;

@@ -9,7 +9,7 @@ import { CategoryService } from '@services/http/public/category.service';
 import { environment } from '@environments/environment';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
-import { WsLoading } from 'src/app/elements/ws-loading/ws-loading';
+import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import * as _ from 'lodash';
@@ -35,16 +35,16 @@ export class MerchantComponent implements OnInit {
     private authFollowService: AuthFollowService,
     private sharedUserService: SharedUserService,
     private categoryService: CategoryService,
-    private itemService: ItemService) { 
-    let shopId = this.route.snapshot.params.id;
+    private itemService: ItemService) {
+  }
+
+  ngOnInit() {
+    let shopId = this.route.snapshot.queryParams.id;
     this.getShopById(shopId);
     this.getAllItemsById(shopId);
     this.getNewItemsById(shopId);
     this.getDiscountItemsById(shopId);
     this.getCategoriesById(shopId);
-  }
-
-  ngOnInit() {
   }
   getShopById(id) {
     this.loading.start();
@@ -76,27 +76,39 @@ export class MerchantComponent implements OnInit {
   getItemsByCategoryId(value) {
     this.itemLoading.start();
     if (value == 'all') {
-      this.items = this.allItems;
-      this.itemLoading.stop()
+      _.delay(() => {
+        this.items = this.allItems;
+        this.itemLoading.stop()
+      }, 500);
+    } else if (value == 'discount') {
+      _.delay(() => {
+        this.items = this.discountItems;
+        this.itemLoading.stop();
+      }, 500);
+    } else if (value == 'new') {
+      _.delay(() => {
+        this.items = this.newItems;
+        this.itemLoading.stop();
+      }, 500);
     } else {
       combineLatest(timer(500),
         this.itemService.getItemsByCategoryId(value))
-      .pipe(takeUntil(this.ngUnsubscribe), map(x => x[1]), finalize(() => this.itemLoading.stop())).subscribe(result => {
-        this.items = result.result;
-      });
+        .pipe(takeUntil(this.ngUnsubscribe), map(x => x[1]), finalize(() => this.itemLoading.stop())).subscribe(result => {
+          this.items = result.result;
+        });
     }
   }
   likeShop() {
-    
+
   }
   unlinkShop() {
 
   }
-  scrollTo(id='') {
+  scrollTo(id = '') {
     if (id) {
       let element = document.getElementById(id);
       if (element) {
-        element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+        element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
       }
     }
     else {
