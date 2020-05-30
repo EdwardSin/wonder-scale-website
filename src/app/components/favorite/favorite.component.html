@@ -1,5 +1,5 @@
 <div class="favorite__container">
-    <h3>Your Favorites</h3>
+    <h1 class="h5 mb-3">Your Favorites</h1>
     <div class="favorite__searchbar input-group mb-3">
         <input class="favorite__searchbar__input form-control" (input)="valueChanged($event)" [value]="queryParams.keyword" placeholder="Search..." />
         <div class="input-group-append">
@@ -18,7 +18,7 @@
             <page [removable]="true" [savable]="false" [item]="item" (followChanged)="followShopChanged()" class="mb-3" *ngFor="let item of displayItems"></page>
         </div>
         <div class="row no-gutters mb-4" *ngIf="selected == 'item'">
-            <item [removable]="true" [savable]="false" [item]="item" (followChanged)="followItemChanged()" *ngFor="let item of displayItems" class="mb-3"></item>
+            <list-item [item]="item" class="px-1" (followChanged)="followItemChanged()" *ngFor="let item of displayItems"></list-item>
         </div>
         <pagination class="pb-4 mb-5" [pageSize]="environment.ITEMS_PER_PAGE" [currentPage]="queryParams.page" [total]="total" (getPageNumber)="navigateTo({page: $event})"></pagination>
     </div>

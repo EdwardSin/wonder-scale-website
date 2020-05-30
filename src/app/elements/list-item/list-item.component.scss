@@ -1,6 +1,7 @@
 :host {
     padding: 1rem 1rem .5rem 1rem;
     display: block;
+    width: 100%;
 
     .list-item__container {
         box-shadow: 0 0 3px #ccc;
@@ -49,14 +50,16 @@
         }
 
         .list-item__middle {
-            padding: .5rem 1rem;
+            padding-top: .35rem;
+            padding-bottom: .35rem;
             height: 72px;
 
             .list-item__text {
-                font-weight: bold;
-                height: 23px;
+                height: 35px;
+                line-height: 1.1;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                margin-bottom: 0;
             }
 
             .list-item__price {

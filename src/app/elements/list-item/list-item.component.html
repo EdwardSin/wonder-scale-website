@@ -4,8 +4,8 @@
             <span class="list-item__image-container">
                 <img *ngIf="item?.profileImages?.length" [src]="environment.IMAGE_URL + item?.profileImages[item?.profileImageIndex]" class="list-item__image" alt="profile Image" />
             </span>
-            <div class="list-item__middle col">
-                <p class="list-item__text mb-2">{{ item?.name }}</p>
+            <div class="list-item__middle col px-2 px-lg-3">
+                <p class="list-item__text">{{ item?.name }}</p>
                 <p class="list-item__discount-price mb-0" *ngIf="item?.currency && item?.isOffer" style="text-decoration: line-through;"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
                 <p class="list-item__price mb-0" *ngIf="item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}</p>
                 <p class="list-item__price mb-1" *ngIf="item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
