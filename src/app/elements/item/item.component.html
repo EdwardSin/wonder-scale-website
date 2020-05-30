@@ -1,0 +1,14 @@
+<div class="item__image mb-1 px-2">
+    <span *ngIf="removable" (click)="removeFollow()" class="item__remove-icon fas fa-times"></span>
+    <span *ngIf="savable" [class.selected]="follow" (click)="followClicked()" class="item__favorite-icon fas fa-heart"></span>
+    <img [routerLink]="['/items', item._id]" class="w-100 h-100" style="object-fit: contain;" *ngIf="item?.profileImages?.length" [src]="environment.IMAGE_URL + item.profileImages[item.profileImageIndex]" alt="{{ 'item' + index }}" />
+</div>
+<p [routerLink]="['/items', item._id]" class="item__name mb-1 text-center">{{ item?.name }}</p>
+<div class="text-center">
+    <span *ngIf="item?.discount > 0 && item?.isOffer && item?.currency" class="item__discount-price mr-2" style="text-decoration: line-through;">
+        <span class="mr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}
+    </span>
+    <span class="item__price d-inline-block" *ngIf="item?.currency">
+        <span class="mr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}
+    </span>
+</div>

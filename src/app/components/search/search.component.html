@@ -1,0 +1,32 @@
+<div class="search__container">
+    <div class="search__searchbar input-group mb-3">
+        <input class="search__searchbar__input form-control" (input)="valueChanged($event)" [value]="queryParams.keyword" placeholder="Search..." />
+        <div class="input-group-append">
+            <button class="search__searchbar__button input-group-text">
+                <span class="search__searchbar__icon fas fa-search"></span>
+            </button>
+        </div>
+    </div>
+    <div *ngIf="!loading.isRunning() && shops.length; else loadingTemplate">
+        <div class="row no-gutters">
+            <page *ngFor="let shop of shops" [item]="shop"></page>
+        </div>
+    </div>
+    <div class="pb-4">
+        <pagination [pageSize]="environment.ITEMS_PER_PAGE" [isDisplayed]="true" [currentPage]="queryParams.page" [total]="total" (getPageNumber)="navigateTo({page: $event})"></pagination>
+    </div>
+    <div *ngIf="!loading.isRunning() && recommandedShops.length">
+        <h1 class="h5 mb-3">Recommandation</h1>
+        <div class="row no-gutters">
+            <page *ngFor="let shop of recommandedShops" [item]="shop"></page>
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
+</ng-template>
+
+<ng-template #noItemTemplate>
+    <h6 class="text-center" style="padding-top: 15vh; padding-bottom: 15vh">No item found!</h6>
+</ng-template>

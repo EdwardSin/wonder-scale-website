@@ -1,0 +1,45 @@
+<header [class.header__collapsed]="isShrink">
+    <div class="row no-gutters">
+        <div class="float-left col row no-gutters">
+            <div [routerLink]="['/']" class="header__icon nooutline">
+                <img class="w-100" style="object-fit: contain;" src="assets/images/png/icon.png" alt="logo" />
+            </div>
+            <!-- <div class="position-relative d-block d-lg-none">
+                <span class="fas fa-search header__searchbar-icon" style="margin-left: 2rem; font-size: 2rem"></span>
+            </div> -->
+            <div *ngIf="isMobileSize && user" class="position-relative col-sm-auto col pr-2">
+                <input #headerKeyword class="form-control header__searchbar" placeholder="Search..." (keydown.enter)="navigateTo()" [(ngModel)]="keyword"/>
+                <span class="header__searchbar-icon fas fa-search" [routerLink]="['/search']" [queryParams]="{keyword: keyword}"></span>
+            </div>
+            <ul class="nav d-none d-lg-block">
+                <li class="nav-item">
+                    <a target="_blank" href="merchant.wonderscale.com" class="nav-link">JOIN US</a></li>
+            </ul>
+        </div>
+        <div class="user-container">
+            <div *ngIf="!user">
+                <a class="user-container__link" href="javascript:void(0)"
+                [routerLink]="['', {outlets: { modal: 'login'}}]">Login</a>
+                <span class="user-container__text">|</span>
+                <a class="user-container__link" href="javacript:void(0)"
+                [routerLink]="['', {outlets: { modal: 'register'}}]">Sign-up</a>
+            </div>
+            <div *ngIf="user" class="btn-group" mdbDropdown>
+                <div mdbDropdownToggle class="user-container__profile-container dropdown-toggle">
+                  <img class='user-container__profile mr-1' src="{{user?.profileImage}}" alt="profile" />
+                  <span class="user-container__chevron-icon fas fa-chevron-down" style="color: #888; font-size: .6rem; vertical-align: sub"></span>
+                </div>
+                <div class="dropdown-menu dropdown-primary">
+                  <a href="javascript:void(0)" class="dropdown-item" style="pointer-events: none;">{{user?.firstName}} {{user?.lastName}}
+                  </a>
+                  <div class="divider dropdown-divider"></div>
+                  <a class="dropdown-item" [routerLink]="['favorite']">Favorites</a>
+                  <a class="dropdown-item" [routerLink]="['settings']">Settings</a>
+                  <div class="divider dropdown-divider"></div>
+                  <a class="dropdown-item" (click)="logout()">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="header__padding"></div>

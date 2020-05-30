@@ -1,0 +1,110 @@
+<div class="favorite__container">
+    <h1 class="h5 mb-3">Your Favorites</h1>
+    <div class="favorite__searchbar input-group mb-3">
+        <input class="favorite__searchbar__input form-control" (input)="valueChanged($event)" [value]="queryParams.keyword" placeholder="Search..." />
+        <div class="input-group-append">
+            <button class="favorite__searchbar__button input-group-text">
+                <span class="favorite__searchbar__icon fas fa-search"></span>
+            </button>
+        </div>
+    </div>
+    <div class="mb-3">
+        <button [class.selected]="selected == 'page'" class="btn btn-controller mr-2" (click)="navigateTo({selected: 'page'})">Page</button>
+        <button [class.selected]="selected == 'item'" class="btn btn-controller" (click)="navigateTo({selected: 'item'})">Item</button>
+        <img (click)="isFavoriteModalOpened = true; isFavoriteModalHidden = false" class="btn-logo" src="assets/images/png/icon.png" alt="logo" />
+    </div>
+    <div class="items-container" *ngIf="!loading.isRunning() && displayItems.length; else loadingTemplate">
+        <div class="row no-gutters mb-4" *ngIf="selected == 'page'">
+            <page [removable]="true" [savable]="false" [item]="item" (followChanged)="followShopChanged()" class="mb-3" *ngFor="let item of displayItems"></page>
+        </div>
+        <div class="row no-gutters mb-4" *ngIf="selected == 'item'">
+            <list-item [item]="item" class="px-1" (followChanged)="followItemChanged()" *ngFor="let item of displayItems"></list-item>
+        </div>
+        <pagination class="pb-4 mb-5" [pageSize]="environment.ITEMS_PER_PAGE" [currentPage]="queryParams.page" [total]="total" (getPageNumber)="navigateTo({page: $event})"></pagination>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
+</ng-template>
+<ng-template #modalLoadingTemplate>
+    <ws-spinner *ngIf="modalLoading.isRunning(); else noModalItemTemplate" class="text-center d-block w-100" style="padding-top: 28vh; padding-bottom:28vh"></ws-spinner>
+</ng-template>
+<ng-template #noItemTemplate>
+    <h6 class="text-center" style="padding-top: 30vh; padding-bottom: 30vh">No favorite {{ selected }}.</h6>
+</ng-template>
+<ng-template #noModalItemTemplate>
+    <h6 class="text-center mb-0" style="padding-top:28.588vh; padding-bottom:28.588vh">No favorite {{ modalType }}.</h6>
+</ng-template>
+<ws-modal *ngIf="isFavoriteModalOpened" [isOpened]="isFavoriteModalOpened" [hidden]="isFavoriteModalHidden" (isOpenedChange)="onFavoriteModalOpened($event)" [maxWidth]="1300" [id]="'favorite'">
+    <div class="row no-gutters py-2" modalBody>
+    <button [class.selected]="isMobileMapShown" (click)="isMobileMapShown = !isMobileMapShown" class="d-block d-lg-none btn btn-controller mb-2"><span class="fas fa-map-marker-alt"></span></button>
+      <div *ngIf="!isMobileSize || !isMobileMapShown" class="col-lg-4 order-lg-1 order-2 pr-lg-2">
+          <div (clickOutside)="mapController.displayed = false">
+              <input name="position" autocomplete="off" class="form-control"
+                  placeholder="Find Location..." (keydown.enter)="onAddressSelected()" 
+                  (keydown)="mapController.selectAddress($event)" (focus)="mapController.displayed = true" 
+                  (input)="mapController.valueChanged(mapController.address.address)"
+                  [(ngModel)]="mapController.address.address"/>
+              <div class="position-relative w-100">
+                  <ul class="list-group suggestions" *ngIf="mapController.displayed" >
+                      <li *ngIf="mapController?.loading?.isRunning()">
+                          <ws-spinner class="d-block w-100 text-center py-3"></ws-spinner>
+                      </li>
+                      <li style="pointer-events: none;" *ngIf="!mapController.loading.isRunning() && !mapController?.suggestions?.length">
+                          <p class="text-center mb-0 py-4">No location found!</p>
+                      </li>
+                      <li [class.hover]="mapController.hovered == i" *ngFor="let suggestion of mapController?.suggestions; let i = index;"
+                          (click)="$event.stopPropagation(); mapController.hovered = i; onAddressSelected()">
+                          <span class="ws-main fas fa-map-marker-alt pr-2"></span>{{suggestion}}</li>
+                  </ul>
+              </div>
+          </div>
+
+        <mat-select class="form-control my-2" name="type" [(ngModel)]="modalType" (selectionChange)="modalCurrentPage=1; updateModalItems()">
+          <mat-option [value]="'page'">Page</mat-option>
+          <mat-option [value]="'item'">Item</mat-option>
+        </mat-select>
+        <div class="items-modal-container" *ngIf="!modalLoading?.isRunning() && displayModalItems?.length; else modalLoadingTemplate">
+            <a [routerLink]="['/shop']" [queryParams]="{id: shop?._id}" class="row no-gutters border-bottom p-2 clickable" style="color: black" *ngFor="let shop of displayModalItems">
+                <img style="width: 50px; height: 50px;" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile image" />
+                <div class="px-2">
+                    <p class="mb-0" style="font-size: 1.1rem">{{ shop?.name }}</p>
+                    <p class="mb-0" style="font-size: .8rem">Last updated {{ moment(shop?.updatedAt).toNow() }}</p>
+                </div>
+            </a>
+        </div>
+        <pagination [pageSize]="environment.ITEMS_PER_PAGE" [isDisplayed]="true" [currentPage]="modalCurrentPage" [total]="modalTotal" (getPageNumber)="changePaged($event)"></pagination>
+      </div>
+      <div *ngIf="!isMobileSize || isMobileMapShown" class="col-lg-8 order-lg-2 order-1 pl-lg-2 position-relative">
+        <button [disabled]="modalLoading.isRunning()" class="btn btn-controller position-absolute border" style="box-shadow: 0px 2px 2px rgba(0, 0, 0, .5); right: 1.5rem; top: 1.5rem; z-index: 1"
+            (click)="modalCurrentPage=1; updateModalItems()"><ws-spinner *ngIf="modalLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="3" class="mr-2"></ws-spinner>
+            <span class="align-middle d-inline-block" style="line-height:1.5rem">Search on the area</span></button>
+        <agm-map class="w-100 h-100" [longitude]="mapController.mapPoint.longitude" [latitude]="mapController.mapPoint.latitude" [zoom]="mapController.zoom" [gestureHandling]="'greedy'"
+            [mapDraggable]="true" [maxZoom]="17" [minZoom]="11" [streetViewControl]="false" panControl="false" zoomControl="false"
+            (centerChange)="centerChange($event)" (zoomChange)="zoomChange($event)" (mapReady)="mapReady($event)" (mapClick)="selectedPage = null">
+                <agm-marker [longitude]="mapController.currentPoint.longitude" [latitude]="mapController.currentPoint.latitude"></agm-marker>
+                <agm-circle (circleClick)="selectedPage = null" *ngIf="mapController.mapCircle?.latitude" [latitude]="mapController?.mapCircle?.latitude"
+                [longitude]="mapController?.mapCircle?.longitude" [radius]="mapController?.mapCircle?.radius"
+                [fillColor]="'#99ccff'" [strokeColor]="'#e6f2ff '">
+              </agm-circle>              
+              <agm-marker *ngFor="let result of displayModalItems" [visible]="result?.location?.coordinates[0] != 0 && result?.location?.coordinates[1] != 0" [animation]="'DROP'" [openInfoWindow]="true"
+                [iconUrl]="result?.packageType !== 'free' ? selectedPage == result ? '/assets/images/png/new-map-marker-crop-hovered.png': '/assets/images/png/new-map-marker-crop.png'
+              : selectedPage == result ? '/assets/images/png/ad-map-marker-hovered.png': '/assets/images/png/ad-map-marker.png'" [longitude]="result?.location?.coordinates[0]"
+                [latitude]="result?.location?.coordinates[1]" (markerClick)="selectMarker(result)">
+                <agm-info-window [isOpen]="selectedPage == result">
+                  <img  style="width: 25px; height: 25px;" [src]="environment.IMAGE_URL + result?.profileImage" alt="profile image" />
+                  <a [routerLink]="['/shop']" [queryParams]="{id: result?._id}" class="clickable d-inline-block pl-2" style="color: #000">{{result?.name}}</a>
+                  <p *ngIf="result?.description && result?.description !== ''">{{result?.description | limitTo: '30'}}</p>
+                  <a *ngIf="result?.location?.coordinates[0] == 0 && result?.location?.coordinates[1] == 0" target="_blank"
+                    href="http://www.google.com/maps/place/{{result?.location?.coordinates[1]}},{{result?.location?.coordinates[0]}}"
+                    class="d-inline-block mb-2"><span class="fas fa-map-marker-alt mr-2"></span>
+                    <span *ngIf="result?.fullAddress?.city">{{result?.fullAddress?.city}}, </span>
+                    <span *ngIf="result?.fullAddress?.state">{{ result?.fullAddress?.state }},</span>
+                    {{ result?.fullAddress?.country }}</a>
+                </agm-info-window>
+              </agm-marker>
+        </agm-map>
+      </div>
+    </div>
+</ws-modal>

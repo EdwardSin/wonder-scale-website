@@ -12,11 +12,12 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/wonder-scale-website",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -28,9 +29,28 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "node_modules/angular-bootstrap-md/assets/scss/bootstrap/bootstrap.scss",
+              "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
+              "node_modules/croppie/croppie.css",
+              "src/assets/vendor/fontawesome/css/all.min.css",
+              "src/styles.scss",
+              "src/assets/scss/styles.scss",
+              "src/assets/scss/animate.scss",
+              "src/assets/scss/theme.scss",
+              "src/assets/scss/modal.scss",
+              "src/assets/scss/general.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/croppie/croppie.min.js",
+              "src/assets/vendor/heremap/js/mapsjs-core.js",
+              "src/assets/vendor/heremap/js/mapsjs-mapevents.js",
+              "src/assets/vendor/heremap/js/mapsjs-pano.js",
+              "src/assets/vendor/heremap/js/mapsjs-service.js",
+              "src/assets/vendor/heremap/js/mapsjs-ui.js",
+              "src/assets/vendor/qrcode/utf.js",
+              "src/assets/vendor/qrcode/qrcode.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -66,7 +86,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "wonder-scale-website:build"
+            "browserTarget": "wonder-scale-website:build",
+            "proxyConfig": "proxy.config.json"
           },
           "configurations": {
             "production": {
