@@ -8,6 +8,7 @@
 ---------------------------------------------
 .: WSW: Task: QR code image slow render issue (WSW-25)
 .: WSW: Task: Change Share URL to username (WSW-29)
+.: WSW: Task: Prompt login when following without authentication (WSW-28)
 
 ---------------------------------------------
 - 2020-05-30                                -

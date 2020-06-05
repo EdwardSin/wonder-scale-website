@@ -81,7 +81,7 @@ export class HeaderComponent implements OnInit {
   }
   getFollowItems() {
     this.authFollowService.getFollowItemsIds().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.sharedUserService.followItems.next(result.result);
+      this.sharedUserService.followItems.next(result['result']);
     })
   }
   navigateTo() {

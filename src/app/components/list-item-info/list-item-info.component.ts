@@ -102,21 +102,25 @@ export class ListItemInfoComponent implements OnInit {
     combineLatest(timer(500),
     this.authFollowService.followItem(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.saved = result['result'];
-      let followItems = this.sharedUserService.followItems.value;
-      followItems = _.uniq(followItems);
-      followItems.push(this.item._id);
-      this.sharedUserService.followItems.next(followItems);
+      if (result) {
+        this.saved = result['result'];
+        let followItems = this.sharedUserService.followItems.value;
+        followItems = _.uniq(followItems);
+        followItems.push(this.item._id);
+        this.sharedUserService.followItems.next(followItems);
+      }
     });
   }
   unsaveItem() {
     combineLatest(timer(500),
     this.authFollowService.unfollowItem(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.saved = result['result'];
-      let followItems = this.sharedUserService.followItems.value;
-      followItems = _.filter(followItems, (id) => id != this.item._id);
-      this.sharedUserService.followItems.next(followItems);
+      if (result) {
+        this.saved = result['result'];
+        let followItems = this.sharedUserService.followItems.value;
+        followItems = _.filter(followItems, (id) => id != this.item._id);
+        this.sharedUserService.followItems.next(followItems);
+      }
     });
   }
   shareThroughFB() {

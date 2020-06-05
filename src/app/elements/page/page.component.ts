@@ -51,17 +51,21 @@ export class PageComponent implements OnInit {
     combineLatest(timer(500),
     this.authFollowService.followShop(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.followPages.push(this.item._id)
-      let followPages = _.uniq(this.followPages);
-      this.sharedUserService.followPages.next(followPages);
+      if (result) {
+        this.followPages.push(this.item._id)
+        let followPages = _.uniq(this.followPages);
+        this.sharedUserService.followPages.next(followPages);
+      }
     });
   }
   unsaveShop() {
     combineLatest(timer(500),
     this.authFollowService.unfollowShop(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      let followPages = _.filter(this.followPages, (id) => id != this.item._id);
-      this.sharedUserService.followPages.next(followPages);
+      if (result) {
+        let followPages = _.filter(this.followPages, (id) => id != this.item._id);
+        this.sharedUserService.followPages.next(followPages);
+      }
     });
   }
   ngOnDestroy(){

@@ -44,25 +44,22 @@ export class ListItemComponent implements OnInit {
       this.follow = this.followItems.includes(this.item._id);
     }
   }
-  removeFollow() {
-    this.authFollowService.unfollowItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      let followItems = _.filter(this.followItems, (id) => id != this.item._id);
-      this.sharedUserService.followItems.next(followItems);
-      this.followChanged.emit(true);
-    });
-  }
   followClicked(event) {
     event.stopPropagation();
     if (this.follow) {
       this.authFollowService.unfollowItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        let followItems = _.filter(this.followItems, (id) => id != this.item._id);
-        this.sharedUserService.followItems.next(followItems);
+        if (result) {
+          let followItems = _.filter(this.followItems, (id) => id != this.item._id);
+          this.sharedUserService.followItems.next(followItems);
+        }
       });
     } else {
       this.authFollowService.followItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        this.followItems.push(this.item._id)
-        let followItems = _.uniq(this.followItems);
-        this.sharedUserService.followItems.next(followItems);
+        if (result) {
+          this.followItems.push(this.item._id)
+          let followItems = _.uniq(this.followItems);
+          this.sharedUserService.followItems.next(followItems);
+        }
       });
     }
   }
