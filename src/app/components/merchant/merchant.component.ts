@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Shop } from 'src/app/objects/shop';
-import { takeUntil, finalize, map } from 'rxjs/operators';
+import { takeUntil, finalize, map, tap } from 'rxjs/operators';
 import { Subject, combineLatest, timer } from 'rxjs';
 import { ShopService } from '@services/http/public/shop.service';
 import { ItemService } from '@services/http/public/item.service';
@@ -41,12 +41,8 @@ export class MerchantComponent implements OnInit {
   }
 
   ngOnInit() {
-    let shopId = this.route.snapshot.queryParams.id;
-    this.getShopById(shopId);
-    this.getAllItemsById(shopId);
-    this.getNewItemsById(shopId);
-    this.getDiscountItemsById(shopId);
-    this.getCategoriesById(shopId);
+    let username = this.route.snapshot.params.username;
+    this.getShopByUsername(username);
 
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(event => {
@@ -55,10 +51,16 @@ export class MerchantComponent implements OnInit {
       }
     });
   }
-  getShopById(id) {
+  getShopByUsername(username) {
     this.loading.start();
-    this.shopService.getShopById(id).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+    this.shopService.getShopByUsername(username).pipe(tap((result) => {
       this.shop = result.result;
+      let shopId = this.shop._id;
+      this.getAllItemsById(shopId);
+      this.getNewItemsById(shopId);
+      this.getDiscountItemsById(shopId);
+      this.getCategoriesById(shopId);
+    }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
       DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
     });
   }
@@ -111,7 +113,7 @@ export class MerchantComponent implements OnInit {
   likeShop() {
 
   }
-  unlinkShop() {
+  unlikeShop() {
 
   }
   scrollTo(id = '') {

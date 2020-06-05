@@ -55,7 +55,7 @@ const routes: Routes = [{
   component: FavoriteComponent,
   canActivate: [AuthGuard]
 }, {
-  path: 'shop',
+  path: 'shop/:username',
   component: MerchantComponent
 }, {
   path: 'item',
