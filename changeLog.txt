@@ -7,6 +7,7 @@
 - 2020-06-05                                -
 ---------------------------------------------
 .: WSW: Task: QR code image slow render issue (WSW-25)
+.: WSW: Task: Change Share URL to username (WSW-29)
 
 ---------------------------------------------
 - 2020-05-30                                -

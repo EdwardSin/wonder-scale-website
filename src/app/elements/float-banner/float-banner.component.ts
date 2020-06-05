@@ -51,7 +51,7 @@ export class FloatBannerComponent implements OnInit {
     if (changes && this.element) {
       if (this.type == 'shop') {
         this.isFollowedShop();
-        this.link = environment.URL + 'shop?id=' + this.element._id;
+        this.link = environment.URL + 'shop/' + this.element.username;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
