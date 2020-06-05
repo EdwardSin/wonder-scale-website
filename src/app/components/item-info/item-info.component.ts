@@ -48,7 +48,7 @@ export class ItemInfoComponent implements OnInit {
         this.item.types = this.item.types.map(type => {
           return {
             ...type,
-            images: type.images.length > 0 ? type.images : this.item.profileImages.length > 0 ? this.item.profileImages: ['"upload/env_development/item_thumbnails/49021559923722826.jpg'],
+            images: type.images.length > 0 ? type.images : this.item.profileImages.length > 0 ? this.item.profileImages: [],
             quantity: type.quantity || this.item.quantity,
             price: type.price || this.item.price,
             discount: type.discount || this.item.discount,
