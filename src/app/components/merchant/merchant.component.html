@@ -3,7 +3,8 @@
         <div class="col-lg">
             <div class="merchant__profile-container">
                 <img *ngIf="shop?.profileImage" class="merchant__profile" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile-image" />
-                <img class="d-none d-lg-block merchant__profile-background my-1 center" src="assets/images/png/icon-with-profile-image.png" alt="profile-background" />
+                <img *ngIf="!shop?.profileImage" class="merchant__profile" style="background-color: #fff" src="assets/images/png/shop.png" alt="profile-image" />
+                <img class="d-none d-lg-block merchant__profile-background my-1 center" src="assets/images/png/icon-with-profile-image-borderless.png" alt="profile-background" />
                 <div class="merchant__name-container">
                     <p class="merchant__name mb-0 text-break">{{ shop?.name }}</p>
                     <p class="merchant__username mb-0">@{{ shop?.username }}</p>

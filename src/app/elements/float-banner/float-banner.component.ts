@@ -135,7 +135,10 @@ export class FloatBannerComponent implements OnInit {
       this.isQrcodeLoading.start();
       let image = <HTMLImageElement>document.createElement('img');
       image.crossOrigin = 'Anonymous';
-      image.src = environment.IMAGE_URL + this.element.profileImage;
+      image.src = 'assets/images/png/dot.png';
+      if (this.element.profileImage) {
+        image.src = environment.IMAGE_URL + this.element.profileImage;
+      }
       image.alt = 'profile-image';
       image.addEventListener('load', e => {
         QRCodeBuilder.createQRcode('.qrcode', this.element['username'], { width: 150, height: 150 })
