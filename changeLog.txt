@@ -10,6 +10,7 @@
 .: WSW: Task: Add a default profile image to item (WSW-27)
 .: WSW: Task: Unpublished Items in category is displayed (WSW-31)
 .: WSW: Task: Add Today special if page is a restaurant (WSW-26)
+.: WSW: Task: Add default shop profile image (WSW-34)
 
 ---------------------------------------------
 - 2020-06-05                                -
