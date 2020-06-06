@@ -11,6 +11,7 @@
             </div>
         </div>
         <div class="col-lg-9 merchant-background position-relative">
+            <p *ngIf="!shop?.bannerImage" class="merchant__text mb-0">{{shop?.name}}</p>
             <img class="merchant-background__banner" *ngIf="shop?.bannerImage" [src]="environment.IMAGE_URL + shop?.bannerImage" alt="banner" />
             <ul class="merchant__nav nav">
                 <li *ngIf="false && newItems.length" class="merchant__nav-item nav-item">
