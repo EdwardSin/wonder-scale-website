@@ -69,12 +69,15 @@
                 padding: .05rem .5rem;
                 font-size: .8rem;
                 background-color: #282C35;
+                &.list-item__price__offer{
+                    background-color: #990000;
+                }
             }
 
             .list-item__discount-price {
                 font-size: .8rem;
                 display: inline-block;
-                margin-right: 1rem;
+                margin-right: .5rem;
             }
         }
 
