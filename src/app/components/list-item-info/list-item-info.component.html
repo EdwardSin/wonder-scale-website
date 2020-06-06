@@ -1,5 +1,5 @@
 <ws-modal [closeCallback]="closeModal.bind(this)" [maxWidth]="520">
-    <div class="py-3" modalBody>
+    <div class="pt-3" modalBody>
         <div *ngIf="item && !loading.isRunning(); else loadingTemplate">
             <div class="list-item-info">
                 <h1 class="list-item-info__title h5 mb-3">{{ item?.name }} 
@@ -12,13 +12,13 @@
                         <span class="list-item-info__icon fas fa-store" (click)="navigateToShop()"></span>
                     </div>
                     <div class="list-item-info__price-container">
-                        <p class="d-inline-block mr-2" *ngIf="currencyService && item?.currency && item?.isOffer">
+                        <p class="d-inline-block mr-2 mb-0" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer">
                             <!-- <span class="badge badge-warning mr-2" style="font-size: .8rem; vertical-align: text-top;">{{ discount }}%</span> -->
                             <span class="list-item-info__details__original-price d-inline-block">
                                 <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
                         </p>
-                        <p class="list-item-info__details__price mb-1" *ngIf="currencyService && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
-                        <p class="list-item-info__details__price mb-1" *ngIf="currencyService && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</p>
+                        <p class="list-item-info__details__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                        <p class="list-item-info__details__price list-item-info__details__price__offer mb-1" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</p>
                         <p *ngIf="item?.quantity" class="list-item-info__details__quantity">Quantity: {{ quantity }}</p>
                         <!-- <div class="row no-gutters">
                             <div class="list-item-info__item-type mr-3" *ngFor="let itemType of item?.types" (click)="selectItemType(itemType)">
