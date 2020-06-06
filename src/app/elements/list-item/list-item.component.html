@@ -3,6 +3,7 @@
         <div class="row no-gutters">
             <span class="list-item__image-container">
                 <img *ngIf="item?.profileImages?.length" [src]="environment.IMAGE_URL + item?.profileImages[item?.profileImageIndex]" class="list-item__image" alt="profile Image" />
+                <img *ngIf="!item?.profileImages?.length" src="/assets/images/png/profileImage.png" alt="item detault profile image" />
             </span>
             <div class="list-item__middle col px-2 px-lg-3">
                 <p class="list-item__text">{{ item?.name }}</p>
