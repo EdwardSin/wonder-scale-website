@@ -17,6 +17,7 @@ import { GeneralSettingsComponent } from '@components/settings/general-settings/
 import { SecuritySettingsComponent } from '@components/settings/security-settings/security-settings.component';
 import { SearchComponent } from '@components/search/search.component';
 import { ListItemInfoComponent } from '@components/list-item-info/list-item-info.component';
+import { NotFoundComponent } from '@components/not-found/not-found.component';
 
 
 const routes: Routes = [{
@@ -74,6 +75,12 @@ const routes: Routes = [{
     {path: 'general', component: GeneralSettingsComponent},
     {path: 'security', component: SecuritySettingsComponent}
   ]
+}, {
+  path: '404',
+  component: NotFoundComponent
+}, {
+  path: '**',
+  redirectTo: '404'
 }];
 
 @NgModule({
