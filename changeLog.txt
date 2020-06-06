@@ -9,6 +9,7 @@
 .: WSW: Task: Design a new default user banner (WSW-24)
 .: WSW: Task: Add a default profile image to item (WSW-27)
 .: WSW: Task: Unpublished Items in category is displayed (WSW-31)
+.: WSW: Task: Add Today special if page is a restaurant (WSW-26)
 
 ---------------------------------------------
 - 2020-06-05                                -

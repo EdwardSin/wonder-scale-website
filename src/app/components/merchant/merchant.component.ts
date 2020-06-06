@@ -26,11 +26,13 @@ export class MerchantComponent implements OnInit {
   items: Array<any> = [];
   allItems: Array<Item> = [];
   newItems: Array<Item> = [];
+  todaySpecialItems: Array<Item> = [];
   discountItems: Array<Item> = [];
   categories: Array<Category> = [];
   loading: WsLoading = new WsLoading;
   itemLoading: WsLoading = new WsLoading;
   shop: Shop;
+  shopId;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private router: Router, 
     private route: ActivatedRoute, private shopService: ShopService,
@@ -55,42 +57,55 @@ export class MerchantComponent implements OnInit {
     this.loading.start();
     this.shopService.getShopByUsername(username).pipe(tap((result) => {
       this.shop = result.result;
-      let shopId = this.shop._id;
-      this.getAllItemsById(shopId);
-      this.getNewItemsById(shopId);
-      this.getDiscountItemsById(shopId);
-      this.getCategoriesById(shopId);
+      this.shopId = this.shop._id;
+      if(this.shop) {
+        this.allItems = this.shop['allItems'];
+        this.newItems = this.shop['newItems'];
+        this.discountItems = this.shop['discountItems'];
+        this.todaySpecialItems = this.shop['todaySpecialItems'];
+        this.categories = this.shop['categories'];
+        this.items = this.allItems;
+      }
     }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
       DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
     });
   }
-  getAllItemsById(id) {
-    this.itemService.getAllItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.allItems = result.result;
-      this.items = this.allItems;
-    });
-  }
-  getNewItemsById(id) {
-    this.itemService.getNewItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.newItems = result.result;
-    });
-  }
-  getDiscountItemsById(id) {
-    this.itemService.getDiscountItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.discountItems = result.result;
-    });
-  }
-  getCategoriesById(id) {
-    this.categoryService.getCategoriesByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.categories = result.result;
-    })
-  }
+  // getAllItemsById(id) {
+  //   this.itemService.getAllItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+  //     this.allItems = result.result;
+  //   });
+  // }
+  // getNewItemsById(id) {
+  //   this.itemService.getNewItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+  //     this.newItems = result.result;
+  //   });
+  // }
+  // getDiscountItemsById(id) {
+  //   this.itemService.getDiscountItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+  //     this.discountItems = result.result;
+  //   });
+  // }
+  // getTodaySpecialItemsById(id) {
+  //   this.itemService.getTodaySpecialItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+  //     this.todaySpecialItems = result.result;
+  //   });
+  // }
+  // getCategoriesById(id) {
+  //   this.categoryService.getCategoriesByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+  //     this.categories = result.result;
+  //   })
+  // }
   getItemsByCategoryId(value) {
     this.itemLoading.start();
     if (value == 'all') {
       _.delay(() => {
         this.items = this.allItems;
         this.itemLoading.stop()
+      }, 500);
+    } else if (value == 'todayspecial') {
+      _.delay(() => {
+        this.items = this.todaySpecialItems;
+        this.itemLoading.stop();
       }, 500);
     } else if (value == 'discount') {
       _.delay(() => {
