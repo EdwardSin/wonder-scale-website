@@ -133,19 +133,21 @@ export class FloatBannerComponent implements OnInit {
   showQrcode() {
     $(() => {
       this.isQrcodeLoading.start();
-      let image = <HTMLImageElement>document.createElement('img');
-      image.crossOrigin = 'Anonymous';
-      image.src = 'assets/images/png/dot.png';
+      let imageURL = 'assets/images/png/dot.png';
       if (this.element.profileImage) {
-        image.src = environment.IMAGE_URL + this.element.profileImage;
+        imageURL = environment.IMAGE_URL + this.element.profileImage;
       }
-      image.alt = 'profile-image';
-      image.addEventListener('load', e => {
-        QRCodeBuilder.createQRcode('.qrcode', this.element['username'], { width: 150, height: 150 })
+      QRCodeBuilder.toDataURL(imageURL, (dataUrl) => {
+        let newImage = <HTMLImageElement>document.createElement('img');
+        newImage.alt = 'profile-image';
+        newImage.src = dataUrl;
+        newImage.addEventListener('load', e => {
+          QRCodeBuilder.createQRcode('.qrcode', this.element.username, { width: 150, height: 150})
           .then(() => {
-            this.renderProfileImageToQrcode(image, 150);
+            this.renderProfileImageToQrcode(newImage, 150);
             this.isQrcodeLoading.stop();
           });
+        });
       });
     });
   }
