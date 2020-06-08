@@ -8,6 +8,7 @@
 ---------------------------------------------
 .: WSW: Task: Add an 404 page to have better SEO (WSW-33)
 .: WSW: Task: Update testing script (WSW-25)
+.: WSW: Task: Update banner (WSW-24)
 
 ---------------------------------------------
 - 2020-06-06                                -
