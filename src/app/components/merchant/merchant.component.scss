@@ -40,6 +40,7 @@
         .merchant__text{
             line-height: 300px;
             font-size: 3rem;
+            white-space: nowrap;
             color: #bbb;
             font-weight: bold;
             text-align: center;
@@ -155,6 +156,11 @@
             .merchant-background__banner {
                 width: 100vw;
                 height: calc(100vw * 0.361);
+            }
+
+            .merchant__text{
+                line-height: calc(100vw * 0.361);
+                font-size: 2rem;
             }
 
             .merchant__nav {
