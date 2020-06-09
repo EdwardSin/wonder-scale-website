@@ -17,6 +17,9 @@ export class ShopService {
   getShopById(id): Observable<Result<Shop>> {
     return this.http.get<Result<Shop>>('/api/shops/' + id);
   }
+  getShopByUsername(username): Observable<Result<Shop>> {
+    return this.http.get<Result<Shop>>('/api/shops/username/' + username);
+  }
   getShopsByKeyword(keyword='', page='1', order='', orderBy='asc'): Observable<Result<Array<Shop>>> {
     return this.http.get<Result<Array<Shop>>>('/api/shops/search', {
       params: {

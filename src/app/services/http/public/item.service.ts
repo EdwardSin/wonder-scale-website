@@ -22,6 +22,9 @@ export class ItemService {
   getDiscountItemsByShopId(id): Observable<Result<Array<Item>>> {
     return this.http.get<Result<Array<Item>>>('/api/items/public/discount/' + id);
   }
+  getTodaySpecialItemsByShopId(id): Observable<Result<Array<Item>>> {
+    return this.http.get<Result<Array<Item>>>('/api/items/public/todayspecial/' + id);
+  }
   getItemsByCategoryId(categoryId): Observable<Result<Array<Item>>> {
     return this.http.get<Result<Array<Item>>>('/api/items/public/' + categoryId);
   }

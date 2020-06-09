@@ -5,7 +5,7 @@
     <span *ngIf="type == 'item'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
     <span *ngIf="type == 'shop'" (click)="isQRCodeModalOpened = true" class="float-icon fas fa-qrcode"></span>
     <span *ngIf="type == 'shop'" (click)="isInformationModalOpened = true" class="float-icon fas fa-info-circle"></span>
-    <span *ngIf="type == 'item'" [routerLink]="['/shop']" [queryParams]="{id: element?.shop?._id}" class="float-icon fas fa-store"></span>
+    <span *ngIf="type == 'item'" [routerLink]="['/shop', element?.shop?.username]" class="float-icon fas fa-store"></span>
     <a *ngIf="type == 'item' && isShownLocation" target="_blank" href="http://www.google.com/maps/place/{{element?.shop?.location?.coordinates[1]}},{{element?.shop?.location?.coordinates[0]}}">
         <span class="float-icon" style="height: 39px; padding: 5px;">
             <img style="width: 23px; vertical-align: text-top;" src="assets/images/png/icon.png" alt="logo location" />
@@ -80,7 +80,9 @@
                 </div>
             </div>
             <div class="qrcode__container center col-auto mb-4 mt-3 pl-lg-3 order-1 order-lg-12">
-                <div class="qrcode border p-3"></div>
+                <div class="qrcode border p-3">
+                    <ws-spinner style='line-height: 150px' class="text-center d-block" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
+                </div>
             </div>
         </div>
         <div class="d-block" *ngIf="isShownLocation">
@@ -95,7 +97,9 @@
 <ws-modal [id]="'qr-code'" *ngIf="isQRCodeModalOpened" [maxWidth]="310" [(isOpened)]="isQRCodeModalOpened" (isOpenedChange)="showQrcode()">
     <div modalBody class="row no-gutters">
         <div class="qrcode__container mb-4 mt-3 col-auto center">
-            <div class="qrcode border p-3"></div>
+            <div class="qrcode border p-3">
+                <ws-spinner style='line-height: 150px' class="text-center d-block" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
+            </div>
         </div>
         <div class="social-media__container row no-gutters col-sm px-4" *ngIf="element?.media?.length">
             <div class="row no-gutters mb-2" *ngIf="medias?.facebook?.length">

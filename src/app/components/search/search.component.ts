@@ -31,28 +31,37 @@ export class SearchComponent implements OnInit {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private shopService: ShopService) {
-    this.router.events.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          let queryParams = this.route.snapshot.queryParams;
-          this.queryParams = {
-            keyword: queryParams['keyword'] || '',
-            page: queryParams['page'] || 1,
-            order: queryParams['order'],
-            orderBy: queryParams['orderBy']
-          }
-          if (this.queryParams.keyword) {
-            DocumentHelper.setWindowTitleWithWonderScale(this.queryParams.keyword);
-          } else {
-            DocumentHelper.setWindowTitleWithWonderScale('Search');
-          }
-          this.getShopsByKeyword(this.queryParams);
-        }
-      });
+    let queryParams = this.route.snapshot.queryParams;
+    this.queryParams = {
+      keyword: queryParams['keyword'] || '',
+      page: queryParams['page'] || 1,
+      order: queryParams['order'],
+      orderBy: queryParams['orderBy']
+    }
+    if (this.queryParams.keyword) {
+      DocumentHelper.setWindowTitleWithWonderScale(this.queryParams.keyword);
+    } else {
+      DocumentHelper.setWindowTitleWithWonderScale('Search');
+    }
+    this.getShopsByKeyword(this.queryParams);
     this.getRecommandedShops();
   }
 
   ngOnInit(): void {
+    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(queryParams => {
+      this.queryParams = {
+        keyword: queryParams['keyword'] || '',
+        page: queryParams['page'] || 1,
+        order: queryParams['order'],
+        orderBy: queryParams['orderBy']
+      }
+      if (this.queryParams.keyword) {
+        DocumentHelper.setWindowTitleWithWonderScale(this.queryParams.keyword);
+      } else {
+        DocumentHelper.setWindowTitleWithWonderScale('Search');
+      }
+      this.getShopsByKeyword(this.queryParams);
+    });
   }
   getShopsByKeyword({ keyword, page, order, orderBy }) {
     this.loading.start();
@@ -74,7 +83,7 @@ export class SearchComponent implements OnInit {
     obj = { ...this.queryParams, ...obj }
     this.router.navigate([], { queryParams: obj, queryParamsHandling: 'merge' });
   }
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
