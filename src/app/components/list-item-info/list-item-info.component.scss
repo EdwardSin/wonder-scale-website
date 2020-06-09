@@ -48,6 +48,9 @@
                 border-radius: 1.5rem;
                 color: #fff;
                 background-color: #282C35;
+                &.list-item-info__details__price__offer{
+                    background-color: #990000;
+                }
             }
 
             .list-item-info__details__original-price {

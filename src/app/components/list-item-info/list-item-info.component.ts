@@ -59,7 +59,7 @@ export class ListItemInfoComponent implements OnInit {
         this.item.types = this.item.types.map(type => {
           return {
             ...type,
-            images: type.images.length > 0 ? type.images : this.item.profileImages.length > 0 ? this.item.profileImages : ['"upload/env_development/item_thumbnails/49021559923722826.jpg'],
+            images: type.images.length > 0 ? type.images : this.item.profileImages.length > 0 ? this.item.profileImages : [],
             quantity: type.quantity || this.item.quantity,
             price: type.price || this.item.price,
             discount: type.discount || this.item.discount,
@@ -102,21 +102,25 @@ export class ListItemInfoComponent implements OnInit {
     combineLatest(timer(500),
     this.authFollowService.followItem(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.saved = result['result'];
-      let followItems = this.sharedUserService.followItems.value;
-      followItems = _.uniq(followItems);
-      followItems.push(this.item._id);
-      this.sharedUserService.followItems.next(followItems);
+      if (result) {
+        this.saved = result['result'];
+        let followItems = this.sharedUserService.followItems.value;
+        followItems = _.uniq(followItems);
+        followItems.push(this.item._id);
+        this.sharedUserService.followItems.next(followItems);
+      }
     });
   }
   unsaveItem() {
     combineLatest(timer(500),
     this.authFollowService.unfollowItem(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.saved = result['result'];
-      let followItems = this.sharedUserService.followItems.value;
-      followItems = _.filter(followItems, (id) => id != this.item._id);
-      this.sharedUserService.followItems.next(followItems);
+      if (result) {
+        this.saved = result['result'];
+        let followItems = this.sharedUserService.followItems.value;
+        followItems = _.filter(followItems, (id) => id != this.item._id);
+        this.sharedUserService.followItems.next(followItems);
+      }
     });
   }
   shareThroughFB() {
@@ -149,7 +153,7 @@ export class ListItemInfoComponent implements OnInit {
   }
   navigateToShop() {
     this.router.navigate(['', {outlets: {modal: null}}]).then(() => {
-      this.router.navigate(['/shop'], { queryParams: {id: this.item.shop._id}});
+      this.router.navigate(['/shop', this.item.shop.username]);
     })
   }
   ngOnDestroy() {
