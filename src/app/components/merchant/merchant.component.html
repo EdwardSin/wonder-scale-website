@@ -1,6 +1,6 @@
 <div *ngIf="shop && !loading.isRunning(); else loadingTemplate">
     <div class="row no-gutters merchant mb-3">
-        <div class="col-lg">
+        <div class="col-lg order-11 order-lg-1">
             <div class="merchant__profile-container">
                 <img *ngIf="shop?.profileImage" class="merchant__profile" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile-image" />
                 <img *ngIf="!shop?.profileImage" class="merchant__profile" style="background-color: #fff" src="assets/images/png/shop.png" alt="profile-image" />
@@ -11,21 +11,21 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-9 merchant-background position-relative">
+        <div class="col-lg-9 merchant-background position-relative order-1 order-lg-12">
             <p *ngIf="!shop?.bannerImage" class="merchant__text mb-0">{{shop?.name}}</p>
             <img class="merchant-background__banner" *ngIf="shop?.bannerImage" [src]="environment.IMAGE_URL + shop?.bannerImage" alt="banner" />
-            <ul class="merchant__nav nav">
-                <li *ngIf="false && newItems.length" class="merchant__nav-item nav-item">
-                    <a (click)="scrollTo('new-items')" class="merchant__nav-link nav-link">New</a>
-                </li>
-                <li *ngIf="shop?.informationImages.length" class="merchant__nav-item nav-item">
-                    <a (click)="scrollTo('info')" class="merchant__nav-link nav-link">Info</a>
-                </li>
-                <li *ngIf="allItems.length" class="merchant__nav-item nav-item">
-                    <a (click)="scrollTo('items')" class="merchant__nav-link nav-link">Items</a>
-                </li>
-            </ul>
         </div>
+        <ul *ngIf="false" class="merchant__nav nav order-12 d-none d-lg-block">
+            <li *ngIf="false && newItems.length" class="merchant__nav-item nav-item">
+                <a (click)="scrollTo('new-items')" class="merchant__nav-link nav-link">New</a>
+            </li>
+            <li *ngIf="shop?.informationImages.length" class="merchant__nav-item nav-item">
+                <a (click)="scrollTo('info')" class="merchant__nav-link nav-link">Info</a>
+            </li>
+            <li *ngIf="allItems.length" class="merchant__nav-item nav-item">
+                <a (click)="scrollTo('items')" class="merchant__nav-link nav-link">Items</a>
+            </li>
+        </ul>
     </div>
 
     <div *ngIf="false && newItems?.length" id="new-items" class="new-items-container mb-3">

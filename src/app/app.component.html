@@ -3,7 +3,7 @@
     <router-outlet></router-outlet>
 </div>
 
-<button (click)="scrollTo()" class="btn btn-controller position-fixed"
+<button *ngIf="!isMobileSize" (click)="scrollTo()" class="btn btn-controller position-fixed"
     style="border-radius: 5px 5px 0px 0px; z-index: 99; background-color: #282c35; color: #fff; bottom: 0rem; right: 2rem;">
     <span class="fas fa-chevron-up"></span>
 </button>

@@ -10,6 +10,7 @@ import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { takeUntil, map } from 'rxjs/operators';
 import { Subject, combineLatest, timer } from 'rxjs';
 import { SharedUserService } from '@services/shared/shared-user.service';
+import { ScreenService } from '@services/general/screen.service';
 
 @Component({
   selector: 'float-banner',
@@ -30,10 +31,13 @@ export class FloatBannerComponent implements OnInit {
   shareLinkThroughEmail: string;
   medias;
   saved: boolean;
+  isMobileSize: boolean;
   isQrcodeLoading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private facebookService: FacebookService,
+    private qrCodeBuilder: QRCodeBuilder,
     private authFollowService: AuthFollowService,
+    private screenService: ScreenService,
     private sharedUserService: SharedUserService
   ) {
     let initParams: InitParams = {
@@ -42,10 +46,12 @@ export class FloatBannerComponent implements OnInit {
       version: 'v2.8'
     };
     facebookService.init(initParams);
+    this.screenService.isMobileSize.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.isMobileSize = result;
+    });
   }
 
   ngOnInit(): void {
-
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes && this.element) {
@@ -137,7 +143,7 @@ export class FloatBannerComponent implements OnInit {
       if (this.element.profileImage) {
         imageURL = environment.IMAGE_URL + this.element.profileImage;
       }
-      QRCodeBuilder.toDataURL(imageURL, (dataUrl) => {
+      this.qrCodeBuilder.toDataURL(imageURL, (dataUrl) => {
         let newImage = <HTMLImageElement>document.createElement('img');
         newImage.alt = 'profile-image';
         newImage.src = dataUrl;
