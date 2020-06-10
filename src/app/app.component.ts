@@ -16,6 +16,7 @@ import { ScreenService } from '@services/general/screen.service';
 export class AppComponent {
   title = 'wonder-scale-website';
   screenLoading: boolean;
+  isMobileSize: boolean;
   loadingLabel: string = 'Loading...';
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(@Inject(PLATFORM_ID) private platformId,
@@ -43,6 +44,9 @@ export class AppComponent {
       this.screenLoading = result.loading;
       this.loadingLabel = result.label;
     });
+    this.screenService.isMobileSize.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.isMobileSize = result;
+    });
   }
   @HostListener('window:resize')
   onResize() {
@@ -50,5 +54,9 @@ export class AppComponent {
   }
   scrollTo() {
     window.scrollTo(0, 0);
+  }
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

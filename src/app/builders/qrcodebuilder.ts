@@ -1,10 +1,17 @@
 import { environment } from '@environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 declare var jQuery: any;
-
+@Injectable({
+    providedIn: 'root'
+})
 export class QRCodeBuilder {
 
     static URL = environment.URL;
+    constructor(private http: HttpClient) {
+
+    }
     public static createQRcode(target, username, option = {}) {
         let code = QRCodeBuilder.URL + 'shop/' + username;
         return new Promise((resolve) => {
@@ -26,17 +33,13 @@ export class QRCodeBuilder {
             src: 'assets/images/png/icon-with-profile-image-borderless.png'
         })
     }
-    public static toDataURL(url, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function() {
-          var reader = new FileReader();
-          reader.onloadend = function() {
-            callback(reader.result);
-          }
-          reader.readAsDataURL(xhr.response);
-        };
-        xhr.open('GET', url);
-        xhr.responseType = 'blob';
-        xhr.send();
-      }
+    toDataURL(url, callback) {
+        this.http.get(url, { responseType: 'blob' }).subscribe(result => {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                callback(reader.result);
+            }
+            reader.readAsDataURL(result);
+        });
+    }
 }
