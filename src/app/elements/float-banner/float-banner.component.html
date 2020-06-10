@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="opening-info__container mb-2 pb-2">
+                <div *ngIf="element?.openingInfoType == 'temporary_closed' || element?.openingInfoType == 'always_open' || (element?.openingInfoType == 'selected_hours' && element?.openingInfo != null)" class="opening-info__container mb-2 pb-2">
                     <h4>Opening hour:</h4>
                     <table class="ml-3" *ngIf="element?.openingInfoType == 'selected_hours'">
                         <tr *ngFor="let day of element?.openingInfo">
@@ -80,9 +80,6 @@
                     </div>
                     <div class="pl-3" *ngIf="element?.openingInfoType == 'always_open'">
                         <span>Always Open</span>
-                    </div>
-                    <div class="pl-3" *ngIf="element?.openingInfoType == 'no_hour_available'">
-                        <span>No Hour Available</span>
                     </div>
                 </div>
             </div>

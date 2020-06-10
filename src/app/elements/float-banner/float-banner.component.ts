@@ -67,6 +67,16 @@ export class FloatBannerComponent implements OnInit {
         if (this.element.media && this.element.media.length) {
           this.medias = _.groupBy(this.element.media, 'type');
         }
+        if (this.element.phone) {
+          this.element.phone = _.filter(this.element.phone, (phone) => !_.isEmpty(phone));
+        }
+        if (this.element.email) {
+          this.element.email = _.filter(this.element.email, (email) => !_.isEmpty(email));
+        }
+        if (this.element.website) {
+          this.element.website = _.filter(this.element.website, (website) => !_.isEmpty(website));
+        }
+
       } else {
         this.isFollowedItem();
         this.link = environment.URL + 'item/' + this.element._id;
