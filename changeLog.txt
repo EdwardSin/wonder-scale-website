@@ -8,6 +8,7 @@
 ---------------------------------------------
 .: WSW: Task: Change layout in website (WSW-39)
 .: WSW: BugFix: Website icon should be removed when no website url (WSW-45)
+.: WSW: Task: Loading top bar (WSW-41)
 
 - v1.0.1010                                 -
 ---------------------------------------------
