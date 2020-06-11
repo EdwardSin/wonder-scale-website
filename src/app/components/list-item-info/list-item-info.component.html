@@ -61,7 +61,8 @@
 </ng-template>
 
 <ng-template #noItemTemplate>
-    <h6 class="text-center mb-0" style="padding-top:28.588vh; padding-bottom:28.588vh">Item not found.</h6>
+    <h6 class="text-center mb-0" style="padding-top:28.588vh; padding-bottom:28.588vh">Item not found.<br/>
+    <span class="mt-2 d-inline-block">Item might already be unpublished by the page.</span></h6>
 </ng-template>
 
 <ws-modal *ngIf="isShareModalOpened" [maxWidth]="500" [(isOpened)]="isShareModalOpened">

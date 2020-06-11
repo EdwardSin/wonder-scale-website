@@ -28,7 +28,7 @@
     <ws-spinner *ngIf="loading.isRunning(); else noShopTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
 </ng-template>
 <ng-template #noShopTemplate>
-    <h6 class="text-center">Shop is not found.</h6>
+    <h6 class="text-center">Page is not found.</h6>
 </ng-template>
 
 <ws-modal *ngIf="isInformationModalOpened" [id]="'information'" [(isOpened)]="isInformationModalOpened" (isOpenedChange)="showQrcode()">
