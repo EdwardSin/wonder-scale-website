@@ -13,11 +13,13 @@
         position: relative;
 
         .merchant__profile {
-            position: absolute;
-            top: 24px;
-            left: 71px;
-            width: 140px;
-            height: 140px;
+            border: 10px solid #990000;
+            box-shadow: 0 0 5px #000;
+            display: block;
+            position: relative;
+            margin: 1.25rem auto;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             z-index: 1;
         }
@@ -120,7 +122,8 @@
     .merchant {
         .merchant__profile-container {
             .merchant__profile {
-                left: 50px;
+                width: 190px;
+                height: 190px;
             }
         }
     }
@@ -137,6 +140,9 @@
                 height: 60px;
                 position: static;
                 border-radius: 50%;
+                border: none;
+                display: inline-block;
+                margin: 0;
                 box-shadow: 0 0 3px #ccc;
             }
 
