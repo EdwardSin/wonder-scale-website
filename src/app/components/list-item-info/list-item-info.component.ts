@@ -61,7 +61,6 @@ export class ListItemInfoComponent implements OnInit {
     this.itemService.getItemWithSellerById(id).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       if (result && result.result) {
         this.item = result.result;
-        console.log(this.item);
         this.mapItem();
       }
     })
@@ -72,7 +71,6 @@ export class ListItemInfoComponent implements OnInit {
     this.itemService.getPreviewItemWithSellerById(id, shopId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       if (result && result.result) {
         this.item = result.result;
-        console.log(this.item);
         this.mapItem();
       }
     })

@@ -30,8 +30,8 @@
                             pagination: false,
                             navigation: false}">
                             <div *ngFor="let image of profileImages">
-                                <img style="width: 100%; object-fit: contain; height: initial" [src]="environment.IMAGE_URL + image" alt="image"/>
-                                <div class="w-100 text-center font-8" style="position: absolute; bottom: 0; line-height: 30px; color: #fff; background-color: #282C35">
+                                <img style="width: 100%; object-fit: contain; height: initial" [lazyLoad]="environment.IMAGE_URL + image" [defaultImage]="'assets/images/png/itemProfile.png'" alt="image"/>
+                                <div class="swiper__image-label w-100 text-center font-8">
                                     <p class="d-inline-block mb-0">
                                         <span *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != selectedType.price" class="d-inline-block mr-2 font-8" style="text-decoration: line-through; color: #ccc">
                                             <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
@@ -43,13 +43,13 @@
                                 </div>
                             </div>
                         </swiper>
-                        <div class="w-100 py-3" style="position: relative; z-index: 1">
-                            <span *ngFor="let type of item.types; let i = index" class="list-item-info__profile-image-container mr-1 mb-1 clickable">
-                                <img *ngIf="!type.images?.length" class="list-item-info__profile-image" (click)="selectItemType(type)" src="assets/images/png/profileImage.png" alt="image"/>
-                                <img *ngIf="type.images?.length" class="list-item-info__profile-image" (click)="selectItemType(type)" [src]="environment.IMAGE_URL + type.images[0]" alt="image"/>
-                                <span *ngIf="type == selectedType" class="list-item-info__profile-image__overlay"></span>
-                            </span>
-                        </div>
+                    </div>
+                    <div *ngIf="item.types?.length > 1" class="w-100 py-3" style="position: relative; z-index: 1">
+                        <span *ngFor="let type of item.types; let i = index" class="list-item-info__profile-image-container mr-1 mb-1 clickable">
+                            <img *ngIf="!type.images?.length" class="list-item-info__profile-image" (click)="selectItemType(type)" src="assets/images/png/profileImage.png" alt="image"/>
+                            <img *ngIf="type.images?.length" class="list-item-info__profile-image" (click)="selectItemType(type)" [src]="environment.IMAGE_URL + type.images[0]" alt="image"/>
+                            <span *ngIf="type == selectedType" class="list-item-info__profile-image__overlay"></span>
+                        </span>
                     </div>
                 </div>
                 <!-- <div *ngIf="false && item?.description" class="list-item-info__container">

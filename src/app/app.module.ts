@@ -12,6 +12,7 @@ import { SwiperModule, SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-w
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FacebookModule } from '@jemys89/ngx-facebook';
 import { NgProgressModule } from 'ngx-progressbar';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { NgProgressRouterModule } from 'ngx-progressbar/router';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -148,6 +149,7 @@ export function provideConfig() {
     ClipboardModule,
     DragDropModule,
     SocialLoginModule,
+    LazyLoadImageModule,
     NgProgressModule,
     NgProgressRouterModule,
     MDBBootstrapModule.forRoot(),
