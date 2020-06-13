@@ -48,43 +48,63 @@ export class ListItemInfoComponent implements OnInit {
 
   ngOnInit(): void {
     let itemId = this.route.snapshot.queryParams.item_id;
-    this.getItemById(itemId);
+    let preview = this.route.snapshot.queryParams.preview;
+    if (preview == 'true') {
+      this.getPreviewItemById(itemId);
+    } else {
+      this.getItemById(itemId);
+    }
   }
   getItemById(id) {
     this.loading.start();
     this.itemService.getItemWithSellerById(id).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
-      this.item = result.result;
-      DocumentHelper.setWindowTitleWithWonderScale(this.item.name);
-      if (this.item.types.length > 0) {
-        this.item.types = this.item.types.map(type => {
-          return {
-            ...type,
-            images: type.images.length > 0 ? type.images : this.item.profileImages.length > 0 ? this.item.profileImages : [],
-            quantity: type.quantity || this.item.quantity,
-            price: type.price || this.item.price,
-            discount: type.discount || this.item.discount,
-          }
-        });
-      } else {
-        this.item.types = [{
-          quantity: this.item.quantity,
-          price: this.item.price,
-          discount: this.item.discount,
-          images: this.item.profileImages,
-          weight: this.item.weight
-        }];
+      if (result && result.result) {
+        this.item = result.result;
+        this.mapItem();
       }
-      this.selectedType = this.item.types[0];
-      this.name = this.item.name;
-      this.price = this.selectedType.price;
-      this.quantity = this.selectedType.quantity;
-      this.discount = this.selectedType.discount;
-      this.selectedProfileIndex = this.item.profileImageIndex > -1 ? this.item.profileImageIndex : 0;
-      this.profileImages = _.union(_.flattenDeep([this.item.profileImages, this.item.types.map(type => type.images), (this.item.descriptionImages || [])]));
-      this.profileImages = _.filter(this.profileImages, image => !_.isEmpty(image));
-      this.profileImages = this.profileImages.slice(0, 16);
-      this.renderItemInfo();
     })
+  }
+  getPreviewItemById(id) {
+    this.loading.start();
+    let shopId = this.route.snapshot.queryParams.id;
+    this.itemService.getPreviewItemWithSellerById(id, shopId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+      if (result && result.result) {
+        this.item = result.result;
+        this.mapItem();
+      }
+    })
+  }
+  mapItem() {
+    DocumentHelper.setWindowTitleWithWonderScale(this.item.name);
+    if (this.item.types.length > 0) {
+      this.item.types = this.item.types.map(type => {
+        return {
+          ...type,
+          images: type.images.length > 0 ? type.images : this.item.profileImages.length > 0 ? this.item.profileImages : [],
+          quantity: type.quantity || this.item.quantity,
+          price: type.price || this.item.price,
+          discount: type.discount || this.item.discount,
+        }
+      });
+    } else {
+      this.item.types = [{
+        quantity: this.item.quantity,
+        price: this.item.price,
+        discount: this.item.discount,
+        images: this.item.profileImages,
+        weight: this.item.weight
+      }];
+    }
+    this.selectedType = this.item.types[0];
+    this.name = this.item.name;
+    this.price = this.selectedType.price;
+    this.quantity = this.selectedType.quantity;
+    this.discount = this.selectedType.discount;
+    this.selectedProfileIndex = this.item.profileImageIndex > -1 ? this.item.profileImageIndex : 0;
+    this.profileImages = _.union(_.flattenDeep([this.item.profileImages, this.item.types.map(type => type.images), (this.item.descriptionImages || [])]));
+    this.profileImages = _.filter(this.profileImages, image => !_.isEmpty(image));
+    this.profileImages = this.profileImages.slice(0, 16);
+    this.renderItemInfo();
   }
   renderItemInfo() {
     this.isFollowedItem();
