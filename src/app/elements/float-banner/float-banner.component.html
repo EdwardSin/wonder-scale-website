@@ -31,7 +31,7 @@
     <h6 class="text-center">Page is not found.</h6>
 </ng-template>
 
-<ws-modal *ngIf="isInformationModalOpened" [id]="'information'" [(isOpened)]="isInformationModalOpened" (isOpenedChange)="showQrcode()">
+<ws-modal *ngIf="isInformationModalOpened" [id]="'information'" [(isOpened)]="isInformationModalOpened" (isOpenedChange)="showQrcode($event)">
     <ng-container modalBody *ngIf="element; else loadingTemplate">
         <div class="row no-gutters">
             <div class="col-lg pr-3 order-12 order-lg-1">
@@ -98,7 +98,7 @@
         </div>
     </ng-container>
 </ws-modal>
-<ws-modal [id]="'qr-code'" *ngIf="isQRCodeModalOpened" [maxWidth]="310" [(isOpened)]="isQRCodeModalOpened" (isOpenedChange)="showQrcode()">
+<ws-modal [id]="'qr-code'" *ngIf="isQRCodeModalOpened" [maxWidth]="310" [(isOpened)]="isQRCodeModalOpened" (isOpenedChange)="showQrcode($event)">
     <div modalBody class="row no-gutters">
         <div class="qrcode__container mb-4 mt-3 col-auto center">
             <div class="qrcode border p-3">
