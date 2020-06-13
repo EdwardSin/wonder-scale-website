@@ -10,6 +10,7 @@
 .: WSW: Task: Shop not found if username has changed when scan qr code (WSW-49)
 .: WSW: Task: Checking item type implementation (WSW-47)
 .: WSW: Task: CLONE - Change profile bezel (WSW-53)
+.: WSW: BugFix: Fix url to page issue (WSW-49)
 
 ---------------------------------------------
 - 2020-06-11                                -

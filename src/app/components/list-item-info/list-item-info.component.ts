@@ -110,10 +110,12 @@ export class ListItemInfoComponent implements OnInit {
   }
   renderItemInfo() {
     this.isFollowedItem();
-    this.link = environment.URL + '(modal:item)?item_id=' + this.item._id;
-    this.shareLinkThroughFB = this.link;
-    this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
-    this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
+    if (this.item.shop) {
+      this.link = environment.URL + '(modal:item)?id=' + this.item.shop._id + '&item_id=' + this.item._id;
+      this.shareLinkThroughFB = this.link;
+      this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
+      this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
+    }
   }
   isFollowedItem() {
     this.authFollowService.isFollowedItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
@@ -188,7 +190,7 @@ export class ListItemInfoComponent implements OnInit {
   }
   navigateToShop() {
     this.router.navigate(['', {outlets: {modal: null}}]).then(() => {
-      this.router.navigate(['/shop', this.item.shop.username]);
+      this.router.navigate(['/shop', this.item.shop.username], {queryParams: {id: this.item.shop._id}});
     })
   }
   ngOnDestroy() {
