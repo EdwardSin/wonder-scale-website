@@ -25,6 +25,7 @@ export class ListItemInfoComponent implements OnInit {
   discount: number = 0;
   quantity: number;
   selectedType;
+  defaultType;
 
   profileImages: Array<string> = [];
   selectedProfileIndex: number = 0;
@@ -60,6 +61,7 @@ export class ListItemInfoComponent implements OnInit {
     this.itemService.getItemWithSellerById(id).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       if (result && result.result) {
         this.item = result.result;
+        console.log(this.item);
         this.mapItem();
       }
     })
@@ -70,6 +72,7 @@ export class ListItemInfoComponent implements OnInit {
     this.itemService.getPreviewItemWithSellerById(id, shopId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       if (result && result.result) {
         this.item = result.result;
+        console.log(this.item);
         this.mapItem();
       }
     })
@@ -95,11 +98,12 @@ export class ListItemInfoComponent implements OnInit {
         weight: this.item.weight
       }];
     }
+    this.defaultType = this.item.types[0];
     this.selectedType = this.item.types[0];
     this.name = this.item.name;
-    this.price = this.selectedType.price;
-    this.quantity = this.selectedType.quantity;
-    this.discount = this.selectedType.discount;
+    this.price = this.defaultType.price;
+    this.quantity = this.defaultType.quantity;
+    this.discount = this.defaultType.discount;
     this.selectedProfileIndex = this.item.profileImageIndex > -1 ? this.item.profileImageIndex : 0;
     this.profileImages = _.union(_.flattenDeep([this.item.profileImages, this.item.types.map(type => type.images), (this.item.descriptionImages || [])]));
     this.profileImages = _.filter(this.profileImages, image => !_.isEmpty(image));
@@ -159,6 +163,10 @@ export class ListItemInfoComponent implements OnInit {
     this.selectedProfileIndex = this.profileImages.indexOf(image);
     this.galleryThumbs['directiveRef'].setIndex(this.selectedProfileIndex);
   }
+  onIndexChange(event) {
+    let image = this.profileImages[event];
+    this.selectedType = this.getItemBySelectedImage(image);
+  }
   selectItemType(itemType) {
     this.selectedType = itemType;
     this.price = this.selectedType.price;
@@ -167,6 +175,15 @@ export class ListItemInfoComponent implements OnInit {
     if (this.selectedType['images'].length > 0) {
       this.selectProfileImage(this.selectedType['images'][0]);
     }
+  }
+  getItemBySelectedImage(image) {
+    let type = this.item.types.find(type => {
+      return type.images.includes(image);
+    });
+    if (!type) {
+      type = this.item.types[0];
+    }
+    return type;
   }
   closeModal() {
     this.router.navigate(['', {outlets: {modal: null}}], {queryParams: {item_id: null}, queryParamsHandling: 'merge'});

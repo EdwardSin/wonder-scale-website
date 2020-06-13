@@ -12,36 +12,42 @@
                         <span class="list-item-info__icon fas fa-store" (click)="navigateToShop()"></span>
                     </div>
                     <div class="list-item-info__price-container">
-                        <p class="d-inline-block mr-2 mb-0" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer">
-                            <!-- <span class="badge badge-warning mr-2" style="font-size: .8rem; vertical-align: text-top;">{{ discount }}%</span> -->
+                        <p class="d-inline-block mr-2 mb-0" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != item.price">
                             <span class="list-item-info__details__original-price d-inline-block">
-                                <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                                <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
                         </p>
-                        <p class="list-item-info__details__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
-                        <p class="list-item-info__details__price list-item-info__details__price__offer mb-1" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</p>
+                        <p class="list-item-info__details__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                        <p class="list-item-info__details__price list-item-info__details__price__offer mb-1" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : defaultType?.discount }}</p>
                         <p *ngIf="item?.quantity" class="list-item-info__details__quantity">Quantity: {{ quantity }}</p>
-                        <!-- <div class="row no-gutters">
-                            <div class="list-item-info__item-type mr-3" *ngFor="let itemType of item?.types" (click)="selectItemType(itemType)">
-                                <img class="w-100 h-100" [src]="environment.IMAGE_URL + itemType.images[0]" alt="item index"/>
-                                <span *ngIf="itemType == selectedType" class="list-item-info__item-type__overlay"></span>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
                 <div class="clearfix mb-3"></div>
                 <p *ngIf="item?.description" class="list-item-info__description">{{ item?.description }}</p>
                 <div *ngIf="profileImages.length" class="list-item-info__profile-container row no-gutters">
                     <div class="list-item-info__profile mb-2">
-                        <swiper #galleryThumbs [(index)]="selectedProfileIndex" [config]="{
+                        <swiper #galleryThumbs (indexChange)="onIndexChange($event)" [(index)]="selectedProfileIndex" [config]="{
                             centeredSlides: true,
                             pagination: false,
                             navigation: false}">
-                            <img style="width: 100%; object-fit: contain; height: initial" *ngFor="let image of profileImages" [src]="environment.IMAGE_URL + image" alt="image"/>
+                            <div *ngFor="let image of profileImages">
+                                <img style="width: 100%; object-fit: contain; height: initial" [src]="environment.IMAGE_URL + image" alt="image"/>
+                                <div class="w-100 text-center font-8" style="position: absolute; bottom: 0; line-height: 30px; color: #fff; background-color: #282C35">
+                                    <p class="d-inline-block mb-0">
+                                        <span *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != selectedType.price" class="d-inline-block mr-2 font-8" style="text-decoration: line-through; color: #ccc">
+                                            <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                                        <span>
+                                            <span class="mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                                            <span class="mb-1" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
                         </swiper>
                         <div class="w-100 py-3" style="position: relative; z-index: 1">
-                            <span *ngFor="let image of profileImages; let i = index" class="list-item-info__profile-image-container mr-1 mb-1 clickable">
-                                <img class="list-item-info__profile-image" (click)="selectProfileImage(image)" [src]="environment.IMAGE_URL + image" alt="image"/>
-                                <span *ngIf="i == selectedProfileIndex" class="list-item-info__profile-image__overlay"></span>
+                            <span *ngFor="let type of item.types; let i = index" class="list-item-info__profile-image-container mr-1 mb-1 clickable">
+                                <img *ngIf="!type.images?.length" class="list-item-info__profile-image" (click)="selectItemType(type)" src="assets/images/png/profileImage.png" alt="image"/>
+                                <img *ngIf="type.images?.length" class="list-item-info__profile-image" (click)="selectItemType(type)" [src]="environment.IMAGE_URL + type.images[0]" alt="image"/>
+                                <span *ngIf="type == selectedType" class="list-item-info__profile-image__overlay"></span>
                             </span>
                         </div>
                     </div>

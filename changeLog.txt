@@ -7,7 +7,8 @@
 - 2020-06-13                                -
 ---------------------------------------------
 .: WSM: Task: Adding component displayed preview (WSM-77)
-.: WSM: Task: Shop not found if username has changed when scan qr code (WSW-49)
+.: WSW: Task: Shop not found if username has changed when scan qr code (WSW-49)
+.: WSW: Task: Checking item type implementation (WSW-47)
 
 ---------------------------------------------
 - 2020-06-11                                -
