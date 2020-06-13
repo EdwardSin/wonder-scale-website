@@ -12,8 +12,8 @@ export class QRCodeBuilder {
     constructor(private http: HttpClient) {
 
     }
-    public static createQRcode(target, username, option = {}) {
-        let code = QRCodeBuilder.URL + 'shop/' + username;
+    public static createQRcode(target, url, option = {}) {
+        let code = url;
         return new Promise((resolve) => {
             (<any>jQuery(target)).qrcode({
                 width: option['width'] || 196, height: option['height'] || 196, foreground: "#000",

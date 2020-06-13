@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { Shop } from '@objects/shop';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
 import * as $ from 'jquery';
@@ -35,6 +35,7 @@ export class FloatBannerComponent implements OnInit {
   isQrcodeLoading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private facebookService: FacebookService,
+    private ref: ChangeDetectorRef,
     private qrCodeBuilder: QRCodeBuilder,
     private authFollowService: AuthFollowService,
     private screenService: ScreenService,
@@ -146,26 +147,28 @@ export class FloatBannerComponent implements OnInit {
       })
       .catch(err => { });
   }
-  showQrcode() {
-    $(() => {
-      this.isQrcodeLoading.start();
-      let imageURL = 'assets/images/png/dot.png';
-      if (this.element.profileImage) {
-        imageURL = environment.IMAGE_URL + this.element.profileImage;
-      }
-      this.qrCodeBuilder.toDataURL(imageURL, (dataUrl) => {
-        let newImage = <HTMLImageElement>document.createElement('img');
-        newImage.alt = 'profile-image';
-        newImage.src = dataUrl;
-        newImage.addEventListener('load', e => {
-          QRCodeBuilder.createQRcode('.qrcode', this.element.username, { width: 150, height: 150})
-          .then(() => {
-            this.renderProfileImageToQrcode(newImage, 150);
-            this.isQrcodeLoading.stop();
+  showQrcode(event) {
+    if (event)  {
+      $(() => {
+        this.isQrcodeLoading.start();
+        let imageURL = 'assets/images/png/dot.png';
+        this.qrCodeBuilder.toDataURL(imageURL, (dataUrl) => {
+          let newImage = <HTMLImageElement>document.createElement('img');
+          newImage.alt = 'profile-image';
+          newImage.src = dataUrl;
+          newImage.addEventListener('load', e => {
+            let url = environment.URL + 'shop/' + this.element.username + '?id=' + this.element.id;
+            QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150})
+            .then(() => {
+              this.renderProfileImageToQrcode(newImage, 150);
+              this.isQrcodeLoading.stop();
+            });
           });
         });
       });
-    });
+    } else {
+      $('.qrcode').empty();
+    }
   }
   renderProfileImageToQrcode(image, size) {
     let canvas = document.getElementById('canvas1');
