@@ -1,3 +1,9 @@
+<div *ngIf="preview" #alert class="alert alert-danger alert-dismissible fade show font-8 mb-0 w-100" role="alert">
+    This is a preview page and will not displayed to public.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <div *ngIf="shop && !loading.isRunning(); else loadingTemplate">
     <div class="row no-gutters merchant mb-3">
         <div class="col-lg order-11 order-lg-1">
@@ -81,7 +87,8 @@
 </ng-template>
 
 <ng-template #noShopTemplate>
-    <h6 class="my-5 py-5 text-center">Shop is not found!</h6>
+    <h6 *ngIf="!message" class="my-5 py-5 text-center">Shop is not found!</h6>
+    <h6 *ngIf="message" class="my-5 py-5 text-center">{{ message }}</h6>
 </ng-template>
 <ng-template #noItemTemplate>
     <h6 class="text-center" style="padding: 6rem 0;">No item</h6>

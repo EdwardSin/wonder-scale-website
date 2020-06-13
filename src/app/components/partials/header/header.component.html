@@ -19,7 +19,7 @@
         <div class="user-container">
             <div *ngIf="!user">
                 <a class="user-container__link" href="javascript:void(0)"
-                [routerLink]="['', {outlets: { modal: 'login'}}]">Login</a>
+                [routerLink]="['', {outlets: { modal: 'login'}}]" [queryParamsHandling]="'merge'">Login</a>
                 <span class="user-container__text">|</span>
                 <a class="user-container__link" href="javacript:void(0)"
                 [routerLink]="['', {outlets: { modal: 'register'}}]">Sign-up</a>
