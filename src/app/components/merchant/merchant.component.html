@@ -68,15 +68,15 @@
             <div *ngIf="false" class="row no-gutters mb-4">
                 <!-- <item [item]="item" *ngFor="let item of items" class="mb-5"></item> -->
             </div>
-            <div *ngIf="items.length" class="w-100">
+            <div *ngIf="items.length" class="w-100 pb-3">
                 <list-item [item]="item" *ngFor="let item of items"></list-item>
             </div>
-            <pagination class="pb-4" [total]="items.length"></pagination>
+            <!-- <pagination class="pb-4" [total]="items.length"></pagination> -->
         </ng-container>
     </div>
 </div>
 
-<float-banner [element]="shop" [type]="'shop'"></float-banner>
+<float-banner *ngIf="shop" [element]="shop" [type]="'shop'"></float-banner>
 
 <ng-template #loadingTemplate>
     <ws-spinner *ngIf="loading.isRunning(); else noShopTemplate" class="text-center d-block w-100" style="padding-top: 30vh;padding-bottom: 30vh"></ws-spinner>
