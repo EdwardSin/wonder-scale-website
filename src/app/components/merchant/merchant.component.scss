@@ -13,11 +13,13 @@
         position: relative;
 
         .merchant__profile {
-            position: absolute;
-            top: 24px;
-            left: 71px;
-            width: 140px;
-            height: 140px;
+            border: 10px solid #990000;
+            box-shadow: 0 0 5px #000;
+            display: block;
+            position: relative;
+            margin: 1.25rem auto;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             z-index: 1;
         }
@@ -35,7 +37,7 @@
         .merchant-background__banner {
             width: 100%;
             height: 300px;
-            object-fit: contain;
+            object-fit: cover;
         }
         .merchant__text{
             line-height: 300px;
@@ -49,23 +51,19 @@
             -webkit-user-select: none;
         }
     }
+}
+.merchant__nav {
+    background: #fff;
+    .merchant__nav-item {
+        background-color: rgba(255, 255, 255, .6);
+        transition: background-color ease .2s;
 
-    .merchant__nav {
-        position: absolute;
-        bottom: 0;
-        right: 0;
+        .merchant__nav-link {
+            color: #000;
+        }
 
-        .merchant__nav-item {
-            background-color: rgba(255, 255, 255, .6);
-            transition: background-color ease .2s;
-
-            .merchant__nav-link {
-                color: #000;
-            }
-
-            &:hover {
-                background-color: rgba(255, 255, 255, .8);
-            }
+        &:hover {
+            background-color: rgba(255, 255, 255, .8);
         }
     }
 }
@@ -105,6 +103,7 @@
 }
 
 .category-container {
+    padding: 0 .5rem;
     .category-container__dropdown {
         border: 0;
         width: 250px;
@@ -123,7 +122,8 @@
     .merchant {
         .merchant__profile-container {
             .merchant__profile {
-                left: 50px;
+                width: 190px;
+                height: 190px;
             }
         }
     }
@@ -140,6 +140,9 @@
                 height: 60px;
                 position: static;
                 border-radius: 50%;
+                border: none;
+                display: inline-block;
+                margin: 0;
                 box-shadow: 0 0 3px #ccc;
             }
 
@@ -154,7 +157,7 @@
             height: 100%;
 
             .merchant-background__banner {
-                width: 100vw;
+                width: 100%;
                 height: calc(100vw * 0.361);
             }
 
@@ -163,12 +166,16 @@
                 font-size: 2rem;
             }
 
-            .merchant__nav {
-                position: relative;
-                background-color: #fff;
-                .merchant__nav-item{
-                    background-color: rgba(0, 0, 0, .05);
-                    border-right: 1px solid #fff;
+        }
+        .merchant__nav {
+            position: relative;
+            background-color: #fff;
+            float: right;
+            .merchant__nav-item{
+                background-color: #282C35;
+                border-right: 1px solid #fff;
+                .merchant__nav-link{
+                    color: #fff;
                 }
             }
         }

@@ -42,6 +42,7 @@ export class ListItemComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['item'] && this.item) {
       this.follow = this.followItems.includes(this.item._id);
+      this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
     }
   }
   followClicked(event) {

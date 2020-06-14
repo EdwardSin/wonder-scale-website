@@ -10,9 +10,8 @@ import { Observable } from 'rxjs';
 export class ShopService {
 
   constructor(private http: HttpClient) { }
-
-  getShops() {
-    return this.http.get('/api/shops');
+  getPreviewShopById(id): Observable<Result<Shop>> {
+    return this.http.get<Result<Shop>>('/api/auth-shops/shop-contributors/' + id, { headers: { "access-shop": id }});
   }
   getShopById(id): Observable<Result<Shop>> {
     return this.http.get<Result<Shop>>('/api/shops/' + id);

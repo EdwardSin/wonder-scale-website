@@ -12,7 +12,7 @@ export const environment = {
   HERE_APP_API: 'h9LLOE7i3CG3y1OKhWxw',
   HERE_APP_CODE: 'ERx9SWBfCHLlbN1vKOvlng',
   ACTIVATED_MESSAGE: 'Start to view page now!',
-  URL: 'https://localhost:4200/'
+  URL: 'https://192.168.0.101:4200/'
 };
 
 /*

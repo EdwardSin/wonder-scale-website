@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { Shop } from '@objects/shop';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
 import * as $ from 'jquery';
@@ -10,6 +10,7 @@ import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { takeUntil, map } from 'rxjs/operators';
 import { Subject, combineLatest, timer } from 'rxjs';
 import { SharedUserService } from '@services/shared/shared-user.service';
+import { ScreenService } from '@services/general/screen.service';
 
 @Component({
   selector: 'float-banner',
@@ -30,10 +31,14 @@ export class FloatBannerComponent implements OnInit {
   shareLinkThroughEmail: string;
   medias;
   saved: boolean;
+  isMobileSize: boolean;
   isQrcodeLoading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private facebookService: FacebookService,
+    private ref: ChangeDetectorRef,
+    private qrCodeBuilder: QRCodeBuilder,
     private authFollowService: AuthFollowService,
+    private screenService: ScreenService,
     private sharedUserService: SharedUserService
   ) {
     let initParams: InitParams = {
@@ -42,16 +47,18 @@ export class FloatBannerComponent implements OnInit {
       version: 'v2.8'
     };
     facebookService.init(initParams);
+    this.screenService.isMobileSize.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.isMobileSize = result;
+    });
   }
 
   ngOnInit(): void {
-
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes && this.element) {
       if (this.type == 'shop') {
         this.isFollowedShop();
-        this.link = environment.URL + 'shop/' + this.element.username;
+        this.link = environment.URL + 'shop/' + this.element.username + '?id=' + this.element._id;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
@@ -61,6 +68,16 @@ export class FloatBannerComponent implements OnInit {
         if (this.element.media && this.element.media.length) {
           this.medias = _.groupBy(this.element.media, 'type');
         }
+        if (this.element.phone) {
+          this.element.phone = _.filter(this.element.phone, (phone) => !_.isEmpty(phone));
+        }
+        if (this.element.email) {
+          this.element.email = _.filter(this.element.email, (email) => !_.isEmpty(email));
+        }
+        if (this.element.website) {
+          this.element.website = _.filter(this.element.website, (website) => !_.isEmpty(website));
+        }
+
       } else {
         this.isFollowedItem();
         this.link = environment.URL + 'item/' + this.element._id;
@@ -130,26 +147,28 @@ export class FloatBannerComponent implements OnInit {
       })
       .catch(err => { });
   }
-  showQrcode() {
-    $(() => {
-      this.isQrcodeLoading.start();
-      let imageURL = 'assets/images/png/dot.png';
-      if (this.element.profileImage) {
-        imageURL = environment.IMAGE_URL + this.element.profileImage;
-      }
-      QRCodeBuilder.toDataURL(imageURL, (dataUrl) => {
-        let newImage = <HTMLImageElement>document.createElement('img');
-        newImage.alt = 'profile-image';
-        newImage.src = dataUrl;
-        newImage.addEventListener('load', e => {
-          QRCodeBuilder.createQRcode('.qrcode', this.element.username, { width: 150, height: 150})
-          .then(() => {
-            this.renderProfileImageToQrcode(newImage, 150);
-            this.isQrcodeLoading.stop();
+  showQrcode(event) {
+    if (event)  {
+      $(() => {
+        this.isQrcodeLoading.start();
+        let imageURL = 'assets/images/png/dot.png';
+        this.qrCodeBuilder.toDataURL(imageURL, (dataUrl) => {
+          let newImage = <HTMLImageElement>document.createElement('img');
+          newImage.alt = 'profile-image';
+          newImage.src = dataUrl;
+          newImage.addEventListener('load', e => {
+            let url = environment.URL + 'shop/' + this.element.username + '?id=' + this.element.id;
+            QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150})
+            .then(() => {
+              this.renderProfileImageToQrcode(newImage, 150);
+              this.isQrcodeLoading.stop();
+            });
           });
         });
       });
-    });
+    } else {
+      $('.qrcode').empty();
+    }
   }
   renderProfileImageToQrcode(image, size) {
     let canvas = document.getElementById('canvas1');

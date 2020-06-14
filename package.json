@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
-        "dev": "ng serve",
+        "dev": "ng serve --host 0.0.0.0 --ssl true --disableHostCheck",
         "start": "ng serve",
         "build": "ng build --prod --aot",
         "upload": "aws s3 cp dist/wonder-scale-website s3://www.wonderscale.com --recursive",
@@ -39,6 +39,7 @@
         "moment": "^2.25.3",
         "ng-lazyload-image": "^7.1.0",
         "ngx-cookie-service": "^3.0.4",
+        "ngx-progressbar": "^6.0.2",
         "ngx-swiper-wrapper": "^9.0.1",
         "rxjs": "~6.5.4",
         "tslib": "^1.10.0",

@@ -2,7 +2,36 @@
 - Wonder Scale Website                      -
 ---------------------------------------------
 
-- v1.0.1000                                 -
+- v1.0.1011                                 -
+---------------------------------------------
+- 2020-06-14                                -
+---------------------------------------------
+.: WSM: BugFix: Too many items and mistakenly show pagination (WSW-56)
+.: WSM: Task: Fixed Controller tab overlapped issue (WSW-39)
+.: WSM: Task: Display item as red background if has discount type (WSW-47)
+
+---------------------------------------------
+- 2020-06-13                                -
+---------------------------------------------
+.: WSM: Task: Adding component displayed preview (WSM-77)
+.: WSW: Task: Shop not found if username has changed when scan qr code (WSW-49)
+.: WSW: Task: Checking item type implementation (WSW-47)
+.: WSW: Task: CLONE - Change profile bezel (WSW-53)
+.: WSW: BugFix: Fix url to page issue (WSW-49)
+
+---------------------------------------------
+- 2020-06-11                                -
+---------------------------------------------
+.: WSM: Task: Unpublish page to not show to public (WSM-118)
+
+---------------------------------------------
+- 2020-06-10                                -
+---------------------------------------------
+.: WSW: Task: Change layout in website (WSW-39)
+.: WSW: BugFix: Website icon should be removed when no website url (WSW-45)
+.: WSW: Task: Loading top bar (WSW-41)
+
+- v1.0.1010                                 -
 ---------------------------------------------
 - 2020-06-07                                -
 ---------------------------------------------
@@ -27,6 +56,8 @@
 .: WSW: Task: Change Share URL to username (WSW-29)
 .: WSW: Task: Prompt login when following without authentication (WSW-28)
 
+
+- v1.0.1000                                 -
 ---------------------------------------------
 - 2020-05-30                                -
 ---------------------------------------------
