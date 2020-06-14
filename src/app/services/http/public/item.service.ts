@@ -10,6 +10,9 @@ import { Observable } from 'rxjs';
 export class ItemService {
 
   constructor(private http: HttpClient) { }
+  getPreviewItemWithSellerById(id, shopId): Observable<Result<Item>>{
+    return this.http.get<Result<Item>>('/api/auth-shops/item-contributors/preview/item/' + id, { headers: { "access-shop": shopId }});
+  }
   getItemWithSellerById(id): Observable<Result<Item>>{
     return this.http.get<Result<Item>>('/api/items/item-with-seller/' + id);
   }

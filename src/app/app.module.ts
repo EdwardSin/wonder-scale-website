@@ -11,6 +11,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SwiperModule, SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FacebookModule } from '@jemys89/ngx-facebook';
+import { NgProgressModule } from 'ngx-progressbar';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { NgProgressRouterModule } from 'ngx-progressbar/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -146,6 +149,9 @@ export function provideConfig() {
     ClipboardModule,
     DragDropModule,
     SocialLoginModule,
+    LazyLoadImageModule,
+    NgProgressModule,
+    NgProgressRouterModule,
     MDBBootstrapModule.forRoot(),
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({

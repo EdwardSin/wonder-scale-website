@@ -32,10 +32,13 @@ export class MerchantComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   itemLoading: WsLoading = new WsLoading;
   shop: Shop;
+  message = '';
+  preview: Boolean;
   shopId;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private router: Router, 
-    private route: ActivatedRoute, private shopService: ShopService,
+    private route: ActivatedRoute, 
+    private shopService: ShopService,
     private authFollowService: AuthFollowService,
     private sharedUserService: SharedUserService,
     private categoryService: CategoryService,
@@ -43,32 +46,58 @@ export class MerchantComponent implements OnInit {
   }
 
   ngOnInit() {
-    let username = this.route.snapshot.params.username;
-    this.getShopByUsername(username);
+    let id = this.route.snapshot.queryParams.id;
+    let preview = this.route.snapshot.queryParams.preview;
+    if (preview == 'true') {
+      this.getPreviewShopById(id);
+    } else {
+      this.getShopById(id);
+    }
 
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(event => {
       if (event instanceof NavigationEnd) {
+        if (this.shop) {
+          DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
+        }
+      }
+    });
+  }
+  getShopById(id) {
+    this.loading.start();
+    this.shopService.getShopById(id).pipe(tap((result) => {
+      this.shop = result.result;
+      this.mapShop();
+    }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
+      if (this.shop) {
         DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
       }
     });
   }
-  getShopByUsername(username) {
+  getPreviewShopById(id) {
     this.loading.start();
-    this.shopService.getShopByUsername(username).pipe(tap((result) => {
+    this.shopService.getPreviewShopById(id).pipe(tap((result) => {
+      this.preview = true;
       this.shop = result.result;
-      this.shopId = this.shop._id;
-      if(this.shop) {
-        this.allItems = this.shop['allItems'];
-        this.newItems = this.shop['newItems'];
-        this.discountItems = this.shop['discountItems'];
-        this.todaySpecialItems = this.shop['todaySpecialItems'];
-        this.categories = this.shop['categories'];
-        this.items = this.allItems;
-      }
+      this.mapShop();
     }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
-      DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
+      if (this.shop) {
+        DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
+      }
+    }, err => {
+      this.message = 'You are not authorized to view the page! Please login your account!'
     });
+  }
+  mapShop() {
+    if(this.shop) {
+      this.shopId = this.shop._id;
+      this.allItems = this.shop['allItems'];
+      this.newItems = this.shop['newItems'];
+      this.discountItems = this.shop['discountItems'];
+      this.todaySpecialItems = this.shop['todaySpecialItems'];
+      this.categories = this.shop['categories'];
+      this.items = this.allItems;
+    }
   }
   // getAllItemsById(id) {
   //   this.itemService.getAllItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
@@ -141,6 +170,9 @@ export class MerchantComponent implements OnInit {
     else {
       window.scrollTo(0, 0);
     }
+  }
+  closeAlert() {
+    this.preview = false;
   }
   ngOnDestroy(){
     this.ngUnsubscribe.next();
