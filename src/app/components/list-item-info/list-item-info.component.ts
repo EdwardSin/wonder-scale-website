@@ -96,6 +96,7 @@ export class ListItemInfoComponent implements OnInit {
         weight: this.item.weight
       }];
     }
+    this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
     this.defaultType = this.item.types[0];
     this.selectedType = this.item.types[0];
     this.name = this.item.name;

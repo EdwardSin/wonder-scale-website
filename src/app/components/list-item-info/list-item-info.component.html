@@ -17,8 +17,8 @@
                                 <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
                         </p>
                         <p class="list-item-info__details__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
-                        <p class="list-item-info__details__price list-item-info__details__price__offer mb-1" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : defaultType?.discount }}</p>
-                        <p *ngIf="item?.quantity" class="list-item-info__details__quantity">Quantity: {{ quantity }}</p>
+                        <p [class.list-item-info__details__price__offer]="item?.isDiscountExisting" class="list-item-info__details__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : defaultType?.discount }}</p>
+                        <p *ngIf="false && item?.quantity" class="list-item-info__details__quantity">Quantity: {{ quantity }}</p>
                     </div>
                 </div>
                 <div class="clearfix mb-3"></div>
@@ -31,7 +31,7 @@
                             navigation: false}">
                             <div *ngFor="let image of profileImages">
                                 <img style="width: 100%; object-fit: contain; height: initial" [lazyLoad]="environment.IMAGE_URL + image" [defaultImage]="'assets/images/png/itemProfile.png'" alt="image"/>
-                                <div class="swiper__image-label w-100 text-center font-8">
+                                <div [class.swiper__image-label-offer]="item?.isOffer && item.priceAfterDiscount != selectedType.price" class="swiper__image-label w-100 text-center font-8">
                                     <p class="d-inline-block mb-0">
                                         <span *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != selectedType.price" class="d-inline-block mr-2 font-8" style="text-decoration: line-through; color: #ccc">
                                             <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>

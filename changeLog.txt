@@ -8,6 +8,7 @@
 ---------------------------------------------
 .: WSM: BugFix: Too many items and mistakenly show pagination (WSW-56)
 .: WSM: Task: Fixed Controller tab overlapped issue (WSW-39)
+.: WSM: Task: Display item as red background if has discount type (WSW-47)
 
 ---------------------------------------------
 - 2020-06-13                                -
