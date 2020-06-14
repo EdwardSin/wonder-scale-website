@@ -7,6 +7,7 @@
 - 2020-06-14                                -
 ---------------------------------------------
 .: WSM: BugFix: Too many items and mistakenly show pagination (WSW-56)
+.: WSM: Task: Fixed Controller tab overlapped issue (WSW-39)
 
 ---------------------------------------------
 - 2020-06-13                                -

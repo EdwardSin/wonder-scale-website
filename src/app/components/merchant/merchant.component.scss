@@ -37,7 +37,7 @@
         .merchant-background__banner {
             width: 100%;
             height: 300px;
-            object-fit: contain;
+            object-fit: cover;
         }
         .merchant__text{
             line-height: 300px;
@@ -157,7 +157,7 @@
             height: 100%;
 
             .merchant-background__banner {
-                width: 100vw;
+                width: 100%;
                 height: calc(100vw * 0.361);
             }
 
