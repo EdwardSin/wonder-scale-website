@@ -1,90 +1,93 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { MerchantComponent } from './components/merchant/merchant.component';
-import { HomeComponent } from './components/home/home.component';
-import { ItemInfoComponent } from './components/item-info/item-info.component';
-import { ResetPasswordComponent } from '@components/feature/authentication/reset-password/reset-password.component';
-import { ForgotPasswordComponent } from '@components/feature/authentication/forgot-password/forgot-password.component';
-import { RegisterComponent } from '@components/feature/authentication/register/register.component';
-import { ActivateComponent } from '@components/feature/authentication/activate/activate.component';
-import { LoginComponent } from '@components/feature/authentication/login/login.component';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { VisitorGuard } from './guards/visitor.guard';
-import { FavoriteComponent } from '@components/favorite/favorite.component';
 import { AuthGuard } from './guards/auth.guard';
-import { SettingsComponent } from '@components/settings/settings.component';
-import { ProfileSettingsComponent } from '@components/settings/profile-settings/profile-settings.component';
-import { GeneralSettingsComponent } from '@components/settings/general-settings/general-settings.component';
-import { SecuritySettingsComponent } from '@components/settings/security-settings/security-settings.component';
-import { SearchComponent } from '@components/search/search.component';
-import { ListItemInfoComponent } from '@components/list-item-info/list-item-info.component';
-import { NotFoundComponent } from '@components/not-found/not-found.component';
+import { ComponentmoduleproxyComponent } from '@components/feature/proxy/componentmoduleproxy/componentmoduleproxy.component';
 
 
 const routes: Routes = [{
   path: '',
-  component: HomeComponent
+  loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule)
 }, {
   path: 'search',
-  component: SearchComponent
+  loadChildren: () => import('./modules/search/search.module').then(m => m.SearchModule)
 }, {
   path: 'login',
-  component: LoginComponent,
+  component: ComponentmoduleproxyComponent,
   canActivate: [VisitorGuard],
-  outlet: 'modal'
+  outlet: 'modal',
+  children: [{
+    path: '',
+    loadChildren: () => import('./modules/authentication/login/login.module').then(m => m.LoginModule)
+  }]
 }, {
   path: 'activate/:token',
-  component: ActivateComponent,
+  component: ComponentmoduleproxyComponent,
   canActivate: [VisitorGuard],
-  outlet: 'modal'
+  outlet: 'modal',
+  children: [{
+    path: '',
+    loadChildren: () => import('./modules/authentication/activate/activate.module').then(m => m.ActivateModule)
+  }]
 }, {
   path: 'register',
-  component: RegisterComponent,
+  component: ComponentmoduleproxyComponent,
   canActivate: [VisitorGuard],
-  outlet: 'modal'
+  outlet: 'modal',
+  children: [{
+    path: '',
+    loadChildren: () => import('./modules/authentication/register/register.module').then(m => m.RegisterModule)
+  }]
 }, {
   path: 'forgot-password',
-  component: ForgotPasswordComponent,
+  component: ComponentmoduleproxyComponent,
   canActivate: [VisitorGuard],
-  outlet: 'modal'
+  outlet: 'modal',
+  children: [{
+    path: '',
+    loadChildren: () => import('./modules/authentication/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule)
+  }]
 }, {
   path: 'reset-password/:token',
-  component: ResetPasswordComponent,
+  component: ComponentmoduleproxyComponent,
   canActivate: [VisitorGuard],
-  outlet: 'modal'
+  outlet: 'modal',
+  children: [{
+    path: '',
+    loadChildren: () => import('./modules/authentication/reset-password/reset-password.module').then(m => m.ResetPasswordModule)
+  }]
 }, {
   path: 'favorite',
-  component: FavoriteComponent,
-  canActivate: [AuthGuard]
+  canActivate: [AuthGuard],
+  loadChildren: () => import('./modules/favorite/favorite.module').then(m => m.FavoriteModule)
 }, {
   path: 'shop/:username',
-  component: MerchantComponent
+  loadChildren: () => import('./modules/merchant/merchant.module').then(m => m.MerchantModule)
 }, {
   path: 'item',
-  component: ListItemInfoComponent,
-  outlet: 'modal'
+  component: ComponentmoduleproxyComponent,
+  outlet: 'modal',
+  children: [{
+    path: '',
+    loadChildren: () => import('./modules/list-item-info/list-item-info.module').then(m => m.ListItemInfoModule)
+  }]
 }, {
-  path: 'items/:id',
-  component: ItemInfoComponent
-}, {
+  //   path: 'items/:id',
+  //   component: ItemInfoComponent
+  // }, {
   path: 'settings',
-  component: SettingsComponent,
   canActivate: [AuthGuard],
-  children: [
-    {path: '', redirectTo: 'profile', pathMatch: 'full'},
-    {path: 'profile', component: ProfileSettingsComponent},
-    {path: 'general', component: GeneralSettingsComponent},
-    {path: 'security', component: SecuritySettingsComponent}
-  ]
+  loadChildren: () => import('./modules/settings/settings.module').then(m => m.SettingsModule)
 }, {
   path: '404',
-  component: NotFoundComponent
+  loadChildren: () => import('./modules/not-found/not-found.module').then(m => m.NotFoundModule)
 }, {
   path: '**',
   redirectTo: '404'
 }];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })],
+  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled', preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -4,16 +4,21 @@
 
 - v1.0.1011                                 -
 ---------------------------------------------
+- 2020-06-23                                -
+---------------------------------------------
+.: WSW: CLONE - Module lazy load (WSW-59)
+
+---------------------------------------------
 - 2020-06-21                                -
 ---------------------------------------------
-.: WSM: Story: CLONE - Data collect Module (WSW-44)
+.: WSW: Story: CLONE - Data collect Module (WSW-44)
 
 ---------------------------------------------
 - 2020-06-14                                -
 ---------------------------------------------
-.: WSM: BugFix: Too many items and mistakenly show pagination (WSW-56)
-.: WSM: Task: Fixed Controller tab overlapped issue (WSW-39)
-.: WSM: Task: Display item as red background if has discount type (WSW-47)
+.: WSW: BugFix: Too many items and mistakenly show pagination (WSW-56)
+.: WSW: Task: Fixed Controller tab overlapped issue (WSW-39)
+.: WSW: Task: Display item as red background if has discount type (WSW-47)
 
 ---------------------------------------------
 - 2020-06-13                                -
