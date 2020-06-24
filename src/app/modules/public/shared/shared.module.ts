@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { SharedRoutingModule } from './shared-routing.module';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { SocialLoginModule } from 'angular-6-social-login';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SwiperModule } from 'ngx-swiper-wrapper';
@@ -50,7 +49,6 @@ import { AgmCoreModule } from '@agm/core';
     ElementModule,
     ClipboardModule,
     DragDropModule,
-    SocialLoginModule,
     LazyLoadImageModule,
     MDBBootstrapModule,
     AgmCoreModule
