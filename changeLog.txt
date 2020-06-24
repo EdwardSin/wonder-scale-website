@@ -7,6 +7,7 @@
 - 2020-06-24                                -
 ---------------------------------------------
 .: WSW: CLONE - Change angular social login package to support Angular 9 Ivy (WSW-62)
+.: WSW: Change URL from "shop" to "page" (WSW-61)
 
 ---------------------------------------------
 - 2020-06-23                                -
