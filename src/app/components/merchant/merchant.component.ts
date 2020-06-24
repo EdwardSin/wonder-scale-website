@@ -5,13 +5,10 @@ import { takeUntil, finalize, map, tap, delay } from 'rxjs/operators';
 import { Subject, combineLatest, timer, of } from 'rxjs';
 import { ShopService } from '@services/http/public/shop.service';
 import { ItemService } from '@services/http/public/item.service';
-import { CategoryService } from '@services/http/public/category.service';
 import { environment } from '@environments/environment';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
-import { AuthFollowService } from '@services/http/auth/auth-follow.service';
-import { SharedUserService } from '@services/shared/shared-user.service';
 import * as _ from 'lodash';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 import { TrackService } from '@services/http/public/track.service';
@@ -65,7 +62,14 @@ export class MerchantComponent implements OnInit {
           if (this.shop) {
             DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
           }
-        } 
+          let id = this.route.snapshot.queryParams.id;
+          let preview = this.route.snapshot.queryParams.preview;
+          if (preview == 'true') {
+            this.getPreviewShopById(id);
+          } else {
+            this.getShopById(id);
+          }
+        }
       });
   }
   isPrivateMode(isPrivateModeCallback, normalModeCallback) {
