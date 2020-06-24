@@ -61,7 +61,7 @@ const routes: Routes = [{
   canActivate: [AuthGuard],
   loadChildren: () => import('./modules/favorite/favorite.module').then(m => m.FavoriteModule)
 }, {
-  path: 'shop/:username',
+  path: 'page/:username',
   loadChildren: () => import('./modules/merchant/merchant.module').then(m => m.MerchantModule)
 }, {
   path: 'item',

@@ -191,7 +191,7 @@ export class ListItemInfoComponent implements OnInit {
   }
   navigateToShop() {
     this.router.navigate(['', {outlets: {modal: null}}]).then(() => {
-      this.router.navigate(['/shop', this.item.shop.username], {queryParams: {id: this.item.shop._id}});
+      this.router.navigate(['/page', this.item.shop.username], {queryParams: {id: this.item.shop._id}});
     })
   }
   ngOnDestroy() {
