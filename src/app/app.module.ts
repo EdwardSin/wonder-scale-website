@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/partials/header/header.component';
 import { isPlatformBrowser } from '@angular/common';
-import { AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider } from 'angular-6-social-login';
+import { GoogleLoginProvider, FacebookLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SharedModule } from './modules/public/shared/shared.module';
 import { ComponentmoduleproxyComponent } from '@components/feature/proxy/componentmoduleproxy/componentmoduleproxy.component';
@@ -39,19 +39,6 @@ export function jwtOptionsFactory(platformId) {
     whitelistedDomains: ['localhost:4000/users', 'localhost:9005/users', 'wonderscale.com/users']
   };
 }
-export function provideConfig() {
-  var config = new AuthServiceConfig([
-    {
-      id: GoogleLoginProvider.PROVIDER_ID,
-      provider: new GoogleLoginProvider("783575719474-mbhan9e6d0ucn4j3c6t847udbvtbc8aq.apps.googleusercontent.com")
-    },
-    {
-      id: FacebookLoginProvider.PROVIDER_ID,
-      provider: new FacebookLoginProvider("246047829574930")
-    }
-  ]);
-  return config;
-}
 
 @NgModule({
   declarations: [
@@ -64,6 +51,7 @@ export function provideConfig() {
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    SocialLoginModule,
     NgProgressModule,
     NgProgressRouterModule,
     SharedModule,
@@ -78,9 +66,21 @@ export function provideConfig() {
   ],
   providers: [
     {
-      provide: AuthServiceConfig,
-      useFactory: provideConfig
-    }, 
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider("783575719474-mbhan9e6d0ucn4j3c6t847udbvtbc8aq.apps.googleusercontent.com")
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider("246047829574930")
+          }
+        ]
+      } as SocialAuthServiceConfig
+    },
     {
       provide: SWIPER_CONFIG,
       useValue: DEFAULT_SWIPER_CONFIG
