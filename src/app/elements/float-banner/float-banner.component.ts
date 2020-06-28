@@ -3,7 +3,7 @@ import { Shop } from '@objects/shop';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
-import { FacebookService, UIParams, InitParams } from '@jemys89/ngx-facebook';
+import { FacebookService, UIParams, InitParams } from 'ngx-facebook';
 import { environment } from '@environments/environment';
 import { WsLoading } from '../ws-loading/ws-loading';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';

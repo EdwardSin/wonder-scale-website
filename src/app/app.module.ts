@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { FacebookModule } from '@jemys89/ngx-facebook';
+import { FacebookModule } from 'ngx-facebook';
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressRouterModule } from 'ngx-progressbar/router';
 import { AppRoutingModule } from './app-routing.module';
