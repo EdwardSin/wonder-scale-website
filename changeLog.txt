@@ -9,6 +9,7 @@
 .: WSW: Task: Change share module from @jemys89/ngx-facebook to ngx-facebook (WSW-64)
 .: WSW: BugFix: Preview page keep reload when item is clicked (WSW-65)
 .: WSW: Task: Remove modal outlet from project (WSW-66)
+.: WSW: Task: Update Favorite Modal Flow (WSW-66)
 
 ---------------------------------------------
 - 2020-06-24                                -

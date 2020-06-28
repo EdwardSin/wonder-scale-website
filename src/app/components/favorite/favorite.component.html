@@ -11,7 +11,7 @@
     <div class="mb-3">
         <button [class.selected]="selected == 'page'" class="btn btn-controller mr-2" (click)="navigateTo({selected: 'page'})">Page</button>
         <button [class.selected]="selected == 'item'" class="btn btn-controller" (click)="navigateTo({selected: 'item'})">Item</button>
-        <img (click)="isFavoriteModalOpened = true; isFavoriteModalHidden = false" class="btn-logo" src="assets/images/png/icon.png" alt="logo" />
+        <img (click)="onFavoriteModalOpened(true)" class="btn-logo" src="assets/images/png/icon.png" alt="logo" />
     </div>
     <div class="items-container" *ngIf="!loading.isRunning() && displayItems.length; else loadingTemplate">
         <div class="row no-gutters mb-4" *ngIf="selected == 'page'">
