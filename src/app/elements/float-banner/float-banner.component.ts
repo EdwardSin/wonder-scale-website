@@ -3,7 +3,7 @@ import { Shop } from '@objects/shop';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
-import { FacebookService, UIParams, InitParams } from '@jemys89/ngx-facebook';
+import { FacebookService, UIParams, InitParams } from 'ngx-facebook';
 import { environment } from '@environments/environment';
 import { WsLoading } from '../ws-loading/ws-loading';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
@@ -53,12 +53,17 @@ export class FloatBannerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sharedUserService.followPages.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      if (this.element) {
+        this.saved = result.includes(this.element._id);
+      }
+    })
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes && this.element) {
       if (this.type == 'shop') {
         this.isFollowedShop();
-        this.link = environment.URL + 'shop/' + this.element.username + '?id=' + this.element._id;
+        this.link = environment.URL + 'page/' + this.element.username + '?id=' + this.element._id;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
@@ -157,7 +162,7 @@ export class FloatBannerComponent implements OnInit {
           newImage.alt = 'profile-image';
           newImage.src = dataUrl;
           newImage.addEventListener('load', e => {
-            let url = environment.URL + 'shop/' + this.element.username + '?id=' + this.element.id;
+            let url = environment.URL + 'page/' + this.element.username + '?id=' + this.element.id;
             QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150})
             .then(() => {
               this.renderProfileImageToQrcode(newImage, 150);

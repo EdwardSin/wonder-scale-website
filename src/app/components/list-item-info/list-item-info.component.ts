@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import { CurrencyService } from '@services/http/general/currency.service';
 import { WsLoading } from 'src/app/elements/ws-loading/ws-loading';
 import { SharedUserService } from '@services/shared/shared-user.service';
-import { FacebookService, UIParams } from '@jemys89/ngx-facebook';
+import { FacebookService, UIParams } from 'ngx-facebook';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
@@ -187,11 +187,11 @@ export class ListItemInfoComponent implements OnInit {
     return type;
   }
   closeModal() {
-    this.router.navigate(['', {outlets: {modal: null}}], {queryParams: {item_id: null}, queryParamsHandling: 'merge'});
+    this.router.navigate([], {queryParams: {item_id: null, modal: null}, queryParamsHandling: 'merge'});
   }
   navigateToShop() {
-    this.router.navigate(['', {outlets: {modal: null}}]).then(() => {
-      this.router.navigate(['/shop', this.item.shop.username], {queryParams: {id: this.item.shop._id}});
+    this.router.navigate([], {queryParams: {modal: null}}).then(() => {
+      this.router.navigate(['/page', this.item.shop.username], {queryParams: {id: this.item.shop._id}});
     })
   }
   ngOnDestroy() {

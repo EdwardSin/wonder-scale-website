@@ -11,7 +11,7 @@
     <div class="mb-3">
         <button [class.selected]="selected == 'page'" class="btn btn-controller mr-2" (click)="navigateTo({selected: 'page'})">Page</button>
         <button [class.selected]="selected == 'item'" class="btn btn-controller" (click)="navigateTo({selected: 'item'})">Item</button>
-        <img (click)="isFavoriteModalOpened = true; isFavoriteModalHidden = false" class="btn-logo" src="assets/images/png/icon.png" alt="logo" />
+        <img (click)="onFavoriteModalOpened(true)" class="btn-logo" src="assets/images/png/icon.png" alt="logo" />
     </div>
     <div class="items-container" *ngIf="!loading.isRunning() && displayItems.length; else loadingTemplate">
         <div class="row no-gutters mb-4" *ngIf="selected == 'page'">
@@ -66,7 +66,7 @@
           <mat-option [value]="'item'">Item</mat-option>
         </mat-select>
         <div class="items-modal-container" *ngIf="!modalLoading?.isRunning() && displayModalItems?.length; else modalLoadingTemplate">
-            <a [routerLink]="['/shop', shop?.username]" [queryParams]="{id: shop?._id}" class="row no-gutters border-bottom p-2 clickable" style="color: black" *ngFor="let shop of displayModalItems">
+            <a [routerLink]="['/page', shop?.username]" [queryParams]="{id: shop?._id}" class="row no-gutters border-bottom p-2 clickable" style="color: black" *ngFor="let shop of displayModalItems">
                 <img style="width: 50px; height: 50px;" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile image" />
                 <div class="px-2">
                     <p class="mb-0" style="font-size: 1.1rem">{{ shop?.name }}</p>
@@ -94,7 +94,7 @@
                 [latitude]="result?.location?.coordinates[1]" (markerClick)="selectMarker(result)">
                 <agm-info-window [isOpen]="selectedPage == result">
                   <img  style="width: 25px; height: 25px;" [src]="environment.IMAGE_URL + result?.profileImage" alt="profile image" />
-                  <a [routerLink]="['/shop', result?.username]" [queryParams]="{id: result?._id}" class="clickable d-inline-block pl-2" style="color: #000">{{result?.name}}</a>
+                  <a [routerLink]="['/page', result?.username]" [queryParams]="{id: result?._id}" class="clickable d-inline-block pl-2" style="color: #000">{{result?.name}}</a>
                   <p *ngIf="result?.description && result?.description !== ''">{{result?.description | limitTo: '30'}}</p>
                   <a *ngIf="result?.location?.coordinates[0] == 0 && result?.location?.coordinates[1] == 0" target="_blank"
                     href="http://www.google.com/maps/place/{{result?.location?.coordinates[1]}},{{result?.location?.coordinates[0]}}"

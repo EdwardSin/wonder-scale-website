@@ -4,11 +4,37 @@
 
 - v1.0.1011                                 -
 ---------------------------------------------
+- 2020-06-28                                -
+---------------------------------------------
+.: WSW: Task: Change share module from @jemys89/ngx-facebook to ngx-facebook (WSW-64)
+.: WSW: BugFix: Preview page keep reload when item is clicked (WSW-65)
+.: WSW: Task: Remove modal outlet from project (WSW-66)
+.: WSW: Task: Update Favorite Modal Flow (WSW-66)
+.: WSW: Task: Update qrcode url (WSW-61)
+.: WSW: Task: Prevent reload (WSW-66)
+
+---------------------------------------------
+- 2020-06-24                                -
+---------------------------------------------
+.: WSW: Task: CLONE - Change angular social login package to support Angular 9 Ivy (WSW-62)
+.: WSW: Task: Change URL from "shop" to "page" (WSW-61)
+
+---------------------------------------------
+- 2020-06-23                                -
+---------------------------------------------
+.: WSW: Task: CLONE - Module lazy load (WSW-59)
+
+---------------------------------------------
+- 2020-06-21                                -
+---------------------------------------------
+.: WSW: Story: CLONE - Data collect Module (WSW-44)
+
+---------------------------------------------
 - 2020-06-14                                -
 ---------------------------------------------
-.: WSM: BugFix: Too many items and mistakenly show pagination (WSW-56)
-.: WSM: Task: Fixed Controller tab overlapped issue (WSW-39)
-.: WSM: Task: Display item as red background if has discount type (WSW-47)
+.: WSW: BugFix: Too many items and mistakenly show pagination (WSW-56)
+.: WSW: Task: Fixed Controller tab overlapped issue (WSW-39)
+.: WSW: Task: Display item as red background if has discount type (WSW-47)
 
 ---------------------------------------------
 - 2020-06-13                                -
