@@ -162,7 +162,7 @@ export class FloatBannerComponent implements OnInit {
           newImage.alt = 'profile-image';
           newImage.src = dataUrl;
           newImage.addEventListener('load', e => {
-            let url = environment.URL + 'shop/' + this.element.username + '?id=' + this.element.id;
+            let url = environment.URL + 'page/' + this.element.username + '?id=' + this.element.id;
             QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150})
             .then(() => {
               this.renderProfileImageToQrcode(newImage, 150);
