@@ -71,6 +71,9 @@ export class AuthFollowService {
       }
     });
   }
+  getFollowShopsIds() {
+    return this.isAuthenticatedWithObservableCallback(this.http.get<Result<Array<string>>>('/api/auth-users/users/follow-ids', { params: { type: 'shop' } }), of(false));
+  }
   getFollowItemsIds() {
     return this.isAuthenticatedWithObservableCallback(this.http.get<Result<Array<string>>>('/api/auth-users/users/follow-ids', { params: { type: 'item' } }), of(false));
   }
@@ -82,22 +85,22 @@ export class AuthFollowService {
   }
   followShop(id) {
     return this.isAuthenticatedWithObservableCallback(this.http.put('/api/auth-users/users/follow/' + id, {}, { params: { type: 'shop' } }), of(false).pipe(tap(() => {
-      this.router.navigate(['', { outlets: { modal: 'login'}}], {queryParamsHandling: 'merge'});
+      this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
   followItem(id) {
     return this.isAuthenticatedWithObservableCallback(this.http.put('/api/auth-users/users/follow/' + id, {}, { params: { type: 'item' } }), of(false).pipe(tap(() => {
-      this.router.navigate(['', { outlets: { modal: 'login'}}], {queryParamsHandling: 'merge'});
+      this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
   unfollowShop(id) {
     return this.isAuthenticatedWithObservableCallback(this.http.put('/api/auth-users/users/unfollow/' + id, {}, { params: { type: 'shop' } }), of(false).pipe(tap(() => {
-      this.router.navigate(['', { outlets: { modal: 'login'}}], {queryParamsHandling: 'merge'});
+      this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
   unfollowItem(id) {
     return this.isAuthenticatedWithObservableCallback(this.http.put('/api/auth-users/users/unfollow/' + id, {}, { params: { type: 'item' } }), of(false).pipe(tap(() => {
-      this.router.navigate(['', { outlets: { modal: 'login'}}], {queryParamsHandling: 'merge'});
+      this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
 }

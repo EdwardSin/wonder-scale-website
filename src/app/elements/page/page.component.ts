@@ -45,6 +45,8 @@ export class PageComponent implements OnInit {
     this.authFollowService.unfollowShop(this.item._id).pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(result => {
       this.followChanged.emit(true);
+      let followPages = _.filter(this.followPages, (id) => id != this.item._id);
+      this.sharedUserService.followPages.next(followPages);
     });
   }
   saveShop() {

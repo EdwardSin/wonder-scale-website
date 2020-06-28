@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
         return new Promise((resolve) => {
             this.authenticationService.isAuthenticated().then(result => {
                 if (!result) {
-                    this.router.navigate(['', { outlets: { modal: 'login' } }]);
+                    this.router.navigate([], {queryParams: {modal: 'login'}});
                     resolve(false);
                 }
                 else {
