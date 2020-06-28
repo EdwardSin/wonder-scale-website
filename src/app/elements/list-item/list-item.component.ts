@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Item } from '@objects/item';
 import { environment } from '@environments/environment';
 import { CurrencyService } from '@services/http/general/currency.service';
@@ -7,7 +7,7 @@ import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { takeUntil } from 'rxjs/operators';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import * as _ from 'lodash';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'list-item',
@@ -25,10 +25,23 @@ export class ListItemComponent implements OnInit {
   ngUnsubscribe: Subject<any> = new Subject;
   followItems: Array<string> = [];
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
+    private viewContainerRef: ViewContainerRef,
+    private cfr: ComponentFactoryResolver,
     public currencyService: CurrencyService,
     private sharedUserService: SharedUserService,
     private authFollowService: AuthFollowService) { 
+      this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(queryParams => {
+        if (queryParams['modal'] && queryParams['modal'] == 'item' &&
+        queryParams['item_id'] && this.item && queryParams['item_id'] == this.item._id) {
+            this.createLazyItemInfoComponent();
+        }
+        else {
+          this.viewContainerRef.clear();
+        }
+      })
     }
 
   ngOnInit(): void {
@@ -43,6 +56,10 @@ export class ListItemComponent implements OnInit {
     if (changes['item'] && this.item) {
       this.follow = this.followItems.includes(this.item._id);
       this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
+      let queryParams = this.route.snapshot.queryParams;
+      if (queryParams['modal'] && queryParams['modal'] == 'item' && queryParams['item_id'] && this.item && queryParams['item_id'] == this.item._id) {
+        this.createLazyItemInfoComponent();
+      }
     }
   }
   followClicked(event) {
@@ -64,9 +81,15 @@ export class ListItemComponent implements OnInit {
       });
     }
   }
+  async createLazyItemInfoComponent() {
+    this.viewContainerRef.clear();
+    await import('../../modules/list-item-info/list-item-info.module');
+    const { ListItemInfoComponent } = await import('@components/list-item-info/list-item-info.component');
+    this.viewContainerRef.createComponent(this.cfr.resolveComponentFactory(ListItemInfoComponent));
+  }
   navigateItem(event) {
     event.stopPropagation();
-    this.router.navigate(['', {outlets: {modal: 'item'}}], {queryParams: {item_id: this.item._id}, queryParamsHandling: 'merge'});
+    this.router.navigate([], {queryParams: {item_id: this.item._id, modal: 'item'}, queryParamsHandling: 'merge'});
   }
   ngOnDestroy(){
     this.ngUnsubscribe.next();

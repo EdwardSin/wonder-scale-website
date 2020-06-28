@@ -75,7 +75,7 @@ export class FavoriteComponent implements OnInit {
               }
               DocumentHelper.setWindowTitleWithWonderScale('Favorite ' + this.selected);
             }
-            this.isFavoriteModalOpened = this.route.snapshot.queryParams['modal'] == 'true';
+            this.isFavoriteModalOpened = this.route.snapshot.queryParams['modal'] == 'location';
             if (typeof(sessionStorage) !== undefined) {
               let favoriteSearchingCache = JSON.parse(sessionStorage.getItem('favoriteSearchingCache'));
               if (favoriteSearchingCache && this.isFavoriteModalOpened) {
@@ -183,7 +183,7 @@ export class FavoriteComponent implements OnInit {
   }
   onFavoriteModalOpened(event) {
     if (event) {
-      this.navigateTo({modal: true});
+      this.navigateTo({modal: 'location'});
       _.delay(() => {
         this.updateModalItems();
       }, 1000);
