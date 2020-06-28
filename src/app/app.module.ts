@@ -14,7 +14,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { GoogleLoginProvider, FacebookLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SharedModule } from './modules/public/shared/shared.module';
-import { ComponentmoduleproxyComponent } from '@components/feature/proxy/componentmoduleproxy/componentmoduleproxy.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -43,8 +42,7 @@ export function jwtOptionsFactory(platformId) {
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    ComponentmoduleproxyComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

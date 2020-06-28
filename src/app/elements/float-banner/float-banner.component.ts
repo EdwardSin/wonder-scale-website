@@ -53,6 +53,11 @@ export class FloatBannerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sharedUserService.followPages.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      if (this.element) {
+        this.saved = result.includes(this.element._id);
+      }
+    })
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes && this.element) {

@@ -187,10 +187,10 @@ export class ListItemInfoComponent implements OnInit {
     return type;
   }
   closeModal() {
-    this.router.navigate(['', {outlets: {modal: null}}], {queryParams: {item_id: null}, queryParamsHandling: 'merge'});
+    this.router.navigate([], {queryParams: {item_id: null, modal: null}, queryParamsHandling: 'merge'});
   }
   navigateToShop() {
-    this.router.navigate(['', {outlets: {modal: null}}]).then(() => {
+    this.router.navigate([], {queryParams: {modal: null}}).then(() => {
       this.router.navigate(['/page', this.item.shop.username], {queryParams: {id: this.item.shop._id}});
     })
   }
