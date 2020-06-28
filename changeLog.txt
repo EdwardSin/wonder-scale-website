@@ -7,6 +7,7 @@
 - 2020-06-28                                -
 ---------------------------------------------
 .: WSW: Task: Change share module from @jemys89/ngx-facebook to ngx-facebook (WSW-64)
+.: WSW: BugFix: Preview page keep reload when item is clicked (WSW-65)
 
 ---------------------------------------------
 - 2020-06-24                                -

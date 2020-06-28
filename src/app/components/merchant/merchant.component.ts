@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Shop } from 'src/app/objects/shop';
-import { takeUntil, finalize, map, tap, delay } from 'rxjs/operators';
-import { Subject, combineLatest, timer, of } from 'rxjs';
+import { takeUntil, finalize, map, tap } from 'rxjs/operators';
+import { Subject, combineLatest, timer } from 'rxjs';
 import { ShopService } from '@services/http/public/shop.service';
 import { ItemService } from '@services/http/public/item.service';
 import { environment } from '@environments/environment';
@@ -62,12 +62,8 @@ export class MerchantComponent implements OnInit {
           if (this.shop) {
             DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
           }
-          let id = this.route.snapshot.queryParams.id;
-          let preview = this.route.snapshot.queryParams.preview;
-          if (preview == 'true') {
+          if (preview == 'true' && !this.shop) {
             this.getPreviewShopById(id);
-          } else {
-            this.getShopById(id);
           }
         }
       });
