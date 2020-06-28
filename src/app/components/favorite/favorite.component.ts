@@ -59,7 +59,8 @@ export class FavoriteComponent implements OnInit {
     this.setupFavorite();
     this.setupLocationModal();
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(queryParams => {
-      if (!queryParams['modal'] && this.isFavoriteModalHidden && this.previousState != 'location') {
+      if (!queryParams['modal'] && this.isFavoriteModalHidden && this.previousState != 'location'
+        && this.previousState != 'item') {
         this.setupFavorite();
         DocumentHelper.setWindowTitleWithWonderScale('Favorite ' + this.selected);
       }
@@ -67,6 +68,9 @@ export class FavoriteComponent implements OnInit {
         this.previousState = 'location';
         this.isFavoriteModalHidden = false;
         this.setupLocationModal();
+      }
+      if (queryParams['modal']) {
+        this.previousState = queryParams['modal'];
       }
       if (!queryParams['modal']) {
         this.previousState = '';

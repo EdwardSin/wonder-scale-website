@@ -11,6 +11,7 @@
 .: WSW: Task: Remove modal outlet from project (WSW-66)
 .: WSW: Task: Update Favorite Modal Flow (WSW-66)
 .: WSW: Task: Update qrcode url (WSW-61)
+.: WSW: Task: Prevent reload (WSW-66)
 
 ---------------------------------------------
 - 2020-06-24                                -
