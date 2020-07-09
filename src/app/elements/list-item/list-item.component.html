@@ -11,7 +11,9 @@
                 <p [class.list-item__price__offer]="item.isDiscountExisting" class="list-item__price mb-0" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}</p>
                 <p class="list-item__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
             </div>
-            <span class="list-item-icon-right fas fa-heart" [class.selected]="follow" (click)="followClicked($event)"></span>
+            <span class="list-item-icon-right fas position-relative" [ngClass]="saveLoading.isRunning() ? '' : follow? 'fa-heart selected': 'fa-heart'" (click)="followClicked($event)">
+                <ws-spinner class="position-absolute" style="top: calc(50% - 16px); left: calc(50% - 10px)" *ngIf="saveLoading.isRunning()" [width]="20" [height]="20" [borderWidth]="3" [spinnerColor]="'#282C35'"></ws-spinner>
+            </span>
         </div>
     </div>
 </div>

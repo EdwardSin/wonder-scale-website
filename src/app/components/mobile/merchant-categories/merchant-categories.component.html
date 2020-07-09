@@ -1,0 +1,26 @@
+<div id="items" class="category-container">
+    <mat-select class="form-control category-container__dropdown" [(value)]="selectedCategory" (selectionChange)="getItemsByCategoryId(selectedCategory)">
+        <mat-option [value]="'all'">All</mat-option>
+        <mat-option *ngIf="todaySpecialItems?.length" [value]="'todayspecial'">Today Special</mat-option>
+        <mat-option *ngIf="newItems?.length" [value]="'new'">New</mat-option>
+        <mat-option *ngIf="discountItems?.length" [value]="'discount'">Discount</mat-option>
+        <mat-option [value]="category?._id" *ngFor="let category of categories">{{ category?.name }}</mat-option>
+    </mat-select>
+</div>
+
+<div class="items-container">
+    <ng-container *ngIf="!itemLoading.isRunning() && items?.length; else itemLoadingTemplate">
+        <div *ngIf="items.length" class="w-100 pb-3">
+            <list-item [item]="item" *ngFor="let item of items"></list-item>
+        </div>
+        <!-- <pagination class="pb-4" [total]="items.length"></pagination> -->
+    </ng-container>
+</div>
+
+<ng-template #itemLoadingTemplate>
+    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 10rem; padding-bottom: 10rem;"></ws-spinner>
+</ng-template>
+
+<ng-template #noItemTemplate>
+    <h6 class="text-center" style="padding: 6rem 0;">No item</h6>
+</ng-template>

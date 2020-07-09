@@ -18,6 +18,9 @@ const routes: Routes = [{
   path: 'page/:username',
   loadChildren: () => import('./modules/merchant/merchant.module').then(m => m.MerchantModule)
 }, {
+  path: 'page/mobile/:username',
+  loadChildren: () => import('./modules/mobile/merchant-mobile/merchant-mobile.module').then(m => m.MerchantMobileModule)
+}, {
   //   path: 'items/:id',
   //   component: ItemInfoComponent
   // }, {
