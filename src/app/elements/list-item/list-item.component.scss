@@ -1,10 +1,11 @@
 :host {
-    padding: 1rem .5rem 0rem .5rem;
+    padding: .25rem .5rem;
     display: block;
     width: 100%;
 
     .list-item__container {
-        box-shadow: 0 0 3px #ccc;
+        border: 1px solid #f2f2f2;
+        background-color: #fff;
         width: 100%;
         border-radius: 2px;
         transition: box-shadow ease .2s;
@@ -33,6 +34,8 @@
 
         .list-item-icon-right {
             font-size: 1.7rem;
+            width: 71.2px;
+            box-sizing: border-box;
             text-align: center;
             padding: 22px;
             transition: all ease .1s;

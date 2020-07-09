@@ -7,7 +7,12 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ScreenService {
   isMobileSize: BehaviorSubject<boolean> = new BehaviorSubject(isPlatformBrowser(this.platformId) ? window.innerWidth < 992 : false);
+  isMobileDevice: BehaviorSubject<boolean> = new BehaviorSubject(this.isMobileDeviceFunc());
   constructor(@Inject(PLATFORM_ID) private platformId) {
 
+  }
+  isMobileDeviceFunc() {
+      var ua = navigator.userAgent;
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(ua);
   }
 }

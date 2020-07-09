@@ -67,8 +67,8 @@ export class FloatBannerComponent implements OnInit {
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
-        if (this.element['location'] && this.element['location']['coordination'] && this.element['location']['coordination'].length) {
-          this.isShownLocation = this.element['location']['coordination'][0] == 0 && this.element['location']['coordination'][1] == 0;
+        if (this.element['location'] && this.element['location']['coordinates'] && this.element['location']['coordinates'].length) {
+          this.isShownLocation = this.element['location']['coordinates'][0] != 0 && this.element['location']['coordinates'][1] != 0;
         }
         if (this.element.media && this.element.media.length) {
           this.medias = _.groupBy(this.element.media, 'type');
@@ -89,8 +89,8 @@ export class FloatBannerComponent implements OnInit {
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
-        if (this.element['shop']['location'] && this.element['shop']['location']['coordination'] && this.element['shop']['location']['coordination'].length) {
-          this.isShownLocation = this.element['shop']['location']['coordination'][0] == 0 && this.element['shop']['location']['coordination'][1] == 0;
+        if (this.element['shop']['location'] && this.element['shop']['location']['coordinates'] && this.element['shop']['location']['coordinates'].length) {
+          this.isShownLocation = this.element['shop']['location']['coordinates'][0] != 0 && this.element['shop']['location']['coordinates'][1] != 0;
         }
       }
     }

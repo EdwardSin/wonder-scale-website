@@ -1,0 +1,200 @@
+<div *ngIf="preview" #alert class="alert alert-danger alert-dismissible fade show font-8 my-2 w-100" role="alert">
+    This is a preview page and will not displayed to public if the shop is in unpublished status.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div *ngIf="shop && !loading.isRunning(); else loadingTemplate">
+    <div class="row no-gutters merchant mb-2">
+        <div class="col-lg order-11 order-lg-1">
+            <div class="merchant__profile-container">
+                <img *ngIf="shop?.profileImage" class="merchant__profile" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile-image" />
+                <img *ngIf="!shop?.profileImage" class="merchant__profile" style="background-color: #fff" src="assets/images/png/shop.png" alt="profile-image" />
+                <div class="merchant__name-container">
+                    <p class="merchant__name mb-0 text-break">{{ shop?.name }}</p>
+                    <p class="merchant__username mb-0">@{{ shop?.username }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 merchant-background position-relative order-1 order-lg-12">
+            <p *ngIf="!shop?.bannerImage" class="merchant__text mb-0">{{shop?.name}}</p>
+            <img class="merchant-background__banner" *ngIf="shop?.bannerImage" [src]="environment.IMAGE_URL + shop?.bannerImage" alt="banner" />
+        </div>
+    </div>
+
+    <!-- <div *ngIf="false && newItems?.length" id="new-items" class="new-items-container mb-2">
+        <swiper [config]="{breakpoints: {'425': {slidesPerView: 2, spaceBetween: 10, slidesPerGroup: 2}, '768': { slidesPerView: 3, spaceBetween: 10, slidesPerGroup: 3}, '992': {slidesPerView: 4, spaceBetween: 10, slidesPerGroup: 4}}, slidesPerView: 1}">
+            <item [item]="item" [index]="i" *ngFor="let item of newItems; let i = index" class="mb-5 item__fit-screen"></item>
+        </swiper>
+    </div> -->
+
+    <div id="info" class="information-container mb-2" *ngIf="shop?.informationImages?.length > 0">
+        <swiper [config]="{slidesPerView: 'auto', spaceBetween: 10, pagination: false, navigation: false, autoHeight: true}">
+            <div class="swiper-slide d-inline-block" *ngFor="let image of shop?.informationImages">
+                <img class="swiper-container__image" [src]="environment.IMAGE_URL + image" alt="upload-image" />
+            </div>
+        </swiper>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-lg order-12 order-lg-1">
+            <div class="info__container mb-2" *ngIf="shop?.description">
+                <h4 class="info__title">Introduction:</h4>
+                <p class="info__text mb-0">{{ shop?.description }}</p>
+            </div>
+            <div class="contact__container mb-2 pb-2" *ngIf="(shop?.phone?.length + shop?.email?.length + shop?.website?.length) > 0">
+                <h4 class="info__title">
+                    Contact:
+                </h4>
+                <div class="row no-gutters mb-2" *ngIf="shop?.phone?.length">
+                    <span class="contact__icon fas fa-phone mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="contact__detail" *ngFor="let phone of shop?.phone">
+                            <a href="tel: {{phone}}">{{ phone }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters mb-2" *ngIf="shop?.email?.length">
+                    <span class="contact__icon fas fa-envelope mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="contact__detail" *ngFor="let email of shop?.email">
+                            <a href="mailto: {{email}}">{{ email }}</a></span>
+                    </div>
+                </div>
+                <div class="row no-gutters mb-2" *ngIf="shop?.website?.length">
+                    <span class="contact__icon fas fa-globe mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="contact__detail" *ngFor="let website of shop?.website">
+                            <a href="{{ website }}">{{ website }}</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="social-media__container mb-2" *ngIf="shop?.media?.length">
+                <h4 class="info__title">
+                    Others:
+                </h4>
+                <div class="row no-gutters" *ngIf="medias?.facebook?.length">
+                    <span class="social-media__icon fab fa-facebook-f mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.facebook">
+                            <a href="https://www.facebook.com/{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters" *ngIf="medias?.instagram?.length">
+                    <span class="social-media__icon fab fa-instagram mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.instagram">
+                            <a href="https://www.instagram.com/{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters" *ngIf="medias?.twitter?.length">
+                    <span class="social-media__icon fab fa-twitter mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.twitter">
+                            <a href="http://t.co/{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters" *ngIf="medias?.whatsapp?.length">
+                    <span class="social-media__icon fab fa-whatsapp mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.whatsapp">
+                            <a href="https://wa.me/{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters mb-2" *ngIf="medias?.fbmessenger?.length">
+                    <span class="social-media__icon fab fa-facebook-messenger mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.fbmessenger">
+                            <a href="{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters mb-2" *ngIf="medias?.google?.length">
+                    <span class="social-media__icon fab fa-google-plus-g mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.google">
+                            <a href="{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters mb-2" *ngIf="medias?.youtube?.length">
+                    <span class="social-media__icon fab fa-youtube mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.youtube">
+                            <a href="{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters mb-2" *ngIf="medias?.snapchat?.length">
+                    <span class="social-media__icon fab fa-snapchat mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.snapchat">
+                            <a href="{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters mb-2" *ngIf="medias?.telegram?.length">
+                    <span class="social-media__icon fab fa-telegram mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.telegram">
+                            <a href="{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters mb-2" *ngIf="medias?.weibo?.length">
+                    <span class="social-media__icon fab fa-weibo mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.weibo">
+                            <a href="{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="row no-gutters mb-2" *ngIf="medias?.weixin?.length">
+                    <span class="social-media__icon fab fa-weixin mr-2"></span>
+                    <div class="d-inline-block">
+                        <span class="social-media__detail" *ngFor="let media of medias?.weixin">
+                            <a href="{{ media?.value }}">{{ media?.value }}</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="shop?.openingInfoType == 'temporary_closed' || shop?.openingInfoType == 'always_open' || (shop?.openingInfoType == 'selected_hours' && shop?.openingInfo != null)" class="opening-info__container mb-2">
+                <h4 class="info__title">Opening hour:</h4>
+                <table class="ml-3" *ngIf="shop?.openingInfoType == 'selected_hours'">
+                    <tr *ngFor="let day of shop?.openingInfo">
+                        <td>{{ day.day }}</td>
+                        <td><span class="d-block" *ngFor="let time of day.time">{{ time.openingHour }} - {{ time.closeHour}}</span></td>
+                    </tr>
+                </table>
+                <div class="pl-2" *ngIf="shop?.openingInfoType == 'temporary_closed'">
+                    <span>Temporary Closed</span>
+                </div>
+                <div class="pl-2" *ngIf="shop?.openingInfoType == 'always_open'">
+                    <span>Always Open</span>
+                </div>
+            </div>
+            <div class="location__container mb-2" *ngIf="isShownLocation">
+                <h4 class="info__title">Find Location:</h4>
+                <a href="http://www.google.com/maps/place/{{shop?.location?.coordinates[1]}},{{shop?.location?.coordinates[0]}}">
+                    <agm-map class="w-100" style="height: 250px" [longitude]="shop?.location?.coordinates[0]" [latitude]="shop?.location?.coordinates[1]" [zoom]="14" [gestureHandling]="'greedy'"
+                    [mapDraggable]="false" [maxZoom]="17" [minZoom]="11" [streetViewControl]="false" panControl="false" zoomControl="false">
+                        <agm-marker [longitude]="shop?.location?.coordinates[0]" [latitude]="shop?.location?.coordinates[1]"></agm-marker>
+                    </agm-map>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noShopTemplate" class="text-center d-block w-100" style="padding-top: 30vh;padding-bottom: 30vh"></ws-spinner>
+</ng-template>
+
+<ng-template #noShopTemplate>
+    <h6 *ngIf="!message" class="my-5 py-5 text-center">Shop is not found!</h6>
+    <h6 *ngIf="message" class="my-5 py-5 text-center">{{ message }}</h6>
+</ng-template>

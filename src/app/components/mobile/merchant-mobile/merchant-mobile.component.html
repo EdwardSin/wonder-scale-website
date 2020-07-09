@@ -1,0 +1,11 @@
+<div *ngIf="isShownSelection" class="merchant__screen">
+    <div *ngIf="shop" class="merchant__selections">
+        <p class="merchant__selection-title">{{ shop?.name }}</p>
+        <p class="merchant__selection-item" [routerLink]="['info']" [queryParamsHandling]="'merge'" (click)="navigateToDetails()">Page Details</p>
+        <p class="merchant__selection-item" [routerLink]="['categories']" [queryParamsHandling]="'merge'" (click)="navigateToItems()">{{ shop?.type == 'restaurant' ? 'Menu' : 'Categories'}}</p>
+    </div>
+</div>
+<div [hidden]="isShownSelection">
+    <router-outlet></router-outlet>
+    <merchant-footer *ngIf="shop" [element]="shop"></merchant-footer>
+</div>
