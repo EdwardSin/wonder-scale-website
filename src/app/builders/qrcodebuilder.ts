@@ -19,7 +19,7 @@ export class QRCodeBuilder {
                 width: option['width'] || 196, height: option['height'] || 196, foreground: "#000",
                 correctLevel: 0,
                 text: code,
-                src: 'assets/images/png/icon-with-profile-image-borderless.png'
+                src: 'assets/images/svg/icon-with-profile-image-borderless.svg'
             });
             resolve();
         })
@@ -30,7 +30,7 @@ export class QRCodeBuilder {
             width: option['width'] || 196, height: option['height'] || 196, foreground: "#000",
             correctLevel: 0,
             text: code,
-            src: 'assets/images/png/icon-with-profile-image-borderless.png'
+            src: 'assets/images/svg/icon-with-profile-image-borderless.svg'
         })
     }
     toDataURL(url, callback) {
