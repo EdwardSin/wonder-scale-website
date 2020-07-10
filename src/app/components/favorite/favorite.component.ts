@@ -41,6 +41,7 @@ export class FavoriteComponent implements OnInit {
     page: 1
   };
   selectedPage;
+  selectedSize = 45;
   valueChanged = _.debounce(this.searchKeyword, 500);
   total: number = 0;
   isMobileSize: boolean;
@@ -259,6 +260,7 @@ export class FavoriteComponent implements OnInit {
   }
   selectMarker(result) {
     this.selectedPage = result;
+    this.selectedSize = 70;
   }
   onAddressSelected() {
     this.mapController.onAddressSelected().then(() => {

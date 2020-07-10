@@ -156,7 +156,7 @@ export class FloatBannerComponent implements OnInit {
     if (event)  {
       $(() => {
         this.isQrcodeLoading.start();
-        let imageURL = 'assets/images/png/dot.png';
+        let imageURL = 'assets/images/svg/dot.svg';
         this.qrCodeBuilder.toDataURL(imageURL, (dataUrl) => {
           let newImage = <HTMLImageElement>document.createElement('img');
           newImage.alt = 'profile-image';
@@ -179,11 +179,11 @@ export class FloatBannerComponent implements OnInit {
     let canvas = document.getElementById('canvas1');
     if (canvas) {
       let context = (<HTMLCanvasElement>canvas).getContext('2d');
-      let width = size / 3 * 190 / 300;
-      let height = size / 3 * 190 / 300;
-      let offsetyY = size * 9 / 300;
+      let width = size / 3 * 46.7 / 70;
+      let height = size / 3 * 46.7 / 70;
+      let offsetInnerY = size / 3 * 4.9 / 70;
       let offsetX = size / 2 - width / 2;
-      let offsetY = size / 2 - height / 2 - offsetyY;
+      let offsetY = size / 2 - height / 2 - offsetInnerY;
       context.save();
       context.beginPath();
       context.arc(offsetX + width / 2, offsetY + width / 2, width / 2, 0, 2 * Math.PI);

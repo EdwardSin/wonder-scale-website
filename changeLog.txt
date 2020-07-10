@@ -7,6 +7,7 @@
 - 2020-07-09                                -
 ---------------------------------------------
 .: WSW: Story: Improvement: Better UI in merchant page (WSW-60)
+.: WSW: Task: QR code icon is not clear (WSW-69)
 
 - v1.0.1020                                 -
 ---------------------------------------------
