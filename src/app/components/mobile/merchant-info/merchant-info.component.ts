@@ -19,6 +19,8 @@ export class MerchantInfoComponent implements OnInit {
   medias;
   preview: boolean;
   isShownLocation: boolean;
+  isInformationOpened: boolean = false;
+  selectedInformationIndex: number = 0;
   loading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject;
 
@@ -39,6 +41,10 @@ export class MerchantInfoComponent implements OnInit {
         this.loading.stop();
       }
     })
+  }
+  openInformation(index) {
+    this.isInformationOpened = true;
+    this.selectedInformationIndex = index;
   }
   closeAlert() {
     this.preview = false;

@@ -104,6 +104,38 @@
     }
 }
 
+.information-fullscreen-container {
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+
+    .information-fullscreen__icon{
+        width: 2.5rem;
+        line-height: 2.5rem;
+        text-align: center;
+        border-radius: 50%;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        z-index: 2;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, .1);
+        transition: background-color ease .2s;
+        &:hover{
+            background-color: rgba(0, 0, 0, .2);
+        }
+    }
+
+    ::ng-deep .swiper-pagination-bullet-active {
+        border: 0;
+        background-color: #282C35;
+    }
+}
+
 .info__container,
 .contact__container,
 .location__container,

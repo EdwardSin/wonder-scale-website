@@ -124,7 +124,8 @@ export class MerchantMobileComponent implements OnInit {
     };
     if (previousTrackAsString) {
       previousTrackAsJson = JSON.parse(previousTrackAsString);
-      if (!previousTrackAsJson || !previousTrackAsJson['date'] || typeof previousTrackAsJson['value'] !== typeof []) {
+      if (!previousTrackAsJson || !previousTrackAsJson['date'] || typeof previousTrackAsJson['value'] !== typeof [] || 
+        new Date(previousTrackAsJson['date']).toString() != previousTrackAsJsonAsDefault['date'].toString()) {
         previousTrackAsJson = previousTrackAsJsonAsDefault;
       }
     } else {
@@ -183,5 +184,6 @@ export class MerchantMobileComponent implements OnInit {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.sharedShopService.shop.next(null);
   }
 }
