@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { Shop } from '@objects/shop';
 import * as _ from 'lodash';
 import { ItemService } from '@services/http/public/item.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'merchant-categories',
@@ -15,6 +16,7 @@ import { ItemService } from '@services/http/public/item.service';
   styleUrls: ['./merchant-categories.component.scss']
 })
 export class MerchantCategoriesComponent implements OnInit {
+  environment = environment;
   items: Array<any> = [];
   allItems: Array<Item> = [];
   newItems: Array<Item> = [];
@@ -23,6 +25,8 @@ export class MerchantCategoriesComponent implements OnInit {
   categories: Array<Category> = [];
   selectedCategory: string = 'all';
   itemLoading: WsLoading = new WsLoading;
+  isMenuOpened: boolean = false;
+  selectedMenuIndex: number = 0;
   shop: Shop;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private sharedShopService: SharedShopService,
@@ -78,6 +82,10 @@ export class MerchantCategoriesComponent implements OnInit {
           this.items = result.result;
         });
     }
+  }
+  openMenu(index) {
+    this.isMenuOpened = true;
+    this.selectedMenuIndex = index;
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();

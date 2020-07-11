@@ -1,4 +1,19 @@
-<div id="items" class="category-container">
+<div class="menu-container mb-2" *ngIf="shop?.type == 'restaurant' && shop?.menuImages?.length > 0">
+    <swiper [config]="{slidesPerView: 'auto', spaceBetween: 10, pagination: false, navigation: false, autoHeight: true}">
+        <div class="swiper-slide d-inline-block" *ngFor="let image of shop?.menuImages; let i = index" (click)="openMenu(i)">
+            <img class="swiper-container__image" [src]="environment.IMAGE_URL + image" alt="upload-image" />
+        </div>
+    </swiper>
+</div>
+<div *ngIf="isMenuOpened" class="menu-fullscreen-container position-fixed pt-2">
+    <span class="menu-fullscreen__icon fas fa-times" (click)="isMenuOpened = false"></span>
+    <swiper [index]="selectedMenuIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}"> 
+        <ng-container class="swiper-slide" *ngFor="let image of shop?.menuImages">
+            <img class="w-100 mb-2" style="object-fit: contain;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
+        </ng-container>
+    </swiper>
+</div>
+<div *ngIf="allItems.length" id="items" class="category-container">
     <mat-select class="form-control category-container__dropdown" [(value)]="selectedCategory" (selectionChange)="getItemsByCategoryId(selectedCategory)">
         <mat-option [value]="'all'">All</mat-option>
         <mat-option *ngIf="todaySpecialItems?.length" [value]="'todayspecial'">Today Special</mat-option>

@@ -118,7 +118,7 @@ export class MerchantComponent implements OnInit {
           if (result['result']) {
             let track = this.getPreviousTrack();
             if (new Date(track.date).valueOf() == this.todayDate.valueOf()) {
-              track.value.push(this.shop._id);
+              track.value = _.union(track.value, [this.shop._id]);
             } 
             track.date = this.todayDate;
             localStorage.setItem('t_id', JSON.stringify(track));
@@ -136,7 +136,8 @@ export class MerchantComponent implements OnInit {
     };
     if (previousTrackAsString) {
       previousTrackAsJson = JSON.parse(previousTrackAsString);
-      if (!previousTrackAsJson || !previousTrackAsJson['date'] || typeof previousTrackAsJson['value'] !== typeof []) {
+      if (!previousTrackAsJson || !previousTrackAsJson['date'] || typeof previousTrackAsJson['value'] !== typeof [] ||
+        new Date(previousTrackAsJson['date']).toString() != previousTrackAsJsonAsDefault['date'].toString()) {
         previousTrackAsJson = previousTrackAsJsonAsDefault;
       }
     } else {
