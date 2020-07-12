@@ -4,11 +4,10 @@ import { CommonModule } from '@angular/common';
 import { MerchantCategoriesRoutingModule } from './merchant-categories-routing.module';
 import { SharedModule } from '../../public/shared/shared.module';
 import { SharedMerchantModule } from '../../public/shared-merchant/shared-merchant.module';
-import { MerchantCategoriesComponent } from '@components/mobile/merchant-categories/merchant-categories.component';
 
 
 @NgModule({
-  declarations: [MerchantCategoriesComponent],
+  declarations: [],
   imports: [
     CommonModule,
     SharedModule,

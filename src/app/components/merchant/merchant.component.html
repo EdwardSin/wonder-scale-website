@@ -33,27 +33,46 @@
         </ul>
     </div>
 
-    <div *ngIf="false && newItems?.length" id="new-items" class="new-items-container mb-3">
+    <!-- <div *ngIf="false && newItems?.length" id="new-items" class="new-items-container mb-3">
         <swiper [config]="{breakpoints: {'425': {slidesPerView: 2, spaceBetween: 10, slidesPerGroup: 2}, '768': { slidesPerView: 3, spaceBetween: 10, slidesPerGroup: 3}, '992': {slidesPerView: 4, spaceBetween: 10, slidesPerGroup: 4}}, slidesPerView: 1}">
             <item [item]="item" [index]="i" *ngFor="let item of newItems; let i = index" class="mb-5 item__fit-screen"></item>
         </swiper>
-    </div>
+    </div> -->
 
-    <div id="info" class="information-container mb-3" *ngIf="shop?.informationImages?.length > 0">
+    <!-- <div id="info" class="information-container mb-3" *ngIf="shop?.informationImages?.length > 0">
         <swiper [config]="{navigation: false, autoHeight: true}">
             <div *ngFor="let image of shop?.informationImages">
                 <img class="d-block center swiper-container__image" style="width:100%;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
             </div>
         </swiper>
-    </div>
+    </div> -->
 
-    <div id="discount-items" *ngIf="false && discountItems.length" class="discount-items-container mb-3">
-        <swiper [config]="{breakpoints: {'992': {slidesPerView: 4, spaceBetween: 10}}, slidesPerView: 1}">
-            <item [item]="item" [index]="i" *ngFor="let item of discountItems; let i = index" class="mb-5 item__fit-screen"></item>
+    <div id="info" class="information-container mb-2" *ngIf="shop?.informationImages?.length > 0">
+        <swiper [config]="{slidesPerView: 'auto', spaceBetween: 10, pagination: false, navigation: false, autoHeight: true}">
+            <div class="swiper-slide d-inline-block" *ngFor="let image of shop?.informationImages; let i = index">
+                <img class="swiper-container__image" [src]="environment.IMAGE_URL + image" alt="upload-image" (click)="openInformation(i)"/>
+            </div>
+        </swiper>
+    </div>
+    <div *ngIf="isInformationOpened" class="information-fullscreen-container position-fixed pt-2">
+        <span class="information-fullscreen__icon fas fa-times" (click)="isInformationOpened = false"></span>
+        <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}"> 
+            <ng-container class="swiper-slide" *ngFor="let image of shop?.informationImages">
+                <img class="w-100 mb-2" style="object-fit: contain;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
+            </ng-container>
         </swiper>
     </div>
 
-    <div id="items" class="category-container mb-3">
+
+    <!-- <div id="discount-items" *ngIf="false && discountItems.length" class="discount-items-container mb-3">
+        <swiper [config]="{breakpoints: {'992': {slidesPerView: 4, spaceBetween: 10}}, slidesPerView: 1}">
+            <item [item]="item" [index]="i" *ngFor="let item of discountItems; let i = index" class="mb-5 item__fit-screen"></item>
+        </swiper>
+    </div> -->
+
+    <merchant-categories></merchant-categories>
+
+    <!-- <div id="items" class="category-container mb-3">
         <mat-select class="form-control category-container__dropdown" [(value)]="selectedCategory" (selectionChange)="getItemsByCategoryId(selectedCategory)">
             <mat-option [value]="'all'">All</mat-option>
             <mat-option *ngIf="todaySpecialItems.length" [value]="'todayspecial'">Today Special</mat-option>
@@ -61,19 +80,17 @@
             <mat-option *ngIf="discountItems.length" [value]="'discount'">Discount</mat-option>
             <mat-option [value]="category?._id" *ngFor="let category of categories">{{ category?.name }}</mat-option>
         </mat-select>
-    </div>
+    </div> -->
 
-    <div class="items-container">
+    <!-- <div class="items-container">
         <ng-container *ngIf="!itemLoading.isRunning() && items?.length; else itemLoadingTemplate">
             <div *ngIf="false" class="row no-gutters mb-4">
-                <!-- <item [item]="item" *ngFor="let item of items" class="mb-5"></item> -->
             </div>
             <div *ngIf="items.length" class="w-100 pb-3">
                 <list-item [item]="item" *ngFor="let item of items"></list-item>
             </div>
-            <!-- <pagination class="pb-4" [total]="items.length"></pagination> -->
         </ng-container>
-    </div>
+    </div> -->
 </div>
 
 <float-banner *ngIf="shop" [element]="shop" [type]="'shop'"></float-banner>
