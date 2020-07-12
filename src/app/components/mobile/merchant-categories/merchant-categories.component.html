@@ -8,8 +8,8 @@
 <div *ngIf="isMenuOpened" class="menu-fullscreen-container position-fixed pt-2">
     <span class="menu-fullscreen__icon fas fa-times" (click)="isMenuOpened = false"></span>
     <swiper [index]="selectedMenuIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}"> 
-        <ng-container class="swiper-slide" *ngFor="let image of shop?.menuImages">
-            <img class="w-100 mb-2" style="object-fit: contain;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
+        <ng-container *ngFor="let image of shop?.menuImages">
+            <img class="swiper-container__image swiper-slide center" style="object-fit: contain;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
         </ng-container>
     </swiper>
 </div>
