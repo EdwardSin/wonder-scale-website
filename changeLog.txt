@@ -8,6 +8,7 @@
 ---------------------------------------------
 .: WSW: Task: Update merchant home page (WSW-71)
 .: WSW: Task: Adding loading spinner (WSW-60)
+.: WSW: Task: Update home icon (WSW-69)
 
 ---------------------------------------------
 - 2020-07-11                                -
