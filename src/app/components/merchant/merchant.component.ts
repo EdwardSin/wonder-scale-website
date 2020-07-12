@@ -14,6 +14,7 @@ import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 import { TrackService } from '@services/http/public/track.service';
 import { BrowserService } from '@services/general/browser.service';
 import { ScreenService } from '@services/general/screen.service';
+import { SharedShopService } from '@services/shared-shop.service';
 
 @Component({
   selector: 'merchant',
@@ -31,6 +32,8 @@ export class MerchantComponent implements OnInit {
   categories: Array<Category> = [];
   loading: WsLoading = new WsLoading;
   itemLoading: WsLoading = new WsLoading;
+  isInformationOpened: boolean;
+  selectedInformationIndex: number = 0;
   shop: Shop;
   message = '';
   preview: Boolean;
@@ -43,6 +46,7 @@ export class MerchantComponent implements OnInit {
     private route: ActivatedRoute,
     private screenService: ScreenService,
     private shopService: ShopService,
+    private sharedShopService: SharedShopService,
     private trackService: TrackService,
     private itemService: ItemService) {
     let date = new Date;
@@ -157,6 +161,7 @@ export class MerchantComponent implements OnInit {
       this.mapShop();
     }), takeUntil(this.ngUnsubscribe)).subscribe(() => {
       if (this.shop) {
+        this.sharedShopService.shop.next(this.shop);
         DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));
         this.loading.stop()
@@ -171,6 +176,7 @@ export class MerchantComponent implements OnInit {
       this.mapShop();
     }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
       if (this.shop) {
+        this.sharedShopService.shop.next(this.shop);
         DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
       }
     }, err => {
@@ -188,31 +194,10 @@ export class MerchantComponent implements OnInit {
       this.items = this.allItems;
     }
   }
-  // getAllItemsById(id) {
-  //   this.itemService.getAllItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.allItems = result.result;
-  //   });
-  // }
-  // getNewItemsById(id) {
-  //   this.itemService.getNewItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.newItems = result.result;
-  //   });
-  // }
-  // getDiscountItemsById(id) {
-  //   this.itemService.getDiscountItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.discountItems = result.result;
-  //   });
-  // }
-  // getTodaySpecialItemsById(id) {
-  //   this.itemService.getTodaySpecialItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.todaySpecialItems = result.result;
-  //   });
-  // }
-  // getCategoriesById(id) {
-  //   this.categoryService.getCategoriesByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.categories = result.result;
-  //   })
-  // }
+  openInformation(index) {
+    this.isInformationOpened = true;
+    this.selectedInformationIndex = index;
+  }
   getItemsByCategoryId(value) {
     this.itemLoading.start();
     if (value == 'all') {
