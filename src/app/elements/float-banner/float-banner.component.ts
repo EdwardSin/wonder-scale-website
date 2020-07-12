@@ -33,6 +33,7 @@ export class FloatBannerComponent implements OnInit {
   saved: boolean;
   isMobileSize: boolean;
   isQrcodeLoading: WsLoading = new WsLoading;
+  isSaveLoading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private facebookService: FacebookService,
     private ref: ChangeDetectorRef,
@@ -53,9 +54,11 @@ export class FloatBannerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isSaveLoading.start();
     this.sharedUserService.followPages.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (this.element) {
         this.saved = result.includes(this.element._id);
+        this.isSaveLoading.stop();
       }
     })
   }
@@ -98,18 +101,24 @@ export class FloatBannerComponent implements OnInit {
   isFollowedShop() {
     this.authFollowService.isFollowedShop(this.element._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
+      this.isSaveLoading.stop();
     })
   }
   isFollowedItem() {
     this.authFollowService.isFollowedItem(this.element._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
+      this.isSaveLoading.stop();
     })
   }
   saveShop() {
+    this.isSaveLoading.start();
     combineLatest(timer(500),
       this.authFollowService.followShop(this.element._id))
       .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.saved = result['result'];
+        this.isSaveLoading.stop();
+      }, () => {
+        this.isSaveLoading.stop();
       });
   }
   saveItem() {
@@ -124,10 +133,14 @@ export class FloatBannerComponent implements OnInit {
       });
   }
   unsaveShop() {
+    this.isSaveLoading.start();
     combineLatest(timer(500),
       this.authFollowService.unfollowShop(this.element._id))
       .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.saved = result['result'];
+        this.isSaveLoading.stop();
+      }, () => {
+        this.isSaveLoading.stop();
       });
   }
   unsaveItem() {

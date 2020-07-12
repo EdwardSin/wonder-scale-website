@@ -1,5 +1,7 @@
 <div class="float-banner">
-    <span *ngIf="type == 'shop'" [ngClass]="saved? 'fas selected': ''" class="float-icon far fa-heart" (click)="saved? unsaveShop(): saveShop()"></span>
+    <span *ngIf="type == 'shop'" [ngClass]="isSaveLoading.isRunning() ? '' : (saved? 'fas fa-heart selected': 'fa-heart')" class="float-icon far" (click)="saved? unsaveShop(): saveShop()">
+        <ws-spinner *ngIf="isSaveLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="3"></ws-spinner>
+    </span>
     <span *ngIf="type == 'item'" [ngClass]="saved? 'fas selected': ''" class="float-icon far fa-heart" (click)="saved? unsaveItem(): saveItem()"></span>
     <span *ngIf="type == 'shop'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
     <span *ngIf="type == 'item'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
