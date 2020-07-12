@@ -29,6 +29,7 @@ export class MerchantFooterComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading.start();
+    this.saveLoading.start();
     this.sharedShopService.shop.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
         this.shop = result;
@@ -40,6 +41,7 @@ export class MerchantFooterComponent implements OnInit {
   isFollowedShop() {
     this.authFollowService.isFollowedShop(this.shop._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
+      this.saveLoading.stop();
     })
   }
   saveShop() {
