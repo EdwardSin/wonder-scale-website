@@ -5,7 +5,22 @@
         <p class="merchant__selection-item" [routerLink]="['categories']" [queryParamsHandling]="'merge'" (click)="navigateToItems()">{{ shop?.type == 'restaurant' ? 'Menu' : 'Categories'}}</p>
     </div>
 </div>
-<div [hidden]="isShownSelection">
+<div *ngIf="shop && !loading.isRunning(); else loadingTemplate" [hidden]="isShownSelection">
+    <div *ngIf="preview" #alert class="alert alert-danger alert-dismissible fade show font-8 my-2 w-100" role="alert">
+        This is a preview page and will not displayed to public if the shop is in unpublished status.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <router-outlet></router-outlet>
     <merchant-footer *ngIf="shop" [element]="shop"></merchant-footer>
 </div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noShopTemplate" class="text-center d-block w-100" style="padding-top: 30vh;padding-bottom: 30vh"></ws-spinner>
+</ng-template>
+
+<ng-template #noShopTemplate>
+    <h6 *ngIf="!message" class="my-5 py-5 text-center">Shop is not found!</h6>
+    <h6 *ngIf="message" class="my-5 py-5 text-center">{{ message }}</h6>
+</ng-template>
