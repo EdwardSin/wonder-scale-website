@@ -157,8 +157,13 @@ export class MerchantMobileComponent implements OnInit {
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));
         this.sharedShopService.shop.next(this.shop);
         this.router.navigate([], { queryParams: {type: null}, queryParamsHandling: 'merge' });
-        this.loading.stop()
+      } else {
+        this.isShownSelection = false;
       }
+      this.loading.stop();
+    }, () => {
+      this.loading.stop();
+      this.isShownSelection = false;
     });
   }
   getPreviewShopById(id) {
@@ -180,6 +185,9 @@ export class MerchantMobileComponent implements OnInit {
   }
   navigateToItems() {
     this.isShownSelection = false;
+  }
+  closeAlert() {
+    this.preview = false;
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();
