@@ -33,6 +33,7 @@ export class FloatBannerComponent implements OnInit {
   saved: boolean;
   isMobileSize: boolean;
   isQrcodeLoading: WsLoading = new WsLoading;
+  isSaveLoading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private facebookService: FacebookService,
     private ref: ChangeDetectorRef,
@@ -53,9 +54,11 @@ export class FloatBannerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isSaveLoading.start();
     this.sharedUserService.followPages.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (this.element) {
         this.saved = result.includes(this.element._id);
+        this.isSaveLoading.stop();
       }
     })
   }
@@ -67,8 +70,8 @@ export class FloatBannerComponent implements OnInit {
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
-        if (this.element['location'] && this.element['location']['coordination'] && this.element['location']['coordination'].length) {
-          this.isShownLocation = this.element['location']['coordination'][0] == 0 && this.element['location']['coordination'][1] == 0;
+        if (this.element['location'] && this.element['location']['coordinates'] && this.element['location']['coordinates'].length) {
+          this.isShownLocation = this.element['location']['coordinates'][0] != 0 && this.element['location']['coordinates'][1] != 0;
         }
         if (this.element.media && this.element.media.length) {
           this.medias = _.groupBy(this.element.media, 'type');
@@ -89,8 +92,8 @@ export class FloatBannerComponent implements OnInit {
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
-        if (this.element['shop']['location'] && this.element['shop']['location']['coordination'] && this.element['shop']['location']['coordination'].length) {
-          this.isShownLocation = this.element['shop']['location']['coordination'][0] == 0 && this.element['shop']['location']['coordination'][1] == 0;
+        if (this.element['shop']['location'] && this.element['shop']['location']['coordinates'] && this.element['shop']['location']['coordinates'].length) {
+          this.isShownLocation = this.element['shop']['location']['coordinates'][0] != 0 && this.element['shop']['location']['coordinates'][1] != 0;
         }
       }
     }
@@ -98,18 +101,24 @@ export class FloatBannerComponent implements OnInit {
   isFollowedShop() {
     this.authFollowService.isFollowedShop(this.element._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
+      this.isSaveLoading.stop();
     })
   }
   isFollowedItem() {
     this.authFollowService.isFollowedItem(this.element._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
+      this.isSaveLoading.stop();
     })
   }
   saveShop() {
+    this.isSaveLoading.start();
     combineLatest(timer(500),
       this.authFollowService.followShop(this.element._id))
       .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.saved = result['result'];
+        this.isSaveLoading.stop();
+      }, () => {
+        this.isSaveLoading.stop();
       });
   }
   saveItem() {
@@ -124,10 +133,14 @@ export class FloatBannerComponent implements OnInit {
       });
   }
   unsaveShop() {
+    this.isSaveLoading.start();
     combineLatest(timer(500),
       this.authFollowService.unfollowShop(this.element._id))
       .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.saved = result['result'];
+        this.isSaveLoading.stop();
+      }, () => {
+        this.isSaveLoading.stop();
       });
   }
   unsaveItem() {
@@ -156,7 +169,7 @@ export class FloatBannerComponent implements OnInit {
     if (event)  {
       $(() => {
         this.isQrcodeLoading.start();
-        let imageURL = 'assets/images/png/dot.png';
+        let imageURL = 'assets/images/svg/dot.svg';
         this.qrCodeBuilder.toDataURL(imageURL, (dataUrl) => {
           let newImage = <HTMLImageElement>document.createElement('img');
           newImage.alt = 'profile-image';
@@ -179,11 +192,11 @@ export class FloatBannerComponent implements OnInit {
     let canvas = document.getElementById('canvas1');
     if (canvas) {
       let context = (<HTMLCanvasElement>canvas).getContext('2d');
-      let width = size / 3 * 190 / 300;
-      let height = size / 3 * 190 / 300;
-      let offsetyY = size * 9 / 300;
+      let width = size / 3 * 46.7 / 70;
+      let height = size / 3 * 46.7 / 70;
+      let offsetInnerY = size / 3 * 4.9 / 70;
       let offsetX = size / 2 - width / 2;
-      let offsetY = size / 2 - height / 2 - offsetyY;
+      let offsetY = size / 2 - height / 2 - offsetInnerY;
       context.save();
       context.beginPath();
       context.arc(offsetX + width / 2, offsetY + width / 2, width / 2, 0, 2 * Math.PI);

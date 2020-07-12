@@ -13,6 +13,8 @@ import * as _ from 'lodash';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 import { TrackService } from '@services/http/public/track.service';
 import { BrowserService } from '@services/general/browser.service';
+import { ScreenService } from '@services/general/screen.service';
+import { SharedShopService } from '@services/shared-shop.service';
 
 @Component({
   selector: 'merchant',
@@ -30,6 +32,8 @@ export class MerchantComponent implements OnInit {
   categories: Array<Category> = [];
   loading: WsLoading = new WsLoading;
   itemLoading: WsLoading = new WsLoading;
+  isInformationOpened: boolean;
+  selectedInformationIndex: number = 0;
   shop: Shop;
   message = '';
   preview: Boolean;
@@ -40,7 +44,9 @@ export class MerchantComponent implements OnInit {
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private router: Router,
     private route: ActivatedRoute,
+    private screenService: ScreenService,
     private shopService: ShopService,
+    private sharedShopService: SharedShopService,
     private trackService: TrackService,
     private itemService: ItemService) {
     let date = new Date;
@@ -49,11 +55,20 @@ export class MerchantComponent implements OnInit {
 
   ngOnInit() {
     let id = this.route.snapshot.queryParams.id;
+    let username = this.route.snapshot.params.username;
+    let isMobileDevice = this.screenService.isMobileDevice.value;
     let preview = this.route.snapshot.queryParams.preview;
-    if (preview == 'true') {
-      this.getPreviewShopById(id);
+    this.loading.start();
+    if (isMobileDevice) {
+      if (!this.router.url.includes('/page/mobile/')) {
+        this.router.navigate(['/page', 'mobile', username], {queryParams: {id: id}, queryParamsHandling: 'merge' });
+      }
     } else {
-      this.getShopById(id);
+      if (preview == 'true') {
+        this.getPreviewShopById(id);
+      } else {
+        this.getShopById(id);
+      }
     }
 
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
@@ -107,7 +122,7 @@ export class MerchantComponent implements OnInit {
           if (result['result']) {
             let track = this.getPreviousTrack();
             if (new Date(track.date).valueOf() == this.todayDate.valueOf()) {
-              track.value.push(this.shop._id);
+              track.value = _.union(track.value, [this.shop._id]);
             } 
             track.date = this.todayDate;
             localStorage.setItem('t_id', JSON.stringify(track));
@@ -125,7 +140,8 @@ export class MerchantComponent implements OnInit {
     };
     if (previousTrackAsString) {
       previousTrackAsJson = JSON.parse(previousTrackAsString);
-      if (!previousTrackAsJson || !previousTrackAsJson['date'] || typeof previousTrackAsJson['value'] !== typeof []) {
+      if (!previousTrackAsJson || !previousTrackAsJson['date'] || typeof previousTrackAsJson['value'] !== typeof [] ||
+        new Date(previousTrackAsJson['date']).toString() != previousTrackAsJsonAsDefault['date'].toString()) {
         previousTrackAsJson = previousTrackAsJsonAsDefault;
       }
     } else {
@@ -140,14 +156,15 @@ export class MerchantComponent implements OnInit {
     return isTrackable;
   }
   getShopById(id) {
-    this.loading.start();
     this.shopService.getShopById(id).pipe(tap((result) => {
       this.shop = result.result;
       this.mapShop();
-    }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
+    }), takeUntil(this.ngUnsubscribe)).subscribe(() => {
       if (this.shop) {
+        this.sharedShopService.shop.next(this.shop);
         DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));
+        this.loading.stop()
       }
     });
   }
@@ -159,6 +176,7 @@ export class MerchantComponent implements OnInit {
       this.mapShop();
     }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
       if (this.shop) {
+        this.sharedShopService.shop.next(this.shop);
         DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
       }
     }, err => {
@@ -176,31 +194,10 @@ export class MerchantComponent implements OnInit {
       this.items = this.allItems;
     }
   }
-  // getAllItemsById(id) {
-  //   this.itemService.getAllItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.allItems = result.result;
-  //   });
-  // }
-  // getNewItemsById(id) {
-  //   this.itemService.getNewItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.newItems = result.result;
-  //   });
-  // }
-  // getDiscountItemsById(id) {
-  //   this.itemService.getDiscountItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.discountItems = result.result;
-  //   });
-  // }
-  // getTodaySpecialItemsById(id) {
-  //   this.itemService.getTodaySpecialItemsByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.todaySpecialItems = result.result;
-  //   });
-  // }
-  // getCategoriesById(id) {
-  //   this.categoryService.getCategoriesByShopId(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-  //     this.categories = result.result;
-  //   })
-  // }
+  openInformation(index) {
+    this.isInformationOpened = true;
+    this.selectedInformationIndex = index;
+  }
   getItemsByCategoryId(value) {
     this.itemLoading.start();
     if (value == 'all') {

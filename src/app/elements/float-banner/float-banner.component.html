@@ -1,5 +1,7 @@
-<div *ngIf="!isMobileSize" class="float-banner">
-    <span *ngIf="type == 'shop'" [ngClass]="saved? 'fas selected': ''" class="float-icon far fa-heart" (click)="saved? unsaveShop(): saveShop()"></span>
+<div class="float-banner">
+    <span *ngIf="type == 'shop'" [ngClass]="isSaveLoading.isRunning() ? '' : (saved? 'fas fa-heart selected': 'fa-heart')" class="float-icon far" (click)="saved? unsaveShop(): saveShop()">
+        <ws-spinner *ngIf="isSaveLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="3"></ws-spinner>
+    </span>
     <span *ngIf="type == 'item'" [ngClass]="saved? 'fas selected': ''" class="float-icon far fa-heart" (click)="saved? unsaveItem(): saveItem()"></span>
     <span *ngIf="type == 'shop'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
     <span *ngIf="type == 'item'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
@@ -17,13 +19,7 @@
         </span>
     </a>
 </div>
-<div *ngIf="isMobileSize" style="height: 52px"></div>
-<div *ngIf="isMobileSize" class="float-banner__mobile">
-    <span *ngIf="type == 'shop'" [ngClass]="saved? 'fas selected': ''" class="float-icon far fa-heart" (click)="saved? unsaveShop(): saveShop()"></span>
-    <span *ngIf="type == 'shop'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
-    <span *ngIf="type == 'shop'" (click)="isQRCodeModalOpened = true" class="float-icon fas fa-qrcode"></span>
-    <span *ngIf="type == 'shop'" (click)="isInformationModalOpened = true" class="float-icon fas fa-info-circle"></span>
-</div>
+
 <ng-template #loadingTemplate>
     <ws-spinner *ngIf="loading.isRunning(); else noShopTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
 </ng-template>

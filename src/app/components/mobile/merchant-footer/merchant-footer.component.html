@@ -1,0 +1,9 @@
+<div style="height: 52px"></div>
+<div class="merchant-footer__mobile">
+    <a href="javascript:void(0)" [class.active]="isLinkActive('/page/mobile/' + shop?.username + '/info')" [routerLink]="['info']" [queryParamsHandling]="'merge'" class="merchant-footer-icon fas fa-info-circle"></a>
+    <a href="javascript:void(0)" [class.active]="isLinkActive('/page/mobile/' + shop?.username + '/categories')" [routerLink]="['categories']" [queryParamsHandling]="'merge'" class="merchant-footer-icon fas fa-th-large"></a>
+    <a href="javascript:void(0)" [class.active]="isLinkActive('/page/mobile/' + shop?.username + '/share')" [routerLink]="['share']" [queryParamsHandling]="'merge'" class="merchant-footer-icon fas fa-share-alt"></a>
+    <a href="javascript:void(0)" [ngClass]="saveLoading.isRunning() ? '' : (saved? 'fas fa-heart selected': 'fa-heart')" class="merchant-footer-icon position-relative far" (click)="saved? unsaveShop(): saveShop()">
+        <ws-spinner class="position-absolute" style="top: calc(50% - 10px); left: calc(50% - 10px)" *ngIf="saveLoading.isRunning()" [width]="20" [height]="20" [borderWidth]="3" [spinnerColor]="'#fff'"></ws-spinner>
+    </a>
+</div>

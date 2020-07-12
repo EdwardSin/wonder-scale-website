@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
+import { WsLoading } from '@elements/ws-loading/ws-loading';
 
 @Component({
   selector: 'list-item',
@@ -22,6 +23,7 @@ export class ListItemComponent implements OnInit {
   @Input() follow: boolean;
   @Output() followChanged: EventEmitter<any> = new EventEmitter;
   environment = environment;
+  saveLoading: WsLoading = new WsLoading;
   ngUnsubscribe: Subject<any> = new Subject;
   followItems: Array<string> = [];
   constructor(
@@ -64,8 +66,10 @@ export class ListItemComponent implements OnInit {
   }
   followClicked(event) {
     event.stopPropagation();
+    this.saveLoading.start();
     if (this.follow) {
       this.authFollowService.unfollowItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.saveLoading.stop();
         if (result) {
           let followItems = _.filter(this.followItems, (id) => id != this.item._id);
           this.sharedUserService.followItems.next(followItems);
@@ -73,6 +77,7 @@ export class ListItemComponent implements OnInit {
       });
     } else {
       this.authFollowService.followItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.saveLoading.stop();
         if (result) {
           this.followItems.push(this.item._id)
           let followItems = _.uniq(this.followItems);

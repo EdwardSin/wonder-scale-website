@@ -16,6 +16,7 @@ import { PipeModule } from '../pipe/pipe.module';
 import { ElementModule } from '../element/element.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListItemComponent } from '@elements/list-item/list-item.component';
+import { FacebookModule } from 'ngx-facebook';
 import { PageComponent } from '@elements/page/page.component';
 import { AgmCoreModule } from '@agm/core';
 
@@ -30,6 +31,7 @@ import { AgmCoreModule } from '@agm/core';
     SharedRoutingModule,
     PipeModule,
     ElementModule,
+    FacebookModule,
     MDBBootstrapModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBTVuemjzI8vqXoCPeJhtt0WgFQ9TNizLQ'
