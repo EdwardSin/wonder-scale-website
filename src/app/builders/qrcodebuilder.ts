@@ -19,9 +19,14 @@ export class QRCodeBuilder {
                 width: option['width'] || 196, height: option['height'] || 196, foreground: "#000",
                 correctLevel: 0,
                 text: code,
-                src: 'assets/images/svg/icon-with-profile-image-borderless.svg'
+                src: 'assets/images/svg/icon-with-profile-image-borderless.svg',
+                callback: function () {
+                    if (option['callback']) {
+                        option['callback']();
+                    }
+                    resolve();
+                }
             });
-            resolve();
         })
     }
     public static createPromotionQrCode(target, url, option = {}) {
