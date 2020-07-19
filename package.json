@@ -9,7 +9,8 @@
         "upload": "aws s3 cp dist/wonder-scale-website s3://www.wonderscale.com --recursive",
         "deploy": "npm run build && npm run upload",
         "upload-testing": "aws s3 cp dist/wonder-scale-website s3://testing.wonderscale.com --recursive",
-        "deploy-testing": "ng build --configuration qa --aot && npm run upload-testing",
+        "build-testing": "ng build --configuration qa --aot",
+        "deploy-testing": "npm run build-testing && npm run upload-testing",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e"
