@@ -25,6 +25,7 @@ export class MerchantShareComponent implements OnInit {
   shareLinkThroughFB: string = '';
   shareLinkThroughTwitter: string = '';
   shareLinkThroughEmail: string = '';
+  displayImage: string = '';
   isQrcodeLoading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(
@@ -50,6 +51,7 @@ export class MerchantShareComponent implements OnInit {
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
+        this.displayImage = this.shop.profileImage ? 'api/images/' + encodeURIComponent(this.shop.profileImage) : 'assets/images/svg/dot.svg';
         
         if (this.shop.phone) {
           this.shop.phone = _.filter(this.shop.phone, (phone) => !_.isEmpty(phone));
@@ -82,20 +84,18 @@ export class MerchantShareComponent implements OnInit {
   }
   showQrcode(event) {
     if (event)  {
-      $(() => {
+      setTimeout(() => {
         this.isQrcodeLoading.start();
-        let imageURL = 'assets/images/svg/dot.svg';
-        this.qrCodeBuilder.toDataURL(imageURL, (dataUrl) => {
-          let newImage = <HTMLImageElement>document.createElement('img');
-          newImage.alt = 'profile-image';
-          newImage.src = dataUrl;
-          newImage.addEventListener('load', e => {
-            let url = environment.URL + 'page/' + this.shop.username + '?id=' + this.shop._id + '&type=qr_scan';
-            QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150})
-            .then(() => {
-              this.renderProfileImageToQrcode(newImage, 150);
-              this.isQrcodeLoading.stop();
-            });
+        let newImage = <HTMLImageElement>document.createElement('img');
+        newImage.alt = 'profile-image';
+        newImage.src = this.displayImage;
+        newImage.addEventListener('load', e => {
+          let url = environment.URL + 'page/' + this.shop.username + '?id=' + this.shop._id + '&type=qr_scan';
+          QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150, callback: () => {
+            this.isQrcodeLoading.stop();
+          }})
+          .then(() => {
+            this.renderProfileImageToQrcode(newImage, 150);
           });
         });
       });
@@ -104,12 +104,12 @@ export class MerchantShareComponent implements OnInit {
     }
   }
   renderProfileImageToQrcode(image, size) {
-    let canvas = document.getElementById('canvas1');
+    let canvas = $('.qrcode').find('canvas')[0];
     if (canvas) {
       let context = (<HTMLCanvasElement>canvas).getContext('2d');
       let width = size / 3 * 46.7 / 70;
       let height = size / 3 * 46.7 / 70;
-      let offsetInnerY = size / 3 * 4.9 / 70;
+      let offsetInnerY = size / 3 * 6 / 70;
       let offsetX = size / 2 - width / 2;
       let offsetY = size / 2 - height / 2 - offsetInnerY;
       context.save();

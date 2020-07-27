@@ -29,6 +29,7 @@ export class FloatBannerComponent implements OnInit {
   shareLinkThroughFB: string;
   shareLinkThroughTwitter: string;
   shareLinkThroughEmail: string;
+  displayImage: string = '';
   medias;
   saved: boolean;
   isMobileSize: boolean;
@@ -70,6 +71,8 @@ export class FloatBannerComponent implements OnInit {
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
+        this.displayImage = this.element.profileImage ? 'api/images/' + encodeURIComponent(this.element.profileImage) : 'assets/images/svg/dot.svg';
+  
         if (this.element['location'] && this.element['location']['coordinates'] && this.element['location']['coordinates'].length) {
           this.isShownLocation = this.element['location']['coordinates'][0] != 0 && this.element['location']['coordinates'][1] != 0;
         }
@@ -167,20 +170,18 @@ export class FloatBannerComponent implements OnInit {
   }
   showQrcode(event) {
     if (event)  {
-      $(() => {
+      setTimeout(() => {
         this.isQrcodeLoading.start();
-        let imageURL = 'assets/images/svg/dot.svg';
-        this.qrCodeBuilder.toDataURL(imageURL, (dataUrl) => {
-          let newImage = <HTMLImageElement>document.createElement('img');
-          newImage.alt = 'profile-image';
-          newImage.src = dataUrl;
-          newImage.addEventListener('load', e => {
-            let url = environment.URL + 'page/' + this.element.username + '?id=' + this.element.id;
-            QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150})
-            .then(() => {
-              this.renderProfileImageToQrcode(newImage, 150);
-              this.isQrcodeLoading.stop();
-            });
+        let newImage = <HTMLImageElement>document.createElement('img');
+        newImage.alt = 'profile-image';
+        newImage.src = this.displayImage;
+        newImage.addEventListener('load', e => {
+          let url = environment.URL + 'page/' + this.element.username + '?id=' + this.element.id;
+          QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150, callback: () => {
+            this.isQrcodeLoading.stop();
+          }})
+          .then(() => {
+            this.renderProfileImageToQrcode(newImage, 150);
           });
         });
       });
@@ -189,12 +190,12 @@ export class FloatBannerComponent implements OnInit {
     }
   }
   renderProfileImageToQrcode(image, size) {
-    let canvas = document.getElementById('canvas1');
+    let canvas = $('.qrcode').find('canvas')[0];
     if (canvas) {
       let context = (<HTMLCanvasElement>canvas).getContext('2d');
       let width = size / 3 * 46.7 / 70;
       let height = size / 3 * 46.7 / 70;
-      let offsetInnerY = size / 3 * 4.9 / 70;
+      let offsetInnerY = size / 3 * 6 / 70;
       let offsetX = size / 2 - width / 2;
       let offsetY = size / 2 - height / 2 - offsetInnerY;
       context.save();
