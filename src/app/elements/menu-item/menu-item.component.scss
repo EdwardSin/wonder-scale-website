@@ -1,0 +1,145 @@
+:host {
+    padding: .25rem .5rem;
+    display: block;
+    width: 100%;
+
+    .menu-item__container {
+        border: 1px solid #f2f2f2;
+        background-color: #fff;
+        width: 100%;
+        border-radius: 2px;
+        position: relative;
+        transition: box-shadow ease .2s;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+
+        .menu-item__image-container {
+            text-align: center;
+            width: 90px;
+            height: 90px;
+            background-color: #f7f7f7;
+            overflow: hidden;
+            color: #ccc;
+            transition: all ease .1s;
+            cursor: pointer;
+
+            &:hover {
+                color: rgba(0, 0, 0, .8);
+            }
+        }
+
+        .menu-item__image {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+        }
+
+        .menu-item__image-hint{
+            transition: background-color ease .2s;
+
+            .menu-item__image-hint-icon{
+                transition: color ease .2s;
+            }
+        }
+        
+        .menu-item__image:hover + 
+        .menu-item__image-hint,
+        .menu-item__image-hint:hover{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 90px;
+            height: 90px;
+            background-color: rgba(0, 0, 0, .4);
+
+            .menu-item__image-hint-icon{
+                position: absolute;
+                color: #fff;
+                top: .5rem;
+                right: .5rem;
+            }
+        }
+
+        .menu-item__middle {
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+            height: 90px;
+
+            .menu-item__text {
+                height: 50px;
+                line-height: 1.1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin-bottom: 0;
+            }
+
+            .menu-item__price {
+                display: inline-block;
+                border-radius: 1.5rem;
+                color: #fff;
+                padding: .05rem .5rem;
+                font-size: .8rem;
+                background-color: #282C35;
+                &.menu-item__price__offer{
+                    background-color: #990000;
+                }
+            }
+
+            .menu-item__discount-price {
+                font-size: .8rem;
+                display: inline-block;
+                margin-right: .5rem;
+            }
+        }
+
+        .menu-item__input,
+        .menu-item__textarea{
+            border: 0;
+            background-color: #fff;
+            box-shadow: 0 1px 4px #ccc;
+        }
+        
+        .menu-item__input {
+            height: 28px;
+            line-height: 28px;
+            text-align: right;
+            width: 50px;
+        }
+
+        &:hover {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+        }
+    }
+}
+
+.images-fullscreen-container {
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+
+    .images-fullscreen__icon{
+        width: 2.5rem;
+        line-height: 2.5rem;
+        text-align: center;
+        border-radius: 50%;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        z-index: 2;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, .1);
+        transition: background-color ease .2s;
+        &:hover{
+            background-color: rgba(0, 0, 0, .2);
+        }
+    }
+
+    ::ng-deep .swiper-pagination-bullet-active {
+        border: 0;
+        background-color: #282C35;
+    }
+}

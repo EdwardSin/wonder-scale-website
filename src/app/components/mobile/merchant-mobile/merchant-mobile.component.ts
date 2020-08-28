@@ -28,6 +28,7 @@ export class MerchantMobileComponent implements OnInit {
   isShownSelection = false;
   trackId;
   todayDate;
+  showFooter: boolean;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -54,7 +55,7 @@ export class MerchantMobileComponent implements OnInit {
         this.router.navigate(['/page', username], {queryParams: {id}, queryParamsHandling: 'merge' });
       }
     }
-
+    this.showFooter = !this.router.url.includes('/menu');
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
@@ -64,6 +65,7 @@ export class MerchantMobileComponent implements OnInit {
           if (preview == 'true' && !this.shop) {
             this.getPreviewShopById(id);
           }
+          this.showFooter = !this.router.url.includes('/menu')
         }
       });
   }
