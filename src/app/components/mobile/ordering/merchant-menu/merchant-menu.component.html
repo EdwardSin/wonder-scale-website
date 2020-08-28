@@ -1,0 +1,223 @@
+<div *ngIf="!saleLoading.isRunning() && !itemLoading.isRunning(); else loadingTemplate">
+    <div [ngSwitch]="phase.step">
+        <ng-container *ngSwitchCase="0">
+            <div class="btn-navigation" (click)="openNavigation()">
+                <span class="fas fa-bars btn-navigation__icon"></span>
+                <span>Menu</span>
+            </div>
+            <div class="menu-navigation" [class.menu-navigation__open]="isNavigationOpened">
+                <span class="fas fa-times menu-navigation__closed" (click)="closeNavigation()"></span>
+                <h5 class="menu-navigation-title">Menu</h5>
+                <ul class="menu-navigation-list list-unstyled mb-0">
+                    <li class="menu-navigation-item" *ngIf="allItems.length" [class.selected]="selectedCategory == 'all'" (click)="getItemsByCategoryId('all')">
+                        All
+                    </li>
+                    <li class="menu-navigation-item" *ngIf="newItems.length" [class.selected]="selectedCategory == 'new'" (click)="getItemsByCategoryId('new')">
+                        New
+                    </li>
+                    <li class="menu-navigation-item" *ngIf="discountItems.length" [class.selected]="selectedCategory == 'discount'" (click)="getItemsByCategoryId('discount')">
+                        Discount
+                    </li>
+                    <li class="menu-navigation-item" *ngIf="todaySpecialItems.length" [class.selected]="selectedCategory == 'todayspecial'" (click)="getItemsByCategoryId('todayspecial')">
+                        Today Special
+                    </li>
+                    <li class="menu-navigation-item" [class.selected]="selectedCategory == category?._id" *ngFor="let category of categories" (click)="getItemsByCategoryId(category?._id)">
+                        {{ category.name }}
+                    </li>
+                </ul>
+            </div>
+            <div class="w-100 pb-3">
+                <menu-item *ngFor="let item of items" [item]="item"></menu-item>
+            </div>
+            <div style="height: 54px"></div>
+            <button [disabled]="!allCartItems.length" class="btn btn-cart" (click)="checkout()">
+                <span class="cart-icon fas fa-shopping-cart"></span>
+                <p class="d-inline-block pl-2 mb-0" style="font-size: 1.1rem">Checkout ({{allCartItems?.length}})</p>
+            </button>
+        </ng-container>
+        <ng-container *ngSwitchCase="1">
+            <a href="javascript:void(0)" class="btn-back" (click)="backToMenu()">
+                <span class="fas fa-chevron-left"></span>
+                <span>Back</span>
+            </a>
+            <div class="overview">
+                <h6 class="overview__title">Overview</h6>
+                <div class="row no-gutters">
+                    <p class="overview__label d-inline-block mb-0 col">Table No:</p>
+                    <mat-select class="overview__select float-right" style="margin-right: 35px" name="table" [(ngModel)]="tableNo">
+                        <mat-option [value]="table._id" *ngFor="let table of tables">{{table?.tableNo}}</mat-option>
+                    </mat-select>
+                </div>
+                <div class="row no-gutters">
+                    <p class="overview__label d-inline-block mb-0 col">Total Persons:</p>
+                    <div class="float-right d-inline-block mx-2">
+                        <span class="fas fa-minus font-8 mr-3" (click)="decreaseTotalPersons()"></span>
+                        <input class="overview__select text-center" [(ngModel)]="totalPersons" readonly />
+                        <span class="fas fa-plus font-8 ml-3" (click)="increaseTotalPersons()"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="invoice">
+                <ng-container *ngTemplateOutlet="invoiceTemplate; context: {cartItems: allCartItems, cashier: cashier, canModify: true}"></ng-container>
+            </div>
+            <div class="payment">
+                <h6 class="payment__title">Payment Details</h6>
+                <!-- <form action="/" id="my-sample-form">
+                    <input type="hidden" name="payment_method_nonce">
+                    <label class="mb-0" for="card-number">Card Number</label>
+                    <input class="form-control mb-3" name="card-number" id="card-number" [(ngModel)]="paymentDetail.creditCard.number"/>
+                    
+                    <label class="mb-0" for="cvv">CVV</label>
+                    <input class="form-control mb-3" name="cvv" id="cvv" [(ngModel)]="paymentDetail.creditCard.cvv"/>
+                    
+                    <label class="mb-0" for="expiration-date">Expiration Date</label>
+                    <input class="form-control mb-3" name="expiration-date" id="expiration-date" [(ngModel)]="paymentDetail.creditCard.expirationDate"/>
+                    
+                    <input id="my-submit" type="submit" value="Pay" disabled/>
+                </form> -->
+                <form action="/" method="post" id="cardForm" >
+                    <label class="hosted-fields--label" for="card-number">Card Number</label>
+                    <div id="card-number" class="hosted-field"></div>
+                
+                    <label class="hosted-fields--label" for="expiration-date">Expiration Date</label>
+                    <div id="expiration-date" class="hosted-field"></div>
+                
+                    <label class="hosted-fields--label" for="cvv">CVV</label>
+                    <div id="cvv" class="hosted-field"></div>
+                
+                    <label class="hosted-fields--label" for="postal-code">Postal Code</label>
+                    <div id="postal-code" class="hosted-field"></div>
+                
+                    <div class="button-container">
+                    <div style="height: 54px"></div>
+                    <button id="submit" [disabled]="!allCartItems.length || checkoutLoading.isRunning()" type="submit" class="btn btn-cart" (click)="confirmPayment()">
+                        <ws-spinner *ngIf="checkoutLoading.isRunning()" class="mr-2" [height]="15" [width]="15" [borderWidth]="3" [spinnerColor]="'#fff'"></ws-spinner>
+                        <p class="d-inline-block pl-2 mb-0" style="font-size: 1.1rem">Confirm</p>
+                    </button>
+                    </div>
+                  </form>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="2">
+            <div *ngIf="paymentFail">
+                <div class="fail-container">
+                    <div class="fail__icon fas fa-times-circle"></div>
+                    <p class="fail__text">Payment failed!</p>
+                    <button class="btn btn-sm btn-second d-block center" (click)="backToHome()">Back to menu</button>
+                </div>
+            </div>
+            <div *ngIf="!paymentFail">
+                <div *ngIf="sale; else noSaleTemplate">
+                    <div class="success-container">
+                        <div class="success__icon fas fa-check-circle"></div>
+                        <p class="success__text">We are preparing your food...</p>
+        
+                        <button class="btn btn-sm btn-second d-block center" (click)="backToHome()">Back to menu</button>
+                    </div>
+                    <div class="row no-gutters px-2 mb-1">
+                        <span class="font-11 col">Receipt:</span>
+                        <!-- <span class="fas fa-share px-2 pt-1 float-right" (click)="shareReceipt()"></span> -->
+                        <button [disabled]="downloading.isRunning()" class="btn fas fa-download px-2 pt-1 float-right" (click)="downloadReceipt()"></button>
+                    </div>
+                    <div class="invoice">
+                        <div class="pb-3">
+                            <div class="row no-gutters">
+                                <span class="invoice__title">Receipt ID</span>
+                                <span class="invoice__title-value">{{ ("0000000" + sale?._id).slice(-7) }}</span>
+                            </div>
+                            <div class="row no-gutters">
+                                <span class="invoice__title">From</span>
+                                <span class="invoice__title-value">{{ sale?.shop?.name }}</span>
+                            </div>
+                            <div class="row no-gutters">
+                                <span class="invoice__title">Date</span>
+                                <span class="invoice__title-value">{{ sale?.createdAt | date: 'dd MMM yyyy'}}</span>
+                                <span class="invoice__title-value">{{ sale?.createdAt | date: 'h:mm:ss a' }}</span>
+                            </div>
+                        </div>
+                        <ng-container *ngTemplateOutlet="invoiceTemplate; context: {cartItems: sale?.orders, cashier: cashier, canModify: false}"></ng-container>
+                        <div class="text-center mt-4">
+                            <p class="mb-0 text-muted font-7">Powered by Wonder Scale</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
+</ng-template>
+
+<ng-template #noItemTemplate>
+    <h6 class="text-center py-5">Item is not found!</h6>
+</ng-template>
+
+<ng-template #invoiceTemplate let-cartItems="cartItems" let-cashier="cashier" let-canModify="canModify">
+    <div class="border-bottom pb-2">
+        <div *ngFor="let cartItem of cartItems;">
+            <div class="row no-gutters">
+                <div class="col">
+                    <div class="row no-gutters">
+                        <span *ngIf="canModify" class="invoice__remove fas fa-times mx-2" (click)="removeCartItem(cartItem)"></span>
+                        <span class="invoice__item col">{{ cartItem.name }} x {{ cartItem.quantity }}</span>
+                    </div>
+                </div>
+                <span class="invoice__value">{{ (cartItem?.price * cartItem.quantity) | number: '1.2-2'}}</span>
+            </div>
+            <div class="row no-gutters" *ngIf="cartItem?.type">
+                <div [style.margin-left.rem]="canModify ? 2.5: 1" class="invoice__item-type col">{{ cartItem?.type?.name }}</div>
+                <span class="invoice__value">{{ (cartItem?.typePrice() * cartItem.quantity) | number: '1.2-2'}}</span>
+            </div>
+            <div class="row no-gutters" *ngIf="cartItem?.discount && cartItem?.discount > 0">
+                <div [style.margin-left.rem]="canModify ? 2.5: 1" class="invoice__item-type col">Discount (%)</div>
+                <span class="invoice__value">{{ -(cartItem?.discountValue() * cartItem.quantity) | number: '1.2-2'}}</span>
+            </div>
+            <div class="row no-gutters" *ngFor="let discount of cashier?.discount">
+                <div [style.margin-left.rem]="canModify ? 2.5: 1" class="invoice__item col">{{ discount?.name | titlecase }} 
+                    <span *ngIf="discount?.isPercentage">(%)</span></div>
+                <span class="invoice__value">{{ -(cashier?.getDiscountByName(discount.name)) | number: '1.2-2'}}</span>
+            </div>
+        </div>
+        <h5 class="py-3 mb-0 text-center font-weight-bold" *ngIf="!cartItems.length">
+            No Item
+        </h5>
+    </div>
+    <div class="pt-2">
+        <div class="row no-gutters">
+            <span class="invoice__label col">Subtotal</span>
+            <span class="invoice__value">{{ cashier?.getSubtotal() | number: '1.2-2' }}</span>
+        </div>
+        <!-- <div class="row no-gutters">
+            <span class="invoice__label col">Discount</span>
+            <span class="invoice__value"><span *ngIf="cashier?.getDiscount() > 0">-</span>{{ cashier?.getDiscount() | number: '1.2-2' }}</span>
+        </div> -->
+
+        <div class="row no-gutters" *ngFor="let tax of cashier?.tax">
+            <span class="invoice__label col">{{ tax?.name }} <span *ngIf="tax?.isPercentage">({{ tax?.rate }}%)</span></span>
+            <span class="invoice__value">{{ cashier?.getTaxByName(tax?.name) | number: '1.2-2' }}</span>
+        </div>
+
+        <!-- <div class="row no-gutters">
+            <span class="invoice__label col">Service Tax (10%)</span>
+            <span class="invoice__value">{{ cashier?.getTaxByName('Service Tax') | number: '1.2-2' }}</span>
+        </div>
+        <div class="row no-gutters">
+            <span class="invoice__label col">SST (6%)</span>
+            <span class="invoice__value">{{ cashier?.getTaxByName('SST') | number: '1.2-2' }}</span>
+        </div> -->
+        <div class="row no-gutters">
+            <span class="invoice__label col" style="line-height: 36px">Total (MYR)</span>
+            <span class="invoice__total">{{ cashier?.getTotal() | number: '1.2-2' }}</span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #noSaleTemplate>
+    <div class="fail-container">
+        <div class="fail__icon fas fa-times-circle"></div>
+        <p class="fail__text">Order is not found!</p>
+        <button class="btn btn-sm btn-second d-block center" (click)="backToHome()">Back to menu</button>
+    </div>
+</ng-template>

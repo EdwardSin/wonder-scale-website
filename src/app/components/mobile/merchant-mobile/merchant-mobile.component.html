@@ -2,7 +2,7 @@
     <div *ngIf="shop" class="merchant__selections">
         <p class="merchant__selection-title">{{ shop?.name }}</p>
         <p class="merchant__selection-item" [routerLink]="['info']" [queryParamsHandling]="'merge'" (click)="navigateToDetails()">Page Details</p>
-        <p class="merchant__selection-item" [routerLink]="['categories']" [queryParamsHandling]="'merge'" (click)="navigateToItems()">{{ shop?.type == 'restaurant' ? 'Menu' : 'Categories'}}</p>
+        <p class="merchant__selection-item" [routerLink]="['menu']" [queryParamsHandling]="'merge'" (click)="navigateToItems()">{{ shop?.type == 'restaurant' ? 'Menu' : 'Categories'}}</p>
     </div>
 </div>
 <div *ngIf="shop && !loading.isRunning(); else loadingTemplate" [hidden]="isShownSelection">
@@ -13,7 +13,7 @@
         </button>
     </div>
     <router-outlet></router-outlet>
-    <merchant-footer *ngIf="shop" [element]="shop"></merchant-footer>
+    <merchant-footer *ngIf="shop && showFooter" [element]="shop"></merchant-footer>
 </div>
 
 <ng-template #loadingTemplate>
