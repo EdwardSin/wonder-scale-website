@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
-import { Shop } from '@objects/shop';
+import { Store } from '@objects/store';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
@@ -19,7 +19,7 @@ import { ScreenService } from '@services/general/screen.service';
 })
 export class FloatBannerComponent implements OnInit {
   @Input() element;
-  @Input() type: 'item' | 'shop';
+  @Input() type: 'item' | 'store';
   loading: WsLoading = new WsLoading;
   isShownLocation: boolean;
   isShareModalOpened: boolean;
@@ -56,7 +56,7 @@ export class FloatBannerComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSaveLoading.start();
-    this.sharedUserService.followPages.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.sharedUserService.followStores.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (this.element) {
         this.saved = result.includes(this.element._id);
         this.isSaveLoading.stop();
@@ -65,8 +65,8 @@ export class FloatBannerComponent implements OnInit {
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes && this.element) {
-      if (this.type == 'shop') {
-        this.isFollowedShop();
+      if (this.type == 'store') {
+        this.isFollowedStore();
         this.link = environment.URL + 'page/' + this.element.username + '?id=' + this.element._id;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
@@ -95,14 +95,14 @@ export class FloatBannerComponent implements OnInit {
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
-        if (this.element['shop']['location'] && this.element['shop']['location']['coordinates'] && this.element['shop']['location']['coordinates'].length) {
-          this.isShownLocation = this.element['shop']['location']['coordinates'][0] != 0 && this.element['shop']['location']['coordinates'][1] != 0;
+        if (this.element['store']['location'] && this.element['store']['location']['coordinates'] && this.element['store']['location']['coordinates'].length) {
+          this.isShownLocation = this.element['store']['location']['coordinates'][0] != 0 && this.element['store']['location']['coordinates'][1] != 0;
         }
       }
     }
   }
-  isFollowedShop() {
-    this.authFollowService.isFollowedShop(this.element._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+  isFollowedStore() {
+    this.authFollowService.isFollowedStore(this.element._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
       this.isSaveLoading.stop();
     })
@@ -113,10 +113,10 @@ export class FloatBannerComponent implements OnInit {
       this.isSaveLoading.stop();
     })
   }
-  saveShop() {
+  saveStore() {
     this.isSaveLoading.start();
     combineLatest(timer(500),
-      this.authFollowService.followShop(this.element._id))
+      this.authFollowService.followStore(this.element._id))
       .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.saved = result['result'];
         this.isSaveLoading.stop();
@@ -135,10 +135,10 @@ export class FloatBannerComponent implements OnInit {
         this.sharedUserService.followItems.next(followItems);
       });
   }
-  unsaveShop() {
+  unsaveStore() {
     this.isSaveLoading.start();
     combineLatest(timer(500),
-      this.authFollowService.unfollowShop(this.element._id))
+      this.authFollowService.unfollowStore(this.element._id))
       .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.saved = result['result'];
         this.isSaveLoading.stop();

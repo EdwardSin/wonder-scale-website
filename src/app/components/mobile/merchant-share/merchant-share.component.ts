@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { Subject } from 'rxjs';
-import { Shop } from '@objects/shop';
+import { Store } from '@objects/store';
 import { FacebookService, InitParams, UIParams } from 'ngx-facebook';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
 import { environment } from '@environments/environment';
 import { takeUntil } from 'rxjs/operators';
-import { SharedShopService } from '@services/shared-shop.service';
+import { SharedStoreService } from '@services/shared-store.service';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -20,7 +20,7 @@ import { WsToastService } from '@elements/ws-toast/ws-toast.service';
 export class MerchantShareComponent implements OnInit {
   environment = environment;
   
-  shop: Shop;
+  store: Store;
   link: string = '';
   shareLinkThroughFB: string = '';
   shareLinkThroughTwitter: string = '';
@@ -32,7 +32,7 @@ export class MerchantShareComponent implements OnInit {
     private clipboard: Clipboard,
     private facebookService: FacebookService,
     private qrCodeBuilder: QRCodeBuilder,
-    private sharedShopService: SharedShopService
+    private sharedStoreService: SharedStoreService
   ) { 
     let initParams: InitParams = {
       appId: environment.FACEBOOK_APP_ID,
@@ -44,23 +44,23 @@ export class MerchantShareComponent implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo({top: 0});
-    this.sharedShopService.shop.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.sharedStoreService.store.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
-        this.shop = result;
-        this.link = environment.URL + 'page/' + this.shop.username + '?id=' + this.shop._id;
+        this.store = result;
+        this.link = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id;
         this.shareLinkThroughFB = this.link;
         this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
         this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
-        this.displayImage = this.shop.profileImage ? 'api/images/' + encodeURIComponent(this.shop.profileImage) : 'assets/images/svg/dot.svg';
+        this.displayImage = this.store.profileImage ? 'api/images/' + encodeURIComponent(this.store.profileImage) : 'assets/images/svg/dot.svg';
         
-        if (this.shop.phone) {
-          this.shop.phone = _.filter(this.shop.phone, (phone) => !_.isEmpty(phone));
+        if (this.store.phone) {
+          this.store.phone = _.filter(this.store.phone, (phone) => !_.isEmpty(phone));
         }
-        if (this.shop.email) {
-          this.shop.email = _.filter(this.shop.email, (email) => !_.isEmpty(email));
+        if (this.store.email) {
+          this.store.email = _.filter(this.store.email, (email) => !_.isEmpty(email));
         }
-        if (this.shop.website) {
-          this.shop.website = _.filter(this.shop.website, (website) => !_.isEmpty(website));
+        if (this.store.website) {
+          this.store.website = _.filter(this.store.website, (website) => !_.isEmpty(website));
         }
         this.showQrcode(true);
       }
@@ -90,7 +90,7 @@ export class MerchantShareComponent implements OnInit {
         newImage.alt = 'profile-image';
         newImage.src = this.displayImage;
         newImage.addEventListener('load', e => {
-          let url = environment.URL + 'page/' + this.shop.username + '?id=' + this.shop._id + '&type=qr_scan';
+          let url = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id + '&type=qr_scan';
           QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150, callback: () => {
             this.isQrcodeLoading.stop();
           }})

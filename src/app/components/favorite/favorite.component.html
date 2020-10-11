@@ -15,7 +15,7 @@
     </div>
     <div class="items-container" *ngIf="!loading.isRunning() && displayItems.length; else loadingTemplate">
         <div class="row no-gutters mb-4" *ngIf="selected == 'page'">
-            <page [removable]="true" [savable]="false" [item]="item" (followChanged)="followShopChanged()" class="mb-3" *ngFor="let item of displayItems"></page>
+            <page [removable]="true" [savable]="false" [item]="item" (followChanged)="followStoreChanged()" class="mb-3" *ngFor="let item of displayItems"></page>
         </div>
         <div class="row no-gutters mb-4" *ngIf="selected == 'item'">
             <list-item [item]="item" class="px-1" (followChanged)="followItemChanged()" *ngFor="let item of displayItems"></list-item>
@@ -66,11 +66,11 @@
           <mat-option [value]="'item'">Item</mat-option>
         </mat-select>
         <div class="items-modal-container" *ngIf="!modalLoading?.isRunning() && displayModalItems?.length; else modalLoadingTemplate">
-            <a [routerLink]="['/page', shop?.username]" [queryParams]="{id: shop?._id}" class="row no-gutters border-bottom p-2 clickable" style="color: black" *ngFor="let shop of displayModalItems">
-                <img style="width: 50px; height: 50px;" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile image" />
+            <a [routerLink]="['/page', store?.username]" [queryParams]="{id: store?._id}" class="row no-gutters border-bottom p-2 clickable" style="color: black" *ngFor="let store of displayModalItems">
+                <img style="width: 50px; height: 50px;" [src]="environment.IMAGE_URL + store?.profileImage" alt="profile image" />
                 <div class="px-2">
-                    <p class="mb-0" style="font-size: 1.1rem">{{ shop?.name }}</p>
-                    <p class="mb-0" style="font-size: .8rem">Last updated {{ moment(shop?.updatedAt).toNow() }}</p>
+                    <p class="mb-0" style="font-size: 1.1rem">{{ store?.name }}</p>
+                    <p class="mb-0" style="font-size: .8rem">Last updated {{ moment(store?.updatedAt).toNow() }}</p>
                 </div>
             </a>
         </div>

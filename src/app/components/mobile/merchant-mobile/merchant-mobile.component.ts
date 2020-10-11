@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Shop } from 'src/app/objects/shop';
+import { Store } from 'src/app/objects/store';
 import { takeUntil, finalize, map, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { ShopService } from '@services/http/public/shop.service';
+import { StoreService } from '@services/http/public/store.service';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import * as _ from 'lodash';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 import { TrackService } from '@services/http/public/track.service';
 import { BrowserService } from '@services/general/browser.service';
 import { ScreenService } from '@services/general/screen.service';
-import { SharedShopService } from '@services/shared-shop.service';
+import { SharedStoreService } from '@services/shared-store.service';
 
 
 @Component({
@@ -20,11 +20,11 @@ import { SharedShopService } from '@services/shared-shop.service';
 })
 export class MerchantMobileComponent implements OnInit {
   loading: WsLoading = new WsLoading;
-  shop: Shop;
+  store: Store;
   message = '';
   preview: Boolean;
   DEBOUNCE_TRACK_VALUE = 15 * 1000;
-  shopId;
+  storeId;
   isShownSelection = false;
   trackId;
   todayDate;
@@ -33,8 +33,8 @@ export class MerchantMobileComponent implements OnInit {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private screenService: ScreenService,
-    private shopService: ShopService,
-    private sharedShopService: SharedShopService,
+    private storeService: StoreService,
+    private sharedStoreService: SharedStoreService,
     private trackService: TrackService) {
     let date = new Date;
     this.todayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
@@ -46,9 +46,9 @@ export class MerchantMobileComponent implements OnInit {
     let preview = this.route.snapshot.queryParams.preview;
     if (isMobileDevice) {
       if (preview == 'true') {
-        this.getPreviewShopById(id);
+        this.getPreviewStoreById(id);
       } else {
-        this.getShopById(id);
+        this.getStoreById(id);
       }
     } else {
       if (this.router.url.includes('/page/mobile/')) {
@@ -59,11 +59,11 @@ export class MerchantMobileComponent implements OnInit {
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
-          if (this.shop) {
-            DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
+          if (this.store) {
+            DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
           }
-          if (preview == 'true' && !this.shop) {
-            this.getPreviewShopById(id);
+          if (preview == 'true' && !this.store) {
+            this.getPreviewStoreById(id);
           }
           this.showFooter = !this.router.url.includes('/menu')
         }
@@ -104,11 +104,11 @@ export class MerchantMobileComponent implements OnInit {
     this.trackId = this.route.snapshot.queryParams.from;
     if (this.isTrackable()) {
       _.delay(() => {
-        this.trackService.addTrack({ shopId: this.shop._id, trackId: this.trackId, trackExpiration: this.shop.trackExpiration }).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.trackService.addTrack({ storeId: this.store._id, trackId: this.trackId, trackExpiration: this.store.trackExpiration }).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
           if (result['result']) {
             let track = this.getPreviousTrack();
             if (new Date(track.date).valueOf() == this.todayDate.valueOf()) {
-              track.value.push(this.shop._id);
+              track.value.push(this.store._id);
             } 
             track.date = this.todayDate;
             localStorage.setItem('t_id', JSON.stringify(track));
@@ -138,7 +138,7 @@ export class MerchantMobileComponent implements OnInit {
   isTrackable() {
     let isTrackable = true;
     let previousTrack = this.getPreviousTrack();
-    isTrackable = new Date(previousTrack.date).valueOf() != this.todayDate.valueOf() || typeof previousTrack.value == typeof [] && !previousTrack.value.includes(this.shopId);
+    isTrackable = new Date(previousTrack.date).valueOf() != this.todayDate.valueOf() || typeof previousTrack.value == typeof [] && !previousTrack.value.includes(this.storeId);
     return isTrackable;
   }
   showSelection() {
@@ -147,17 +147,17 @@ export class MerchantMobileComponent implements OnInit {
       this.isShownSelection = true;
     }
   }
-  getShopById(id) {
+  getStoreById(id) {
     this.loading.start();
     this.showSelection();
-    this.shopService.getShopById(id).pipe(tap((result) => {
-      this.shop = result.result;
+    this.storeService.getStoreById(id).pipe(tap((result) => {
+      this.store = result.result;
     }), takeUntil(this.ngUnsubscribe)).subscribe(() => {
-      if (this.shop) {
-        DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
-        this.shopId = this.shop._id;
+      if (this.store) {
+        DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
+        this.storeId = this.store._id;
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));
-        this.sharedShopService.shop.next(this.shop);
+        this.sharedStoreService.store.next(this.store);
         this.router.navigate([], { queryParams: {type: null}, queryParamsHandling: 'merge' });
       } else {
         this.isShownSelection = false;
@@ -168,15 +168,15 @@ export class MerchantMobileComponent implements OnInit {
       this.isShownSelection = false;
     });
   }
-  getPreviewShopById(id) {
+  getPreviewStoreById(id) {
     this.loading.start();
-    this.shopService.getPreviewShopById(id).pipe(tap((result) => {
+    this.storeService.getPreviewStoreById(id).pipe(tap((result) => {
       this.preview = true;
-      this.shop = result.result;
+      this.store = result.result;
     }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
-      if (this.shop) {
-        DocumentHelper.setWindowTitleWithWonderScale(this.shop.name);
-        this.sharedShopService.shop.next(this.shop);
+      if (this.store) {
+        DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
+        this.sharedStoreService.store.next(this.store);
       }
     }, err => {
       this.message = 'You are not authorized to view the page! Please login your account!'
@@ -194,6 +194,6 @@ export class MerchantMobileComponent implements OnInit {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this.sharedShopService.shop.next(null);
+    this.sharedStoreService.store.next(null);
   }
 }

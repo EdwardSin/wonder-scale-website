@@ -8,7 +8,7 @@ export class TableService {
 
   constructor(private http: HttpClient) { }
 
-  getTables(shopId) {
-    return this.http.post('/api/tables', {shopId});
+  getTables(storeId) {
+    return this.http.post('/api/tables', {storeId});
   }
 }

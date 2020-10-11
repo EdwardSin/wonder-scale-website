@@ -4,9 +4,9 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
-import { ShopService } from '@services/http/public/shop.service';
+import { StoreService } from '@services/http/public/store.service';
 import * as _ from 'lodash';
-import { Shop } from '@objects/shop';
+import { Store } from '@objects/store';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
 @Component({
@@ -18,8 +18,8 @@ export class SearchComponent implements OnInit {
   environment = environment;
   total: number = 0;
   loading: WsLoading = new WsLoading;
-  shops: Array<Shop> = [];
-  recommandedShops: Array<Shop> = [];
+  stores: Array<Store> = [];
+  recommandedStores: Array<Store> = [];
   valueChanged = _.debounce(this.searchKeyword, 500);
   queryParams = {
     keyword: '',
@@ -30,7 +30,7 @@ export class SearchComponent implements OnInit {
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private shopService: ShopService) {
+    private storeService: StoreService) {
     let queryParams = this.route.snapshot.queryParams;
     this.queryParams = {
       keyword: queryParams['keyword'] || '',
@@ -43,8 +43,8 @@ export class SearchComponent implements OnInit {
     } else {
       DocumentHelper.setWindowTitleWithWonderScale('Search');
     }
-    this.getShopsByKeyword(this.queryParams);
-    this.getRecommandedShops();
+    this.getStoresByKeyword(this.queryParams);
+    this.getRecommandedStores();
   }
 
   ngOnInit(): void {
@@ -60,19 +60,19 @@ export class SearchComponent implements OnInit {
       } else {
         DocumentHelper.setWindowTitleWithWonderScale('Search');
       }
-      this.getShopsByKeyword(this.queryParams);
+      this.getStoresByKeyword(this.queryParams);
     });
   }
-  getShopsByKeyword({ keyword, page, order, orderBy }) {
+  getStoresByKeyword({ keyword, page, order, orderBy }) {
     this.loading.start();
-    this.shopService.getShopsByKeyword(keyword, page, order, orderBy).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
-      this.shops = result.result;
+    this.storeService.getStoresByKeyword(keyword, page, order, orderBy).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+      this.stores = result.result;
       this.total = result['total'];
     });
   }
-  getRecommandedShops() {
-    this.shopService.getRecommandedShops().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.recommandedShops = result.result;
+  getRecommandedStores() {
+    this.storeService.getRecommandedStores().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.recommandedStores = result.result;
     })
   }
   searchKeyword(event) {

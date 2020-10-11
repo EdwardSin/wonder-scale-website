@@ -1,30 +1,30 @@
 <div *ngIf="preview" #alert class="alert alert-danger alert-dismissible fade show font-8 my-2 w-100" role="alert">
-    This is a preview page and will not displayed to public if the shop is in unpublished status.
+    This is a preview page and will not displayed to public if the store is in unpublished status.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div *ngIf="shop && !loading.isRunning(); else loadingTemplate">
+<div *ngIf="store && !loading.isRunning(); else loadingTemplate">
     <div class="row no-gutters merchant mb-3">
         <div class="col-lg order-11 order-lg-1">
             <div class="merchant__profile-container">
-                <img *ngIf="shop?.profileImage" class="merchant__profile" [src]="environment.IMAGE_URL + shop?.profileImage" alt="profile-image" />
-                <img *ngIf="!shop?.profileImage" class="merchant__profile" style="background-color: #fff" src="assets/images/png/shop.png" alt="profile-image" />
+                <img *ngIf="store?.profileImage" class="merchant__profile" [src]="environment.IMAGE_URL + store?.profileImage" alt="profile-image" />
+                <img *ngIf="!store?.profileImage" class="merchant__profile" style="background-color: #fff" src="assets/images/png/shop.png" alt="profile-image" />
                 <div class="merchant__name-container">
-                    <p class="merchant__name mb-0 text-break">{{ shop?.name }}</p>
-                    <p class="merchant__username mb-0">@{{ shop?.username }}</p>
+                    <p class="merchant__name mb-0 text-break">{{ store?.name }}</p>
+                    <p class="merchant__username mb-0">@{{ store?.username }}</p>
                 </div>
             </div>
         </div>
         <div class="col-lg-9 merchant-background position-relative order-1 order-lg-12">
-            <p *ngIf="!shop?.bannerImage" class="merchant__text mb-0">{{shop?.name}}</p>
-            <img class="merchant-background__banner" *ngIf="shop?.bannerImage" [src]="environment.IMAGE_URL + shop?.bannerImage" alt="banner" />
+            <p *ngIf="!store?.bannerImage" class="merchant__text mb-0">{{store?.name}}</p>
+            <img class="merchant-background__banner" *ngIf="store?.bannerImage" [src]="environment.IMAGE_URL + store?.bannerImage" alt="banner" />
         </div>
         <ul *ngIf="false" class="merchant__nav nav order-12 d-none d-lg-block">
             <li *ngIf="false && newItems.length" class="merchant__nav-item nav-item">
                 <a (click)="scrollTo('new-items')" class="merchant__nav-link nav-link">New</a>
             </li>
-            <li *ngIf="shop?.informationImages.length" class="merchant__nav-item nav-item">
+            <li *ngIf="store?.informationImages.length" class="merchant__nav-item nav-item">
                 <a (click)="scrollTo('info')" class="merchant__nav-link nav-link">Info</a>
             </li>
             <li *ngIf="allItems.length" class="merchant__nav-item nav-item">
@@ -39,17 +39,17 @@
         </swiper>
     </div> -->
 
-    <!-- <div id="info" class="information-container mb-3" *ngIf="shop?.informationImages?.length > 0">
+    <!-- <div id="info" class="information-container mb-3" *ngIf="store?.informationImages?.length > 0">
         <swiper [config]="{navigation: false, autoHeight: true}">
-            <div *ngFor="let image of shop?.informationImages">
+            <div *ngFor="let image of store?.informationImages">
                 <img class="d-block center swiper-container__image" style="width:100%;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
             </div>
         </swiper>
     </div> -->
 
-    <div id="info" class="information-container mb-2" *ngIf="shop?.informationImages?.length > 0">
+    <div id="info" class="information-container mb-2" *ngIf="store?.informationImages?.length > 0">
         <swiper [config]="{slidesPerView: 'auto', spaceBetween: 10, pagination: false, navigation: false, autoHeight: true}">
-            <div class="swiper-slide d-inline-block" *ngFor="let image of shop?.informationImages; let i = index">
+            <div class="swiper-slide d-inline-block" *ngFor="let image of store?.informationImages; let i = index">
                 <img class="swiper-container__image" [src]="environment.IMAGE_URL + image" alt="upload-image" (click)="openInformation(i)"/>
             </div>
         </swiper>
@@ -57,7 +57,7 @@
     <div *ngIf="isInformationOpened" class="information-fullscreen-container position-fixed pt-2">
         <span class="information-fullscreen__icon fas fa-times" (click)="isInformationOpened = false"></span>
         <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}"> 
-            <ng-container *ngFor="let image of shop?.informationImages">
+            <ng-container *ngFor="let image of store?.informationImages">
                 <img class="swiper-slide swiper-container__image center" [src]="environment.IMAGE_URL + image" alt="upload-image" />
             </ng-container>
         </swiper>
@@ -93,17 +93,17 @@
     </div> -->
 </div>
 
-<float-banner *ngIf="shop" [element]="shop" [type]="'shop'"></float-banner>
+<float-banner *ngIf="store" [element]="store" [type]="'store'"></float-banner>
 
 <ng-template #loadingTemplate>
-    <ws-spinner *ngIf="loading.isRunning(); else noShopTemplate" class="text-center d-block w-100" style="padding-top: 30vh;padding-bottom: 30vh"></ws-spinner>
+    <ws-spinner *ngIf="loading.isRunning(); else noStoreTemplate" class="text-center d-block w-100" style="padding-top: 30vh;padding-bottom: 30vh"></ws-spinner>
 </ng-template>
 <ng-template #itemLoadingTemplate>
     <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 10rem; padding-bottom: 10rem;"></ws-spinner>
 </ng-template>
 
-<ng-template #noShopTemplate>
-    <h6 *ngIf="!message" class="my-5 py-5 text-center">Shop is not found!</h6>
+<ng-template #noStoreTemplate>
+    <h6 *ngIf="!message" class="my-5 py-5 text-center">Store is not found!</h6>
     <h6 *ngIf="message" class="my-5 py-5 text-center">{{ message }}</h6>
 </ng-template>
 <ng-template #noItemTemplate>
