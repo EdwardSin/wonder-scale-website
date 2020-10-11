@@ -23,30 +23,5 @@
                 <p class="menu-item__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
             </div>
         </div>
-        <div class="p-2" *ngIf="isShown">
-            <div>
-                <p class="menu-item__title d-inline-block mb-2">Quantity</p>
-                <div class="menu-item__quantity float-right d-inline-block mx-2">
-                    <span class="fas fa-minus font-8 mr-3" (click)="decrease()"></span>
-                    <input class="menu-item__input text-center" [(ngModel)]="quantity" readonly />
-                    <span class="fas fa-plus font-8 ml-3" (click)="increase()"></span>
-                </div>
-            </div>
-            <div>
-                <p class="menu-item__title mb-2">Types</p>
-                <mat-radio-group [(ngModel)]="selectedType" class="center d-block">
-                    <mat-radio-button [color]="'primary'" [checked]="true" class="d-block font-weight-normal font-9" value="">
-                        <span class="mr-3">Normal</span>(+) 0.00</mat-radio-button>
-                    <mat-radio-button [color]="'primary'" class="d-block font-weight-normal font-9" [value]="type" *ngFor="let type of item?.types">
-                        <span class="mr-3">{{ type?.name }}</span>({{ type?.incrementType ? '+' : '-' }}) {{ type?.amount | number: '1.2-2' }}</mat-radio-button>
-                </mat-radio-group>
-            </div>
-            <div class="mb-3">
-                <p class="menu-item__title mb-0">Remark</p>
-                <textarea class="menu-item__textarea form-control" [(ngModel)]="remark"></textarea>
-            </div>
-            <button class="btn btn-sm btn-second float-right" (click)="addToCart()">Add To Cart</button>
-            <div class="clearfix"></div>
-        </div>
     </div>
 </div>
