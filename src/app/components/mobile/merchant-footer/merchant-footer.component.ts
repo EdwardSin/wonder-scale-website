@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { Router } from '@angular/router';
-import { SharedShopService } from '@services/shared-shop.service';
+import { SharedStoreService } from '@services/shared-store.service';
 import { takeUntil, map } from 'rxjs/operators';
 import { Subject, combineLatest, timer } from 'rxjs';
-import { Shop } from '@objects/shop';
+import { Store } from '@objects/store';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import * as _ from 'lodash';
@@ -19,54 +19,54 @@ export class MerchantFooterComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   saveLoading: WsLoading = new WsLoading;
   saved: boolean;
-  shop: Shop;
-  followPages: Array<string> = [];
+  store: Store;
+  followStores: Array<string> = [];
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private router: Router,
     private authFollowService: AuthFollowService,
     private sharedUserService: SharedUserService,
-    private sharedShopService: SharedShopService) { }
+    private sharedStoreService: SharedStoreService) { }
 
   ngOnInit(): void {
     this.loading.start();
     this.saveLoading.start();
-    this.sharedShopService.shop.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.sharedStoreService.store.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
-        this.shop = result;
-        this.isFollowedShop();
+        this.store = result;
+        this.isFollowedStore();
         this.loading.stop();
       }
     });
   }
-  isFollowedShop() {
-    this.authFollowService.isFollowedShop(this.shop._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+  isFollowedStore() {
+    this.authFollowService.isFollowedStore(this.store._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
       this.saveLoading.stop();
     })
   }
-  saveShop() {
+  saveStore() {
     if (!this.saveLoading.isRunning()) {
       this.saveLoading.start();
       combineLatest(timer(500),
-        this.authFollowService.followShop(this.shop._id))
+        this.authFollowService.followStore(this.store._id))
         .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
           this.saved = result['result'];
-          this.followPages.push(this.shop._id)
-          let followPages = _.uniq(this.followPages);
-          this.sharedUserService.followPages.next(followPages);
+          this.followStores.push(this.store._id)
+          let followStores = _.uniq(this.followStores);
+          this.sharedUserService.followStores.next(followStores);
           this.saveLoading.stop();
         });
     }
   }
-  unsaveShop() {
+  unsaveStore() {
     if (!this.saveLoading.isRunning()) {
       this.saveLoading.start();
       combineLatest(timer(500),
-        this.authFollowService.unfollowShop(this.shop._id))
+        this.authFollowService.unfollowStore(this.store._id))
         .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
           this.saved = result['result'];
-          let followPages = _.filter(this.followPages, (id) => id != this.shop._id);
-          this.sharedUserService.followPages.next(followPages);
+          let followStores = _.filter(this.followStores, (id) => id != this.store._id);
+          this.sharedUserService.followStores.next(followStores);
           this.saveLoading.stop();
         });
     }

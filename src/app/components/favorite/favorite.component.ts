@@ -92,7 +92,7 @@ export class FavoriteComponent implements OnInit {
     }
     this.selected = this.queryParams['selected'];
     if (this.selected == 'page') {
-      this.getFollowShops(this.queryParams);
+      this.getFollowStores(this.queryParams);
     } else if (this.selected == 'item') {
       this.getFollowItems(this.queryParams);
     }
@@ -143,11 +143,11 @@ export class FavoriteComponent implements OnInit {
     let value = event.target.value;
     this.navigateTo({ keyword: value });
   }
-  getFollowShops({ keyword, page, order, orderBy }, loading = true) {
+  getFollowStores({ keyword, page, order, orderBy }, loading = true) {
     if (loading) {
       this.loading.start();
     }
-    this.authFollowService.getFollowShops(keyword, page, order, orderBy)
+    this.authFollowService.getFollowStores(keyword, page, order, orderBy)
       .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         if (page > 1 && !result.result.length) {
           this.navigateTo({ page: 1 });
@@ -173,9 +173,9 @@ export class FavoriteComponent implements OnInit {
         setTimeout(() => { this.loading.stop() }, 500);
       });
   }
-  getFollowShopsByPosition({ keyword, page, order, orderBy, latitude, longitude, radius }) {
+  getFollowStoresByPosition({ keyword, page, order, orderBy, latitude, longitude, radius }) {
     this.modalLoading.start();
-    this.authFollowService.getFollowShopsByPosition(keyword, page, order, orderBy, latitude, longitude, radius)
+    this.authFollowService.getFollowStoresByPosition(keyword, page, order, orderBy, latitude, longitude, radius)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(result => {
         this.displayModalItems = result.result;
@@ -232,7 +232,7 @@ export class FavoriteComponent implements OnInit {
         }));
     }
     if (this.modalType == 'page') {
-      this.getFollowShopsByPosition(params);
+      this.getFollowStoresByPosition(params);
     } else {
       this.getFollowItemsByPosition(params);
     }
@@ -245,8 +245,8 @@ export class FavoriteComponent implements OnInit {
       });
     }
   }
-  followShopChanged() {
-    this.getFollowShops(this.queryParams, false);
+  followStoreChanged() {
+    this.getFollowStores(this.queryParams, false);
   }
   followItemChanged() {
     this.getFollowItems(this.queryParams, false);

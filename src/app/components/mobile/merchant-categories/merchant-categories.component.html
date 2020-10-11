@@ -1,6 +1,6 @@
-<div class="menu-container mb-2" *ngIf="shop?.type == 'restaurant' && shop?.menuImages?.length > 0">
+<div class="menu-container mb-2" *ngIf="store?.type == 'restaurant' && store?.menuImages?.length > 0">
     <swiper [config]="{slidesPerView: 'auto', spaceBetween: 10, pagination: false, navigation: false, autoHeight: true}">
-        <div class="swiper-slide d-inline-block" *ngFor="let image of shop?.menuImages; let i = index" (click)="openMenu(i)">
+        <div class="swiper-slide d-inline-block" *ngFor="let image of store?.menuImages; let i = index" (click)="openMenu(i)">
             <img class="swiper-container__image" [src]="environment.IMAGE_URL + image" alt="upload-image" />
         </div>
     </swiper>
@@ -8,7 +8,7 @@
 <div *ngIf="isMenuOpened" class="menu-fullscreen-container position-fixed pt-2">
     <span class="menu-fullscreen__icon fas fa-times" (click)="isMenuOpened = false"></span>
     <swiper [index]="selectedMenuIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}"> 
-        <ng-container *ngFor="let image of shop?.menuImages">
+        <ng-container *ngFor="let image of store?.menuImages">
             <img class="swiper-container__image swiper-slide center" style="object-fit: contain;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
         </ng-container>
     </swiper>

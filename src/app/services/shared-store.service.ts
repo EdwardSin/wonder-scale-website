@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Shop } from '@objects/shop';
+import { Store } from '@objects/store';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SharedShopService {
-  shop: BehaviorSubject<Shop> = new BehaviorSubject<Shop>(null);
+export class SharedStoreService {
+  store: BehaviorSubject<Store> = new BehaviorSubject<Store>(null);
   constructor() { }
 }

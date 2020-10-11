@@ -2,14 +2,14 @@ import { Component, OnInit, HostListener, ChangeDetectorRef, ElementRef } from '
 import { SharedCartService } from '@services/shared/shared-cart.service';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
-import { SharedShopService } from '@services/shared-shop.service';
+import { SharedStoreService } from '@services/shared-store.service';
 import { SaleService } from '@services/http/public/sale.service';
 import { ItemService } from '@services/http/public/item.service';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
 import { environment } from '@environments/environment';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
-import { Shop } from '@objects/shop';
+import { Store } from '@objects/store';
 import * as _ from 'lodash';
 import { Phase } from '@objects/phase';
 import { Cashier } from '@objects/cashier';
@@ -43,7 +43,7 @@ export class MerchantMenuComponent implements OnInit {
   tableNo: string;
   tables;
   totalPersons: number = 1;
-  shop: Shop;
+  store: Store;
   cashier: Cashier = new Cashier();
 
   phase: Phase<Number> = new Phase(0, 3);
@@ -52,7 +52,7 @@ export class MerchantMenuComponent implements OnInit {
   private ngUnsubscribe: Subject<any> = new Subject<any>();
   constructor(private ref: ChangeDetectorRef, private router: Router, private route: ActivatedRoute,
     private saleService: SaleService, private sharedCartService: SharedCartService,
-    private sharedShopService: SharedShopService,
+    private sharedStoreService: SharedStoreService,
     private tableService: TableService,
     private itemService: ItemService) {
     this.sharedCartService.cartItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
@@ -69,12 +69,12 @@ export class MerchantMenuComponent implements OnInit {
   ngOnInit(): void {
     this.itemLoading.start();
     window.scrollTo({ top: 0 });
-    let shopId = this.route.snapshot.queryParams['id'];
+    let storeId = this.route.snapshot.queryParams['id'];
     let saleId = this.route.snapshot.queryParams['s_id'];
     this.tableNo = this.route.snapshot.queryParams['tableNo'];
     if (saleId) {
       this.saleLoading.start();
-      this.saleService.getSale({ shopId, saleId }).pipe(takeUntil(this.ngUnsubscribe), finalize(() => { this.saleLoading.stop(); this.itemLoading.stop(); })).subscribe(result => {
+      this.saleService.getSale({ storeId, saleId }).pipe(takeUntil(this.ngUnsubscribe), finalize(() => { this.saleLoading.stop(); this.itemLoading.stop(); })).subscribe(result => {
         this.phase.setStep(2);
         if (result && result.result) {
           this.sale = result.result;
@@ -84,10 +84,10 @@ export class MerchantMenuComponent implements OnInit {
         }
       })
     }
-    this.sharedShopService.shop.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.sharedStoreService.store.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
-        this.shop = result;
-        this.mapShop();
+        this.store = result;
+        this.mapStore();
       }
       if (!this.saleLoading.isRunning()) {
         this.itemLoading.stop();
@@ -199,13 +199,13 @@ export class MerchantMenuComponent implements OnInit {
       });
     }
   }
-  mapShop() {
-    if (this.shop) {
-      this.allItems = this.shop['allItems'];
-      this.newItems = this.shop['newItems'];
-      this.discountItems = this.shop['discountItems'];
-      this.todaySpecialItems = this.shop['todaySpecialItems'];
-      this.categories = this.shop['categories'];
+  mapStore() {
+    if (this.store) {
+      this.allItems = this.store['allItems'];
+      this.newItems = this.store['newItems'];
+      this.discountItems = this.store['discountItems'];
+      this.todaySpecialItems = this.store['todaySpecialItems'];
+      this.categories = this.store['categories'];
       this.items = this.allItems;
       this.ref.detectChanges();
     }
@@ -261,7 +261,7 @@ export class MerchantMenuComponent implements OnInit {
       let obj = {
         table: this.tableNo,
         totalPersons: this.totalPersons,
-        shop: this.shop._id,
+        store: this.store._id,
         discount: this.cashier.discount,
         tax: this.cashier.tax,
         orders: this.allCartItems,
@@ -387,7 +387,7 @@ export class MerchantMenuComponent implements OnInit {
     }
   }
   getTables() {
-    this.tableService.getTables(this.shop._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.tableService.getTables(this.store._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.tables = result['result'];
     });
   }

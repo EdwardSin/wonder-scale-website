@@ -10,7 +10,7 @@ import { Result } from '@objects/result';
 export class CategoryService {
 
   constructor(private http: HttpClient) { }
-  getCategoriesByShopId(id): Observable<Result<Array<Category>>> {
-    return this.http.get<Result<Array<Category>>>('/api/categories/shopid/' + id);
+  getCategoriesByStoreId(id): Observable<Result<Array<Category>>> {
+    return this.http.get<Result<Array<Category>>>('/api/categories/storeid/' + id);
   }
 }

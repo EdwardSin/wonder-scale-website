@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
       .subscribe(result => {
         this.user = result;
         if (result) {
-          this.getFollowPages();
+          this.getFollowStores();
           this.getFollowItems();
         }
       })
@@ -145,9 +145,9 @@ export class HeaderComponent implements OnInit {
         }
       })
   }
-  getFollowPages() {
-    this.authFollowService.getFollowShopsIds().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.sharedUserService.followPages.next(result['result']);
+  getFollowStores() {
+    this.authFollowService.getFollowStoresIds().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.sharedUserService.followStores.next(result['result']);
     })
   }
   getFollowItems() {

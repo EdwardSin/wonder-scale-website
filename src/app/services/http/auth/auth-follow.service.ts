@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Shop } from '@objects/shop';
+import { Store } from '@objects/store';
 import { Result } from '@objects/result';
 import { Observable, of, from } from 'rxjs';
 import { Item } from '@objects/item';
@@ -25,8 +25,8 @@ export class AuthFollowService {
       }
     }));
   }
-  getFollowShops(keyword = '', page = '1', order = '', orderBy = 'asc'): Observable<Result<Array<Shop>>> {
-    return this.http.get<Result<Array<Shop>>>('/api/auth-users/users/follow/shops', {
+  getFollowStores(keyword = '', page = '1', order = '', orderBy = 'asc'): Observable<Result<Array<Store>>> {
+    return this.http.get<Result<Array<Store>>>('/api/auth-users/users/follow/stores', {
       params: {
         keyword,
         page,
@@ -45,8 +45,8 @@ export class AuthFollowService {
       }
     });
   }
-  getFollowShopsByPosition(keyword = '', page = '1', order = '', orderBy = 'asc', latitude = '0', longitude = '0', radius = ''): Observable<Result<Array<Shop>>> {
-    return this.http.get<Result<Array<Shop>>>('/api/auth-users/users/follow/shops/position', {
+  getFollowStoresByPosition(keyword = '', page = '1', order = '', orderBy = 'asc', latitude = '0', longitude = '0', radius = ''): Observable<Result<Array<Store>>> {
+    return this.http.get<Result<Array<Store>>>('/api/auth-users/users/follow/stores/position', {
       params: {
         keyword,
         page,
@@ -58,8 +58,8 @@ export class AuthFollowService {
       }
     });
   }
-  getFollowItemsByPosition(keyword = '', page = '1', order = '', orderBy = 'asc', latitude = '0', longitude = '0', radius = '2,441'): Observable<Result<Array<Shop>>> {
-    return this.http.get<Result<Array<Shop>>>('/api/auth-users/users/follow/items/position', {
+  getFollowItemsByPosition(keyword = '', page = '1', order = '', orderBy = 'asc', latitude = '0', longitude = '0', radius = '2,441'): Observable<Result<Array<Store>>> {
+    return this.http.get<Result<Array<Store>>>('/api/auth-users/users/follow/items/position', {
       params: {
         keyword,
         page,
@@ -71,20 +71,20 @@ export class AuthFollowService {
       }
     });
   }
-  getFollowShopsIds() {
-    return this.isAuthenticatedWithObservableCallback(this.http.get<Result<Array<string>>>('/api/auth-users/users/follow-ids', { params: { type: 'shop' } }), of(false));
+  getFollowStoresIds() {
+    return this.isAuthenticatedWithObservableCallback(this.http.get<Result<Array<string>>>('/api/auth-users/users/follow-ids', { params: { type: 'store' } }), of(false));
   }
   getFollowItemsIds() {
     return this.isAuthenticatedWithObservableCallback(this.http.get<Result<Array<string>>>('/api/auth-users/users/follow-ids', { params: { type: 'item' } }), of(false));
   }
-  isFollowedShop(id) {
-    return this.isAuthenticatedWithObservableCallback(this.http.get('/api/auth-users/users/is-following/' + id, { params: { type: 'shop' } }), of(false));
+  isFollowedStore(id) {
+    return this.isAuthenticatedWithObservableCallback(this.http.get('/api/auth-users/users/is-following/' + id, { params: { type: 'store' } }), of(false));
   }
   isFollowedItem(id) {
     return this.isAuthenticatedWithObservableCallback(this.http.get('/api/auth-users/users/is-following/' + id, { params: { type: 'item' } }), of(false));
   }
-  followShop(id) {
-    return this.isAuthenticatedWithObservableCallback(this.http.put('/api/auth-users/users/follow/' + id, {}, { params: { type: 'shop' } }), of(false).pipe(tap(() => {
+  followStore(id) {
+    return this.isAuthenticatedWithObservableCallback(this.http.put('/api/auth-users/users/follow/' + id, {}, { params: { type: 'store' } }), of(false).pipe(tap(() => {
       this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
@@ -93,8 +93,8 @@ export class AuthFollowService {
       this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
-  unfollowShop(id) {
-    return this.isAuthenticatedWithObservableCallback(this.http.put('/api/auth-users/users/unfollow/' + id, {}, { params: { type: 'shop' } }), of(false).pipe(tap(() => {
+  unfollowStore(id) {
+    return this.isAuthenticatedWithObservableCallback(this.http.put('/api/auth-users/users/unfollow/' + id, {}, { params: { type: 'store' } }), of(false).pipe(tap(() => {
       this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }

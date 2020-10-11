@@ -1,19 +1,19 @@
 <div class="float-banner">
-    <span *ngIf="type == 'shop'" [ngClass]="isSaveLoading.isRunning() ? '' : (saved? 'fas fa-heart selected': 'fa-heart')" class="float-icon far" (click)="saved? unsaveShop(): saveShop()">
+    <span *ngIf="type == 'store'" [ngClass]="isSaveLoading.isRunning() ? '' : (saved? 'fas fa-heart selected': 'fa-heart')" class="float-icon far" (click)="saved? unsaveStore(): saveStore()">
         <ws-spinner *ngIf="isSaveLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="3"></ws-spinner>
     </span>
     <span *ngIf="type == 'item'" [ngClass]="saved? 'fas selected': ''" class="float-icon far fa-heart" (click)="saved? unsaveItem(): saveItem()"></span>
-    <span *ngIf="type == 'shop'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
+    <span *ngIf="type == 'store'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
     <span *ngIf="type == 'item'" (click)="isShareModalOpened = true" class="float-icon fas fa-share-alt"></span>
-    <span *ngIf="type == 'shop'" (click)="isQRCodeModalOpened = true" class="float-icon fas fa-qrcode"></span>
-    <span *ngIf="type == 'shop'" (click)="isInformationModalOpened = true" class="float-icon fas fa-info-circle"></span>
-    <span *ngIf="type == 'item'" [routerLink]="['/page', element?.shop?.username]" [queryParams]="{id: element?.shop?._id}" class="float-icon fas fa-store"></span>
-    <a *ngIf="type == 'item' && isShownLocation" target="_blank" href="http://www.google.com/maps/place/{{element?.shop?.location?.coordinates[1]}},{{element?.shop?.location?.coordinates[0]}}">
+    <span *ngIf="type == 'store'" (click)="isQRCodeModalOpened = true" class="float-icon fas fa-qrcode"></span>
+    <span *ngIf="type == 'store'" (click)="isInformationModalOpened = true" class="float-icon fas fa-info-circle"></span>
+    <span *ngIf="type == 'item'" [routerLink]="['/page', element?.store?.username]" [queryParams]="{id: element?.store?._id}" class="float-icon fas fa-store"></span>
+    <a *ngIf="type == 'item' && isShownLocation" target="_blank" href="http://www.google.com/maps/place/{{element?.store?.location?.coordinates[1]}},{{element?.store?.location?.coordinates[0]}}">
         <span class="float-icon" style="height: 39px; padding: 5px;">
             <img style="width: 23px; vertical-align: text-top;" src="assets/images/png/icon.png" alt="logo location" />
         </span>
     </a>
-    <a *ngIf="type == 'shop' && isShownLocation" target="_blank" href="http://www.google.com/maps/place/{{element?.location?.coordinates[1]}},{{element?.location?.coordinates[0]}}">
+    <a *ngIf="type == 'store' && isShownLocation" target="_blank" href="http://www.google.com/maps/place/{{element?.location?.coordinates[1]}},{{element?.location?.coordinates[0]}}">
         <span class="float-icon" style="height: 39px; padding: 5px;">
             <img style="width: 23px; vertical-align: text-top;" src="assets/images/png/icon.png" alt="logo location" />
         </span>
@@ -21,9 +21,9 @@
 </div>
 
 <ng-template #loadingTemplate>
-    <ws-spinner *ngIf="loading.isRunning(); else noShopTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
+    <ws-spinner *ngIf="loading.isRunning(); else noStoreTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
 </ng-template>
-<ng-template #noShopTemplate>
+<ng-template #noStoreTemplate>
     <h6 class="text-center">Page is not found.</h6>
 </ng-template>
 

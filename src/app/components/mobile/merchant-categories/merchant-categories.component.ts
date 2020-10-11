@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
-import { SharedShopService } from '@services/shared-shop.service';
+import { SharedStoreService } from '@services/shared-store.service';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Shop } from '@objects/shop';
+import { Store } from '@objects/store';
 import * as _ from 'lodash';
 import { ItemService } from '@services/http/public/item.service';
 import { environment } from '@environments/environment';
@@ -27,30 +27,30 @@ export class MerchantCategoriesComponent implements OnInit {
   itemLoading: WsLoading = new WsLoading;
   isMenuOpened: boolean = false;
   selectedMenuIndex: number = 0;
-  shop: Shop;
+  store: Store;
   private ngUnsubscribe: Subject<any> = new Subject;
-  constructor(private sharedShopService: SharedShopService,
+  constructor(private sharedStoreService: SharedStoreService,
     private itemService: ItemService) { 
   }
 
   ngOnInit(): void {
     this.itemLoading.start();
     window.scrollTo({top: 0});
-    this.sharedShopService.shop.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.sharedStoreService.store.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
-        this.shop = result;
-        this.mapShop();
+        this.store = result;
+        this.mapStore();
         this.itemLoading.stop();
       }
     });
   }
-  mapShop() {
-    if (this.shop) {
-      this.allItems = this.shop['allItems'];
-      this.newItems = this.shop['newItems'];
-      this.discountItems = this.shop['discountItems'];
-      this.todaySpecialItems = this.shop['todaySpecialItems'];
-      this.categories = this.shop['categories'];
+  mapStore() {
+    if (this.store) {
+      this.allItems = this.store['allItems'];
+      this.newItems = this.store['newItems'];
+      this.discountItems = this.store['discountItems'];
+      this.todaySpecialItems = this.store['todaySpecialItems'];
+      this.categories = this.store['categories'];
       this.items = this.allItems;
     }
   }

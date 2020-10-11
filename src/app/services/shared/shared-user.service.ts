@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class SharedUserService {
   user: BehaviorSubject<any> = new BehaviorSubject(null);
-  followPages: BehaviorSubject<Array<string>> = new BehaviorSubject([]);
+  followStores: BehaviorSubject<Array<string>> = new BehaviorSubject([]);
   followItems: BehaviorSubject<Array<string>> = new BehaviorSubject([]);
   constructor() { }
 }
