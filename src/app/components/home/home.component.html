@@ -1,23 +1,30 @@
-<div class="home col-lg-8 text-center center">
-    <img class="home__icon" src="assets/images/svg/icon.svg" alt="logo" />
-    <p class="home__label">Find, view and collect your favorite stores</p>
-    
-    <div class="searchbar input-group">
-        <input name="keyword" class="searchbar__input form-control" placeholder="Search..." [(ngModel)]="keyword"
-        (keydown.enter)="navigationSearch()"/>
-        <div class="input-group-append">
-            <button class="searchbar__button input-group-text" [routerLink]="['/search']" [queryParams]="{keyword: keyword}">
-                <span class="searchbar__icon fas fa-search"></span>
-            </button>
+<div class="home text-center center">
+    <div class="container">
+        <div class="home-logo__container">
+            <img class="home__icon" src="assets/images/svg/icon.svg" alt="logo" />
+            <h3 class="home__logo">Wonder Scale</h3>
         </div>
-    </div>
-    <div class="mt-5" *ngIf="false">
-        <div class="row no-gutters">
-            <div class="offset-sm-3 col-sm-3">
-                <a href="javascript:void(0)"><img class="px-2 w-100" src="assets/images/png/apple-store.png" alt="apple store" /></a>
+        <p class="home__label">Find, view and collect your favorite stores</p>
+        
+        <div class="col-lg-6 center">
+            <div class="searchbar input-group">
+                <input name="keyword" class="searchbar__input form-control" placeholder="Search..." [(ngModel)]="keyword"
+                (keydown.enter)="navigationSearch()"/>
+                <div class="input-group-append">
+                    <button class="searchbar__button input-group-text" [routerLink]="['/search']" [queryParams]="{keyword: keyword}">
+                        <span class="searchbar__icon fas fa-search"></span>
+                    </button>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <a href="javascript:void(0)"><img class="px-2 w-100" src="assets/images/png/google-play-badge.png" alt="google play" /></a>
+        </div>
+        <div class="mt-5" *ngIf="false">
+            <div class="row no-gutters">
+                <div class="offset-sm-3 col-sm-3">
+                    <a href="javascript:void(0)"><img class="px-2 w-100" src="assets/images/png/apple-store.png" alt="apple store" /></a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="javascript:void(0)"><img class="px-2 w-100" src="assets/images/png/google-play-badge.png" alt="google play" /></a>
+                </div>
             </div>
         </div>
     </div>

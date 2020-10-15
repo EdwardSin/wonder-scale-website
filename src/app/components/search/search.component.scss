@@ -17,6 +17,14 @@
 
 @media(max-width:992px) {
     .search__container {
-        padding: 1rem;
+        padding: 1rem 0;
+    }
+}
+
+@media(max-width:375px) {
+    .search__container {
+        .search__searchbar{
+            width: 100%;
+        }
     }
 }

@@ -1,28 +1,47 @@
 .home{
-    padding-top: 10%;
-    .home__icon{
-        width: 300px;
+    height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-position: center;
+
+    .home-logo__container{
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
         margin-bottom: 1rem;
+    
+        .home__icon{
+            width: 75px;
+            margin-right: 1rem;
+        }
+        .home__logo{
+            font-family: 'Bauhaus 93';
+            color: #7f0000;
+            font-size: 3rem;
+            margin-bottom: 0;
+        }
     }
     .home__label {
-        font-weight: bold;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 }
 .searchbar{
     .searchbar__button{
-        background-color: #fff;
         border: 0;
         height: 50px;
         padding-left: 1.25rem;
         padding-right: 1.25rem;
         transition: all ease .1s;
+        border-radius: 0 5px 5px 0;
         cursor: pointer;
         &:hover{
             background-color: #ebecf0;
         }
     }
     .searchbar__input{
+        background-color: #f7f7f7;
         height: 50px;
         border: 0;
     }
@@ -31,12 +50,24 @@
 @media(max-width:992px) {
     .home{
         .home__icon{
-            max-width: 200px;
             width: 100%;
-            margin-bottom: 2rem;
         }
         .home__label{
             font-size: 1.1rem;
+        }
+    }
+}
+
+@media(max-width:375px) {
+    .home{
+        .home-logo__container{
+            align-items: center;
+            .home__icon{
+                margin-right: 0;
+            }
+            .home__logo{
+                max-width: 200px;
+            }
         }
     }
 }

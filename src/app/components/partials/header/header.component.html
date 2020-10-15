@@ -1,28 +1,36 @@
-<header [class.header__collapsed]="isShrink">
-    <div class="row no-gutters">
+<header>
+    <div class="row no-gutters px-3">
         <div class="float-left col row no-gutters">
-            <div [routerLink]="['/']" class="header__icon nooutline">
-                <img class="w-100" style="object-fit: contain;" src="assets/images/png/icon.png" alt="logo" />
-            </div>
+            <a [routerLink]="['/']" class="header__label">Wonder Scale</a>
             <!-- <div class="position-relative d-block d-lg-none">
                 <span class="fas fa-search header__searchbar-icon" style="margin-left: 2rem; font-size: 2rem"></span>
             </div> -->
-            <div *ngIf="isMobileSize && user" class="position-relative col-sm-auto col pr-2">
+            <div *ngIf="false" class="position-relative col-sm-auto col pr-2">
                 <input #headerKeyword class="form-control header__searchbar" placeholder="Search..." (keydown.enter)="navigateTo()" [(ngModel)]="keyword"/>
                 <span class="header__searchbar-icon fas fa-search" [routerLink]="['/search']" [queryParams]="{keyword: keyword}"></span>
             </div>
-            <ul class="nav d-none d-lg-block">
+            <ul class="nav d-none d-lg-flex align-items-center">
                 <li class="nav-item">
-                    <a target="_blank" href="merchant.wonderscale.com" class="nav-link">JOIN US</a></li>
+                    <a [routerLink]="['/']" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a target="_blank" href="https://merchant.wonderscale.com" class="nav-link">Start Listing</a>
+                </li>
             </ul>
         </div>
         <div class="user-container">
-            <div *ngIf="!user">
+            <div *ngIf="!user && !isMobileSize">
                 <a class="user-container__link" href="javascript:void(0)"
                 [routerLink]="[]" [queryParams]="{modal: 'login'}" [queryParamsHandling]="'merge'">Login</a>
                 <span class="user-container__text">|</span>
                 <a class="user-container__link" href="javacript:void(0)"
                 [routerLink]="[]" [queryParams]="{modal: 'register'}" [queryParamsHandling]="'merge'">Sign-up</a>
+            </div>
+            <div *ngIf="!user && isMobileSize">
+                <a class="user-container__link" href="javascript:void(0)"
+                [routerLink]="[]" [queryParams]="{modal: 'login'}" [queryParamsHandling]="'merge'">
+                    <span class="fas fa-sign-in-alt"></span>
+                </a>
             </div>
             <div *ngIf="user" class="btn-group" mdbDropdown>
                 <div mdbDropdownToggle class="user-container__profile-container dropdown-toggle">
