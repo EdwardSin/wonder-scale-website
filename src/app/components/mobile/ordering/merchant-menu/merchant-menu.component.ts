@@ -1,6 +1,6 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SharedCartService } from '@services/shared/shared-cart.service';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { SharedStoreService } from '@services/shared-store.service';
 import { ItemService } from '@services/http/public/item.service';
@@ -11,7 +11,6 @@ import { Store } from '@objects/store';
 import * as _ from 'lodash';
 import { Phase } from '@objects/phase';
 import { CartItem } from '@objects/cart-item';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'merchant-menu',
@@ -35,20 +34,13 @@ export class MerchantMenuComponent implements OnInit {
   phase: Phase<Number> = new Phase(0, 3);
   paymentFail: boolean;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
-  constructor(private ref: ChangeDetectorRef, private router: Router, 
+  constructor(private ref: ChangeDetectorRef,
     private sharedCartService: SharedCartService,
     private sharedStoreService: SharedStoreService,
     private itemService: ItemService) {
     this.sharedCartService.cartItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.allCartItems = result;
     })
-  }
-  @HostListener('window:beforeunload', ['$event'])
-  canDeactivate($event: any): Observable<boolean> | boolean {
-    if (confirm('Are you sure to leave the page?')) {
-      this.phase.setStep(0);
-    }
-    return false;
   }
   ngOnInit(): void {
     this.itemLoading.start();
@@ -108,12 +100,6 @@ export class MerchantMenuComponent implements OnInit {
           this.items = result.result;
           this.closeNavigation();
         });
-    }
-  }
-  backToHome() {
-    if (confirm('Are you sure to leave the page?')) {
-      this.phase.setStep(0);
-      this.router.navigate([], { queryParams: { s_id: null }, queryParamsHandling: 'merge' });
     }
   }
   openNavigation() {

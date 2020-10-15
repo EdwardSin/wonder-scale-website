@@ -46,7 +46,6 @@ export function jwtOptionsFactory(platformId) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     HttpClientModule,
     SocialLoginModule,
     NgProgressModule,
@@ -58,7 +57,8 @@ export function jwtOptionsFactory(platformId) {
         useFactory: jwtOptionsFactory,
         deps: [PLATFORM_ID]
       }
-    })
+    }),
+    AppRoutingModule
   ],
   providers: [
     {

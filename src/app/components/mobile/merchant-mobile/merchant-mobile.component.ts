@@ -158,7 +158,7 @@ export class MerchantMobileComponent implements OnInit {
         this.storeId = this.store._id;
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));
         this.sharedStoreService.store.next(this.store);
-        this.router.navigate([], { queryParams: {type: null}, queryParamsHandling: 'merge' });
+        this.router.navigate([], { queryParams: {type: null, nav: null}, queryParamsHandling: 'merge' });
       } else {
         this.isShownSelection = false;
       }

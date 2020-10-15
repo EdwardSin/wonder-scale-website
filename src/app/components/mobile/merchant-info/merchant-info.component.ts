@@ -49,6 +49,9 @@ export class MerchantInfoComponent implements OnInit {
   closeAlert() {
     this.preview = false;
   }
+  navigateToMap() {
+    window.open(`http://www.google.com/maps/place/${this.store.location.coordinates[1]},${this.store.location.coordinates[0]}`, '_blank');
+  }
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

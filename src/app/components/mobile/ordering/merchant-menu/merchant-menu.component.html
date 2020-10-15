@@ -3,6 +3,7 @@
         <span class="fas fa-bars btn-navigation__icon"></span>
         <span>Menu</span>
     </div>
+    <a class="btn btn-store float-right" [routerLink]="['/page/mobile', store.username, 'info']" [queryParamsHandling]="'merge'">Go To Store</a>
     <div class="menu-navigation" [class.menu-navigation__open]="isNavigationOpened">
         <span class="fas fa-times menu-navigation__closed" (click)="closeNavigation()"></span>
         <h5 class="menu-navigation-title">Menu</h5>
@@ -25,7 +26,7 @@
         </ul>
     </div>
     <div class="w-100 pb-3">
-        <menu-item *ngFor="let item of items" [item]="item"></menu-item>
+        <list-item [item]="item" class="px-1" *ngFor="let item of items"></list-item>
     </div>
 </div>
 

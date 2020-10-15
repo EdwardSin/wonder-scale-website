@@ -3,17 +3,28 @@
         <div class="row no-gutters">
             <span class="list-item__image-container">
                 <img *ngIf="item?.profileImages?.length" [src]="environment.IMAGE_URL + item?.profileImages[item?.profileImageIndex]" class="list-item__image" alt="profile Image" />
-                <img *ngIf="!item?.profileImages?.length" src="/assets/images/png/profileImage.png" alt="item detault profile image" />
+                <img *ngIf="!item?.profileImages?.length" class="list-item__image" src="/assets/images/png/profileImage.png" alt="item detault profile image" />
             </span>
             <div class="list-item__middle col px-2 px-lg-3">
-                <p class="list-item__text">{{ item?.name }}</p>
-                <p class="list-item__discount-price mb-0" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != item.price" style="text-decoration: line-through;"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
-                <p [class.list-item__price__offer]="item.isDiscountExisting" class="list-item__price mb-0" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}</p>
-                <p class="list-item__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                <div>
+                    <p class="list-item__text">{{ item?.name }}</p>
+                    <p class="font-8 mb-0" *ngIf="item.isEntityNew"><span class="fas fa-tag list-item__new mr-2"></span>New Product</p>
+                    <p class="font-8 mb-0" *ngIf="item.isDiscountExisting"><span class="fas fa-tag list-item__discount mr-2"></span>Discount</p>
+                </div>
+                <div>
+                    <p class="list-item__discount-price mb-0" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != item.price" style="text-decoration: line-through;">
+                        Price: <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                    <p class="list-item__price mb-0" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer">
+                        Price: <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}</p>
+                    <p class="list-item__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer">
+                        Price: <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                </div>
             </div>
-            <span class="list-item-icon-right fas position-relative" [ngClass]="saveLoading.isRunning() ? '' : follow? 'fa-heart selected': 'fa-heart'" (click)="followClicked($event)">
-                <ws-spinner class="position-absolute" style="top: calc(50% - 16px); left: calc(50% - 10px)" *ngIf="saveLoading.isRunning()" [width]="20" [height]="20" [borderWidth]="3" [spinnerColor]="'#282C35'"></ws-spinner>
-            </span>
+            <div *ngIf="isAuthenticated" class="d-flex justify-content-center align-items-center px-3">
+                <span class="list-item-icon-right fas position-relative" [ngClass]="saveLoading.isRunning() ? '' : follow? 'fa-heart selected': 'fa-heart'" (click)="followClicked($event)">
+                    <ws-spinner class="position-absolute" style="top: calc(50% - 16px); left: calc(50% - 10px)" *ngIf="saveLoading.isRunning()" [width]="20" [height]="20" [borderWidth]="3" [spinnerColor]="'#282C35'"></ws-spinner>
+                </span>
+            </div>
         </div>
     </div>
 </div>

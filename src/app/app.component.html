@@ -1,12 +1,9 @@
 <ng-progress class="w-100" [direction]="'ltr+'" [spinner]="false" [color]="'#990000'" [meteor]="true" [thick]="true"
     [trickleSpeed]="500" [thick]="true" [ease]="'easeInSine'"></ng-progress>
 <app-header></app-header>
-<div class="container px-lg-3 px-0">
-    <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>
 
-<button *ngIf="!isMobileSize" (click)="scrollTo()" class="btn btn-controller position-fixed"
-    style="border-radius: 5px 5px 0px 0px; z-index: 99; background-color: #282c35; color: #fff; bottom: 0rem; right: 2rem;">
+<button *ngIf="!isMobileSize" (click)="scrollTo()" class="btn btn-controller position-fixed btn-chevron">
     <span class="fas fa-chevron-up"></span>
 </button>
 <ws-toast></ws-toast>

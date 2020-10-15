@@ -2,6 +2,7 @@
     background-color: #fff;
 
     .btn-navigation {
+        margin-top: .25rem;
         font-size: 1.1rem;
         padding: .75rem;
         display: inline-block;
@@ -16,15 +17,29 @@
             background-color: #f7f7f7;
         }
     }
+    
+    .btn-store{
+        margin-top: .5rem;
+        margin-right: .5rem;
+        border-radius: 20px;
+        padding: .5rem 1rem;
+        color: #222;
+        background-color: #f7f7f7;
+
+        &:hover,
+        &:active{
+            background-color: #ddd;
+        }
+    }
 
     .menu-navigation {
         position: fixed;
-        top: 80px;
+        top: 70px;
         z-index: 10;
         padding-top: .5rem;
         padding-bottom: .5rem;
         overflow-x: hidden;
-        height: calc(100vh - 80px);
+        height: calc(100vh - 70px);
         width: 0;
         background-color: #fff;
         transition: width ease .2s;

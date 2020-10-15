@@ -112,7 +112,7 @@ export class ListItemInfoComponent implements OnInit {
   renderItemInfo() {
     this.isFollowedItem();
     if (this.item.store) {
-      this.link = environment.URL + '(modal:item)?id=' + this.item.store._id + '&item_id=' + this.item._id;
+      this.link = environment.URL + '?id=' + this.item.store._id + '&item_id=' + this.item._id;
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
       this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
