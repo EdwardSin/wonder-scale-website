@@ -9,12 +9,17 @@ import { environment } from '@environments/environment';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
+import { FacebookService, UIParams, InitParams } from 'ngx-facebook';
 import * as _ from 'lodash';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 import { TrackService } from '@services/http/public/track.service';
 import { BrowserService } from '@services/general/browser.service';
 import { ScreenService } from '@services/general/screen.service';
 import { SharedStoreService } from '@services/shared-store.service';
+import { SharedUserService } from '@services/shared/shared-user.service';
+import * as $ from 'jquery';
+import { QRCodeBuilder } from '@builders/qrcodebuilder';
+import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 
 @Component({
   selector: 'merchant',
@@ -35,29 +40,44 @@ export class MerchantComponent implements OnInit {
   isInformationOpened: boolean;
   selectedInformationIndex: number = 0;
   store: Store;
+  
+  medias;
+  link: string;
+  shareLinkThroughFB: string;
+  shareLinkThroughTwitter: string;
   message = '';
   preview: Boolean;
   DEBOUNCE_TRACK_VALUE = 15 * 1000;
   storeId;
   trackId;
+  isAuthenticated: boolean;
+  isSaveLoading: WsLoading = new WsLoading;
+  isQrcodeLoading: WsLoading = new WsLoading;
+  displayImage: string = '';
+  selectedNavItem = 'overview';
+  saved: boolean;
   todayDate;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private router: Router,
     private route: ActivatedRoute,
     private screenService: ScreenService,
     private storeService: StoreService,
+    private sharedUserService: SharedUserService,
     private sharedStoreService: SharedStoreService,
+    private authFollowService: AuthFollowService,
     private trackService: TrackService,
+    private facebookService: FacebookService,
     private itemService: ItemService) {
     let date = new Date;
     this.todayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
   }
-
   ngOnInit() {
     let id = this.route.snapshot.queryParams.id;
     let username = this.route.snapshot.params.username;
     let isMobileDevice = this.screenService.isMobileDevice.value;
     let preview = this.route.snapshot.queryParams.preview;
+    let nav = this.route.snapshot.queryParams.nav || this.selectedNavItem;
+    this.selectedNavItem = nav;
     this.loading.start();
     if (isMobileDevice) {
       if (!this.router.url.includes('/page/mobile/')) {
@@ -70,6 +90,9 @@ export class MerchantComponent implements OnInit {
         this.getStoreById(id);
       }
     }
+    this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.isAuthenticated = !!result;
+    });
 
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(event => {
@@ -82,6 +105,24 @@ export class MerchantComponent implements OnInit {
           }
         }
       });
+  }
+  ngAfterViewInit() {
+    window.addEventListener('scroll', (event) => {
+        let currentSection: string = 'overview';
+        const children = $('.details-container').children();
+        const scrollTop = window.scrollY;
+        for (let i = 0; i < children.length; i++) {
+            const element = children[i];
+            if (['DIV'].some(spiedTag => spiedTag === element.tagName)) {
+                if ((element.offsetTop) <= scrollTop) {
+                    currentSection = element.id;
+                }
+            }
+        }
+        if (currentSection !== this.selectedNavItem && this.selectedNavItem !== 'catalogue') {
+          this.selectedNavItem = currentSection;
+        }
+    });
   }
   isPrivateMode(isPrivateModeCallback, normalModeCallback) {
     let fs = window['RequestFileSystem'] || window['webkitRequestFileSystem'];
@@ -159,9 +200,18 @@ export class MerchantComponent implements OnInit {
     this.storeService.getStoreById(id).pipe(tap((result) => {
       this.store = result.result;
       this.mapStore();
+      this.authFollowService.isFollowedStore(this.store._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.saved = result['result'];
+        this.isSaveLoading.stop();
+      })
     }), takeUntil(this.ngUnsubscribe)).subscribe(() => {
       if (this.store) {
         this.sharedStoreService.store.next(this.store);
+        this.link = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id;
+        this.shareLinkThroughFB = this.link;
+        this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
+        this.displayImage = this.store.profileImage ? 'api/images/' + encodeURIComponent(this.store.profileImage) : 'assets/images/svg/dot.svg';
+        this.showQrcode();
         DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));
         this.loading.stop()
@@ -192,6 +242,45 @@ export class MerchantComponent implements OnInit {
       this.todaySpecialItems = this.store['todaySpecialItems'];
       this.categories = this.store['categories'];
       this.items = this.allItems;
+      
+      if (this.store.media && this.store.media.length) {
+        this.medias = _.groupBy(this.store.media, 'type');
+      }
+    }
+  }
+  showQrcode() {
+    setTimeout(() => {
+      this.isQrcodeLoading.start();
+      let newImage = <HTMLImageElement>document.createElement('img');
+      newImage.alt = 'profile-image';
+      newImage.src = this.displayImage;
+      newImage.addEventListener('load', e => {
+        let url = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id;
+        QRCodeBuilder.createQRcode('.qrcode', url, { width: 100, height: 100, color: '#666', callback: () => {
+          this.isQrcodeLoading.stop();
+        }})
+        .then(() => {
+          this.renderProfileImageToQrcode(newImage, 100);
+        });
+      });
+    });
+  }
+  renderProfileImageToQrcode(image, size) {
+    let canvas = $('.qrcode').find('canvas')[0];
+    if (canvas) {
+      let context = (<HTMLCanvasElement>canvas).getContext('2d');
+      let width = size / 3 * 46.7 / 70;
+      let height = size / 3 * 46.7 / 70;
+      let offsetInnerY = size / 3 * 6 / 70;
+      let offsetX = size / 2 - width / 2;
+      let offsetY = size / 2 - height / 2 - offsetInnerY;
+      context.save();
+      context.beginPath();
+      context.arc(offsetX + width / 2, offsetY + width / 2, width / 2, 0, 2 * Math.PI);
+      context.fill();
+      context.clip();
+      context.drawImage(image, offsetX, offsetY, width, height);
+      context.restore();
     }
   }
   openInformation(index) {
@@ -228,6 +317,28 @@ export class MerchantComponent implements OnInit {
         });
     }
   }
+  saveStore() {
+    this.isSaveLoading.start();
+    combineLatest(timer(500),
+      this.authFollowService.followStore(this.store._id))
+      .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.saved = result['result'];
+        this.isSaveLoading.stop();
+      }, () => {
+        this.isSaveLoading.stop();
+      });
+  }
+  unsaveStore() {
+    this.isSaveLoading.start();
+    combineLatest(timer(500),
+      this.authFollowService.unfollowStore(this.store._id))
+      .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.saved = result['result'];
+        this.isSaveLoading.stop();
+      }, () => {
+        this.isSaveLoading.stop();
+      });
+  }
   likeStore() {
 
   }
@@ -236,7 +347,9 @@ export class MerchantComponent implements OnInit {
   }
   scrollTo(id = '') {
     if (id) {
+      this.selectedNavItem = id;
       let element = document.getElementById(id);
+      this.router.navigate([], {queryParams: {nav: this.selectedNavItem}, queryParamsHandling: 'merge'});
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
       }
@@ -245,8 +358,23 @@ export class MerchantComponent implements OnInit {
       window.scrollTo(0, 0);
     }
   }
+  shareThroughFB() {
+    let params: UIParams = {
+      href: this.shareLinkThroughFB,
+      method: 'share',
+      display: 'popup'
+    }
+    this.facebookService.ui(params)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => { });
+  }
   closeAlert() {
     this.preview = false;
+  }
+  navigateToMap() {
+    window.open(`http://www.google.com/maps/place/${this.store.location.coordinates[1]},${this.store.location.coordinates[0]}`, '_blank');
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();

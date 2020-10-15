@@ -5,7 +5,7 @@
     width: 100vw;
     z-index: 1;
     display: flex;
-    box-shadow: 0 -3px 5px rgba(0, 0, 0, .3);
+    box-shadow: 0 -1px 5px #ccc;
     flex-direction: row;
 
     .merchant-footer-icon {
@@ -15,16 +15,16 @@
         padding-bottom: 1rem;
         font-size: 1.3rem;
         cursor: pointer;
-        color: #fff;
+        color: #222;
         transition: all ease .1s;
-        background-color: #282C35;
-
-        &:hover {
-            background-color: #4d5466;
-        }
+        background-color: #fff;
 
         &.active {
-            background-color: rgba(0, 0, 0, .9);
+            color: #7f0000;
+        }
+
+        &.selected{
+            color: gold;
         }
     }
 }

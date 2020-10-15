@@ -4,10 +4,15 @@
 
 - v1.0.1040                                 -
 ---------------------------------------------
+- 2020-10-15                                -
+---------------------------------------------
+.: WSW: Task: Update Store Page UI (WSW-79)
+
+---------------------------------------------
 - 2020-10-11                                -
 ---------------------------------------------
-.: WSM: Task: CLONE - Change 'page' and 'shop' to store' (WSW-78)
-.: WSM: Task: Revert Ordering Service (WSM-74)
+.: WSW: Task: CLONE - Change 'page' and 'shop' to store' (WSW-78)
+.: WSW: Task: Revert Ordering Service (WSM-74)
 
 - v1.0.1031                                 -
 ---------------------------------------------

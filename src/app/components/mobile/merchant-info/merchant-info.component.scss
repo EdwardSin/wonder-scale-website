@@ -1,4 +1,9 @@
 .merchant {
+    .merchant__name {
+        font-size: 1.5rem;
+        margin-bottom: .25rem;
+    }
+
     .merchant__username {
         text-align: center;
         font-size: .9rem;
@@ -47,6 +52,7 @@
         }
     }
 }
+
 .merchant__nav {
     background: #fff;
     .merchant__nav-item {
@@ -62,6 +68,22 @@
         }
     }
 }
+
+.tag{
+    padding: .25rem 1rem;
+    border-radius: 20px;
+    
+    &.tag-food{
+        color: #7f0000;
+        border: 1px solid #7f0000;
+    }
+
+    &.tag-price{
+        border: 1px solid #38ad50;
+        color: #38ad50;
+    }
+}
+
 
 .discount-items-container,
 .new-items-container {
@@ -144,11 +166,14 @@
 .info__container,
 .contact__container,
 .location__container,
-.opening-info__container {
+.opening-info__container,
+.social-media__container {
     padding: 1rem;
     background-color: #fff;
     .info__title{
         padding-bottom: .25rem;
+        font-size: 1.2rem;
+        font-weight: normal;
     }
     .info__text{
         white-space: pre-wrap;
@@ -223,7 +248,7 @@
 @media(max-width: 992px) {
     .merchant {
         .merchant__profile-container {
-            padding: 1rem 2rem;
+            padding: .5rem 1rem;
             background-color: #fff;
 
             .merchant__profile {
@@ -235,12 +260,6 @@
                 display: inline-block;
                 margin: 0;
                 box-shadow: 0 0 3px #ccc;
-            }
-
-            .merchant__name-container {
-                display: inline-block;
-                vertical-align: middle;
-                padding: 0 1rem;
             }
         }
 
