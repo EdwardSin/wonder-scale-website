@@ -44,10 +44,10 @@ export class MerchantComponent implements OnInit {
     private storeService: StoreService,
     private sharedUserService: SharedUserService,
     private sharedStoreService: SharedStoreService,
-    private authFollowService: AuthFollowService,
     private trackService: TrackService,
-    private facebookService: FacebookService,
-    private itemService: ItemService) {
+    public authFollowService: AuthFollowService,
+    public facebookService: FacebookService,
+    public itemService: ItemService) {
     let date = new Date;
     this.todayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
   }
@@ -166,6 +166,7 @@ export class MerchantComponent implements OnInit {
       }
     }
   }
+  
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

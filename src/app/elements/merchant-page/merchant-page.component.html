@@ -154,7 +154,6 @@
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.telegram, isEditing: isEditing, onClick: onEditTelegramClicked, addLabel: 'Add Telegram', icon: 'fa-telegram'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.weibo, isEditing: isEditing, onClick: onEditWeiboClicked, addLabel: 'Add Weibo', icon: 'fa-weibo'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.wechat, isEditing: isEditing, onClick: onEditWechatClicked, addLabel: 'Add Wechat', isLink: true, icon: 'fa-weixin'}"></ng-container>
-                        <a *ngIf="isEditing" class="merchant__edit-link text-center d-block" href="javascript:void(0)" (click)="onAddMediaClicked.emit($event)">+ Add Social Media</a>
                     </div>
                     <h5 class="h6 text-left mb-3 font-weight-normal">Share via:</h5>
                     <div clsas="d-flex justify-content-center align-items-center">
