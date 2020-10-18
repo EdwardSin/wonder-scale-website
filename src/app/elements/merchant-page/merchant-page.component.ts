@@ -3,16 +3,13 @@ import { Router } from '@angular/router';
 import { Store } from 'src/app/objects/store';
 import { takeUntil, finalize, map } from 'rxjs/operators';
 import { Subject, combineLatest, timer } from 'rxjs';
-import { ItemService } from '@services/http/public/item.service';
 import { environment } from '@environments/environment';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
-import { FacebookService, UIParams } from 'ngx-facebook';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
-import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 
 @Component({
   selector: 'merchant-page',
@@ -24,6 +21,9 @@ export class MerchantPageComponent implements OnInit {
   @Input() isEditing: boolean;
   @Input() isFollowed: boolean;
   @Input() isAuthenticated: boolean;
+  @Input() itemService;
+  @Input() authFollowService;
+  @Input() facebookService;
   @Output() onEditBannersClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditProfileImageClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditOpeningHoursClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -45,6 +45,7 @@ export class MerchantPageComponent implements OnInit {
   @Output() onEditWeiboClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWechatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAddMediaClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() on
   
   environment = environment;
   selectedCategory: string = 'all';
@@ -66,13 +67,9 @@ export class MerchantPageComponent implements OnInit {
   isQrcodeLoading: WsLoading = new WsLoading;
   displayImage: string = '';
   selectedNavItem = 'overview';
-  saved: boolean;
   todayDate;
   private ngUnsubscribe: Subject<any> = new Subject;
-  constructor(private router: Router,
-    private authFollowService: AuthFollowService,
-    private facebookService: FacebookService,
-    private itemService: ItemService) {
+  constructor(private router: Router) {
     let date = new Date;
     this.todayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
   }
@@ -171,7 +168,7 @@ export class MerchantPageComponent implements OnInit {
       combineLatest(timer(500),
         this.itemService.getItemsByCategoryId(value))
         .pipe(takeUntil(this.ngUnsubscribe), map(x => x[1]), finalize(() => this.itemLoading.stop())).subscribe(result => {
-          this.items = result.result;
+          this.items = result['result'];
         });
     }
   }
@@ -180,7 +177,7 @@ export class MerchantPageComponent implements OnInit {
     combineLatest(timer(500),
       this.authFollowService.followStore(this.store._id))
       .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        this.saved = result['result'];
+        this.isFollowed = result['result'];
         this.isSaveLoading.stop();
       }, () => {
         this.isSaveLoading.stop();
@@ -191,7 +188,7 @@ export class MerchantPageComponent implements OnInit {
     combineLatest(timer(500),
       this.authFollowService.unfollowStore(this.store._id))
       .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        this.saved = result['result'];
+        this.isFollowed = result['result'];
         this.isSaveLoading.stop();
       }, () => {
         this.isSaveLoading.stop();
@@ -228,7 +225,7 @@ export class MerchantPageComponent implements OnInit {
     }
   }
   shareThroughFB() {
-    let params: UIParams = {
+    let params = {
       href: this.shareLinkThroughFB,
       method: 'share',
       display: 'popup'
