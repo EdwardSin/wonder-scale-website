@@ -38,14 +38,14 @@
 .btn.btn-controller {
     border-radius: 5px;
     background-color: #f7f7f7;
-    color: #505f79;
+    color: #7f0000;
     transition: background-color .2s ease-out, color .2s ease-out;
     &:hover {
         background-color: #ebecf0;
     }
     &:active{
-        color: #fff;
-        background-color: #282C35;
+        color: #660000;
+        background-color: #ccc;
     }
     span {
         display: block;
