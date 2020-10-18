@@ -1,0 +1,463 @@
+.merchant {
+    padding-top: 2.5rem;
+
+    .merchant__profile-container {
+        position: relative;
+        margin-bottom: 1rem;
+
+        .merchant__profile-image__container{
+            position: relative;
+
+            .merchant__profile-image {
+                width: 100px;
+                height: 100px;
+                vertical-align: top;
+            }
+            &:hover{
+                .merchant__profile-image__edit {
+                    opacity: 1;
+                    background-color: rgba(0, 0, 0, .16);
+                }
+            }
+
+            .merchant__profile-image__edit{
+                width: 100px;
+                height: 100px;
+                top: 0;
+                left:0;
+                opacity: 0;
+                cursor: pointer;
+                color: #fff;
+                position: absolute;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all ease .1s;
+            }
+        }
+
+        .merchant__profile-background {
+            display: block;
+            width: 230px;
+            height: 230px;
+        }
+
+        .merchant__name-container {
+            display: inline-block;
+            padding: .25rem 1.5rem;
+    
+            .merchant__name {
+                font-size: 1.5rem;
+            }
+        
+            .merchant__location{
+                font-size: 1rem;
+
+                .merchant__location-icon{
+    
+                }
+            }
+        }
+    }
+    .merchant__overview{
+        .merchant__overview-edit {
+            color: #7f0000;
+            float: right;
+
+            &:hover{
+                color: #660000;
+            }
+        }
+    }
+
+    .merchant-background {
+        background: url('/assets/images/png/background.png');
+        height: 300px;
+        .merchant-background__banner {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .merchant__text{
+            line-height: 300px;
+            font-size: 3rem;
+            white-space: nowrap;
+            color: #bbb;
+            font-weight: bold;
+            text-align: center;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+        }
+    }
+
+    .merchant__nav{
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        .merchant__nav-item {
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            border-radius: 0;
+            color: #707070;
+            background-color: transparent;
+            transition: all ease .1s;
+            cursor: pointer;
+
+            &:hover,
+            &.selected {
+                color: #7f0000;
+                border-bottom: 2px solid #7f0000;
+            }
+        }
+    }
+
+    .merchant__edit-link{
+        color: #7f0000;
+
+        &:hover{
+            color: #660000;
+        }
+    }
+}
+
+.tag{
+    padding: .25rem 1rem;
+    border-radius: 20px;
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    
+    &.tag-type{
+        color: #7f0000;
+        border: 1px solid #7f0000;
+    }
+
+    &.tag-price{
+        border: 1px solid #38ad50;
+        color: #38ad50;
+    }
+
+    &.tag-type,
+    &.tag-price {
+        &:hover{
+            .tag-edit{
+                opacity: 1;
+                background-color: #f7f7f7;
+                outline: 0;
+            }
+        }
+    }
+
+    .tag-edit{
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        transition: all ease .1s;
+    }
+}
+
+.merchant__sidebar {
+    padding-top: 4rem;
+    text-align: center;
+
+    .merchant__message-text{
+        color: #666;
+        font-size: 1.1rem;
+        
+        .merchant__message-text-icon{
+
+        }
+    }
+    .btn-favorite {
+        border: 1px solid #7f0000;
+        color: #7f0000;
+        border-radius: 25px;
+        text-align: center;
+        padding: .5rem 2rem;
+        font-size: 1.1rem;
+        transition: all ease .5s;
+        
+        .btn-favorite-icon {
+            color: transparent;
+            -webkit-text-fill-color: #fff;
+            -webkit-text-stroke-width: .5px;
+            -webkit-text-stroke-color: #7f0000;
+            transition: all ease .2s;
+        }
+
+        &.selected {
+            .btn-favorite-icon {
+                color: transparent;
+                -webkit-text-fill-color: #7f0000;
+                -webkit-text-stroke-width: .5px;
+                -webkit-text-stroke-color: #7f0000;
+            }
+        }
+
+        &:hover{
+            .btn-favorite-icon {
+                transform: scale(1.2);
+            }
+        }
+    }
+
+    .merchant__sub-menu{
+        background-color: #f7f7f7;
+        border-radius: .25rem;
+        padding: 1rem 1.5rem;
+        text-align: left;
+
+        .merchant__sub-menu-label{
+            font-size: 1.3rem;
+        }
+
+        .merchant__contact{
+            border-bottom: 1px solid #ccc;
+            position: relative;
+
+            .merchant__contact-icon{
+                color: transparent;
+                -webkit-text-fill-color: transparent;
+                -webkit-text-stroke-width: .5px;
+                -webkit-text-stroke-color: #222;
+            }
+    
+            .merchant__contact-detail{
+                font-size: 1rem;
+                a {
+                    color: #666;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
+                display: block;
+            }
+
+            .merchant__contact-details{
+                display: inline-block;
+
+                &:hover{
+                    .merchant__overlay {
+                        opacity: 1;
+                    }
+                }
+            }
+
+            .merchant__contact-edit-button{
+                color: #7f0000;
+                position: absolute;
+                border: 0;
+                outline: none;
+                background-color: #fff;
+                right: 0rem;
+                top: 0rem;
+
+                &:hover{
+                    color: #660000;
+                }
+            }
+
+            
+        }   
+    }
+
+    .merchant__share{
+        border-radius:50%;
+        padding: 1rem;
+        display: inline-block;
+        width: 58px;
+        cursor: pointer;
+        background-color: #fff;
+        transition: all ease .5s;
+
+        &.merchant__share-fb {
+            color: #3B5998;
+            border: 1px solid #3B5998;
+
+            &:hover{
+                background-color: #3B5998;
+                color: #fff;
+            }
+        }
+
+        &.merchant__share-twitter {
+            color: #1DA1F2;
+            border: 1px solid #1DA1F2;
+            
+            &:hover{
+                background-color: #1DA1F2;
+                color: #fff;
+                a{
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+.discount-items-container,
+.new-items-container {
+    background-color: #fff;
+    width: 100%;
+
+    ::ng-deep .swiper-pagination-bullet-active {
+        border: 0;
+        background-color: #282C35;
+    }
+
+    ::ng-deep .swiper-button-prev,
+    ::ng-deep .swiper-button-next {
+        &::after {
+            font-size: 1rem;
+            color: #CCCCCC;
+        }
+    }
+}
+
+.information-container {
+    background-color: #fff;
+    width: 100%;
+    position: relative;
+
+    .information-container__empty {
+        height: 300px;
+        width: 100%;
+        background-color: rgba(0, 0, 0, .16);
+    }
+
+    .swiper-container__image{
+        height: 300px;
+        object-fit: contain;
+        box-shadow: 0 0 3px #000;
+        cursor: pointer;
+        transition: transform ease .2s;
+        &:hover{
+            transform: scale(1.1);
+        }
+    }
+    ::ng-deep .swiper-pagination-bullet-active {
+        border: 0;
+        background-color: #282C35;
+    }
+
+    ::ng-deep .swiper-slide {
+        width: fit-content !important;
+        overflow: hidden !important;
+    }
+}
+
+.information-fullscreen-container {
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+
+    .information-fullscreen__icon{
+        width: 2.5rem;
+        line-height: 2.5rem;
+        text-align: center;
+        border-radius: 50%;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        z-index: 2;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, .1);
+        transition: background-color ease .2s;
+        &:hover{
+            background-color: rgba(0, 0, 0, .2);
+        }
+    }
+
+    .swiper-container__image {
+        width: fit-content !important;
+        object-fit: contain;
+    }
+
+    ::ng-deep .swiper-pagination-bullet-active {
+        border: 0;
+        background-color: #282C35;
+    }
+}
+
+.category-container {
+    padding: 0 .5rem;
+
+    .category-container__dropdown {
+        width: 250px;
+        border: 1px solid #222;
+        border-radius: 19rem;
+        padding-top: .5rem;
+        padding-left: 1.25rem;
+    }
+}
+
+.items-container {
+    min-height: 30vh;
+    background: #fff;
+}
+
+.qrcode{
+    transition: transform ease .3s;
+    &:hover{
+        transform: scale(1.1);
+    }
+}
+
+@media(max-width: 1200px) {
+    .merchant {
+        .merchant__profile-container {
+            .merchant__profile {
+                width: 190px;
+                height: 190px;
+            }
+        }
+    }
+}
+
+@media(max-width: 992px) {
+    .merchant {
+        .merchant__profile-container {
+            background-color: #fff;
+
+            .merchant__profile {
+                display: none;
+            }
+
+            .merchant__name-container {
+                display: inline-block;
+                vertical-align: middle;
+                padding: 0 1rem;
+                font-size: 1.4rem;
+            }
+        }
+
+        .merchant-background {
+            height: 100%;
+
+            .merchant-background__banner {
+                width: 100%;
+                height: calc(100vw * 0.361);
+            }
+
+            .merchant__text{
+                line-height: calc(100vw * 0.361);
+                font-size: 2rem;
+            }
+
+        }
+    }
+}
