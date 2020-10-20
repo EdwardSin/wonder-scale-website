@@ -112,14 +112,6 @@
             }
         }
     }
-
-    .merchant__edit-link{
-        color: #7f0000;
-
-        &:hover{
-            color: #660000;
-        }
-    }
 }
 
 .tag{
@@ -230,6 +222,7 @@
                 -webkit-text-fill-color: transparent;
                 -webkit-text-stroke-width: .5px;
                 -webkit-text-stroke-color: #222;
+                width: 24px;
             }
     
             .merchant__contact-detail{
@@ -254,7 +247,7 @@
             }
 
             .merchant__contact-edit-button{
-                color: #7f0000;
+                color: #505f79;
                 position: absolute;
                 border: 0;
                 outline: none;
@@ -262,8 +255,8 @@
                 right: 0rem;
                 top: 0rem;
 
-                &:hover{
-                    color: #660000;
+                &:hover {
+                    background-color: #ebecf0;
                 }
             }
 
@@ -302,6 +295,14 @@
                 }
             }
         }
+    }   
+}
+
+.merchant__edit-link{
+    color: #7f0000;
+
+    &:hover{
+        color: #660000;
     }
 }
 
@@ -332,7 +333,7 @@
     .information-container__empty {
         height: 300px;
         width: 100%;
-        background-color: rgba(0, 0, 0, .16);
+        background-color: rgba(0, 0, 0, .08);
     }
 
     .swiper-container__image{

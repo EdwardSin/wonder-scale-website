@@ -1,11 +1,13 @@
 <div>
     <div id="info" class="information-container mb-2" *ngIf="store?.informationImages?.length > 0 || isEditing">
-        <swiper [config]="{slidesPerView: 'auto', spaceBetween: 5, pagination: false, navigation: false, autoHeight: true}">
-            <div class="swiper-slide d-inline-block" *ngFor="let image of store?.informationImages; let i = index">
-                <img class="swiper-container__image" [src]="environment.IMAGE_URL + image" alt="upload-image" (click)="openInformation(i)"/>
-            </div>
+        <swiper *ngIf="editingBanners?.length" [config]="{slidesPerView: 'auto', spaceBetween: 5, pagination: true, navigation: false, autoHeight: true}">
+            <ng-container>
+                <div class="swiper-slide d-inline-block" *ngFor="let image of editingBanners; let i = index">
+                    <img class="swiper-container__image" [src]="image" alt="upload-image" (click)="openInformation(i)"/>
+                </div>
+            </ng-container>
         </swiper>
-        <div class="information-container__empty" *ngIf="!store?.informationImages?.length"></div>
+        <div class="information-container__empty" *ngIf="!editingBanners.length"></div>
         <button *ngIf="isEditing" class="btn btn-sm btn-controller position-absolute" style="right: 1rem; top: 1rem; z-index: 99" (click)="onEditBannersClicked.emit($event)">
             <span class="fas fa-edit mr-2 d-inline-block"></span>Edit Banners
         </button>
@@ -13,8 +15,15 @@
     <div *ngIf="isInformationOpened" class="information-fullscreen-container position-fixed pt-2">
         <span class="information-fullscreen__icon fas fa-times" (click)="isInformationOpened = false"></span>
         <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}"> 
-            <ng-container *ngFor="let image of store?.informationImages">
-                <img class="swiper-slide swiper-container__image center" [src]="environment.IMAGE_URL + image" alt="upload-image" />
+            <ng-container *ngIf="!editingBanners.length">
+                <ng-container *ngFor="let image of store?.informationImages">
+                    <img class="swiper-slide swiper-container__image center" [src]="environment.IMAGE_URL + image" alt="upload-image" />
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="editingBanners.length">
+                <ng-container *ngFor="let image of editingBanners">
+                    <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
+                </ng-container>
             </ng-container>
         </swiper>
     </div>
@@ -29,12 +38,13 @@
                     <div class="col merchant__name-container" [class.px-0]="!store?.profileImage">
                         <p class="merchant__name mb-2 text-break">{{ store?.name }}</p>
                         <p *ngIf="isAddressExisting() || isEditing" class="merchant__location"><span class="fas fa-map-marker-alt merchant__location-icon mr-2"></span>
-                            <span *ngIf="isAddressExisting(); else editAddressTemplate">
+                            <span *ngIf="store.showAddress && isAddressExisting(); else editAddressTemplate">
                                 {{ store?.fullAddress?.address + ', ' + store?.fullAddress?.state + ', ' + store?.fullAddress?.postcode + ', ' +store?.fullAddress?.country }}
                             </span>
-                            <a *ngIf="isAddressExisting() && isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" href="javascript:void(0)" (click)="onEditAddressClicked.emit($event)"><span class="fas fa-edit"></span></a>
+                            <a *ngIf="store.showAddress && isAddressExisting() && isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" href="javascript:void(0)" (click)="onEditAddressClicked.emit($event)"><span class="fas fa-edit"></span></a>
                         </p>
-                        <span class="tag tag-type mr-2 text-capitalize">{{ store?.type ? store?.type : 'Edit Store Type' }}<span *ngIf="isEditing" class="tag-edit" (click)="onEditStoreTypeClicked.emit($event)">Edit</span></span>
+                        <span class="tag tag-type mr-2 text-capitalize">{{ store?.type ? store?.type : 'Edit Store Type' }}</span>
+                        <!-- <span *ngIf="isEditing" class="tag-edit" (click)="onEditStoreTypeClicked.emit($event)">Edit</span> -->
                         <!-- <button class="tag tag-price mr-2">RM 2 - 10<span class="tag-edit">Edit</span></button> -->
                         <ng-template #editAddressTemplate>
                             <a class="merchant__edit-link font-9" href="javascript: void(0)" (click)="onEditAddressClicked.emit($event)">Edit Address</a>
@@ -44,7 +54,7 @@
                 <ul class="merchant__nav list-group list-group-horizontal w-100">
                     <li (click)="scrollTo('overview')" [class.selected]="selectedNavItem == 'overview'" class="merchant__nav-item list-group-item selected">Overview</li>
                     <li *ngIf="store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0 || isEditing" (click)="scrollTo('location')" [class.selected]="selectedNavItem == 'location'" class="merchant__nav-item list-group-item">Location</li>
-                    <li  *ngIf="store?.openingInfoType || isEditing"(click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Operating Hours</li>
+                    <li  *ngIf="store?.openingInfoType || isEditing"(click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Opening Hours</li>
                     <li (click)="scrollTo('catalogue')" [class.selected]="selectedNavItem == 'catalogue'" class="merchant__nav-item list-group-item ml-auto"><span class="fas fa-book-open"></span> Catalogue</li>
                 </ul>
                 <div class="mb-3" style="border-bottom: 2px solid #ccc; margin-top: -2px"></div>
@@ -57,11 +67,10 @@
                             <p *ngIf="!isEditing" class="text-center" style="margin: 2rem 0">No description</p>
                         </ng-template>
                     </div>
-
                     <div *ngIf="store?.tags?.length || isEditing">
                         <h5 class="font-weight-normal d-flex align-items-center">Features<button class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditTagsClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
-                        <div *ngIf="store?.tags?.length; else noTagTemplate">
-                            <span class="badge ws-bg-secondary" *ngFor="let tag of store?.tags">{{ tag }}</span>
+                        <div *ngIf="store?.tags?.length; else noTagTemplate" class="px-3 pb-5 pt-3">
+                            <span class="badge mr-2 mb-1" style="color: #7f0000; background-color: #f7f7f7" *ngFor="let tag of store?.tags">{{ tag }}</span>
                         </div>
                         <ng-template #noTagTemplate>
                             <p class="text-center" style="margin: 2rem 0">No feature</p>
@@ -70,7 +79,7 @@
 
                     <div id="location" class="mb-3" *ngIf="store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0 || isEditing">
                         <h5 class="font-weight-normal d-flex align-items-center">Location<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditAddressClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
-                        <div class="p-3 d-block rounded" target="_blank" *ngIf="store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0; else noLocationTemplate">
+                        <div class="p-3 d-block rounded" target="_blank" *ngIf="store?.showAddress && store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0; else noLocationTemplate">
                             <div class="rounded" style="overflow: hidden">
                                 <agm-map class="w-100" style="height: 300px" [longitude]="store?.location?.coordinates[0]" [latitude]="store?.location?.coordinates[1]" [zoom]="14" [gestureHandling]="'greedy'"
                                     [mapDraggable]="false" [maxZoom]="17" [minZoom]="11" [streetViewControl]="false" panControl="false" zoomControl="false">
@@ -130,7 +139,7 @@
                         <span class="fas fa-heart btn-favorite-icon mr-2"></span>
                         {{isFollowed ? 'Added To Favorite' : 'Add To Favorite'}}
                     </button>
-                    <button *ngIf="!isAuthenticated" [disabled]="isEditing && isAuthenticated" [routerLink]="[]" [queryParams]="{modal: 'login'}" [queryParamsHandling]="'merge'" class="btn btn-favorite mb-4">
+                    <button *ngIf="!isAuthenticated" [disabled]="isEditing" [routerLink]="[]" [queryParams]="{modal: 'login'}" [queryParamsHandling]="'merge'" class="btn btn-favorite mb-4">
                         Login To Add Favorite
                     </button>
                     <div class="merchant__sub-menu mb-4">
@@ -141,9 +150,9 @@
                             </div>
                         </div>
                         <p class="merchant__sub-menu-label">Contact Details:</p>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.phone, isEditing: isEditing, onClick: onEditPhoneClicked, addLabel: 'Add Phone', isLink: true, icon: 'fas fa-phone'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.email, isEditing: isEditing, onClick: onEditEmailClicked, addLabel: 'Add Email', isLink: true, icon: 'fas fa-envelope'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.website, isEditing: isEditing, onClick: onEditWebsiteClicked, addLabel: 'Add Website', isLink: true, icon: 'fas fa-globe'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.phone, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditPhoneClicked, addLabel: 'Add Phone', isLink: true, icon: 'fas fa-phone'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.email, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditEmailClicked, addLabel: 'Add Email', isLink: true, icon: 'fas fa-envelope'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.website, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditWebsiteClicked, addLabel: 'Add Website', isLink: true, icon: 'fas fa-globe'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.facebook, isEditing: isEditing, onClick: onEditFacebookClicked, addLabel: 'Add Facebook', prefixLink: 'https://www.facebook.com/', isLink: true, icon: 'fa-facebook-f'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.instagram, isEditing: isEditing, onClick: onEditInstagramClicked, addLabel: 'Add Instagram', prefixLink: 'https://www.instagram.com/', isLink: true, icon: 'fa-instagram'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.twitter, isEditing: isEditing, onClick: onEditTwitterClicked, addLabel: 'Add Twitter', prefixLink: 'https://mobile.twitter.com/', isLink: true, icon: 'fa-twitter'}"></ng-container>
@@ -154,6 +163,7 @@
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.telegram, isEditing: isEditing, onClick: onEditTelegramClicked, addLabel: 'Add Telegram', icon: 'fa-telegram'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.weibo, isEditing: isEditing, onClick: onEditWeiboClicked, addLabel: 'Add Weibo', icon: 'fa-weibo'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.wechat, isEditing: isEditing, onClick: onEditWechatClicked, addLabel: 'Add Wechat', isLink: true, icon: 'fa-weixin'}"></ng-container>
+                        <a *ngIf="isEditing" class="merchant__edit-link text-center d-block" href="javascript:void(0)" (click)="onAddMediaClicked.emit($event)">+ Add Social Media</a>
                     </div>
                     <h5 class="h6 text-left mb-3 font-weight-normal">Share via:</h5>
                     <div clsas="d-flex justify-content-center align-items-center">
@@ -172,14 +182,15 @@
     </div>
 </div>
 
-<ng-template #mediaTemplate let-medias="medias" let-isEditing="isEditing" let-onClick="onClick" let-addLabel="addLabel" let-icon="icon" let-prefixLink="prefixLink" let-isLink="isLink">
-    <div class="d-flex align-items-center mb-3 pb-3 px-3 merchant__contact" *ngIf="medias?.length">
+<ng-template #mediaTemplate let-medias="medias" let-isEditing="isEditing" let-isEmptyDisplayed="isEmptyDisplayed" let-onClick="onClick" let-addLabel="addLabel" let-icon="icon" let-prefixLink="prefixLink" let-isLink="isLink">
+    <div class="d-flex align-items-center mb-3 pb-3 px-3 merchant__contact" *ngIf="medias?.length || (isEditing && isEmptyDisplayed)">
         <span class="merchant__contact-icon fab mr-3" [ngClass]="icon"></span>
         <div class="d-inline-block">
             <span class="merchant__contact-detail" *ngFor="let media of medias">
                 <span *ngIf="!isLink">{{ media }}</span>
                 <a *ngIf="isLink" target="_blank" href="{{ prefixLink + media }}">{{ media }}</a>
             </span>
+            <a *ngIf="!medias.length && isEditing" href="javascript:void(0)" class="merchant__edit-link w-100 d-inline-block" (click)="onClick.emit($event)">{{addLabel}}</a>
         </div>
         <button *ngIf="medias?.length && isEditing" class="merchant__contact-edit-button btn btn-sm btn-controller btn-edit" (click)="onClick.emit($event)"><span class="fas fa-edit"></span></button>
     </div>

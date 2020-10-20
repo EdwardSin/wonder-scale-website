@@ -18,6 +18,7 @@ import { QRCodeBuilder } from '@builders/qrcodebuilder';
 })
 export class MerchantPageComponent implements OnInit {
   @Input() store: Store;
+  @Input() editingBanners: Array<string> = [];
   @Input() isEditing: boolean;
   @Input() isFollowed: boolean;
   @Input() isAuthenticated: boolean;
@@ -45,7 +46,6 @@ export class MerchantPageComponent implements OnInit {
   @Output() onEditWeiboClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWechatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAddMediaClicked: EventEmitter<any> = new EventEmitter<any>();
-  @Output() on
   
   environment = environment;
   selectedCategory: string = 'all';
@@ -81,8 +81,18 @@ export class MerchantPageComponent implements OnInit {
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
       this.displayImage = this.store.profileImage ? 'api/images/' + encodeURIComponent(this.store.profileImage) : 'assets/images/svg/dot.svg';
+      this.editingBanners = this.store.informationImages.map(image => environment.IMAGE_URL + image);
       this.showQrcode();
       this.mapStore();
+    }
+    if (changes['editingBanners'] && this.editingBanners) {
+      setTimeout(() => {
+        let mySwiper = document.querySelector('.swiper-container');
+        if (mySwiper) {
+            let swiper = mySwiper['swiper']
+            swiper.update();
+        };
+      }, 300);
     }
   }
   ngAfterViewInit() {
@@ -105,6 +115,7 @@ export class MerchantPageComponent implements OnInit {
   }
   showQrcode() {
     setTimeout(() => {
+      $('.qrcode').empty();
       this.isQrcodeLoading.start();
       let newImage = <HTMLImageElement>document.createElement('img');
       newImage.alt = 'profile-image';
@@ -203,7 +214,7 @@ export class MerchantPageComponent implements OnInit {
       this.todaySpecialItems = this.store['todaySpecialItems'];
       this.categories = this.store['categories'];
       this.items = this.allItems;
-      if (this.store.media && this.store.media.length) {
+      if (this.store.media) {
         this.medias = _.mapValues(_.groupBy(this.store.media, 'type'), medias => medias.map(media => media.value));
       }
     }
