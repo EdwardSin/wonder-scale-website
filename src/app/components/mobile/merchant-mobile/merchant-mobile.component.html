@@ -1,19 +1,15 @@
 <div *ngIf="isShownSelection" class="merchant__screen">
     <div *ngIf="store" class="merchant__selections">
         <p class="merchant__selection-title">{{ store?.name }}</p>
-        <p class="merchant__selection-item" [routerLink]="['info']" [queryParamsHandling]="'merge'" (click)="navigateToDetails()">Page Details</p>
-        <p class="merchant__selection-item" [routerLink]="['menu']" [queryParamsHandling]="'merge'" (click)="navigateToItems()">{{ store?.type == 'restaurant' ? 'Menu' : 'Categories'}}</p>
+        <p class="merchant__selection-item" [routerLink]="['info']" [queryParamsHandling]="'merge'" (click)="navigateToDetails()">Store Details</p>
+        <p class="merchant__selection-item" [routerLink]="['menu']" [queryParamsHandling]="'merge'" (click)="navigateToItems()">{{ store?.type == 'restaurant' ? 'Menu' : 'Products'}}</p>
     </div>
 </div>
 <div *ngIf="store && !loading.isRunning(); else loadingTemplate" [hidden]="isShownSelection">
-    <div *ngIf="preview" #alert class="alert alert-danger alert-dismissible fade show font-8 my-2 w-100" role="alert">
-        This is a preview page and will not displayed to public if the store is in unpublished status.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
-            <span aria-hidden="true">&times;</span>
-        </button>
+    <div style="display: block; min-height: calc(100vh - 52px)">
+        <router-outlet></router-outlet>
     </div>
-    <router-outlet></router-outlet>
-    <merchant-footer *ngIf="store && showFooter" [element]="store"></merchant-footer>
+    <merchant-mobile-footer *ngIf="store && showFooter"></merchant-mobile-footer>
 </div>
 
 <ng-template #loadingTemplate>

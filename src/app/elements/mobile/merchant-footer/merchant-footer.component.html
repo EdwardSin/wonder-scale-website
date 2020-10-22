@@ -1,0 +1,9 @@
+<div style="height: calc(100vg - 52px)"></div>
+<div class="merchant-footer__mobile">
+    <a href="javascript:void(0)" [class.active]="selectedNav == 'info'" (click)="navigateToInfo()" class="merchant-footer-icon fas fa-info-circle"></a>
+    <a href="javascript:void(0)" [class.active]="selectedNav == 'menu'" (click)="navigateToMenu()" class="merchant-footer-icon fas fa-th-large"></a>
+    <a href="javascript:void(0)" [class.active]="selectedNav == 'share'" (click)="navigateToShare()" class="merchant-footer-icon fas fa-share-alt"></a>
+    <button [disabled]="isEditing" [ngClass]="saveLoading.isRunning() ? '' : (saved? 'fas fa-heart selected': 'fa-heart')" class="merchant-footer-icon position-relative far" (click)="saved? unsaveStore(): saveStore()">
+        <ws-spinner class="position-absolute" style="top: calc(50% - 10px); left: calc(50% - 10px)" *ngIf="saveLoading.isRunning()" [width]="20" [height]="20" [borderWidth]="3" [spinnerColor]="'#fff'"></ws-spinner>
+    </button>
+</div>

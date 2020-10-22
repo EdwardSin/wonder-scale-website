@@ -1,0 +1,48 @@
+<div class="position-relative">
+    <button class="btn-navigation" (click)="openNavigation()">
+        <span class="fas fa-bars btn-navigation__icon"></span>
+        <span>Menu</span>
+    </button>
+    <button class="btn btn-store float-right border-0" (click)="navigateToStore()">Go To Store</button>
+    <div class="menu-navigation" [class.menu-navigation__open]="isNavigationOpened">
+        <span class="fas fa-times menu-navigation__closed" (click)="closeNavigation()"></span>
+        <h5 class="menu-navigation-title">Menu</h5>
+        <ul class="menu-navigation-list list-unstyled mb-0" *ngIf="!isEditing; else noCategoryAvailableTemplate">
+            <li class="menu-navigation-item" *ngIf="allItems?.length" [class.selected]="selectedCategory == 'all'" (click)="getItemsByCategoryId('all')">
+                All
+            </li>
+            <li class="menu-navigation-item" *ngIf="newItems?.length" [class.selected]="selectedCategory == 'new'" (click)="getItemsByCategoryId('new')">
+                New
+            </li>
+            <li class="menu-navigation-item" *ngIf="discountItems?.length" [class.selected]="selectedCategory == 'discount'" (click)="getItemsByCategoryId('discount')">
+                Discount
+            </li>
+            <li class="menu-navigation-item" *ngIf="todaySpecialItems?.length" [class.selected]="selectedCategory == 'todayspecial'" (click)="getItemsByCategoryId('todayspecial')">
+                Today Special
+            </li>
+            <li class="menu-navigation-item" [class.selected]="selectedCategory == category?._id" *ngFor="let category of categories" (click)="getItemsByCategoryId(category?._id)">
+                {{ category.name }}
+            </li>
+        </ul>
+    </div>
+    <div *ngIf="items?.length && !itemLoading.isRunning(); else loadingTemplate" class="w-100 pb-3">
+        <list-item [item]="item" class="px-1" *ngFor="let item of items"></list-item>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
+</ng-template>
+
+<ng-template #noItemTemplate>
+    <ng-container *ngIf="!isEditing; else noItemAvailableTemplate">
+        <h6 class="text-center py-5">Item is not found!</h6>
+    </ng-container>
+</ng-template>
+<ng-template #noItemAvailableTemplate>
+    <h6 class="text-center py-5">Item is unavailable!</h6>
+</ng-template>
+
+<ng-template #noCategoryAvailableTemplate>
+    <h6 class="text-center py-5">Categories is unavailable!</h6>
+</ng-template>

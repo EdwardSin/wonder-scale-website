@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Store } from 'src/app/objects/store';
-import { takeUntil, finalize, map, tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { StoreService } from '@services/http/public/store.service';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
@@ -43,13 +43,8 @@ export class MerchantMobileComponent implements OnInit {
     let id = this.route.snapshot.queryParams.id;
     let username = this.route.snapshot.params.username;
     let isMobileDevice = this.screenService.isMobileDevice.value;
-    let preview = this.route.snapshot.queryParams.preview;
     if (isMobileDevice) {
-      if (preview == 'true') {
-        this.getPreviewStoreById(id);
-      } else {
-        this.getStoreById(id);
-      }
+      this.getStoreById(id);
     } else {
       if (this.router.url.includes('/page/mobile/')) {
         this.router.navigate(['/page', username], {queryParams: {id}, queryParamsHandling: 'merge' });
@@ -61,9 +56,6 @@ export class MerchantMobileComponent implements OnInit {
         if (event instanceof NavigationEnd) {
           if (this.store) {
             DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
-          }
-          if (preview == 'true' && !this.store) {
-            this.getPreviewStoreById(id);
           }
           this.showFooter = !this.router.url.includes('/menu')
         }
@@ -168,28 +160,11 @@ export class MerchantMobileComponent implements OnInit {
       this.isShownSelection = false;
     });
   }
-  getPreviewStoreById(id) {
-    this.loading.start();
-    this.storeService.getPreviewStoreById(id).pipe(tap((result) => {
-      this.preview = true;
-      this.store = result.result;
-    }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
-      if (this.store) {
-        DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
-        this.sharedStoreService.store.next(this.store);
-      }
-    }, err => {
-      this.message = 'You are not authorized to view the page! Please login your account!'
-    });
-  }
   navigateToDetails() {
     this.isShownSelection = false;
   }
   navigateToItems() {
     this.isShownSelection = false;
-  }
-  closeAlert() {
-    this.preview = false;
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();
