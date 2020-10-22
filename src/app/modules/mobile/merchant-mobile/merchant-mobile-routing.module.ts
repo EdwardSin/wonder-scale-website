@@ -12,15 +12,15 @@ const routes: Routes = [{
     pathMatch: 'full'
   }, {
     path: 'info',
-    loadChildren: () => import ('../merchant-info/merchant-info.module').then(m => m.MerchantInfoModule)
+    loadChildren: () => import ('../merchant-mobile-info/merchant-mobile-info.module').then(m => m.MerchantMobileInfoModule)
   },
   {
     path: 'menu',
-    loadChildren: () => import ('../ordering/merchant-menu/merchant-menu.module').then(m => m.MerchantMenuModule)
+    loadChildren: () => import ('../ordering/merchant-mobile-menu/merchant-mobile-menu.module').then(m => m.MerchantMobileMenuModule)
   },
   {
     path: 'share',
-    loadChildren: () => import ('../merchant-share/merchant-share.module').then(m => m.MerchantShareModule)
+    loadChildren: () => import ('../merchant-mobile-share/merchant-mobile-share.module').then(m => m.MerchantMobileShareModule)
   }]
 }];
 

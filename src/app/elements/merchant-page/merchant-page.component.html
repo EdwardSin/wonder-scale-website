@@ -61,7 +61,7 @@
                 <div *ngIf="selectedNavItem != 'catalogue'" class="details-container">
                     <div id="overview" class="mb-3 merchant__overview" style="min-height: 300px">
                         <button *ngIf="store?.description && isEditing" class="btn btn-sm btn-controller float-right" (click)="onEditDescriptionClicked.emit($event)"><span class="fas fa-edit"></span></button>
-                        <p *ngIf="store?.description; else noDescriptionTemplate" class="info__text mb-0">{{ store?.description }}</p>
+                        <p *ngIf="store?.description; else noDescriptionTemplate" class="info__text mb-0" style="white-space: break-spaces">{{ store?.description }}</p>
                         <a *ngIf="!store?.description && isEditing" href="javascript:void(0)" class="merchant__edit-link w-100 d-inline-block px-3" (click)="onEditDescriptionClicked.emit($event)">Edit Description</a>
                         <ng-template #noDescriptionTemplate>
                             <p *ngIf="!isEditing" class="text-center" style="margin: 2rem 0">No description</p>

@@ -81,12 +81,15 @@ export class MerchantPageComponent implements OnInit {
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
       this.displayImage = this.store.profileImage ? 'api/images/' + encodeURIComponent(this.store.profileImage) : 'assets/images/svg/dot.svg';
-      this.editingBanners = this.store.informationImages.map(image => environment.IMAGE_URL + image);
+      if (!this.editingBanners.length && this.store.informationImages.length) {
+        this.editingBanners = this.store.informationImages.map(image => environment.IMAGE_URL + image);
+      }
       this.showQrcode();
       this.mapStore();
     }
     if (changes['editingBanners'] && this.editingBanners) {
       setTimeout(() => {
+        console.log(this.editingBanners);
         let mySwiper = document.querySelector('.swiper-container');
         if (mySwiper) {
             let swiper = mySwiper['swiper']
