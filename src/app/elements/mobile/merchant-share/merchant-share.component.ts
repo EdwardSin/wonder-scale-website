@@ -18,8 +18,8 @@ export class MerchantShareComponent implements OnInit {
   @Input() facebookService;
   @Input() store: Store;
   @Input() isEditing: boolean;
+  @Input() profileImage: string;
   environment = environment;
-  
   link: string = '';
   shareLinkThroughFB: string = '';
   shareLinkThroughTwitter: string = '';
@@ -54,6 +54,20 @@ export class MerchantShareComponent implements OnInit {
       }
       this.showQrcode(true);
     }
+    
+    if (changes['profileImage']) {
+      let isDataImage = this.profileImage.startsWith('data');
+      if (this.profileImage) {
+        if (isDataImage) {
+          this.displayImage = this.profileImage;
+        } else {
+          this.displayImage = 'api/images/' + encodeURIComponent(this.store.profileImage);
+        }
+      } else {
+        this.displayImage = 'assets/images/svg/dot.svg';
+      }
+      this.showQrcode(true);
+    }
   }
   shareThroughFB() {
     let params = {
@@ -78,9 +92,11 @@ export class MerchantShareComponent implements OnInit {
         let newImage = <HTMLImageElement>document.createElement('img');
         newImage.alt = 'profile-image';
         newImage.src = this.displayImage;
+        $('.qrcode').empty();
         newImage.addEventListener('load', e => {
+          $('.qrcode').empty();
           let url = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id + '&type=qr_scan';
-          QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150, callback: () => {
+          QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150, color: '#666', callback: () => {
             this.isQrcodeLoading.stop();
           }})
           .then(() => {

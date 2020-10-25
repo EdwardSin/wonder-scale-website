@@ -14,7 +14,8 @@ export class MerchantInfoComponent implements OnInit {
   environment = environment;
   @Input() store: Store;
   @Input() isEditing: boolean = true;
-  @Input() editingBanners: Array<string> = [];
+  @Input() banners: Array<string> = [];
+  @Input() profileImage: string;
   @Output() onEditBannersClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditProfileImageClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditOpeningHoursClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -55,15 +56,12 @@ export class MerchantInfoComponent implements OnInit {
       if (this.store.media) {
         this.medias = _.mapValues(_.groupBy(this.store.media, 'type'), medias => medias.map(media => media.value));
       }
-      if (!this.editingBanners.length && this.store.informationImages.length) {
-        this.editingBanners = this.store.informationImages.map(image => environment.IMAGE_URL + image);
-      }
       if (this.store.showAddress && this.store['location'] && this.store['location']['coordinates']) {
         this.isShownLocation = this.store['location']['coordinates'][0] != 0 && this.store['location']['coordinates'][1] != 0;
       }
       this.loading.stop();
     }
-    if (changes['editingBanners'] && this.editingBanners) {
+    if (changes['banners'] && this.banners) {
       setTimeout(() => {
         let mySwiper = document.querySelector('.swiper-container');
         if (mySwiper) {

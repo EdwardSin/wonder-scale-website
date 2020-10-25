@@ -1,7 +1,12 @@
 .merchant {
-    .merchant__name {
-        font-size: 1.5rem;
-        margin-bottom: .25rem;
+    .merchant__name-container{
+        display: inline-block;
+
+        .merchant__name {
+            display: inline-block;
+            font-size: 1.5rem;
+            margin-bottom: .25rem;
+        }
     }
 
     .merchant__username {
@@ -11,8 +16,45 @@
 
     .merchant__profile-container {
         position: relative;
-        padding: .5rem 1rem;
+        padding: 0rem 1rem;
         background-color: #fff;
+
+        .merchant__profile-image__container {
+            position: relative;
+            display: inline-block;
+
+            .merchant__profile-image {
+                width: 30px;
+                height: 30px;
+                vertical-align: top;
+                border-radius: 50%;
+                overflow: hidden;
+                background-color: rgba(0, 0, 0, 0.16);
+                display: inline-block;
+            }
+            &:hover{
+                .merchant__profile-image__edit {
+                    opacity: 1;
+                    background-color: rgba(0, 0, 0, .16);
+                }
+            }
+
+            .merchant__profile-image__edit{
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                top: 0;
+                left:0;
+                opacity: 0;
+                cursor: pointer;
+                color: #fff;
+                position: absolute;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all ease .1s;
+            }
+        }
 
         .merchant__profile-background {
             display: block;
@@ -41,8 +83,6 @@
     background-color: #fff;
     width: 100%;
     position: relative;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
 
     .information-container__empty {
         height: 300px;
@@ -147,6 +187,7 @@
         margin-bottom: .5rem;
     }
     .info__title{
+        font-size: 1.2rem;
         padding-bottom: .25rem;
     }
     :last-child{

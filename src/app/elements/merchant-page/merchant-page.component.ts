@@ -10,6 +10,7 @@ import { WsLoading } from '@elements/ws-loading/ws-loading';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
+import { templateJitUrl } from '@angular/compiler';
 
 @Component({
   selector: 'merchant-page',
@@ -18,7 +19,8 @@ import { QRCodeBuilder } from '@builders/qrcodebuilder';
 })
 export class MerchantPageComponent implements OnInit {
   @Input() store: Store;
-  @Input() editingBanners: Array<string> = [];
+  @Input() banners: Array<string> = [];
+  @Input() profileImage: string;
   @Input() isEditing: boolean;
   @Input() isFollowed: boolean;
   @Input() isAuthenticated: boolean;
@@ -81,21 +83,30 @@ export class MerchantPageComponent implements OnInit {
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
       this.displayImage = this.store.profileImage ? 'api/images/' + encodeURIComponent(this.store.profileImage) : 'assets/images/svg/dot.svg';
-      if (!this.editingBanners.length && this.store.informationImages.length) {
-        this.editingBanners = this.store.informationImages.map(image => environment.IMAGE_URL + image);
-      }
       this.showQrcode();
       this.mapStore();
     }
-    if (changes['editingBanners'] && this.editingBanners) {
+    if (changes['banners'] && this.banners) {
       setTimeout(() => {
-        console.log(this.editingBanners);
         let mySwiper = document.querySelector('.swiper-container');
         if (mySwiper) {
             let swiper = mySwiper['swiper']
             swiper.update();
         };
       }, 300);
+    }
+    if (changes['profileImage']) {
+      let isDataImage = this.profileImage.startsWith('data');
+      if (this.profileImage) {
+        if (isDataImage) {
+          this.displayImage = this.profileImage;
+        } else {
+          this.displayImage = 'api/images/' + encodeURIComponent(this.store.profileImage);
+        }
+      } else {
+        this.displayImage = 'assets/images/svg/dot.svg';
+      }
+      this.showQrcode();
     }
   }
   ngAfterViewInit() {
@@ -118,12 +129,13 @@ export class MerchantPageComponent implements OnInit {
   }
   showQrcode() {
     setTimeout(() => {
-      $('.qrcode').empty();
       this.isQrcodeLoading.start();
       let newImage = <HTMLImageElement>document.createElement('img');
       newImage.alt = 'profile-image';
       newImage.src = this.displayImage;
+      $('.qrcode').empty();
       newImage.addEventListener('load', e => {
+        $('.qrcode').empty();
         let url = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id;
         QRCodeBuilder.createQRcode('.qrcode', url, { width: 100, height: 100, color: '#666', callback: () => {
           this.isQrcodeLoading.stop();
