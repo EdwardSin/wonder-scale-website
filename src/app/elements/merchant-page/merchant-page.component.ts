@@ -79,7 +79,7 @@ export class MerchantPageComponent implements OnInit {
   }
   ngOnChanges (changes: SimpleChanges) {
     if (changes['store'] && this.store) {
-      this.link = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id;
+      this.link = environment.URL + 'page/' + this.store.username;
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
       this.displayImage = this.store.profileImage ? 'api/images/' + encodeURIComponent(this.store.profileImage) : 'assets/images/svg/dot.svg';
@@ -136,7 +136,7 @@ export class MerchantPageComponent implements OnInit {
       $('.qrcode').empty();
       newImage.addEventListener('load', e => {
         $('.qrcode').empty();
-        let url = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id;
+        let url = environment.URL + 'page/' + this.store.username;
         QRCodeBuilder.createQRcode('.qrcode', url, { width: 100, height: 100, color: '#666', callback: () => {
           this.isQrcodeLoading.stop();
         }})

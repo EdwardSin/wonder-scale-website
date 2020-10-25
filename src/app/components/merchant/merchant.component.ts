@@ -54,7 +54,6 @@ export class MerchantComponent implements OnInit {
     this.todayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
   }
   ngOnInit() {
-    let id = this.route.snapshot.queryParams.id;
     let username = this.route.snapshot.params.username;
     let isMobileDevice = this.screenService.isMobileDevice.value;
     let nav = this.route.snapshot.queryParams.nav || this.selectedNavItem;
@@ -62,10 +61,10 @@ export class MerchantComponent implements OnInit {
     this.loading.start();
     if (isMobileDevice) {
       if (!this.router.url.includes('/page/mobile/')) {
-        this.router.navigate(['/page', 'mobile', username], {queryParams: {id: id}, queryParamsHandling: 'merge' });
+        this.router.navigate(['/page', 'mobile', username], {queryParamsHandling: 'merge' });
       }
     } else {
-        this.getStoreById(id);
+        this.getStoreByUsername(username);
     }
     this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.isAuthenticated = !!result;
@@ -80,8 +79,8 @@ export class MerchantComponent implements OnInit {
         }
       });
   }
-  getStoreById(id) {
-    this.storeService.getStoreById(id).pipe(tap((result) => {
+  getStoreByUsername(username) {
+    this.storeService.getStoreByUsername(username).pipe(tap((result) => {
       this.store = result.result;
       this.authFollowService.isFollowedStore(this.store._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.isFollowed = result['result'];

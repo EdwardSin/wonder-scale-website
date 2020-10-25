@@ -40,14 +40,13 @@ export class MerchantMobileComponent implements OnInit {
     this.todayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
   }
   ngOnInit() {
-    let id = this.route.snapshot.queryParams.id;
     let username = this.route.snapshot.params.username;
     let isMobileDevice = this.screenService.isMobileDevice.value;
     if (isMobileDevice) {
-      this.getStoreById(id);
+      this.getStoreByUsername(username);
     } else {
       if (this.router.url.includes('/page/mobile/')) {
-        this.router.navigate(['/page', username], {queryParams: {id}, queryParamsHandling: 'merge' });
+        this.router.navigate(['/page', username], {queryParamsHandling: 'merge' });
       }
     }
     this.showFooter = !this.router.url.includes('/menu');
@@ -139,10 +138,10 @@ export class MerchantMobileComponent implements OnInit {
       this.isShownSelection = true;
     }
   }
-  getStoreById(id) {
+  getStoreByUsername(username) {
     this.loading.start();
     this.showSelection();
-    this.storeService.getStoreById(id).pipe(tap((result) => {
+    this.storeService.getStoreByUsername(username).pipe(tap((result) => {
       this.store = result.result;
     }), takeUntil(this.ngUnsubscribe)).subscribe(() => {
       if (this.store) {
