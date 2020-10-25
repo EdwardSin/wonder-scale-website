@@ -1,6 +1,8 @@
 <div *ngIf="store && !loading.isRunning(); else loadingTemplate">
     <merchant-page
     [store]="store"
+    [banners]="banners"
+    [profileImage]="profileImage"
     [isEditing]="false"
     [isFollowed]="isFollowed"
     [isAuthenticated]="isAuthenticated"

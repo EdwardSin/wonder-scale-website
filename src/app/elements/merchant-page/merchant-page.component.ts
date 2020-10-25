@@ -96,8 +96,8 @@ export class MerchantPageComponent implements OnInit {
       }, 300);
     }
     if (changes['profileImage']) {
-      let isDataImage = this.profileImage.startsWith('data');
       if (this.profileImage) {
+        let isDataImage = this.profileImage.startsWith('data');
         if (isDataImage) {
           this.displayImage = this.profileImage;
         } else {

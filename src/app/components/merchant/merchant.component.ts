@@ -26,6 +26,8 @@ import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 export class MerchantComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   store: Store;
+  banners: Array<string> = [];
+  profileImage: string;
   
   DEBOUNCE_TRACK_VALUE = 15 * 1000;
   storeId;
@@ -88,6 +90,8 @@ export class MerchantComponent implements OnInit {
     }), takeUntil(this.ngUnsubscribe)).subscribe(() => {
       if (this.store) {
         this.sharedStoreService.store.next(this.store);
+        this.banners = this.store.informationImages.map(informationImage => environment.IMAGE_URL + informationImage);
+        this.profileImage = this.store.profileImage ? environment.IMAGE_URL + this.store.profileImage: null;
         DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));
         this.loading.stop()

@@ -56,8 +56,8 @@ export class MerchantShareComponent implements OnInit {
     }
     
     if (changes['profileImage']) {
-      let isDataImage = this.profileImage.startsWith('data');
       if (this.profileImage) {
+        let isDataImage = this.profileImage.startsWith('data');
         if (isDataImage) {
           this.displayImage = this.profileImage;
         } else {
