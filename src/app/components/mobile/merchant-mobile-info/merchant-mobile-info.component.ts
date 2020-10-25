@@ -12,11 +12,13 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class MerchantMobileInfoComponent implements OnInit {
   store: Store;
+  banners: Array<string> = [];
   profileImage: string;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private sharedStoreService: SharedStoreService) { 
     this.sharedStoreService.store.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.store = result;
+      this.banners = this.store.informationImages.map(informationImage => environment.IMAGE_URL + informationImage);
       this.profileImage = this.store.profileImage ? environment.IMAGE_URL + this.store.profileImage : null;
     });
   }
