@@ -7,6 +7,7 @@
 - 2020-10-25                                -
 ---------------------------------------------
 .: WSM: BugFix: Profile Image with qrcode updated (WSW-81)
+.: WSW: Task: CLONE - Update Tracking URL (WSW-82)
 
 ---------------------------------------------
 - 2020-10-18                                -

@@ -37,7 +37,7 @@ export class MerchantShareComponent implements OnInit {
   }
   ngOnChanges(changes: SimpleChanges) {
     if(changes['store'] && this.store) {
-      this.link = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id;
+      this.link = environment.URL + 'page/' + this.store.username;
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
       this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
@@ -95,7 +95,7 @@ export class MerchantShareComponent implements OnInit {
         $('.qrcode').empty();
         newImage.addEventListener('load', e => {
           $('.qrcode').empty();
-          let url = environment.URL + 'page/' + this.store.username + '?id=' + this.store._id + '&type=qr_scan';
+          let url = environment.URL + 'page/' + this.store.username + '?&type=qr_scan';
           QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150, color: '#666', callback: () => {
             this.isQrcodeLoading.stop();
           }})
