@@ -1,13 +1,13 @@
 <div *ngIf="store; else loadingTemplate">
-    <div id="info" class="information-container mb-2" *ngIf="store?.informationImages?.length > 0 || isEditing">
-        <swiper *ngIf="editingBanners?.length" [config]="{slidesPerView: '1', spaceBetween: 0, pagination: false, navigation: false, centeredSlides: true, autoHeight: true}">
+    <div id="info" class="information-container" *ngIf="store?.informationImages?.length > 0 || isEditing">
+        <swiper *ngIf="banners?.length" [config]="{slidesPerView: '1', spaceBetween: 0, pagination: false, navigation: false, centeredSlides: true, autoHeight: true}">
             <ng-container>
-                <div class="swiper-slide d-inline-block" *ngFor="let image of editingBanners; let i = index">
+                <div class="swiper-slide d-inline-block" *ngFor="let image of banners; let i = index">
                     <img class="swiper-container__image" [src]="image" alt="upload-image" (click)="openInformation(i)"/>
                 </div>
             </ng-container>
         </swiper>
-        <div class="information-container__empty" *ngIf="!editingBanners.length"></div>
+        <div class="information-container__empty" *ngIf="!banners.length"></div>
         <button *ngIf="isEditing" class="btn btn-sm btn-controller position-absolute" style="right: 1rem; top: 1rem; z-index: 99" (click)="onEditBannersClicked.emit($event)">
             <span class="fas fa-edit mr-2 d-inline-block"></span>Edit Banners
         </button>
@@ -24,8 +24,15 @@
     <div class="row no-gutters merchant mb-2">
         <div class="col-lg order-11 order-lg-1">
             <div class="merchant__profile-container">
-                <div class="merchant__name-container">
-                    <p class="merchant__name text-break">{{ store?.name }}</p>
+                <div class="d-flex align-items-center py-3">
+                    <div class="merchant__profile-image__container">
+                        <img *ngIf="profileImage" class="merchant__profile-image" [src]="profileImage" alt="profile-image"/>
+                        <img *ngIf="!profileImage && isEditing" class="merchant__profile-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk0AAAAC4AKhMfIC0AAAAASUVORK5CYII="/>
+                        <span *ngIf="isEditing" class="merchant__profile-image__edit" (click)="onEditProfileImageClicked.emit($event)"><span class="fas fa-camera" style="font-size: .75rem"></span></span>
+                    </div>
+                    <div class="merchant__name-container" [ngStyle]="{padding: profileImage || isEditing ? '.25rem .5rem' : '0'}">
+                        <p class="merchant__name text-break">{{ store?.name }}</p>
+                    </div>
                 </div>
                 <p *ngIf="isAddressExisting() || isEditing" class="merchant__location"><span class="fas fa-map-marker-alt merchant__location-icon mr-2"></span>
                     <span *ngIf="store.showAddress && isAddressExisting(); else editAddressTemplate">
@@ -44,7 +51,7 @@
     <div class="row no-gutters">
         <div class="col-lg order-12 order-lg-1">
             <div class="info__container" *ngIf="store?.description || isEditing">
-                <h4 class="info__title">Overview:</h4>
+                <h4 class="info__title">Overview</h4>
                 <button *ngIf="store?.description && isEditing" class="btn btn-sm btn-controller float-right" (click)="onEditDescriptionClicked.emit($event)"><span class="fas fa-edit"></span></button>
                 <p *ngIf="store?.description; else noDescriptionTemplate" class="info__text mb-0" style="white-space: break-spaces">{{ store?.description }}</p>
                 <a *ngIf="!store?.description && isEditing" href="javascript:void(0)" class="merchant__edit-link w-100 d-inline-block px-3" (click)="onEditDescriptionClicked.emit($event)">Edit Description</a>
@@ -53,7 +60,7 @@
                 </ng-template>
             </div>
             <div class="feature_container" *ngIf="store?.tags?.length || isEditing">
-                <h5 class="font-weight-normal d-flex align-items-center">Features<button class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditTagsClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
+                <h4 class="info__title d-flex align-items-center">Features<button class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditTagsClicked.emit($event)"><span class="fas fa-edit"></span></button></h4>
                 <div *ngIf="store?.tags?.length; else noTagTemplate" class="px-2 pt-3">
                     <span class="badge mr-2 mb-1" style="color: #7f0000; background-color: #f7f7f7" *ngFor="let tag of store?.tags">{{ tag }}</span>
                 </div>
@@ -63,7 +70,7 @@
             </div>
             <div class="contact__container" *ngIf="(store?.phone?.length + store?.email?.length + store?.website?.length) > 0">
                 <h4 class="info__title">
-                    Contact:
+                    Contact
                 </h4>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.phone, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditPhoneClicked, addLabel: 'Add Phone', isLink: true, icon: 'fas fa-phone'}"></ng-container>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.email, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditEmailClicked, addLabel: 'Add Email', isLink: true, icon: 'fas fa-envelope'}"></ng-container>
@@ -71,7 +78,7 @@
             </div>
             <div class="social-media__container" *ngIf="store?.media?.length">
                 <h4 class="info__title">
-                    Others:
+                    Others
                 </h4>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.facebook, isEditing: isEditing, onClick: onEditFacebookClicked, addLabel: 'Add Facebook', prefixLink: 'https://www.facebook.com/', isLink: true, icon: 'fa-facebook-f'}"></ng-container>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.instagram, isEditing: isEditing, onClick: onEditInstagramClicked, addLabel: 'Add Instagram', prefixLink: 'https://www.instagram.com/', isLink: true, icon: 'fa-instagram'}"></ng-container>
@@ -87,7 +94,7 @@
             </div>
 
             <div id="operatingHours" class="opening-info__container" *ngIf="store?.openingInfoType || isEditing">
-                <h5 class="py-2 font-weight-normal d-flex align-items-center">Opening Hour<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditOpeningHoursClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
+                <h5 class="info__title d-flex align-items-center">Opening Hour<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditOpeningHoursClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
                 <div *ngIf="store?.openingInfoType == 'temporary_closed' || store?.openingInfoType == 'always_open' || (store?.openingInfoType == 'selected_hours' && store?.openingInfo != null); else noOpeningHourTemplate" class="pb-2">
                     <table class="ml-2" *ngIf="store?.openingInfoType == 'selected_hours'">
                         <tr *ngFor="let day of store?.openingInfo">
@@ -96,10 +103,10 @@
                         </tr>
                     </table>
                     <div class="pl-3" *ngIf="store?.openingInfoType == 'temporary_closed'">
-                        <span>Temporary Closed</span>
+                        <span class="font-9">Temporary Closed</span>
                     </div>
                     <div class="pl-3" *ngIf="store?.openingInfoType == 'always_open'">
-                        <span>Always Open</span>
+                        <span class="font-9">Always Open</span>
                     </div>
                 </div>
                 <ng-template #noOpeningHourTemplate>
@@ -107,7 +114,7 @@
                 </ng-template>
             </div>
             <div id="location" class="location__container" *ngIf="store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0 || isEditing">
-                <h5 class="font-weight-normal d-flex align-items-center">Location<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditAddressClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
+                <h5 class="info__title d-flex align-items-center">Location<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditAddressClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
                 <div class="d-block rounded" target="_blank" *ngIf="store?.showAddress && store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0; else noLocationTemplate">
                     <div class="rounded" style="overflow: hidden">
                         <agm-map class="w-100" style="height: 300px" [longitude]="store?.location?.coordinates[0]" [latitude]="store?.location?.coordinates[1]" [zoom]="14" [gestureHandling]="'greedy'"

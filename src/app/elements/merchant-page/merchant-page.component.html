@@ -1,27 +1,22 @@
 <div>
     <div id="info" class="information-container mb-2" *ngIf="store?.informationImages?.length > 0 || isEditing">
-        <swiper *ngIf="editingBanners?.length" [config]="{slidesPerView: 'auto', spaceBetween: 5, pagination: true, navigation: false, autoHeight: true}">
+        <swiper *ngIf="banners?.length" [config]="{slidesPerView: 'auto', spaceBetween: 5, pagination: false, navigation: false, autoHeight: true}">
             <ng-container>
-                <div class="swiper-slide d-inline-block" *ngFor="let image of editingBanners; let i = index">
+                <div class="swiper-slide d-inline-block" *ngFor="let image of banners; let i = index">
                     <img class="swiper-container__image" [src]="image" alt="upload-image" (click)="openInformation(i)"/>
                 </div>
             </ng-container>
         </swiper>
-        <div class="information-container__empty" *ngIf="!editingBanners.length"></div>
+        <div class="information-container__empty" *ngIf="!banners.length"></div>
         <button *ngIf="isEditing" class="btn btn-sm btn-controller position-absolute" style="right: 1rem; top: 1rem; z-index: 99" (click)="onEditBannersClicked.emit($event)">
             <span class="fas fa-edit mr-2 d-inline-block"></span>Edit Banners
         </button>
     </div>
     <div *ngIf="isInformationOpened" class="information-fullscreen-container position-fixed pt-2">
         <span class="information-fullscreen__icon fas fa-times" (click)="isInformationOpened = false"></span>
-        <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}"> 
-            <ng-container *ngIf="!editingBanners.length">
-                <ng-container *ngFor="let image of store?.informationImages">
-                    <img class="swiper-slide swiper-container__image center" [src]="environment.IMAGE_URL + image" alt="upload-image" />
-                </ng-container>
-            </ng-container>
-            <ng-container *ngIf="editingBanners.length">
-                <ng-container *ngFor="let image of editingBanners">
+        <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}">
+            <ng-container *ngIf="banners.length">
+                <ng-container *ngFor="let image of banners">
                     <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
                 </ng-container>
             </ng-container>
@@ -32,10 +27,11 @@
             <div class="col-lg-8 merchant mb-3 pr-lg-5">
                 <div class="merchant__profile-container row no-gutters">
                     <div class="merchant__profile-image__container">
-                        <img *ngIf="store?.profileImage" class="merchant__profile-image" [src]="environment.IMAGE_URL + store?.profileImage" alt="profile-image" />
+                        <img *ngIf="profileImage" class="merchant__profile-image" [src]="profileImage" alt="profile-image"/>
+                        <img *ngIf="!profileImage && isEditing" class="merchant__profile-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk0AAAAC4AKhMfIC0AAAAASUVORK5CYII="/>
                         <span *ngIf="isEditing" class="merchant__profile-image__edit" (click)="onEditProfileImageClicked.emit($event)"><span class="fas fa-camera" style="font-size: 1.5rem"></span></span>
                     </div>
-                    <div class="col merchant__name-container" [class.px-0]="!store?.profileImage">
+                    <div class="col merchant__name-container" [class.px-0]="!profileImage && !isEditing">
                         <p class="merchant__name mb-2 text-break">{{ store?.name }}</p>
                         <p *ngIf="isAddressExisting() || isEditing" class="merchant__location"><span class="fas fa-map-marker-alt merchant__location-icon mr-2"></span>
                             <span *ngIf="store.showAddress && isAddressExisting(); else editAddressTemplate">
