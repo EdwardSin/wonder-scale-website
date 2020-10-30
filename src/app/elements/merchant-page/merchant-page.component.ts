@@ -82,7 +82,7 @@ export class MerchantPageComponent implements OnInit {
       this.link = environment.URL + 'page/' + this.store.username;
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
-      this.displayImage = this.store.profileImage ? 'api/images/' + encodeURIComponent(this.store.profileImage) : 'assets/images/svg/dot.svg';
+      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/svg/dot.svg';
       this.showQrcode();
       this.mapStore();
     }
@@ -101,7 +101,7 @@ export class MerchantPageComponent implements OnInit {
         if (isDataImage) {
           this.displayImage = this.profileImage;
         } else {
-          this.displayImage = 'api/images/' + encodeURIComponent(this.store.profileImage);
+          this.displayImage = 'api/images/' + this.store.profileImage.replace(/\//g, ',');
         }
       } else {
         this.displayImage = 'assets/images/svg/dot.svg';
