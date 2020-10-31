@@ -25,6 +25,31 @@
             </li>
         </ul>
     </div>
+    <div class="quick-menu-container position-relative my-2" *ngIf="store?.menuImages?.length > 0 || isEditing">
+        <div *ngIf="menuImages?.length > 0">
+            <swiper *ngIf="menuImages?.length" [config]="{slidesPerView: 'auto', spaceBetween: 5, pagination: false, navigation: false, autoHeight: true}">
+                <ng-container>
+                    <div class="swiper-slide d-inline-block" style="border-radius: 5px" *ngFor="let image of menuImages; let i = index">
+                        <img class="swiper-container__image" [src]="image" alt="upload-image" (click)="openQuickMenu(i)"/>
+                    </div>
+                </ng-container>
+            </swiper>
+        </div>
+        <div class="quick-menu-container__empty" *ngIf="!menuImages?.length"></div>
+        <button *ngIf="isEditing" class="btn btn-sm btn-controller position-absolute" style="right: 1rem; top: 1rem; z-index: 99" (click)="onEditQuickMenuClicked.emit($event)">
+            <span class="fas fa-edit mr-2 d-inline-block"></span>Edit
+        </button>
+    </div>
+    <div *ngIf="isQuickMenuOpened" class="quick-menu-fullscreen-container position-fixed">
+        <span class="quick-menu-fullscreen__icon fas fa-times" (click)="isQuickMenuOpened = false"></span>
+        <swiper [index]="selectedQuickMenuIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}">
+            <ng-container *ngIf="menuImages.length">
+                <ng-container *ngFor="let image of menuImages">
+                    <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
+                </ng-container>
+            </ng-container>
+        </swiper>
+    </div>
     <div *ngIf="items?.length && !itemLoading.isRunning(); else loadingTemplate" class="w-100 pb-3">
         <list-item [item]="item" class="px-1" *ngFor="let item of items"></list-item>
     </div>
@@ -44,5 +69,5 @@
 </ng-template>
 
 <ng-template #noCategoryAvailableTemplate>
-    <h6 class="text-center py-5">Categories is unavailable!</h6>
+    <h6 class="text-center py-5">{{store?.type == 'restaurant' ? 'Menu': 'Catalogue'}} is unavailable!</h6>
 </ng-template>

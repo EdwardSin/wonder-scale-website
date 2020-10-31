@@ -20,6 +20,7 @@ import { templateJitUrl } from '@angular/compiler';
 export class MerchantPageComponent implements OnInit {
   @Input() store: Store;
   @Input() banners: Array<string> = [];
+  @Input() menuImages: Array<string> = [];
   @Input() profileImage: string;
   @Input() isEditing: boolean;
   @Input() isFollowed: boolean;
@@ -29,6 +30,7 @@ export class MerchantPageComponent implements OnInit {
   @Input() facebookService;
   @Output() onEditBannersClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditProfileImageClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onEditQuickMenuClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditOpeningHoursClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditDescriptionClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditStoreTypeClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -60,6 +62,8 @@ export class MerchantPageComponent implements OnInit {
   itemLoading: WsLoading = new WsLoading;
   isInformationOpened: boolean;
   selectedInformationIndex: number = 0;
+  isQuickMenuOpened: boolean;
+  selectedQuickMenuIndex: number = 0;
   medias;
   link: string;
   shareLinkThroughFB: string;
@@ -86,7 +90,7 @@ export class MerchantPageComponent implements OnInit {
       this.showQrcode();
       this.mapStore();
     }
-    if (changes['banners'] && this.banners) {
+    if (changes['banners'] && this.banners || changes['menuImages'] && this.menuImages) {
       setTimeout(() => {
         let mySwiper = document.querySelector('.swiper-container');
         if (mySwiper) {
@@ -167,6 +171,10 @@ export class MerchantPageComponent implements OnInit {
   openInformation(index) {
     this.isInformationOpened = true;
     this.selectedInformationIndex = index;
+  }
+  openQuickMenu(index) {
+    this.isQuickMenuOpened = true;
+    this.selectedQuickMenuIndex = index;
   }
   getItemsByCategoryId(value) {
     this.itemLoading.start();
