@@ -63,6 +63,31 @@
                             <p *ngIf="!isEditing" class="text-center" style="margin: 2rem 0">No description</p>
                         </ng-template>
                     </div>
+
+                    <div id="info" class="mb-2" *ngIf="store?.menuImages?.length > 0 || isEditing">
+                        <h5 class="font-weight-normal d-flex align-items-center">Quick {{ store?.type == 'restaurant' ? 'Menu' : 'Catalogue'}}<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditQuickMenuClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
+                        <div *ngIf="menuImages?.length > 0" class="quick-menu-container pb-5 pt-3">
+                            <swiper *ngIf="menuImages?.length" [config]="{slidesPerView: 'auto', spaceBetween: 5, pagination: false, navigation: false, autoHeight: true}">
+                                <ng-container>
+                                    <div class="swiper-slide d-inline-block" style="border-radius: 5px" *ngFor="let image of menuImages; let i = index">
+                                        <img class="swiper-container__image" [src]="image" alt="upload-image" (click)="openQuickMenu(i)"/>
+                                    </div>
+                                </ng-container>
+                            </swiper>
+                        </div>
+                        <p *ngIf="!menuImages?.length" class="text-center" style="margin: 5rem 0 7rem 0">No image</p>
+                    </div>
+                    <div *ngIf="isQuickMenuOpened" class="quick-menu-fullscreen-container position-fixed">
+                        <span class="quick-menu-fullscreen__icon fas fa-times" (click)="isQuickMenuOpened = false"></span>
+                        <swiper [index]="selectedQuickMenuIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}">
+                            <ng-container *ngIf="menuImages.length">
+                                <ng-container *ngFor="let image of menuImages">
+                                    <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
+                                </ng-container>
+                            </ng-container>
+                        </swiper>
+                    </div>
+
                     <div *ngIf="store?.tags?.length || isEditing">
                         <h5 class="font-weight-normal d-flex align-items-center">Features<button class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditTagsClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
                         <div *ngIf="store?.tags?.length; else noTagTemplate" class="px-3 pb-5 pt-3">

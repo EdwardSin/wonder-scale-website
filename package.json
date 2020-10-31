@@ -5,7 +5,7 @@
         "ng": "ng",
         "dev": "ng serve --host 0.0.0.0 --ssl true --disableHostCheck",
         "start": "ng serve",
-        "build": "ng build --prod --aot",
+        "build": "ng build --prod --aot --output-hashing=all",
         "upload": "aws s3 cp dist/wonder-scale-website s3://www.wonderscale.com --recursive",
         "deploy": "npm run build && npm run upload",
         "upload-testing": "aws s3 cp dist/wonder-scale-website s3://testing.wonderscale.com --recursive",

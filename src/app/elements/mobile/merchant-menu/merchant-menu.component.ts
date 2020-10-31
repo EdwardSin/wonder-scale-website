@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { Item } from '@objects/item';
@@ -18,6 +18,8 @@ export class MerchantMenuComponent implements OnInit {
   @Input() isEditing: boolean;
   @Input() itemService;
   @Input() navigateToStore;
+  @Input() menuImages;
+  @Output() onEditQuickMenuClicked: EventEmitter<any> = new EventEmitter;
   items: Array<any> = [];
   allItems: Array<Item> = [];
   newItems: Array<Item> = [];
@@ -28,7 +30,8 @@ export class MerchantMenuComponent implements OnInit {
   itemLoading: WsLoading = new WsLoading;
   isNavigationOpened: boolean;
   totalPersons: number = 1;
-
+  isQuickMenuOpened: boolean;
+  selectedQuickMenuIndex: number = 0;
   phase: Phase<Number> = new Phase(0, 3);
   paymentFail: boolean;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
@@ -40,6 +43,15 @@ export class MerchantMenuComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['store'] && this.store) {
       this.mapStore();
+    }
+    if (changes['menuImages'] && this.menuImages) {
+      setTimeout(() => {
+        let mySwiper = document.querySelector('.swiper-container');
+        if (mySwiper) {
+            let swiper = mySwiper['swiper']
+            swiper.update();
+        };
+      }, 300);
     }
   }
   ngAfterViewInit() {
@@ -98,5 +110,9 @@ export class MerchantMenuComponent implements OnInit {
   closeNavigation() {
     this.isNavigationOpened = false;
     document.getElementsByTagName('body')[0].style.overflow = 'auto';
+  }
+  openQuickMenu(index) {
+    this.isQuickMenuOpened = true;
+    this.selectedQuickMenuIndex = index;
   }
 }

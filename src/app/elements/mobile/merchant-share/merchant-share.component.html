@@ -11,9 +11,8 @@
         </button>
     </div>
     <div class="qrcode__container mb-3 mt-2 col-auto center">
-        <div class="qrcode">
-            <ws-spinner style='line-height: 150px' class="text-center d-block" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
-        </div>
+        <ws-spinner style='line-height: 150px' class="text-center d-block" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
+        <div [hidden]="isQrcodeLoading.isRunning()" class="qrcode"></div>
     </div>
 
     <div class="input-group">
