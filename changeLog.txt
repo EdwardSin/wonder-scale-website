@@ -8,6 +8,7 @@
 ---------------------------------------------
 .: WSM: BugFix: Reading url from backend issue (WSM-218)
 .: WSM: BugFix: Fix store page issue (WSM-209)
+.: WSM: BugFix: Fix tracking issue (WSM-208)
 
 ---------------------------------------------
 - 2020-10-25                                -
