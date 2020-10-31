@@ -30,7 +30,6 @@ export class MerchantComponent implements OnInit {
   profileImage: string;
   
   DEBOUNCE_TRACK_VALUE = 15 * 1000;
-  storeId;
   trackId;
   isAuthenticated: boolean;
   isSaveLoading: WsLoading = new WsLoading;
@@ -117,7 +116,9 @@ export class MerchantComponent implements OnInit {
   isTrackable() {
     let isTrackable = true;
     let previousTrack = this.getPreviousTrack();
-    isTrackable = new Date(previousTrack.date).valueOf() != this.todayDate.valueOf() || typeof previousTrack.value == typeof [] && !previousTrack.value.includes(this.storeId);
+    let isNotToday = new Date(previousTrack.date).valueOf() != this.todayDate.valueOf();
+    let isNotIncludeStore = typeof previousTrack.value == typeof [] && !previousTrack.value.includes(this.store._id)
+    isTrackable = isNotToday || isNotIncludeStore;
     return isTrackable;
   }
   getPreviousTrack() {
