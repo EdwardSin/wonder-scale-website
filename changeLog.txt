@@ -7,6 +7,7 @@
 - 2020-10-31                                -
 ---------------------------------------------
 .: WSM: BugFix: Reading url from backend issue (WSM-218)
+.: WSM: BugFix: Fix store page issue (WSM-209)
 
 ---------------------------------------------
 - 2020-10-25                                -

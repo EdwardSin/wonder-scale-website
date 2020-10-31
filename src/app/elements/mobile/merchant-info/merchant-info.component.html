@@ -12,15 +12,16 @@
             <span class="fas fa-edit mr-2 d-inline-block"></span>Edit Banners
         </button>
     </div>
-
     <div *ngIf="isInformationOpened" class="information-fullscreen-container position-fixed pt-2">
         <span class="information-fullscreen__icon fas fa-times" (click)="isInformationOpened = false"></span>
-        <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}"> 
-            <ng-container class="swiper-slide" *ngFor="let image of store?.informationImages">
-                <img class="w-100 mb-2" style="object-fit: contain;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
+        <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}">
+            <ng-container *ngIf="banners.length">
+                <ng-container *ngFor="let image of banners">
+                    <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
+                </ng-container>
             </ng-container>
         </swiper>
-    </div>    
+    </div>
     <div class="row no-gutters merchant mb-2">
         <div class="col-lg order-11 order-lg-1">
             <div class="merchant__profile-container">
