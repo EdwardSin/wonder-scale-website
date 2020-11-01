@@ -90,7 +90,7 @@ export class MerchantComponent implements OnInit {
       if (this.store) {
         this.sharedStoreService.store.next(this.store);
         this.banners = this.store.informationImages.map(informationImage => environment.IMAGE_URL + informationImage);
-        this.menuImages = this.store.menuImages.map(informationImage => environment.IMAGE_URL + informationImage);
+        this.menuImages = this.store.menuImages.map(menuImage => environment.IMAGE_URL + menuImage);
         this.profileImage = this.store.profileImage ? environment.IMAGE_URL + this.store.profileImage: null;
         DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));

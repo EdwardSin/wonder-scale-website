@@ -8,6 +8,7 @@
 ---------------------------------------------
 .: WSM: Task: Prevent caching issue (WSM-221)
 .: WSW: FixBug: Remove feature editing button (WSW-81)
+.: WSW: BugFix: Fix Share twitter issue (WSW-79)
 
 ---------------------------------------------
 - 2020-10-31                                -
