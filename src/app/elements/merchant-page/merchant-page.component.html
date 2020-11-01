@@ -191,8 +191,8 @@
                         <button [disabled]="isEditing" class="merchant__share merchant__share-fb mr-3" (click)="shareThroughFB()">
                             <span class="fab fa-facebook-f merchant__share-icon"></span>
                         </button>
-                        <button [disabled]="isEditing" class="merchant__share merchant__share-twitter mr-3">
-                            <a href="{{ shareLinkThroughTwitter }}">
+                        <button [disabled]="isEditing" class="merchant__share merchant__share-twitter mr-3" onclick="document.getElementById('shareTwitterId').click()">
+                            <a id="shareTwitterId" target="_blank" href="{{ shareLinkThroughTwitter }}">
                                 <span class="fab fa-twitter merchant__share-icon"></span>
                             </a>
                         </button>
