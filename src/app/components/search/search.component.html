@@ -1,24 +1,26 @@
-<div class="search__container">
-    <div class="search__searchbar input-group mb-3">
-        <input class="search__searchbar__input form-control" (input)="valueChanged($event)" [value]="queryParams.keyword" placeholder="Search..." />
-        <div class="input-group-append">
-            <button class="search__searchbar__button input-group-text">
-                <span class="search__searchbar__icon fas fa-search"></span>
-            </button>
+<div class="container">
+    <div class="search__container">
+        <div class="search__searchbar input-group mb-3">
+            <input class="search__searchbar__input form-control" (input)="valueChanged($event)" [value]="queryParams.keyword" placeholder="Search..." />
+            <div class="input-group-append">
+                <button class="search__searchbar__button input-group-text">
+                    <span class="search__searchbar__icon fas fa-search"></span>
+                </button>
+            </div>
         </div>
-    </div>
-    <div *ngIf="!loading.isRunning() && shops.length; else loadingTemplate">
-        <div class="row no-gutters">
-            <page *ngFor="let shop of shops" [item]="shop"></page>
+        <div *ngIf="!loading.isRunning() && stores.length; else loadingTemplate">
+            <div class="row no-gutters">
+                <page *ngFor="let store of stores" [item]="store"></page>
+            </div>
         </div>
-    </div>
-    <div class="pb-4">
-        <pagination [pageSize]="environment.ITEMS_PER_PAGE" [isDisplayed]="true" [currentPage]="queryParams.page" [total]="total" (getPageNumber)="navigateTo({page: $event})"></pagination>
-    </div>
-    <div *ngIf="!loading.isRunning() && recommandedShops.length">
-        <h1 class="h5 mb-3">Recommandation</h1>
-        <div class="row no-gutters">
-            <page *ngFor="let shop of recommandedShops" [item]="shop"></page>
+        <div class="pb-4">
+            <pagination [pageSize]="environment.ITEMS_PER_PAGE" [isDisplayed]="true" [currentPage]="queryParams.page" [total]="total" (getPageNumber)="navigateTo({page: $event})"></pagination>
+        </div>
+        <div *ngIf="!loading.isRunning() && recommandedStores.length">
+            <h1 class="h5 mb-3">Recommandation</h1>
+            <div class="row no-gutters">
+                <page *ngFor="let store of recommandedStores" [item]="store"></page>
+            </div>
         </div>
     </div>
 </div>

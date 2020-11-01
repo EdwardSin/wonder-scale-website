@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Credit } from '@objects/credit';
-import { AuthCreditContributorService } from '@services/http/auth-shop/contributor/auth-credit-contributor.service';
-import { AuthShopUserService } from '@services/http/auth-user/auth-shop-user.service';
+import { AuthCreditContributorService } from '@services/http/auth-store/contributor/auth-credit-contributor.service';
+import { AuthStoreUserService } from '@services/http/auth-user/auth-store-user.service';
 import { AuthenticationService } from '@services/http/general/authentication.service';
 import { map } from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 export class CreditGuard implements CanActivate {
 
     constructor(private router: Router,
-        private authShopUserService: AuthShopUserService,
+        private authStoreUserService: AuthStoreUserService,
         private authCreditContributorService: AuthCreditContributorService,
         private authenticationService: AuthenticationService) { }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

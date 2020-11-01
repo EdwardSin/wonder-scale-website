@@ -10,22 +10,22 @@ import { Observable } from 'rxjs';
 export class ItemService {
 
   constructor(private http: HttpClient) { }
-  getPreviewItemWithSellerById(id, shopId): Observable<Result<Item>>{
-    return this.http.get<Result<Item>>('/api/auth-shops/item-contributors/preview/item/' + id, { headers: { "access-shop": shopId }});
+  getPreviewItemWithSellerById(id, storeId): Observable<Result<Item>>{
+    return this.http.get<Result<Item>>('/api/auth-stores/item-contributors/preview/item/' + id, { headers: { "access-store": storeId }});
   }
   getItemWithSellerById(id): Observable<Result<Item>>{
     return this.http.get<Result<Item>>('/api/items/item-with-seller/' + id);
   }
-  getAllItemsByShopId(id): Observable<Result<Array<Item>>> {
+  getAllItemsByStoreId(id): Observable<Result<Array<Item>>> {
     return this.http.get<Result<Array<Item>>>('/api/items/public/all/' + id);
   }
-  getNewItemsByShopId(id): Observable<Result<Array<Item>>> {
+  getNewItemsByStoreId(id): Observable<Result<Array<Item>>> {
     return this.http.get<Result<Array<Item>>>('/api/items/public/new/' + id);
   }
-  getDiscountItemsByShopId(id): Observable<Result<Array<Item>>> {
+  getDiscountItemsByStoreId(id): Observable<Result<Array<Item>>> {
     return this.http.get<Result<Array<Item>>>('/api/items/public/discount/' + id);
   }
-  getTodaySpecialItemsByShopId(id): Observable<Result<Array<Item>>> {
+  getTodaySpecialItemsByStoreId(id): Observable<Result<Array<Item>>> {
     return this.http.get<Result<Array<Item>>>('/api/items/public/todayspecial/' + id);
   }
   getItemsByCategoryId(categoryId): Observable<Result<Array<Item>>> {

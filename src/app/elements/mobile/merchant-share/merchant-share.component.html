@@ -1,0 +1,26 @@
+<div class="share-media__container">
+    <h4>Share:</h4>
+    <div style="margin-left: auto; margin-right: auto; width: fit-content">
+        <button [disabled]="isEditing" class="share-media__icon fb border-0" (click)="shareThroughFB()">
+            <span style="line-height: 50px;" class="fab fa-facebook-f"></span>
+        </button>
+        <button [disabled]="isEditing" class="share-media__icon twitter border-0">
+            <a class="text-white" target="_blank" href="{{ shareLinkThroughTwitter }}">
+                <span style="line-height: 50px;" class="fab fa-twitter"></span>
+            </a>
+        </button>
+    </div>
+    <div class="qrcode__container mb-3 mt-2 col-auto center">
+        <ws-spinner style='line-height: 150px' class="text-center d-block" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
+        <div [hidden]="isQrcodeLoading.isRunning()" class="qrcode"></div>
+    </div>
+
+    <div class="input-group">
+        <input class="form-control" style='background-color: #fff' readonly [value]="link" />
+        <div class="input-group-append">
+            <button class="input-group-text" (click)="copyLink()">
+                <span class="fas fa-copy"></span>
+            </button>
+        </div>
+    </div>
+</div>
