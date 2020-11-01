@@ -27,6 +27,7 @@ export class MerchantComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   store: Store;
   banners: Array<string> = [];
+  menuImages: Array<string> = [];
   profileImage: string;
   
   DEBOUNCE_TRACK_VALUE = 15 * 1000;
@@ -89,6 +90,7 @@ export class MerchantComponent implements OnInit {
       if (this.store) {
         this.sharedStoreService.store.next(this.store);
         this.banners = this.store.informationImages.map(informationImage => environment.IMAGE_URL + informationImage);
+        this.menuImages = this.store.menuImages.map(informationImage => environment.IMAGE_URL + informationImage);
         this.profileImage = this.store.profileImage ? environment.IMAGE_URL + this.store.profileImage: null;
         DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));
