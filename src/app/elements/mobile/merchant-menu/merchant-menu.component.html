@@ -8,7 +8,7 @@
         <span class="fas fa-times menu-navigation__closed" (click)="closeNavigation()"></span>
         <h5 class="menu-navigation-title">Menu</h5>
         <ul class="menu-navigation-list list-unstyled mb-0" *ngIf="!isEditing; else noCategoryAvailableTemplate">
-            <li class="menu-navigation-item" *ngIf="allItems?.length" [class.selected]="selectedCategory == 'all'" (click)="getItemsByCategoryId('all')">
+            <li class="menu-navigation-item" [class.selected]="selectedCategory == 'all'" (click)="getItemsByCategoryId('all')">
                 All
             </li>
             <li class="menu-navigation-item" *ngIf="newItems?.length" [class.selected]="selectedCategory == 'new'" (click)="getItemsByCategoryId('new')">

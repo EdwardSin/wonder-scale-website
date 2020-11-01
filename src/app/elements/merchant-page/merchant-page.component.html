@@ -89,7 +89,7 @@
                     </div>
 
                     <div *ngIf="store?.tags?.length || isEditing">
-                        <h5 class="font-weight-normal d-flex align-items-center">Features<button class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditTagsClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
+                        <h5 class="font-weight-normal d-flex align-items-center">Features<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditTagsClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
                         <div *ngIf="store?.tags?.length; else noTagTemplate" class="px-3 pb-5 pt-3">
                             <span class="badge mr-2 mb-1" style="color: #7f0000; background-color: #f7f7f7" *ngFor="let tag of store?.tags">{{ tag }}</span>
                         </div>

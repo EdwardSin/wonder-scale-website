@@ -7,6 +7,7 @@
 - 2020-11-01                                -
 ---------------------------------------------
 .: WSM: Task: Prevent caching issue (WSM-221)
+.: WSW: FixBug: Remove feature editing button (WSW-81)
 
 ---------------------------------------------
 - 2020-10-31                                -
