@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewEncapsulation, ViewChild, ElementRef, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import * as _ from 'lodash';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import { takeUntil } from 'rxjs/operators';
@@ -19,9 +19,6 @@ import { VisitorGuard } from 'src/app/guards/visitor.guard';
   encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements OnInit {
-  didScroll: boolean;
-  isShrink: boolean;
-  changeHeaderOn: number = 200;
   keyword: string = '';
   user: User;
   isMobileSize: boolean;
@@ -44,7 +41,7 @@ export class HeaderComponent implements OnInit {
       .subscribe(result => {
         this.user = result;
         if (result) {
-          this.getFollowPages();
+          this.getFollowStores();
           this.getFollowItems();
         }
       })
@@ -119,24 +116,6 @@ export class HeaderComponent implements OnInit {
     const { ResetPasswordComponent } = await import('@components/feature/authentication/reset-password/reset-password.component');
     this.viewContainerRef.createComponent(this.cfr.resolveComponentFactory(ResetPasswordComponent));
   }
-
-  @HostListener('window:scroll', ['$event'])
-  onScrollDown(event) {
-    if (!this.didScroll){
-      this.didScroll = true;
-      setTimeout(() => {
-        this.scrollPage()
-      }, 300);
-    }
-  }
-  scrollPage() {
-    var sy = this.scrollY();
-    this.isShrink = sy >= this.changeHeaderOn;
-		this.didScroll = false;
-  }
-  scrollY() {
-    return window.pageYOffset || document.documentElement.scrollTop;
-  }
   getUser() {
     this.authUserService.getUser().pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(result => {
@@ -145,9 +124,9 @@ export class HeaderComponent implements OnInit {
         }
       })
   }
-  getFollowPages() {
-    this.authFollowService.getFollowShopsIds().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.sharedUserService.followPages.next(result['result']);
+  getFollowStores() {
+    this.authFollowService.getFollowStoresIds().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.sharedUserService.followStores.next(result['result']);
     })
   }
   getFollowItems() {

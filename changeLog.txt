@@ -2,6 +2,50 @@
 - Wonder Scale Website                      -
 ---------------------------------------------
 
+- v1.0.1040                                 -
+---------------------------------------------
+- 2020-11-01                                -
+---------------------------------------------
+.: WSM: Task: Prevent caching issue (WSM-221)
+.: WSW: FixBug: Remove feature editing button (WSW-81)
+.: WSW: BugFix: Fix Share twitter issue (WSW-79)
+
+---------------------------------------------
+- 2020-10-31                                -
+---------------------------------------------
+.: WSM: BugFix: Reading url from backend issue (WSM-218)
+.: WSM: BugFix: Fix store page issue (WSM-209)
+.: WSM: BugFix: Fix tracking issue (WSM-208)
+
+---------------------------------------------
+- 2020-10-25                                -
+---------------------------------------------
+.: WSM: BugFix: Profile Image with qrcode updated (WSW-81)
+.: WSW: Task: CLONE - Update Tracking URL (WSW-82)
+
+---------------------------------------------
+- 2020-10-18                                -
+---------------------------------------------
+.: WSW: Task: Clone: Store Page (WSW-81)
+
+---------------------------------------------
+- 2020-10-15                                -
+---------------------------------------------
+.: WSW: Task: Update Store Page UI (WSW-79)
+.: WSW: Task: Update Home UI (WSW-80)
+
+---------------------------------------------
+- 2020-10-11                                -
+---------------------------------------------
+.: WSW: Task: CLONE - Change 'page' and 'shop' to store' (WSW-78)
+.: WSW: Task: Revert Ordering Service (WSM-74)
+
+- v1.0.1031                                 -
+---------------------------------------------
+- 2020-08-28                                -
+---------------------------------------------
+.: WSM: Story: Ordering System (WSM-84)
+
 - v1.0.1031                                 -
 ---------------------------------------------
 - 2020-07-19                                -

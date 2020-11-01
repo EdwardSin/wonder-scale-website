@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, PLATFORM_ID } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -13,6 +13,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { GoogleLoginProvider, FacebookLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SharedModule } from './modules/public/shared/shared.module';
+import { NoCacheHeadersInterceptor } from '@components/resolvers/no-cache-headers.interceptor.service';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -46,7 +47,6 @@ export function jwtOptionsFactory(platformId) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     HttpClientModule,
     SocialLoginModule,
     NgProgressModule,
@@ -58,7 +58,8 @@ export function jwtOptionsFactory(platformId) {
         useFactory: jwtOptionsFactory,
         deps: [PLATFORM_ID]
       }
-    })
+    }),
+    AppRoutingModule
   ],
   providers: [
     {
@@ -80,6 +81,11 @@ export function jwtOptionsFactory(platformId) {
     {
       provide: SWIPER_CONFIG,
       useValue: DEFAULT_SWIPER_CONFIG
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NoCacheHeadersInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

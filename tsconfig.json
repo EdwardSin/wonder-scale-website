@@ -36,6 +36,9 @@
       "@enum/*": [
         "src/app/enum/*"
       ],
+      "@guards/*": [
+        "src/app/guards/*"
+      ],
       "@builders/*": [
         "src/app/builders/*"
       ],

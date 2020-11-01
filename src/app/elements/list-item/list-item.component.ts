@@ -26,6 +26,7 @@ export class ListItemComponent implements OnInit {
   saveLoading: WsLoading = new WsLoading;
   ngUnsubscribe: Subject<any> = new Subject;
   followItems: Array<string> = [];
+  isAuthenticated: boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -44,6 +45,9 @@ export class ListItemComponent implements OnInit {
           this.viewContainerRef.clear();
         }
       })
+      this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.isAuthenticated = !!result;
+      });
     }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Shop } from '@objects/shop';
+import { Store } from '@objects/store';
 import { environment} from '@environments/environment';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { takeUntil, map } from 'rxjs/operators';
@@ -13,60 +13,60 @@ import * as _ from 'lodash';
   styleUrls: ['./page.component.scss']
 })
 export class PageComponent implements OnInit {
-  @Input() item: Shop;
+  @Input() item: Store;
   @Input() index: number;
   @Input() savable: boolean = true;
   @Input() removable: boolean;
   @Input() follow: boolean;
   @Output() followChanged: EventEmitter<any> = new EventEmitter; 
   private ngUnsubscribe: Subject<any> = new Subject;
-  followPages: Array<string> = [];
+  followStores: Array<string> = [];
   environment = environment;
   constructor(private authFollowService: AuthFollowService,
     private sharedUserService: SharedUserService) { }
 
   ngOnInit(): void {
-    this.sharedUserService.followPages.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.followPages = result;
+    this.sharedUserService.followStores.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.followStores = result;
       if (this.item) {
-        this.follow = this.followPages.includes(this.item._id);
+        this.follow = this.followStores.includes(this.item._id);
       }
     })
   }
   followClicked(event) {
     event.stopPropagation();
     if(this.follow) {
-      this.unsaveShop();
+      this.unsaveStore();
     } else {
-      this.saveShop();
+      this.saveStore();
     }
   }
   removeFollow() {
-    this.authFollowService.unfollowShop(this.item._id).pipe(takeUntil(this.ngUnsubscribe))
+    this.authFollowService.unfollowStore(this.item._id).pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(result => {
       this.followChanged.emit(true);
-      let followPages = _.filter(this.followPages, (id) => id != this.item._id);
-      this.sharedUserService.followPages.next(followPages);
+      let followStores = _.filter(this.followStores, (id) => id != this.item._id);
+      this.sharedUserService.followStores.next(followStores);
     });
   }
-  saveShop() {
+  saveStore() {
     combineLatest(timer(500),
-    this.authFollowService.followShop(this.item._id))
+    this.authFollowService.followStore(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
-        this.followPages.push(this.item._id)
-        let followPages = _.uniq(this.followPages);
-        this.sharedUserService.followPages.next(followPages);
+        this.followStores.push(this.item._id)
+        let followStores = _.uniq(this.followStores);
+        this.sharedUserService.followStores.next(followStores);
       }
     });
   }
-  unsaveShop() {
+  unsaveStore() {
     combineLatest(timer(500),
-    this.authFollowService.unfollowShop(this.item._id))
+    this.authFollowService.unfollowStore(this.item._id))
     .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
-        let followPages = _.filter(this.followPages, (id) => id != this.item._id);
-        this.sharedUserService.followPages.next(followPages);
+        let followStores = _.filter(this.followStores, (id) => id != this.item._id);
+        this.sharedUserService.followStores.next(followStores);
       }
     });
   }

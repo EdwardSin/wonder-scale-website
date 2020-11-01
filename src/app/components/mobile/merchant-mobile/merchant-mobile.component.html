@@ -1,26 +1,22 @@
 <div *ngIf="isShownSelection" class="merchant__screen">
-    <div *ngIf="shop" class="merchant__selections">
-        <p class="merchant__selection-title">{{ shop?.name }}</p>
-        <p class="merchant__selection-item" [routerLink]="['info']" [queryParamsHandling]="'merge'" (click)="navigateToDetails()">Page Details</p>
-        <p class="merchant__selection-item" [routerLink]="['categories']" [queryParamsHandling]="'merge'" (click)="navigateToItems()">{{ shop?.type == 'restaurant' ? 'Menu' : 'Categories'}}</p>
+    <div *ngIf="store" class="merchant__selections">
+        <p class="merchant__selection-title">{{ store?.name }}</p>
+        <p class="merchant__selection-item" [routerLink]="['info']" [queryParamsHandling]="'merge'" (click)="navigateToDetails()">Store Details</p>
+        <p class="merchant__selection-item" [routerLink]="['menu']" [queryParamsHandling]="'merge'" (click)="navigateToItems()">{{ store?.type == 'restaurant' ? 'Menu' : 'Products'}}</p>
     </div>
 </div>
-<div *ngIf="shop && !loading.isRunning(); else loadingTemplate" [hidden]="isShownSelection">
-    <div *ngIf="preview" #alert class="alert alert-danger alert-dismissible fade show font-8 my-2 w-100" role="alert">
-        This is a preview page and will not displayed to public if the shop is in unpublished status.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div *ngIf="store && !loading.isRunning(); else loadingTemplate" [hidden]="isShownSelection">
+    <div style="display: block; min-height: calc(100vh - 52px)">
+        <router-outlet></router-outlet>
     </div>
-    <router-outlet></router-outlet>
-    <merchant-footer *ngIf="shop" [element]="shop"></merchant-footer>
+    <merchant-mobile-footer *ngIf="store && showFooter"></merchant-mobile-footer>
 </div>
 
 <ng-template #loadingTemplate>
-    <ws-spinner *ngIf="loading.isRunning(); else noShopTemplate" class="text-center d-block w-100" style="padding-top: 30vh;padding-bottom: 30vh"></ws-spinner>
+    <ws-spinner *ngIf="loading.isRunning(); else noStoreTemplate" class="text-center d-block w-100" style="padding-top: 30vh;padding-bottom: 30vh"></ws-spinner>
 </ng-template>
 
-<ng-template #noShopTemplate>
-    <h6 *ngIf="!message" class="my-5 py-5 text-center">Shop is not found!</h6>
+<ng-template #noStoreTemplate>
+    <h6 *ngIf="!message" class="my-5 py-5 text-center">Store is not found!</h6>
     <h6 *ngIf="message" class="my-5 py-5 text-center">{{ message }}</h6>
 </ng-template>

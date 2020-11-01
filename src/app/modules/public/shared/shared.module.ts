@@ -8,6 +8,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SwiperModule } from 'ngx-swiper-wrapper';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
@@ -42,6 +43,7 @@ import { AgmCoreModule } from '@agm/core';
     PageComponent,
     FormsModule,
     ReactiveFormsModule,
+    MatRadioModule,
     MatSelectModule,
     MatSliderModule,
     MatCheckboxModule,

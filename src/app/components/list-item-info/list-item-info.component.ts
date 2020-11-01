@@ -67,8 +67,8 @@ export class ListItemInfoComponent implements OnInit {
   }
   getPreviewItemById(id) {
     this.loading.start();
-    let shopId = this.route.snapshot.queryParams.id;
-    this.itemService.getPreviewItemWithSellerById(id, shopId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+    let storeId = this.route.snapshot.queryParams.id;
+    this.itemService.getPreviewItemWithSellerById(id, storeId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       if (result && result.result) {
         this.item = result.result;
         this.mapItem();
@@ -111,8 +111,8 @@ export class ListItemInfoComponent implements OnInit {
   }
   renderItemInfo() {
     this.isFollowedItem();
-    if (this.item.shop) {
-      this.link = environment.URL + '(modal:item)?id=' + this.item.shop._id + '&item_id=' + this.item._id;
+    if (this.item.store) {
+      this.link = environment.URL + '?id=' + this.item.store._id + '&item_id=' + this.item._id;
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
       this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
@@ -189,9 +189,9 @@ export class ListItemInfoComponent implements OnInit {
   closeModal() {
     this.router.navigate([], {queryParams: {item_id: null, modal: null}, queryParamsHandling: 'merge'});
   }
-  navigateToShop() {
+  navigateToStore() {
     this.router.navigate([], {queryParams: {modal: null}}).then(() => {
-      this.router.navigate(['/page', this.item.shop.username], {queryParams: {id: this.item.shop._id}});
+      this.router.navigate(['/page', this.item.store.username]);
     })
   }
   ngOnDestroy() {
