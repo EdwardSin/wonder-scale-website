@@ -8,6 +8,7 @@ export const environment = {
     ITEMS_PER_PAGE: 25,
     RETURN_URL: '',
     SOURCE: 'website',
+    QRCODE_BORDER: 'assets/images/png/icon-with-profile-image-borderless.png',
     ACTIVATED_MESSAGE: 'Start to view page now!',
 
     braintreeAuthorization: 'sandbox_8tn3f6nk_bm2v725w33trg4y8'

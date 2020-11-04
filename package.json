@@ -29,6 +29,7 @@
         "@angular/platform-browser-dynamic": "~9.0.2",
         "@angular/router": "~9.0.2",
         "@auth0/angular-jwt": "^4.0.0",
+        "@types/jquery": "^3.5.4",
         "angular-bootstrap-md": "^9.2.0",
         "angularx-social-login": "^3.0.1",
         "braintree-web": "^3.64.1",

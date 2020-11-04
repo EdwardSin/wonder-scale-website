@@ -8,6 +8,7 @@ export const environment = {
   ITEMS_PER_PAGE: 25,
   RETURN_URL: '',
   SOURCE: 'website',
+  QRCODE_BORDER: 'assets/images/png/icon-with-profile-image-borderless.png',
   FACEBOOK_APP_ID: '246047829574930',
   HERE_APP_API: 'h9LLOE7i3CG3y1OKhWxw',
   HERE_APP_CODE: 'ERx9SWBfCHLlbN1vKOvlng',

@@ -137,36 +137,19 @@ export class MerchantPageComponent implements OnInit {
       let newImage = <HTMLImageElement>document.createElement('img');
       newImage.alt = 'profile-image';
       newImage.src = this.displayImage;
-      $('.qrcode').empty();
+      let target = '.qrcode';
+      $(target).empty();
       newImage.addEventListener('load', e => {
-        $('.qrcode').empty();
+        $(target).empty();
         let url = environment.URL + 'page/' + this.store.username;
-        QRCodeBuilder.createQRcode('.qrcode', url, { width: 100, height: 100, color: '#666', callback: () => {
+        QRCodeBuilder.createQRcode(target, url, { width: 100, height: 100, color: '#666', callback: () => {
           this.isQrcodeLoading.stop();
         }})
         .then(() => {
-          this.renderProfileImageToQrcode(newImage, 100);
+          QRCodeBuilder.renderProfileImageToQrcode(target, newImage, 100);
         });
       });
     });
-  }
-  renderProfileImageToQrcode(image, size) {
-    let canvas = $('.qrcode').find('canvas')[0];
-    if (canvas) {
-      let context = (<HTMLCanvasElement>canvas).getContext('2d');
-      let width = size / 3 * 46.7 / 70;
-      let height = size / 3 * 46.7 / 70;
-      let offsetInnerY = size / 3 * 6 / 70;
-      let offsetX = size / 2 - width / 2;
-      let offsetY = size / 2 - height / 2 - offsetInnerY;
-      context.save();
-      context.beginPath();
-      context.arc(offsetX + width / 2, offsetY + width / 2, width / 2, 0, 2 * Math.PI);
-      context.fill();
-      context.clip();
-      context.drawImage(image, offsetX, offsetY, width, height);
-      context.restore();
-    }
   }
   openInformation(index) {
     this.isInformationOpened = true;
