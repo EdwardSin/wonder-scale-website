@@ -7,6 +7,7 @@
 - 2020-11-04                                -
 ---------------------------------------------
 .: WSM: Task: Icon in QRcode is too blur (WSM-219)
+.: WSM: BugFix: Image is stretched when modal is opened (WSW-85)
 
 - v1.0.1040                                 -
 ---------------------------------------------

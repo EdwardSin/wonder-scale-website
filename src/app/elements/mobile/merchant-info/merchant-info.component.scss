@@ -138,6 +138,11 @@
         }
     }
 
+    .swiper-container__image {
+        width: fit-content !important;
+        object-fit: contain;
+    }
+
     ::ng-deep .swiper-pagination-bullet-active {
         border: 0;
         background-color: #282C35;
