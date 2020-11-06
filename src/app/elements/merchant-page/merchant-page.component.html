@@ -166,7 +166,7 @@
                     <div class="merchant__sub-menu mb-4">
                         <div class="p-3 d-flex justify-content-center align-items-center">
                             <div class="border rounded text-center p-3 bg-white" style="height: 134px; width: 134px">
-                                <ws-spinner style='line-height: 100px' class="text-center d-block" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
+                                <ws-spinner style='line-height: 100px' class="text-center d-block" [borderWidth]="1" [spinnerColor]="'#b71c1c'" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
                                 <div class="qrcode"></div>
                             </div>
                         </div>
@@ -218,7 +218,7 @@
 </ng-template>
 
 <ng-template #itemLoadingTemplate>
-    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 10rem; padding-bottom: 10rem;"></ws-spinner>
+    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 10rem; padding-bottom: 10rem;"></ws-spinner>
 </ng-template>
 
 <ng-template #noItemTemplate>
