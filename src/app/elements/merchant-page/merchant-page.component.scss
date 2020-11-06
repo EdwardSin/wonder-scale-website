@@ -62,11 +62,11 @@
     }
     .merchant__overview{
         .merchant__overview-edit {
-            color: #7f0000;
+            color: #b71c1c;
             float: right;
 
             &:hover{
-                color: #660000;
+                color: #b71c1c;
             }
         }
     }
@@ -108,8 +108,8 @@
 
             &:hover,
             &.selected {
-                color: #7f0000;
-                border-bottom: 2px solid #7f0000;
+                color: #b71c1c;
+                border-bottom: 2px solid #b71c1c;
             }
         }
     }
@@ -124,8 +124,8 @@
     display: inline-block;
     
     &.tag-type{
-        color: #7f0000;
-        border: 1px solid #7f0000;
+        color: #b71c1c;
+        border: 1px solid #b71c1c;
     }
 
     &.tag-price{
@@ -172,8 +172,8 @@
         }
     }
     .btn-favorite {
-        border: 1px solid #7f0000;
-        color: #7f0000;
+        border: 1px solid #b71c1c;
+        color: #b71c1c;
         border-radius: 25px;
         text-align: center;
         padding: .5rem 2rem;
@@ -184,16 +184,16 @@
             color: transparent;
             -webkit-text-fill-color: #fff;
             -webkit-text-stroke-width: .5px;
-            -webkit-text-stroke-color: #7f0000;
+            -webkit-text-stroke-color: #b71c1c;
             transition: all ease .2s;
         }
 
         &.selected {
             .btn-favorite-icon {
                 color: transparent;
-                -webkit-text-fill-color: #7f0000;
+                -webkit-text-fill-color: #b71c1c;
                 -webkit-text-stroke-width: .5px;
-                -webkit-text-stroke-color: #7f0000;
+                -webkit-text-stroke-color: #b71c1c;
             }
         }
 
@@ -300,10 +300,10 @@
 }
 
 .merchant__edit-link{
-    color: #7f0000;
+    color: #b71c1c;
 
     &:hover{
-        color: #660000;
+        color: #b71c1c;
     }
 }
 
