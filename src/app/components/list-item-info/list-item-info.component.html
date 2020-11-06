@@ -63,7 +63,7 @@
 </ws-modal>
 
 <ng-template #loadingTemplate>
-    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 15vh; padding-bottom:15vh"></ws-spinner>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 15vh; padding-bottom:15vh"></ws-spinner>
 </ng-template>
 
 <ng-template #noItemTemplate>

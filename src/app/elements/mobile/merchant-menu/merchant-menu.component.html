@@ -56,7 +56,7 @@
 </div>
 
 <ng-template #loadingTemplate>
-    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 30vh"></ws-spinner>
+    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 30vh"></ws-spinner>
 </ng-template>
 
 <ng-template #noItemTemplate>
