@@ -185,6 +185,13 @@ header {
       font-size: .9rem;
       padding-top: .5rem;
       padding-bottom: .5rem;
+      &:hover{
+        color: #fff;
+        background-color: #990000;
+      }
+      &:active{
+        background-color: #660000;
+      }
     }
     .dropdown-divider{
       margin: 0;
