@@ -47,7 +47,6 @@ export class MerchantPageComponent implements OnInit {
   @Output() onEditYoutubeClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditSnapchatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditTelegramClicked: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onEditWeiboClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWechatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAddMediaClicked: EventEmitter<any> = new EventEmitter<any>();
   
