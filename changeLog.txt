@@ -4,16 +4,21 @@
 
 - v1.0.1050                                 -
 ---------------------------------------------
+- 2020-11-08                                -
+---------------------------------------------
+.: WSW: Task: Create build bot (WSW-84)
+
+---------------------------------------------
 - 2020-11-06                                -
 ---------------------------------------------
-.: WSM: Task: CLONE - Standardize button colors (WSW-86)
-.: WSM: Task: CLONE - Standardize loading (WSW-87)
+.: WSW: Task: CLONE - Standardize button colors (WSW-86)
+.: WSW: Task: CLONE - Standardize loading (WSW-87)
 
 ---------------------------------------------
 - 2020-11-04                                -
 ---------------------------------------------
 .: WSM: Task: Icon in QRcode is too blur (WSM-219)
-.: WSM: BugFix: Image is stretched when modal is opened (WSW-85)
+.: WSW: BugFix: Image is stretched when modal is opened (WSW-85)
 
 - v1.0.1040                                 -
 ---------------------------------------------
