@@ -62,6 +62,35 @@
             height: 230px;
         }
     }
+    
+    .btn-contact{
+        background-color: #b71c1c;
+        color: #fff;
+        border-radius: 25px;
+        padding: .5rem 2rem;
+
+        .merchant__message-text-icon{
+            transition: all ease .2s;
+        }
+        
+        &:hover{
+            .merchant__message-text-icon {
+                transform: scale(1.2);
+            }
+        }
+    }
+
+    .btn-contact-empty{
+        font-size: 1.1rem;
+        background-color: #f7f7f7;
+        color: #282c35;
+        border-radius: 25px;
+        padding: .5rem 2rem;
+
+        &:hover{
+            background-color: #ebecf0;
+        }
+    }
 }
 
 .tag{

@@ -8,6 +8,7 @@
 ---------------------------------------------
 .: WSW: Task: Create build bot (WSW-84)
 .: WSN: Task: Add Social Media (WSM-52)
+.: WSW: Task: CLONE - Add an preferable order method (WSW-88)
 
 ---------------------------------------------
 - 2020-11-06                                -
