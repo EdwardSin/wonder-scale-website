@@ -36,6 +36,7 @@ export class MerchantPageComponent implements OnInit {
   @Output() onEditStoreTypeClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditAddressClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditTagsClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onEditContactButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditPhoneClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditEmailClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWebsiteClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -49,6 +50,7 @@ export class MerchantPageComponent implements OnInit {
   @Output() onEditTelegramClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWechatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAddMediaClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onDeleteContactButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   
   environment = environment;
   selectedCategory: string = 'all';
@@ -254,6 +256,32 @@ export class MerchantPageComponent implements OnInit {
   }
   navigateToMap() {
     window.open(`http://www.google.com/maps/place/${this.store.location.coordinates[1]},${this.store.location.coordinates[0]}`, '_blank');
+  }
+  navigateByContactButton() {
+    if (this.store.contactButton) {
+      let contactValue = '';
+      switch (this.store.contactButton.type) {
+        case 'url':
+          contactValue = this.store.contactButton.value;
+          break;
+        case 'phoneCall':
+          contactValue = 'tel:' + this.store.contactButton.value;
+          break;
+        case 'whatsapp':
+          contactValue = 'https://wa.me/' + this.store.contactButton.value;
+          break;
+        case 'instagram':
+          contactValue = 'https://www.instagram.com/' + this.store.contactButton.value;
+          break;
+        case 'messenger':
+          contactValue = 'http://m.me/' + this.store.contactButton.value;
+          break;
+      }
+      window.open(
+        contactValue,
+        '_blank' // <- This is what makes it open in a new window.
+      );
+    }
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();

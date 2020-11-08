@@ -155,7 +155,40 @@
             </div>
             <div class="col-lg-4">
                 <div class="merchant__sidebar">
-                    <div class="merchant__message-text mb-4"><span class="fas fa-info-circle merchant__message-text-icon mr-2"></span>Message Seller To Order</div>
+                    <button *ngIf="!store?.contactButton && isEditing" class="btn btn-contact-empty mb-4" (click)="onEditContactButtonClicked.emit($event)">
+                        <span class="fas fa-plus merchant__message-text-icon mr-2"></span>Add Button
+                    </button>
+                    <div *ngIf="store?.contactButton" mdbDropdown class="d-inline-block">
+                        <button *ngIf="isEditing" class="btn btn-contact mb-4" mdbDropdownToggle>
+                            <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
+                        </button>
+                        <button *ngIf="!isEditing" class="btn btn-contact mb-4" (click)="navigateByContactButton()">
+                            <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
+                        </button>
+                        <ng-template #contactButtonTemplate>
+                            <ng-container [ngSwitch]="store?.contactButton?.type">
+                                <span *ngSwitchCase="'url'" class="fas fa-info-circle merchant__message-text-icon mr-2"></span>
+                                <span *ngSwitchCase="'whatsapp'" class="fas fa-comment-dots merchant__message-text-icon mr-2"></span>
+                                <span *ngSwitchCase="'instagram'" class="fas fa-comment-dots merchant__message-text-icon mr-2"></span>
+                                <span *ngSwitchCase="'messenger'" class="fas fa-comment-dots merchant__message-text-icon mr-2"></span>
+                                <span *ngSwitchCase="'phoneCall'" class="fas fa-phone merchant__message-text-icon mr-2"></span>
+                            </ng-container>
+                            <ng-container [ngSwitch]="store?.contactButton?.label">
+                                <span *ngSwitchCase="'contactUs'">Contact Us</span>
+                                <span *ngSwitchCase="'bookNow'">Book Now</span>
+                                <span *ngSwitchCase="'orderNow'">Order Now</span>
+                                <span *ngSwitchCase="'purchaseNow'">Purchase Now</span>
+                                <span *ngSwitchCase="'learnMore'">Learn More</span>
+                            </ng-container>
+                        </ng-template>
+                        <div *ngIf="isEditing" class="dropdown-menu mt-0 pb-0 pt-0">
+                            <button class="dropdown-item" (click)="navigateByContactButton()">Test Button</button>
+                            <button class="dropdown-item" (click)="onEditContactButtonClicked.emit($event)">Edit Button</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item" (click)="onDeleteContactButtonClicked.emit($event)">Delete Button</button>
+                        </div>
+                    </div>
+
                     <button *ngIf="isAuthenticated" [disabled]="isEditing" class="btn btn-favorite mb-4" (click)="isFollowed ? unsaveStore() : saveStore()" [class.selected]="isFollowed">
                         <span class="fas fa-heart btn-favorite-icon mr-2"></span>
                         {{isFollowed ? 'Added To Favorite' : 'Add To Favorite'}}
