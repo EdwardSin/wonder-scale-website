@@ -1,0 +1,4 @@
+page/vresthotel52
+page/bookmarkcafe
+page/cocktailbar
+page/testingrestaurant

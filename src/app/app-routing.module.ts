@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { UrlListComponent } from '@components/url-list/url-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 
@@ -28,6 +29,8 @@ const routes: Routes = [{
   canActivate: [AuthGuard],
   loadChildren: () => import('./modules/settings/settings.module').then(m => m.SettingsModule)
 }, {
+  path: 'url-list', component: UrlListComponent
+}, {
   path: '404',
   loadChildren: () => import('./modules/not-found/not-found.module').then(m => m.NotFoundModule)
 }, {
@@ -37,7 +40,7 @@ const routes: Routes = [{
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled', preloadingStrategy: PreloadAllModules })],
+  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled', preloadingStrategy: PreloadAllModules, initialNavigation: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
