@@ -50,11 +50,15 @@ export class AppComponent {
   }
   @HostListener('window:resize')
   onResize() {
-    this.screenService.isMobileSize.next(isPlatformBrowser(this.platformId) ? window.innerWidth < 992 : false);
-    this.screenService.isMobileDevice.next(this.screenService.isMobileDeviceFunc());
+    if (isPlatformBrowser(this.platformId)) {
+      this.screenService.isMobileSize.next(window.innerWidth < 992);
+      this.screenService.isMobileDevice.next(this.screenService.isMobileDeviceFunc());
+    }
   }
   scrollTo() {
-    window.scrollTo(0, 0);
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo(0, 0);
+    }
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();

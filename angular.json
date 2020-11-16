@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "preserveSymlinks": true,
-            "outputPath": "dist/wonder-scale-website",
+            "outputPath": "dist/wonder-scale-website/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -116,7 +116,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "wonder-scale-website:build",
-            "proxyConfig": "proxy.config.json"
+            "proxyConfig": "proxy.config.json",
+            "host": "0.0.0.0",
+            "ssl": true,
+            "disableHostCheck": true
           },
           "configurations": {
             "production": {
@@ -170,6 +173,52 @@
             "production": {
               "devServerTarget": "wonder-scale-website:serve:production"
             }
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "preserveSymlinks": true,
+            "outputPath": "dist/wonder-scale-website/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "wonder-scale-website:build",
+            "serverTarget": "wonder-scale-website:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "wonder-scale-website:build:production",
+              "serverTarget": "wonder-scale-website:server:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "wonder-scale-website:build:production",
+            "serverTarget": "wonder-scale-website:server:production",
+            "routesFile": "./seo/routes.txt"
+          },
+          "configurations": {
+            "production": {}
           }
         }
       }

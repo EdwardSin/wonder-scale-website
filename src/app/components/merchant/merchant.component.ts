@@ -17,6 +17,7 @@ import { ScreenService } from '@services/general/screen.service';
 import { SharedStoreService } from '@services/shared-store.service';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
+import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'merchant',
@@ -47,6 +48,7 @@ export class MerchantComponent implements OnInit {
     private sharedUserService: SharedUserService,
     private sharedStoreService: SharedStoreService,
     private trackService: TrackService,
+    private meta: Meta,
     public authFollowService: AuthFollowService,
     public facebookService: FacebookService,
     public itemService: ItemService) {
@@ -93,6 +95,8 @@ export class MerchantComponent implements OnInit {
         this.menuImages = this.store.menuImages.map(menuImage => environment.IMAGE_URL + menuImage);
         this.profileImage = this.store.profileImage ? environment.IMAGE_URL + this.store.profileImage: null;
         DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
+        this.meta.updateTag({ name: 'title', content: this.store.name });
+        this.meta.updateTag({ name: 'description', content: this.store.description });
         this.isPrivateMode(() => {}, this.recordTrack.bind(this));
         this.loading.stop()
       }
