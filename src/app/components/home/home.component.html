@@ -11,9 +11,9 @@
                 <input name="keyword" class="searchbar__input form-control" placeholder="Search..." [(ngModel)]="keyword"
                 (keydown.enter)="navigationSearch()"/>
                 <div class="input-group-append">
-                    <button class="searchbar__button input-group-text" [routerLink]="['/search']" [queryParams]="{keyword: keyword}">
+                    <a class="searchbar__button input-group-text" [routerLink]="['/search']" [queryParams]="{keyword: keyword}">
                         <span class="searchbar__icon fas fa-search"></span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -29,3 +29,4 @@
         </div>
     </div>
 </div>
+<a hidden [routerLink]="['/url-list']"></a>
