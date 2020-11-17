@@ -15,7 +15,6 @@ function retrievePageUrlList() {
             res.data.result.forEach(result => {
                 urlRoutes.push('page/' + result.username);
             });
-            urlRoutes.push('url-list');
             fs.writeFileSync(routesFile, urlRoutes.join(endOfLine), 'utf8');
             fs.writeFileSync(metaDataFile, JSON.stringify(res.data.result, null, 2), 'utf8');
         })

@@ -2,19 +2,23 @@
   {
     "username": "vresthotel52",
     "title": "Vrest Hotel",
+    "profileImage": "upload/env_development/shop_thumbnails/26581604409297220.png",
     "description": "AA cozy relax hotel, located in Melaka Malaysia.\nProvide you a clean and comfortable room to spend your holiday in Sg."
   },
   {
     "username": "bookmarkcafe",
-    "title": "Bookmark Cafe"
+    "title": "Bookmark Cafe",
+    "profileImage": null
   },
   {
     "username": "cocktailbar",
-    "title": "Cocktail Bar"
+    "title": "Cocktail Bar",
+    "profileImage": null
   },
   {
     "username": "testingrestaurant",
     "title": "Testing Restaurant",
+    "profileImage": null,
     "description": null
   }
 ]
