@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { UrlListComponent } from '@components/url-list/url-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 
@@ -28,8 +27,6 @@ const routes: Routes = [{
   path: 'settings',
   canActivate: [AuthGuard],
   loadChildren: () => import('./modules/settings/settings.module').then(m => m.SettingsModule)
-}, {
-  path: 'url-list', component: UrlListComponent
 }, {
   path: '404',
   loadChildren: () => import('./modules/not-found/not-found.module').then(m => m.NotFoundModule)

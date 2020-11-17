@@ -15,17 +15,17 @@ for (let item of list) {
 console.log('end updating routes');
 
 console.log('start auto fill in links');
-fs.readFile('./dist/' + projectName + '/browser/url-list/index.html', 'utf8', function (err, data) {
+fs.readFile('./dist/' + projectName + '/browser/index.html', 'utf8', function (err, data) {
     if (data) {
         if (data.indexOf('<body><a') == -1) {
             let prefix = data.substring(0, data.indexOf('<body>') + 6);
             let subfix = data.substring(data.indexOf('<body>') + 6);
             let suffingString = '';
             for (let item of list) {
-                suffingString += '<a href="/page/' + item.username + '">' + item.title + '</a>'
+                suffingString += '<a hiddden href="/page/' + item.username + '">' + item.title + '</a>'
             }
             data = prefix + suffingString + subfix;
-            fs.writeFileSync('./dist/' + projectName + '/browser/url-list/index.html', data);
+            fs.writeFileSync('./dist/' + projectName + '/browser/index.html', data);
         }
     }
 });

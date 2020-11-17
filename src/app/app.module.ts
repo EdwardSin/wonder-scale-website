@@ -14,7 +14,6 @@ import { GoogleLoginProvider, FacebookLoginProvider, SocialAuthServiceConfig, So
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SharedModule } from './modules/public/shared/shared.module';
 import { NoCacheHeadersInterceptor } from '@components/resolvers/no-cache-headers.interceptor.service';
-import { UrlListComponent } from './components/url-list/url-list.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -43,8 +42,7 @@ export function jwtOptionsFactory(platformId) {
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    UrlListComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
