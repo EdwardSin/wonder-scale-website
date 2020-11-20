@@ -122,6 +122,7 @@
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.youtube, isEditing: isEditing, onClick: onEditYoutubeClicked, addLabel: 'Add Youtube Account', prefixLink: 'https://www.youtube.com/channel/', isLink: true, icon: 'fa-youtube'}"></ng-container>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.snapchat, isEditing: isEditing, onClick: onEditSnapchatClicked, addLabel: 'Add Snapchat', prefixLink: 'https://www.snapchat.com/add/', isLink: true, icon: 'fa-snapchat'}"></ng-container>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.telegram, isEditing: isEditing, onClick: onEditTelegramClicked, addLabel: 'Add Telegram', prefixLink: 'https://telegram.me/', isLink: true, icon: 'fa-telegram'}"></ng-container>
+                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.wechat, isEditing: isEditing, onClick: onEditWechatClicked, addLabel: 'Add Wechat', icon: 'fa-weixin'}"></ng-container>
                 <a *ngIf="isEditing" class="merchant__edit-link text-center d-block" href="javascript:void(0)" (click)="onAddMediaClicked.emit($event)">+ Add Social Media</a>
             </div>
 
