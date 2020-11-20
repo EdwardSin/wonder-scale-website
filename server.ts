@@ -13,7 +13,11 @@ const domino = require('domino');
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
   const server = express();
-  const distFolder = join(process.cwd(), 'dist/wonder-scale-website/browser');
+  let distFolder = join(process.cwd(), "browser");
+  if (!existsSync(distFolder)){
+    distFolder = join(process.cwd(), 'dist/wonder-scale-website/browser');
+  }
+
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
@@ -25,8 +29,10 @@ export function app() {
   server.set('views', distFolder);
 
   // Example Express Rest API endpoints
-  const apiProxy = proxy('/api', { target: 'http://localhost:9005', changeOrigin: true, cookieDomainRewrite: 'http://localhost:4200' });
-  server.use('/api/**', apiProxy);
+  if (!existsSync(join(process.cwd(), "browser"))) {
+    const apiProxy = proxy('/api', { target: 'http://localhost:9005', changeOrigin: true, cookieDomainRewrite: 'http://localhost:4200' });
+    server.use('/api/**', apiProxy);
+  }
   // Serve static files from /browser
   server.get('*.*', express.static(distFolder, {
     maxAge: '1y'
@@ -56,11 +62,14 @@ function run() {
 declare const __non_webpack_require__: NodeRequire;
 const mainModule = __non_webpack_require__.main;
 const moduleFilename = mainModule && mainModule.filename || '';
-if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
+if (moduleFilename === __filename || moduleFilename.includes('iisnode') || moduleFilename.includes('node-loader.js')) {
   run();
 }
 
-const distFolder = join(process.cwd(), 'dist/wonder-scale-website/browser');
+let distFolder = join(process.cwd(), "browser");
+if (!existsSync(distFolder)){
+  distFolder = join(process.cwd(), 'dist/wonder-scale-website/browser');
+}
 const template = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
 const window = domino.createWindow(template);
