@@ -30,7 +30,7 @@ fs.readFile('./dist/' + projectName + '/browser/index.html', 'utf8', function (e
             let subfix = data.substring(data.indexOf('<body>') + 6);
             let suffingString = '';
             for (let item of list) {
-                suffingString += '<a hiddden href="/page/' + item.username + '">' + item.title + '</a>'
+                suffingString += '<a hidden href="/page/' + item.username + '">' + item.title + '</a>'
             }
             data = prefix + suffingString + subfix;
             fs.writeFileSync('./dist/' + projectName + '/browser/index.html', data);

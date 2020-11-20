@@ -2,23 +2,19 @@
   {
     "username": "vresthotel52",
     "title": "Vrest Hotel",
-    "profileImage": "upload/env_development/shop_thumbnails/26581604409297220.png",
-    "description": "AA cozy relax hotel, located in Melaka Malaysia.\nProvide you a clean and comfortable room to spend your holiday in Sg."
+    "profileImage": "upload/shop_thumbnails/64701595148292870.png",
+    "description": "Hotel Vrest Melaka is located just 5-minute drive away from famous Jonker Street, Mahkota Parade Shopping Mall Museum.\nHotel decorated with a minimalist approach design.\nStay at Vrest Hotel in Heart of Melaka."
   },
   {
-    "username": "bookmarkcafe",
-    "title": "Bookmark Cafe",
-    "profileImage": null
-  },
-  {
-    "username": "cocktailbar",
-    "title": "Cocktail Bar",
-    "profileImage": null
-  },
-  {
-    "username": "testingrestaurant",
-    "title": "Testing Restaurant",
+    "username": "testshop",
+    "title": "Test Shop",
     "profileImage": null,
     "description": null
+  },
+  {
+    "username": "foodpalatte",
+    "title": "Food Palatte",
+    "profileImage": "upload/shop_thumbnails/92121604146026372.png",
+    "description": ""
   }
 ]
