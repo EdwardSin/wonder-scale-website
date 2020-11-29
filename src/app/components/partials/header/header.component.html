@@ -1,10 +1,9 @@
 <header>
     <div class="row no-gutters px-3">
         <div class="float-left col row no-gutters">
-            <a [routerLink]="['/']" class="header__label">Wonder Scale</a>
-            <!-- <div class="position-relative d-block d-lg-none">
-                <span class="fas fa-search header__searchbar-icon" style="margin-left: 2rem; font-size: 2rem"></span>
-            </div> -->
+            <a [routerLink]="['/']" class="header__label">
+                <object style="pointer-events: none" type="image/svg+xml" data="assets/images/svg/icon-title.svg" width="150"></object>
+            </a>
             <div *ngIf="false" class="position-relative col-sm-auto col pr-2">
                 <input #headerKeyword class="form-control header__searchbar" placeholder="Search..." (keydown.enter)="navigateTo()" [(ngModel)]="keyword"/>
                 <span class="header__searchbar-icon fas fa-search" [routerLink]="['/search']" [queryParams]="{keyword: keyword}"></span>
