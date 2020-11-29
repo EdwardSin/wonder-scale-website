@@ -41,7 +41,7 @@ export class MerchantShareComponent implements OnInit {
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
       this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
-      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/svg/dot.svg';
+      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/png/shop.png';
       
       if (this.store.phone) {
         this.store.phone = _.filter(this.store.phone, (phone) => !_.isEmpty(phone));
@@ -64,7 +64,7 @@ export class MerchantShareComponent implements OnInit {
           this.displayImage = 'api/images/' + this.store.profileImage.replace(/\//g, ',');
         }
       } else {
-        this.displayImage = 'assets/images/svg/dot.svg';
+        this.displayImage = 'assets/images/png/shop.png';
       }
       this.showQrcode(true);
     }
