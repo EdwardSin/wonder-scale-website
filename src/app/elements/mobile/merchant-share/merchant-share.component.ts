@@ -21,6 +21,7 @@ export class MerchantShareComponent implements OnInit {
   @Input() profileImage: string;
   environment = environment;
   link: string = '';
+  shareMessage: string = '';
   shareLinkThroughFB: string = '';
   shareLinkThroughTwitter: string = '';
   shareLinkThroughEmail: string = '';
@@ -39,7 +40,8 @@ export class MerchantShareComponent implements OnInit {
     if(changes['store'] && this.store) {
       this.link = environment.URL + 'page/' + this.store.username;
       this.shareLinkThroughFB = this.link;
-      this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
+      this.shareMessage = `View ${this.store.name} - Wonder Scale.`;
+      this.shareLinkThroughTwitter = `https://twitter.com/intent/tweet?text=${this.shareMessage} ${this.link}`;
       this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
       this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/png/shop.png';
       
@@ -72,6 +74,7 @@ export class MerchantShareComponent implements OnInit {
   shareThroughFB() {
     let params = {
       href: this.shareLinkThroughFB,
+      message: this.shareMessage,
       method: 'share',
       display: 'popup'
     }

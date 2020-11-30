@@ -67,6 +67,7 @@ export class MerchantPageComponent implements OnInit {
   selectedQuickMenuIndex: number = 0;
   medias;
   link: string;
+  shareMessage: string = '';
   shareLinkThroughFB: string;
   shareLinkThroughTwitter: string;
   storeId;
@@ -86,7 +87,8 @@ export class MerchantPageComponent implements OnInit {
     if (changes['store'] && this.store) {
       this.link = environment.URL + 'page/' + this.store.username;
       this.shareLinkThroughFB = this.link;
-      this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
+      this.shareMessage = `View ${this.store.name} - Wonder Scale.`;
+      this.shareLinkThroughTwitter = `https://twitter.com/intent/tweet?text=${this.shareMessage} ${this.link}`;
       this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/png/shop.png';
       this.showQrcode();
       this.mapStore();
@@ -245,6 +247,7 @@ export class MerchantPageComponent implements OnInit {
   shareThroughFB() {
     let params = {
       href: this.shareLinkThroughFB,
+      message: this.shareMessage,
       method: 'share',
       display: 'popup'
     }

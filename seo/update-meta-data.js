@@ -9,12 +9,17 @@ for (let item of list) {
         if (data) {
             data = data.replace('<title>Wonder Scale</title>', `
                     <title>${item.title} | Wonder Scale</title>
-                    ${item.description ? '<meta key="description" value="' + item.description + '">' : ''}
-                    <meta key="og:title" value="${item.title} | Wonder Scale">
-                    <meta key="og:type" value="website">
-                    ${item.profileImage ? '<meta key="og:image" value="https://assets.wonderscale.com/' + item.profileImage + '">': ''}
-                    <meta key="og:url" value="/page/${item.username}/index.html">
-                    ${item.description ? '<meta key="og:description" value="' + item.description + '">': ''}
+                    ${item.description ? '<meta name="description" value="' + item.description + '">' : ''}
+                    <meta name="og:title" value="${item.title} | Wonder Scale">
+                    <meta name="og:type" value="website">
+                    ${item.profileImage ? '<meta name="og:image" value="https://www.wonderscale.com/api/images/media?url=' + item.profileImage + '">': ''}
+                    <meta name="og:url" value="/page/${item.username}/index.html">
+                    ${item.description ? '<meta name="og:description" value="' + item.description + '">': ''}
+
+                    <meta name="twitter:card" content="summary" />
+                    <meta name="twitter:title" content="${item.title} | Wonder Scale" />
+                    ${item.profileImage ? '<meta name="twitter:image" value="https://www.wonderscale.com/api/images/media?url=' + item.profileImage + '">': ''}
+                    ${item.description ? '<meta name="twitter:description" value="' + item.description + '">': ''}
                     `);
             fs.writeFileSync('./dist/' + projectName + '/browser/page/' + item.username + '/index.html', data);
         }
