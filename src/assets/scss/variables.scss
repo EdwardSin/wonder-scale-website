@@ -19,8 +19,8 @@ $ws-color:(white: #fff,
   primary: gold,
   main-hover-effect: rgba(153, 0, 0, 0),
   main-hovered-effect: #1c41b1,
-  secondary:#7f0000,
-  secondary-hover: #660000);
+  secondary:#b71c1c,
+  secondary-hover: #b71c1c);
 
 $ws-style:(box-shadow: 0px 0px 5px map-get($ws-color, light-grey-1),
   border: 1px solid map-get($ws-color, border),

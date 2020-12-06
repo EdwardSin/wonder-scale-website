@@ -45,7 +45,7 @@ export function jwtOptionsFactory(platformId) {
     HeaderComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
     HttpClientModule,
     SocialLoginModule,

@@ -1,13 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
-import { Subject, combineLatest, timer } from 'rxjs';
-import { takeUntil, finalize, map, take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { environment } from '@environments/environment';
-import { MapController, MapCircle } from '@objects/map.controller';
+import { MapController } from '@objects/map.controller';
 import { WsGpsService } from '@services/general/ws-gps.service';
 import { ScreenService } from '@services/general/screen.service';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';

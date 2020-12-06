@@ -25,6 +25,39 @@
     <div class="row no-gutters merchant mb-2">
         <div class="col-lg order-11 order-lg-1">
             <div class="merchant__profile-container">
+                <button *ngIf="!store?.contactButton && isEditing" class="btn btn-contact-empty btn-block mt-4" (click)="onEditContactButtonClicked.emit($event)">
+                    <span class="fas fa-plus merchant__message-text-icon mr-2"></span>Add Button
+                </button>
+                <div *ngIf="store?.contactButton" mdbDropdown>
+                    <button *ngIf="isEditing" class="btn btn-contact btn-block mt-4" mdbDropdownToggle>
+                        <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
+                    </button>
+                    <button *ngIf="!isEditing" class="btn btn-contact btn-block mt-4" (click)="navigateByContactButton()">
+                        <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
+                    </button>
+                    <ng-template #contactButtonTemplate>
+                        <ng-container [ngSwitch]="store?.contactButton?.type">
+                            <span *ngSwitchCase="'url'" class="fas fa-info-circle merchant__message-text-icon mr-2"></span>
+                            <span *ngSwitchCase="'whatsapp'" class="fas fa-comment-dots merchant__message-text-icon mr-2"></span>
+                            <span *ngSwitchCase="'instagram'" class="fas fa-comment-dots merchant__message-text-icon mr-2"></span>
+                            <span *ngSwitchCase="'messenger'" class="fas fa-comment-dots merchant__message-text-icon mr-2"></span>
+                            <span *ngSwitchCase="'phoneCall'" class="fas fa-phone merchant__message-text-icon mr-2"></span>
+                        </ng-container>
+                        <ng-container [ngSwitch]="store?.contactButton?.label">
+                            <span *ngSwitchCase="'contactUs'">Contact Us</span>
+                            <span *ngSwitchCase="'bookNow'">Book Now</span>
+                            <span *ngSwitchCase="'orderNow'">Order Now</span>
+                            <span *ngSwitchCase="'purchaseNow'">Purchase Now</span>
+                            <span *ngSwitchCase="'learnMore'">Learn More</span>
+                        </ng-container>
+                    </ng-template>
+                    <div *ngIf="isEditing" class="dropdown-menu mt-0 pb-0 pt-0">
+                        <button class="dropdown-item" (click)="navigateByContactButton()">Test Button</button>
+                        <button class="dropdown-item" (click)="onEditContactButtonClicked.emit($event)">Edit Button</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" (click)="onDeleteContactButtonClicked.emit($event)">Delete Button</button>
+                    </div>
+                </div>
                 <div class="d-flex align-items-center py-3">
                     <div class="merchant__profile-image__container">
                         <img *ngIf="profileImage" class="merchant__profile-image" [src]="profileImage" alt="profile-image"/>
@@ -63,7 +96,7 @@
             <div class="feature_container" *ngIf="store?.tags?.length || isEditing">
                 <h4 class="info__title d-flex align-items-center">Features<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditTagsClicked.emit($event)"><span class="fas fa-edit"></span></button></h4>
                 <div *ngIf="store?.tags?.length; else noTagTemplate" class="px-2 pt-3">
-                    <span class="badge mr-2 mb-1" style="color: #7f0000; background-color: #f7f7f7" *ngFor="let tag of store?.tags">{{ tag }}</span>
+                    <span class="badge mr-2 mb-1" style="color: #b71c1c; background-color: #f7f7f7" *ngFor="let tag of store?.tags">{{ tag }}</span>
                 </div>
                 <ng-template #noTagTemplate>
                     <p class="text-center" style="margin: 2rem 0">No feature</p>
@@ -83,14 +116,13 @@
                 </h4>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.facebook, isEditing: isEditing, onClick: onEditFacebookClicked, addLabel: 'Add Facebook', prefixLink: 'https://www.facebook.com/', isLink: true, icon: 'fa-facebook-f'}"></ng-container>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.instagram, isEditing: isEditing, onClick: onEditInstagramClicked, addLabel: 'Add Instagram', prefixLink: 'https://www.instagram.com/', isLink: true, icon: 'fa-instagram'}"></ng-container>
-                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.twitter, isEditing: isEditing, onClick: onEditTwitterClicked, addLabel: 'Add Twitter', prefixLink: 'https://mobile.twitter.com/', isLink: true, icon: 'fa-twitter'}"></ng-container>
+                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.twitter, isEditing: isEditing, onClick: onEditTwitterClicked, addLabel: 'Add Twitter', prefixLink: 'https://twitter.com/', isLink: true, icon: 'fa-twitter'}"></ng-container>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.whatsapp, isEditing: isEditing, onClick: onEditWhatsappClicked, addLabel: 'Add Whatsapp', prefixLink: 'https://wa.me/', isLink: true, icon: 'fa-whatsapp'}"></ng-container>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.messenger, isEditing: isEditing, onClick: onEditMessengerClicked, addLabel: 'Add Facebook Messenger', prefixLink: 'http://m.me/', isLink: true, icon: 'fa-facebook-messenger'}"></ng-container>
-                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.youtube, isEditing: isEditing, onClick: onEditYoutubeClicked, addLabel: 'Add Youtube Account', isLink: true, icon: 'fa-youtube'}"></ng-container>
-                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.snapchat, isEditing: isEditing, onClick: onEditSnapchatClicked, addLabel: 'Add Snapchat', prefixLink: 'www.snapchat.com/add/', isLink: true, icon: 'fa-snapchat'}"></ng-container>
-                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.telegram, isEditing: isEditing, onClick: onEditTelegramClicked, addLabel: 'Add Telegram', icon: 'fa-telegram'}"></ng-container>
-                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.weibo, isEditing: isEditing, onClick: onEditWeiboClicked, addLabel: 'Add Weibo', icon: 'fa-weibo'}"></ng-container>
-                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.wechat, isEditing: isEditing, onClick: onEditWechatClicked, addLabel: 'Add Wechat', isLink: true, icon: 'fa-weixin'}"></ng-container>
+                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.youtube, isEditing: isEditing, onClick: onEditYoutubeClicked, addLabel: 'Add Youtube Account', prefixLink: 'https://www.youtube.com/channel/', isLink: true, icon: 'fa-youtube'}"></ng-container>
+                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.snapchat, isEditing: isEditing, onClick: onEditSnapchatClicked, addLabel: 'Add Snapchat', prefixLink: 'https://www.snapchat.com/add/', isLink: true, icon: 'fa-snapchat'}"></ng-container>
+                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.telegram, isEditing: isEditing, onClick: onEditTelegramClicked, addLabel: 'Add Telegram', prefixLink: 'https://telegram.me/', isLink: true, icon: 'fa-telegram'}"></ng-container>
+                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.wechat, isEditing: isEditing, onClick: onEditWechatClicked, addLabel: 'Add Wechat', icon: 'fa-weixin'}"></ng-container>
                 <a *ngIf="isEditing" class="merchant__edit-link text-center d-block" href="javascript:void(0)" (click)="onAddMediaClicked.emit($event)">+ Add Social Media</a>
             </div>
 
@@ -133,7 +165,7 @@
 </div>
 
 <ng-template #loadingTemplate>
-    <ws-spinner *ngIf="loading.isRunning(); else noStoreTemplate" class="text-center d-block w-100" style="padding-top: 30vh;padding-bottom: 30vh"></ws-spinner>
+    <ws-spinner *ngIf="loading.isRunning(); else noStoreTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 30vh;padding-bottom: 30vh"></ws-spinner>
 </ng-template>
 
 <ng-template #noStoreTemplate>

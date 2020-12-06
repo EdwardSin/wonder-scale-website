@@ -22,7 +22,7 @@
             </div>
             <div *ngIf="isAuthenticated" class="d-flex justify-content-center align-items-center px-3">
                 <span class="list-item-icon-right fas position-relative" [ngClass]="saveLoading.isRunning() ? '' : follow? 'fa-heart selected': 'fa-heart'" (click)="followClicked($event)">
-                    <ws-spinner class="position-absolute" style="top: calc(50% - 16px); left: calc(50% - 10px)" *ngIf="saveLoading.isRunning()" [width]="20" [height]="20" [borderWidth]="3" [spinnerColor]="'#282C35'"></ws-spinner>
+                    <ws-spinner class="position-absolute" style="top: calc(50% - 16px); left: calc(50% - 10px)" *ngIf="saveLoading.isRunning()" [width]="20" [height]="20" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>
                 </span>
             </div>
         </div>

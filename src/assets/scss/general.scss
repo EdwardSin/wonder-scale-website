@@ -45,7 +45,7 @@
     }
     &:active{
         color: #fff;
-        background-color: #282C35;
+        background-color: #b71c1c;
     }
     span {
         display: block;
@@ -53,9 +53,9 @@
     }
     &.selected{
         color: #fff;
-        background-color: #282C35;
+        background-color: #b71c1c;
         &:hover{
-            background-color: #4d5466;
+            background-color: #b71c1c;
         }
     }
 }

@@ -1,8 +1,7 @@
 <div class="home text-center center">
     <div class="container">
         <div class="home-logo__container">
-            <img class="home__icon" src="assets/images/svg/icon.svg" alt="logo" />
-            <h3 class="home__logo">Wonder Scale</h3>
+            <object style="pointer-events: none" type="image/svg+xml" data="assets/images/svg/icon-title.svg" width="300"></object>
         </div>
         <p class="home__label">Find, view and collect your favorite stores</p>
         
@@ -11,9 +10,9 @@
                 <input name="keyword" class="searchbar__input form-control" placeholder="Search..." [(ngModel)]="keyword"
                 (keydown.enter)="navigationSearch()"/>
                 <div class="input-group-append">
-                    <button class="searchbar__button input-group-text" [routerLink]="['/search']" [queryParams]="{keyword: keyword}">
+                    <a class="searchbar__button input-group-text" [routerLink]="['/search']" [queryParams]="{keyword: keyword}">
                         <span class="searchbar__icon fas fa-search"></span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

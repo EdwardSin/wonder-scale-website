@@ -62,6 +62,35 @@
             height: 230px;
         }
     }
+    
+    .btn-contact{
+        background-color: #b71c1c;
+        color: #fff;
+        border-radius: 25px;
+        padding: .5rem 2rem;
+
+        .merchant__message-text-icon{
+            transition: all ease .2s;
+        }
+        
+        &:hover{
+            .merchant__message-text-icon {
+                transform: scale(1.2);
+            }
+        }
+    }
+
+    .btn-contact-empty{
+        font-size: 1.1rem;
+        background-color: #f7f7f7;
+        color: #282c35;
+        border-radius: 25px;
+        padding: .5rem 2rem;
+
+        &:hover{
+            background-color: #ebecf0;
+        }
+    }
 }
 
 .tag{
@@ -69,8 +98,8 @@
     border-radius: 20px;
     
     &.tag-type{
-        color: #7f0000;
-        border: 1px solid #7f0000;
+        color: #b71c1c;
+        border: 1px solid #b71c1c;
     }
 
     &.tag-price{
@@ -136,6 +165,11 @@
         &:hover{
             background-color: rgba(0, 0, 0, .2);
         }
+    }
+
+    .swiper-container__image {
+        width: fit-content !important;
+        object-fit: contain;
     }
 
     ::ng-deep .swiper-pagination-bullet-active {
@@ -213,10 +247,10 @@
 }
 
 .merchant__edit-link{
-    color: #7f0000;
+    color: #b71c1c;
 
     &:hover{
-        color: #660000;
+        color: #b71c1c;
     }
 }
 
