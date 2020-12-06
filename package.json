@@ -7,10 +7,8 @@
         "start": "ng serve",
         "build": "ng build --prod --aot --output-hashing=all",
         "upload": "node deploy /public_html/",
-        "deploy": "npm run build && npm run upload",
-        "upload-testing": "node deploy /testing.wonderscale.com/",
         "build-testing": "ng build --configuration qa --aot --output-hashing=all",
-        "deploy-testing": "npm run build-testing && npm run upload-testing",
+        "upload-testing": "node deploy /testing-website.wonderscale.com/",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
@@ -18,8 +16,10 @@
         "serve:ssr": "node dist/wonder-scale-website/server/main.js",
         "build:ssr": "ng build --prod && ng run wonder-scale-website:server:production",
         "prerender": "node ./seo/list-url-scripts.js --prod && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js",
-        "prerender-dev": "node ./seo/list-url-scripts.js --dev && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js",
-        "prerender-testing": "node ./seo/list-url-scripts.js --testing && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js"
+        "prerender-dev": "node ./seo/list-url-scripts.js --dev && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js --dev",
+        "prerender-testing": "node ./seo/list-url-scripts.js --testing && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js --testing",
+        "deploy": "npm run prerender && npm run upload",
+        "deploy-testing": "npm run prerender-testing && npm run upload-testing"
     },
     "private": true,
     "dependencies": {

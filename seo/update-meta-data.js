@@ -5,21 +5,23 @@ var projectName = 'wonder-scale-website';
 
 console.log('start update routes');
 for (let item of list) {
+    let url = getDomainUrl();
     fs.readFile('./dist/' + projectName + '/browser/page/' + item.username + '/index.html', 'utf8', function (err, data) {
         if (data) {
             data = data.replace('<title>Wonder Scale</title>', `
                     <title>${item.title} | Wonder Scale</title>
-                    ${item.description ? '<meta name="description" value="' + item.description + '">' : ''}
-                    <meta name="og:title" value="${item.title} | Wonder Scale">
-                    <meta name="og:type" value="website">
-                    ${item.profileImage ? '<meta name="og:image" value="https://www.wonderscale.com/api/images/media?url=' + item.profileImage + '">': ''}
-                    <meta name="og:url" value="/page/${item.username}/index.html">
-                    ${item.description ? '<meta name="og:description" value="' + item.description + '">': ''}
+                    ${item.description ? '<meta name="description" content="' + item.description.slice(0, 200) + '" />' : ''}
+                    <meta property="og:title" content="${item.title} | Wonder Scale" />
+                    <meta property="og:type" content="website" />
+                    ${item.profileImage ? '<meta property="og:image" content="' + url + '/api/images/media?url=' + item.profileImage + '" />': ''}
+                    <meta property="og:url" content="${url}/page/${item.username}/index.html" />
+                    ${item.description ? '<meta property="og:description" content="' + item.description.slice(0, 200) + '" />': ''}
 
-                    <meta name="twitter:card" content="summary" />
+                    <meta name="twitter:card" content="summary_large_image" />
                     <meta name="twitter:title" content="${item.title} | Wonder Scale" />
-                    ${item.profileImage ? '<meta name="twitter:image" value="https://www.wonderscale.com/api/images/media?url=' + item.profileImage + '">': ''}
-                    ${item.description ? '<meta name="twitter:description" value="' + item.description + '">': ''}
+                    ${item.profileImage ? '<meta name="twitter:image" content="' + url+ '/api/images/media?url=' + item.profileImage + '" />': ''}
+                    ${item.description ? '<meta name="twitter:description" content="' + item.description.slice(0, 200) + '" />': ''}
+                    <meta name="twitter:url" content="${url}/page/${item.username}/index.html" />
                     `);
             fs.writeFileSync('./dist/' + projectName + '/browser/page/' + item.username + '/index.html', data);
         }
@@ -43,3 +45,14 @@ fs.readFile('./dist/' + projectName + '/browser/index.html', 'utf8', function (e
     }
 });
 console.log('stop auto fill in links');
+
+function getDomainUrl() {
+    switch (process.argv[2]) {
+        case '--dev':
+            return 'http://localhost:9005';
+        case '--testing':
+            return 'https://testing.wonderscale.com';
+        default:
+            return 'https://www.wonderscale.com';
+    }
+}
