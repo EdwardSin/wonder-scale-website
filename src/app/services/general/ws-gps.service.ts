@@ -11,10 +11,7 @@ export class WsGpsService {
 
 
   getSuggestions(query) {
-
-    let headers = new HttpHeaders();
-    return this.http.get(
-      `https://autocomplete.geocoder.cit.api.here.com/6.2/suggest.json?app_id=${environment.HERE_APP_API}&app_code=${environment.HERE_APP_CODE}&query=${query}&pretty`, { headers: headers });
+    return this.http.get(`https://photon.komoot.io/api/?q=${query}&limit=5`);
   }
   geocode(address, callback) {
     let platform = new H.service.Platform({
