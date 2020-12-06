@@ -13,13 +13,13 @@ for (let item of list) {
                     ${item.description ? '<meta name="description" content="' + item.description.slice(0, 200) + '" />' : ''}
                     <meta property="og:title" content="${item.title} | Wonder Scale" />
                     <meta property="og:type" content="website" />
-                    ${item.profileImage ? '<meta property="og:image" content="' + url + '/api/images/media?url=' + item.profileImage + '" />': ''}
+                    ${item.profileImage ? '<meta property="og:image" content="' + url + '/api/images/media?url=' + item.profileImage.replace(/\//g, ',') + '" />': ''}
                     <meta property="og:url" content="${url}/page/${item.username}/index.html" />
                     ${item.description ? '<meta property="og:description" content="' + item.description.slice(0, 200) + '" />': ''}
 
                     <meta name="twitter:card" content="summary_large_image" />
                     <meta name="twitter:title" content="${item.title} | Wonder Scale" />
-                    ${item.profileImage ? '<meta name="twitter:image" content="' + url+ '/api/images/media?url=' + item.profileImage + '" />': ''}
+                    ${item.profileImage ? '<meta name="twitter:image" content="' + url+ '/api/images/media?url=' + item.profileImage.replace(/\//g, ',') + '" />': ''}
                     ${item.description ? '<meta name="twitter:description" content="' + item.description.slice(0, 200) + '" />': ''}
                     <meta name="twitter:url" content="${url}/page/${item.username}/index.html" />
                     `);

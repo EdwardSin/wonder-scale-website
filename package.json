@@ -4,11 +4,9 @@
     "scripts": {
         "ng": "ng",
         "dev": "ng serve --host 0.0.0.0 --ssl true --disableHostCheck",
-        "start": "ng serve",
+        "start": "node dist/wonderscale-website/server/main.js",
         "build": "ng build --prod --aot --output-hashing=all",
-        "upload": "node deploy /public_html/",
         "build-testing": "ng build --configuration qa --aot --output-hashing=all",
-        "upload-testing": "node deploy /testing-website.wonderscale.com/",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
@@ -18,8 +16,12 @@
         "prerender": "node ./seo/list-url-scripts.js --prod && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js",
         "prerender-dev": "node ./seo/list-url-scripts.js --dev && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js --dev",
         "prerender-testing": "node ./seo/list-url-scripts.js --testing && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js --testing",
-        "deploy": "npm run prerender && npm run upload",
-        "deploy-testing": "npm run prerender-testing && npm run upload-testing"
+        "deploy": "npm run prerender && openode deploy -t 83371eaa7faa67ba8521d3df5fe655ea -s ws-website",
+        "deploy-testing": "npm run prerender-testing && openode deploy -t 83371eaa7faa67ba8521d3df5fe655ea -s testing-website"
+    },
+    "engines": {
+        "node": "10.22.0",
+        "npm": "6.1.0"
     },
     "private": true,
     "dependencies": {
