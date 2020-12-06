@@ -21,6 +21,7 @@ export class MerchantShareComponent implements OnInit {
   @Input() profileImage: string;
   environment = environment;
   link: string = '';
+  shareMessage: string = '';
   shareLinkThroughFB: string = '';
   shareLinkThroughTwitter: string = '';
   shareLinkThroughEmail: string = '';
@@ -39,9 +40,10 @@ export class MerchantShareComponent implements OnInit {
     if(changes['store'] && this.store) {
       this.link = environment.URL + 'page/' + this.store.username;
       this.shareLinkThroughFB = this.link;
-      this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
+      this.shareMessage = `View ${this.store.name} - Wonder Scale.`;
+      this.shareLinkThroughTwitter = `https://twitter.com/intent/tweet?text=${this.shareMessage} ${this.link}`;
       this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
-      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/svg/dot.svg';
+      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/png/shop.png';
       
       if (this.store.phone) {
         this.store.phone = _.filter(this.store.phone, (phone) => !_.isEmpty(phone));
@@ -64,7 +66,7 @@ export class MerchantShareComponent implements OnInit {
           this.displayImage = 'api/images/' + this.store.profileImage.replace(/\//g, ',');
         }
       } else {
-        this.displayImage = 'assets/images/svg/dot.svg';
+        this.displayImage = 'assets/images/png/shop.png';
       }
       this.showQrcode(true);
     }
@@ -72,6 +74,7 @@ export class MerchantShareComponent implements OnInit {
   shareThroughFB() {
     let params = {
       href: this.shareLinkThroughFB,
+      message: this.shareMessage,
       method: 'share',
       display: 'popup'
     }
@@ -90,40 +93,23 @@ export class MerchantShareComponent implements OnInit {
       setTimeout(() => {
         this.isQrcodeLoading.start();
         let newImage = <HTMLImageElement>document.createElement('img');
+        let target = '.qrcode';
         newImage.alt = 'profile-image';
         newImage.src = this.displayImage;
-        $('.qrcode').empty();
+        $(target).empty();
         newImage.addEventListener('load', e => {
-          $('.qrcode').empty();
+          $(target).empty();
           let url = environment.URL + 'page/' + this.store.username + '?&type=qr_scan';
-          QRCodeBuilder.createQRcode('.qrcode', url, { width: 150, height: 150, color: '#666', callback: () => {
+          QRCodeBuilder.createQRcode(target, url, { width: 150, height: 150, color: '#666', callback: () => {
             this.isQrcodeLoading.stop();
           }})
           .then(() => {
-            this.renderProfileImageToQrcode(newImage, 150);
+            QRCodeBuilder.renderProfileImageToQrcode(target, newImage, 150);
           });
         });
       });
     } else {
       $('.qrcode').empty();
-    }
-  }
-  renderProfileImageToQrcode(image, size) {
-    let canvas = $('.qrcode').find('canvas')[0];
-    if (canvas) {
-      let context = (<HTMLCanvasElement>canvas).getContext('2d');
-      let width = size / 3 * 46.7 / 70;
-      let height = size / 3 * 46.7 / 70;
-      let offsetInnerY = size / 3 * 6 / 70;
-      let offsetX = size / 2 - width / 2;
-      let offsetY = size / 2 - height / 2 - offsetInnerY;
-      context.save();
-      context.beginPath();
-      context.arc(offsetX + width / 2, offsetY + width / 2, width / 2, 0, 2 * Math.PI);
-      context.fill();
-      context.clip();
-      context.drawImage(image, offsetX, offsetY, width, height);
-      context.restore();
     }
   }
   ngOnDestroy() {

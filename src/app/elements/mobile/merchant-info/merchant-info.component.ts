@@ -23,6 +23,7 @@ export class MerchantInfoComponent implements OnInit {
   @Output() onEditStoreTypeClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditAddressClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditTagsClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onEditContactButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditPhoneClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditEmailClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWebsiteClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -34,9 +35,9 @@ export class MerchantInfoComponent implements OnInit {
   @Output() onEditYoutubeClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditSnapchatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditTelegramClicked: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onEditWeiboClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWechatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAddMediaClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onDeleteContactButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   message;
   medias;
   preview: boolean;
@@ -87,6 +88,32 @@ export class MerchantInfoComponent implements OnInit {
   }
   isAddressExisting () {
     return this.store && this.store.fullAddress && this.store.fullAddress.address && this.store.fullAddress.state && this.store.fullAddress.postcode && this.store.fullAddress.country;
+  }
+  navigateByContactButton() {
+    if (this.store.contactButton) {
+      let contactValue = '';
+      switch (this.store.contactButton.type) {
+        case 'url':
+          contactValue = this.store.contactButton.value;
+          break;
+        case 'phoneCall':
+          contactValue = 'tel:' + this.store.contactButton.value;
+          break;
+        case 'whatsapp':
+          contactValue = 'https://wa.me/' + this.store.contactButton.value;
+          break;
+        case 'instagram':
+          contactValue = 'https://www.instagram.com/' + this.store.contactButton.value;
+          break;
+        case 'messenger':
+          contactValue = 'http://m.me/' + this.store.contactButton.value;
+          break;
+      }
+      window.open(
+        contactValue,
+        '_blank' // <- This is what makes it open in a new window.
+      );
+    }
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();

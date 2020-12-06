@@ -36,6 +36,7 @@ export class MerchantPageComponent implements OnInit {
   @Output() onEditStoreTypeClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditAddressClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditTagsClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onEditContactButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditPhoneClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditEmailClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWebsiteClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -47,9 +48,9 @@ export class MerchantPageComponent implements OnInit {
   @Output() onEditYoutubeClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditSnapchatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditTelegramClicked: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onEditWeiboClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWechatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAddMediaClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onDeleteContactButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   
   environment = environment;
   selectedCategory: string = 'all';
@@ -66,6 +67,7 @@ export class MerchantPageComponent implements OnInit {
   selectedQuickMenuIndex: number = 0;
   medias;
   link: string;
+  shareMessage: string = '';
   shareLinkThroughFB: string;
   shareLinkThroughTwitter: string;
   storeId;
@@ -85,8 +87,9 @@ export class MerchantPageComponent implements OnInit {
     if (changes['store'] && this.store) {
       this.link = environment.URL + 'page/' + this.store.username;
       this.shareLinkThroughFB = this.link;
-      this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
-      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/svg/dot.svg';
+      this.shareMessage = `View ${this.store.name} - Wonder Scale.`;
+      this.shareLinkThroughTwitter = `https://twitter.com/intent/tweet?text=${this.shareMessage} ${this.link}`;
+      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/png/shop.png';
       this.showQrcode();
       this.mapStore();
     }
@@ -108,7 +111,7 @@ export class MerchantPageComponent implements OnInit {
           this.displayImage = 'api/images/' + this.store.profileImage.replace(/\//g, ',');
         }
       } else {
-        this.displayImage = 'assets/images/svg/dot.svg';
+        this.displayImage = 'assets/images/png/shop.png';
       }
       this.showQrcode();
     }
@@ -137,36 +140,19 @@ export class MerchantPageComponent implements OnInit {
       let newImage = <HTMLImageElement>document.createElement('img');
       newImage.alt = 'profile-image';
       newImage.src = this.displayImage;
-      $('.qrcode').empty();
+      let target = '.qrcode';
+      $(target).empty();
       newImage.addEventListener('load', e => {
-        $('.qrcode').empty();
+        $(target).empty();
         let url = environment.URL + 'page/' + this.store.username;
-        QRCodeBuilder.createQRcode('.qrcode', url, { width: 100, height: 100, color: '#666', callback: () => {
+        QRCodeBuilder.createQRcode(target, url, { width: 100, height: 100, color: '#666', callback: () => {
           this.isQrcodeLoading.stop();
         }})
         .then(() => {
-          this.renderProfileImageToQrcode(newImage, 100);
+          QRCodeBuilder.renderProfileImageToQrcode(target, newImage, 100);
         });
       });
     });
-  }
-  renderProfileImageToQrcode(image, size) {
-    let canvas = $('.qrcode').find('canvas')[0];
-    if (canvas) {
-      let context = (<HTMLCanvasElement>canvas).getContext('2d');
-      let width = size / 3 * 46.7 / 70;
-      let height = size / 3 * 46.7 / 70;
-      let offsetInnerY = size / 3 * 6 / 70;
-      let offsetX = size / 2 - width / 2;
-      let offsetY = size / 2 - height / 2 - offsetInnerY;
-      context.save();
-      context.beginPath();
-      context.arc(offsetX + width / 2, offsetY + width / 2, width / 2, 0, 2 * Math.PI);
-      context.fill();
-      context.clip();
-      context.drawImage(image, offsetX, offsetY, width, height);
-      context.restore();
-    }
   }
   openInformation(index) {
     this.isInformationOpened = true;
@@ -261,6 +247,7 @@ export class MerchantPageComponent implements OnInit {
   shareThroughFB() {
     let params = {
       href: this.shareLinkThroughFB,
+      message: this.shareMessage,
       method: 'share',
       display: 'popup'
     }
@@ -272,6 +259,32 @@ export class MerchantPageComponent implements OnInit {
   }
   navigateToMap() {
     window.open(`http://www.google.com/maps/place/${this.store.location.coordinates[1]},${this.store.location.coordinates[0]}`, '_blank');
+  }
+  navigateByContactButton() {
+    if (this.store.contactButton) {
+      let contactValue = '';
+      switch (this.store.contactButton.type) {
+        case 'url':
+          contactValue = this.store.contactButton.value;
+          break;
+        case 'phoneCall':
+          contactValue = 'tel:' + this.store.contactButton.value;
+          break;
+        case 'whatsapp':
+          contactValue = 'https://wa.me/' + this.store.contactButton.value;
+          break;
+        case 'instagram':
+          contactValue = 'https://www.instagram.com/' + this.store.contactButton.value;
+          break;
+        case 'messenger':
+          contactValue = 'http://m.me/' + this.store.contactButton.value;
+          break;
+      }
+      window.open(
+        contactValue,
+        '_blank' // <- This is what makes it open in a new window.
+      );
+    }
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();

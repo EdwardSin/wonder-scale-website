@@ -11,7 +11,7 @@
         </button>
     </div>
     <div class="qrcode__container mb-3 mt-2 col-auto center">
-        <ws-spinner style='line-height: 150px' class="text-center d-block" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
+        <ws-spinner style='line-height: 150px' class="text-center d-block" [borderWidth]="1" [spinnerColor]="'#b71c1c'" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
         <div [hidden]="isQrcodeLoading.isRunning()" class="qrcode"></div>
     </div>
 

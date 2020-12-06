@@ -91,7 +91,7 @@
                     <div *ngIf="store?.tags?.length || isEditing">
                         <h5 class="font-weight-normal d-flex align-items-center">Features<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditTagsClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
                         <div *ngIf="store?.tags?.length; else noTagTemplate" class="px-3 pb-5 pt-3">
-                            <span class="badge mr-2 mb-1" style="color: #7f0000; background-color: #f7f7f7" *ngFor="let tag of store?.tags">{{ tag }}</span>
+                            <span class="badge mr-2 mb-1" style="color: #b71c1c; background-color: #f7f7f7" *ngFor="let tag of store?.tags">{{ tag }}</span>
                         </div>
                         <ng-template #noTagTemplate>
                             <p class="text-center" style="margin: 2rem 0">No feature</p>
@@ -155,7 +155,40 @@
             </div>
             <div class="col-lg-4">
                 <div class="merchant__sidebar">
-                    <div class="merchant__message-text mb-4"><span class="fas fa-info-circle merchant__message-text-icon mr-2"></span>Message Seller To Order</div>
+                    <button *ngIf="!store?.contactButton && isEditing" class="btn btn-contact-empty mb-4" (click)="onEditContactButtonClicked.emit($event)">
+                        <span class="fas fa-plus merchant__message-text-icon mr-2"></span>Add Button
+                    </button>
+                    <div *ngIf="store?.contactButton" mdbDropdown class="d-inline-block">
+                        <button *ngIf="isEditing" class="btn btn-contact mb-4" mdbDropdownToggle>
+                            <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
+                        </button>
+                        <button *ngIf="!isEditing" class="btn btn-contact mb-4" (click)="navigateByContactButton()">
+                            <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
+                        </button>
+                        <ng-template #contactButtonTemplate>
+                            <ng-container [ngSwitch]="store?.contactButton?.type">
+                                <span *ngSwitchCase="'url'" class="fas fa-info-circle merchant__message-text-icon mr-2"></span>
+                                <span *ngSwitchCase="'whatsapp'" class="fas fa-comment-dots merchant__message-text-icon mr-2"></span>
+                                <span *ngSwitchCase="'instagram'" class="fas fa-comment-dots merchant__message-text-icon mr-2"></span>
+                                <span *ngSwitchCase="'messenger'" class="fas fa-comment-dots merchant__message-text-icon mr-2"></span>
+                                <span *ngSwitchCase="'phoneCall'" class="fas fa-phone merchant__message-text-icon mr-2"></span>
+                            </ng-container>
+                            <ng-container [ngSwitch]="store?.contactButton?.label">
+                                <span *ngSwitchCase="'contactUs'">Contact Us</span>
+                                <span *ngSwitchCase="'bookNow'">Book Now</span>
+                                <span *ngSwitchCase="'orderNow'">Order Now</span>
+                                <span *ngSwitchCase="'purchaseNow'">Purchase Now</span>
+                                <span *ngSwitchCase="'learnMore'">Learn More</span>
+                            </ng-container>
+                        </ng-template>
+                        <div *ngIf="isEditing" class="dropdown-menu mt-0 pb-0 pt-0">
+                            <button class="dropdown-item" (click)="navigateByContactButton()">Test Button</button>
+                            <button class="dropdown-item" (click)="onEditContactButtonClicked.emit($event)">Edit Button</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item" (click)="onDeleteContactButtonClicked.emit($event)">Delete Button</button>
+                        </div>
+                    </div>
+
                     <button *ngIf="isAuthenticated" [disabled]="isEditing" class="btn btn-favorite mb-4" (click)="isFollowed ? unsaveStore() : saveStore()" [class.selected]="isFollowed">
                         <span class="fas fa-heart btn-favorite-icon mr-2"></span>
                         {{isFollowed ? 'Added To Favorite' : 'Add To Favorite'}}
@@ -166,7 +199,7 @@
                     <div class="merchant__sub-menu mb-4">
                         <div class="p-3 d-flex justify-content-center align-items-center">
                             <div class="border rounded text-center p-3 bg-white" style="height: 134px; width: 134px">
-                                <ws-spinner style='line-height: 100px' class="text-center d-block" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
+                                <ws-spinner style='line-height: 100px' class="text-center d-block" [borderWidth]="1" [spinnerColor]="'#b71c1c'" *ngIf="isQrcodeLoading.isRunning()"></ws-spinner>
                                 <div class="qrcode"></div>
                             </div>
                         </div>
@@ -176,14 +209,13 @@
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.website, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditWebsiteClicked, addLabel: 'Add Website', isLink: true, icon: 'fas fa-globe'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.facebook, isEditing: isEditing, onClick: onEditFacebookClicked, addLabel: 'Add Facebook', prefixLink: 'https://www.facebook.com/', isLink: true, icon: 'fa-facebook-f'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.instagram, isEditing: isEditing, onClick: onEditInstagramClicked, addLabel: 'Add Instagram', prefixLink: 'https://www.instagram.com/', isLink: true, icon: 'fa-instagram'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.twitter, isEditing: isEditing, onClick: onEditTwitterClicked, addLabel: 'Add Twitter', prefixLink: 'https://mobile.twitter.com/', isLink: true, icon: 'fa-twitter'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.twitter, isEditing: isEditing, onClick: onEditTwitterClicked, addLabel: 'Add Twitter', prefixLink: 'https://twitter.com/', isLink: true, icon: 'fa-twitter'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.whatsapp, isEditing: isEditing, onClick: onEditWhatsappClicked, addLabel: 'Add Whatsapp', prefixLink: 'https://wa.me/', isLink: true, icon: 'fa-whatsapp'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.messenger, isEditing: isEditing, onClick: onEditMessengerClicked, addLabel: 'Add Facebook Messenger', prefixLink: 'http://m.me/', isLink: true, icon: 'fa-facebook-messenger'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.youtube, isEditing: isEditing, onClick: onEditYoutubeClicked, addLabel: 'Add Youtube Account', isLink: true, icon: 'fa-youtube'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.snapchat, isEditing: isEditing, onClick: onEditSnapchatClicked, addLabel: 'Add Snapchat', prefixLink: 'www.snapchat.com/add/', isLink: true, icon: 'fa-snapchat'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.telegram, isEditing: isEditing, onClick: onEditTelegramClicked, addLabel: 'Add Telegram', icon: 'fa-telegram'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.weibo, isEditing: isEditing, onClick: onEditWeiboClicked, addLabel: 'Add Weibo', icon: 'fa-weibo'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.wechat, isEditing: isEditing, onClick: onEditWechatClicked, addLabel: 'Add Wechat', isLink: true, icon: 'fa-weixin'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.youtube, isEditing: isEditing, onClick: onEditYoutubeClicked, addLabel: 'Add Youtube Account', prefixLink: 'https://www.youtube.com/channel/', isLink: true, icon: 'fa-youtube'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.snapchat, isEditing: isEditing, onClick: onEditSnapchatClicked, addLabel: 'Add Snapchat', prefixLink: 'https://www.snapchat.com/add/', isLink: true, icon: 'fa-snapchat'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.telegram, isEditing: isEditing, onClick: onEditTelegramClicked, addLabel: 'Add Telegram', prefixLink: 'https://telegram.me/', isLink: true, icon: 'fa-telegram'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.wechat, isEditing: isEditing, onClick: onEditWechatClicked, addLabel: 'Add Wechat', isLink: false, icon: 'fa-weixin'}"></ng-container>
                         <a *ngIf="isEditing" class="merchant__edit-link text-center d-block" href="javascript:void(0)" (click)="onAddMediaClicked.emit($event)">+ Add Social Media</a>
                     </div>
                     <h5 class="h6 text-left mb-3 font-weight-normal">Share via:</h5>
@@ -191,8 +223,8 @@
                         <button [disabled]="isEditing" class="merchant__share merchant__share-fb mr-3" (click)="shareThroughFB()">
                             <span class="fab fa-facebook-f merchant__share-icon"></span>
                         </button>
-                        <button [disabled]="isEditing" class="merchant__share merchant__share-twitter mr-3" onclick="document.getElementById('shareTwitterId').click()">
-                            <a id="shareTwitterId" target="_blank" href="{{ shareLinkThroughTwitter }}">
+                        <button [disabled]="isEditing" class="mr-3" style="background: none; border: 0">
+                            <a id="shareTwitterId" class="merchant__share merchant__share-twitter" target="_blank" href="{{ shareLinkThroughTwitter }}">
                                 <span class="fab fa-twitter merchant__share-icon"></span>
                             </a>
                         </button>
@@ -218,7 +250,7 @@
 </ng-template>
 
 <ng-template #itemLoadingTemplate>
-    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 10rem; padding-bottom: 10rem;"></ws-spinner>
+    <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 10rem; padding-bottom: 10rem;"></ws-spinner>
 </ng-template>
 
 <ng-template #noItemTemplate>

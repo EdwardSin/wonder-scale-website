@@ -11,7 +11,7 @@
     <div class="mb-3">
         <button [class.selected]="selected == 'page'" class="btn btn-controller mr-2" (click)="navigateTo({selected: 'page'})">Page</button>
         <button [class.selected]="selected == 'item'" class="btn btn-controller" (click)="navigateTo({selected: 'item'})">Item</button>
-        <img (click)="onFavoriteModalOpened(true)" class="btn-logo" src="assets/images/svg/icon.svg" alt="logo" />
+        <img (click)="onFavoriteModalOpened(true)" class="btn-logo" src="assets/images/png/icon.png" alt="logo" />
     </div>
     <div class="items-container" *ngIf="!loading.isRunning() && displayItems.length; else loadingTemplate">
         <div class="row no-gutters mb-4" *ngIf="selected == 'page'">
@@ -25,10 +25,10 @@
 </div>
 
 <ng-template #loadingTemplate>
-    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
 </ng-template>
 <ng-template #modalLoadingTemplate>
-    <ws-spinner *ngIf="modalLoading.isRunning(); else noModalItemTemplate" class="text-center d-block w-100" style="padding-top: 28vh; padding-bottom:28vh"></ws-spinner>
+    <ws-spinner *ngIf="modalLoading.isRunning(); else noModalItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 28vh; padding-bottom:28vh"></ws-spinner>
 </ng-template>
 <ng-template #noItemTemplate>
     <h6 class="text-center" style="padding-top: 30vh; padding-bottom: 30vh">No favorite {{ selected }}.</h6>
@@ -49,7 +49,7 @@
               <div class="position-relative w-100">
                   <ul class="list-group suggestions" *ngIf="mapController.displayed" >
                       <li *ngIf="mapController?.loading?.isRunning()">
-                          <ws-spinner class="d-block w-100 text-center py-3"></ws-spinner>
+                          <ws-spinner class="d-block w-100 text-center py-3" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>
                       </li>
                       <li style="pointer-events: none;" *ngIf="!mapController.loading.isRunning() && !mapController?.suggestions?.length">
                           <p class="text-center mb-0 py-4">No location found!</p>
@@ -67,7 +67,7 @@
         </mat-select>
         <div class="items-modal-container" *ngIf="!modalLoading?.isRunning() && displayModalItems?.length; else modalLoadingTemplate">
             <a [routerLink]="['/page', store?.username]" class="row no-gutters border-bottom p-2 clickable" style="color: black" *ngFor="let store of displayModalItems">
-                <img style="width: 50px; height: 50px;" [src]="environment.IMAGE_URL + store?.profileImage" alt="profile image" />
+                <img style="width: 50px; height: 50px;" [src]="store?.profileImage ? environment.IMAGE_URL + store?.profileImage: 'assets/images/png/shop.png'" alt="profile image" />
                 <div class="px-2">
                     <p class="mb-0" style="font-size: 1.1rem">{{ store?.name }}</p>
                     <p class="mb-0" style="font-size: .8rem">Last updated {{ moment(store?.updatedAt).toNow() }}</p>
@@ -78,7 +78,7 @@
       </div>
       <div *ngIf="!isMobileSize || isMobileMapShown" class="col-lg-8 order-lg-2 order-1 pl-lg-2 position-relative">
         <button [disabled]="modalLoading.isRunning()" class="btn btn-controller position-absolute border" style="box-shadow: 0px 2px 2px rgba(0, 0, 0, .5); right: 1.5rem; top: 1.5rem; z-index: 1"
-            (click)="modalCurrentPage=1; updateModalItems()"><ws-spinner *ngIf="modalLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="3" class="mr-2"></ws-spinner>
+            (click)="modalCurrentPage=1; updateModalItems()"><ws-spinner *ngIf="modalLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="1" [spinnerColor]="'#b71c1c'" class="mr-2"></ws-spinner>
             <span class="align-middle d-inline-block" style="line-height:1.5rem">Search on the area</span></button>
         <agm-map class="w-100 h-100" [longitude]="mapController.mapPoint.longitude" [latitude]="mapController.mapPoint.latitude" [zoom]="mapController.zoom" [gestureHandling]="'greedy'"
             [mapDraggable]="true" [maxZoom]="17" [minZoom]="11" [streetViewControl]="false" panControl="false" zoomControl="false"
@@ -102,7 +102,7 @@
               [longitude]="result?.location?.coordinates[0]"
                 [latitude]="result?.location?.coordinates[1]" (markerClick)="selectMarker(result)">
                 <agm-info-window [isOpen]="selectedPage == result">
-                  <img  style="width: 25px; height: 25px;" [src]="environment.IMAGE_URL + result?.profileImage" alt="profile image" />
+                  <img  style="width: 25px; height: 25px;" [src]="result?.profileImage ? environment.IMAGE_URL + result?.profileImage: 'assets/images/png/shop.png'" alt="profile image" />
                   <a [routerLink]="['/page', result?.username]" class="clickable d-inline-block pl-2" style="color: #000">{{result?.name}}</a>
                   <p *ngIf="result?.description && result?.description !== ''">{{result?.description | limitTo: '30'}}</p>
                   <a *ngIf="result?.location?.coordinates[0] == 0 && result?.location?.coordinates[1] == 0" target="_blank"
