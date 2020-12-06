@@ -1,0 +1,7 @@
+*
+node_modules
+e2e
+seo
+src
+package.json
+!dist/*
