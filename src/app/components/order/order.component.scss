@@ -1,0 +1,17 @@
+.btn-receipt{
+    font-size: 1.1rem;
+    background-color: #b71c1c;
+    color: #fff;
+    border-radius: 25px;
+    padding: .5rem 2rem;
+    width: 100%;
+
+    &:hover{
+        background-color: #b71c1c;
+    }
+
+    &:disabled{
+        background-color: #f7f7f7;
+        color: #282c35;
+    }
+}
