@@ -28,6 +28,9 @@ const routes: Routes = [{
   canActivate: [AuthGuard],
   loadChildren: () => import('./modules/settings/settings.module').then(m => m.SettingsModule)
 }, {
+  path: 'order',
+  loadChildren: () => import('./modules/order/order.module').then(m => m.OrderModule)
+}, {
   path: '404',
   loadChildren: () => import('./modules/not-found/not-found.module').then(m => m.NotFoundModule)
 }, {

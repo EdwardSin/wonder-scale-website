@@ -1,0 +1,121 @@
+<div>
+    <div *ngIf="showStatusDetails">
+        <h5>Details</h5>
+        <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
+            <table>
+                <tr>
+                    <td class="py-2 align-text-top" width="140px">Status:</td>
+                    <td class="py-2 align-text-top">
+                        <ng-container [ngSwitch]="item.status">
+                            <span *ngSwitchCase="'new'" class="font-8 badge badge-light">New</span>
+                            <span *ngSwitchCase="'paid'">
+                                <span class="badge badge-warning">Paid</span>
+                                <span class="ml-2">(Waiting for the confirmation)</span>
+                            </span>
+                            <span *ngSwitchCase="'in_progress'" class="font-8 badge badge-warning">In Progress</span>
+                            <span *ngSwitchCase="'delivered'" class="font-8 badge badge-warning">Delivered</span>
+                            <span *ngSwitchCase="'cancelled'" class="font-8 badge badge-danger">Cancelled</span>
+                            <span *ngSwitchCase="'refunded'" class="font-8 badge badge-danger">Refunded</span>
+                            <span *ngSwitchCase="'completed'" class="font-8 badge badge-success">Completed</span>
+                        </ng-container>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-2 align-text-top">Last Updated:</td>
+                    <td class="py-2 align-text-top">{{ item?.updatedAt | date: 'MMM d, y (EEEE)' }}</td>
+                </tr>
+                <tr *ngIf="item?.remark">
+                    <td class="py-2 align-text-top">Remark:</td>
+                    <td class="py-2 align-text-top">{{ item?.remark }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div>
+        <h5>{{item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}}</h5>
+        <div class="p-3 font-9 mb-3 receipt-table" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
+            <table class="mb-3">
+                <tr>
+                    <td class="py-1 align-text-top" width="140px">{{item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}} ID:</td>
+                    <td class="py-1 align-text-top">{{ item?.receiptId }}</td>
+                </tr>
+                <tr *ngIf="item?.customer?.name">
+                    <td class="py-1 align-text-top">From:</td>
+                    <td class="py-1 align-text-top" *ngIf="!isPublic">{{ item?.store?.name }}</td>
+                    <td class="py-1 align-text-top" *ngIf="isPublic"><a [routerLink]="['/page', item?.store?.username]">{{ item?.store?.name}}</a></td>
+                </tr>
+                <tr *ngIf="item?.customer?.tel">
+                    <td class="py-1 align-text-top">Date:</td>
+                    <td class="py-1 align-text-top">{{ item?.createdAt | date: 'MMM d, y, h:mm a'}}</td>
+                </tr>
+            </table>
+            <table class="w-100">
+                <thead>
+                    <th class="font-weight-bold">Description</th>
+                    <th class="font-weight-bold text-center">Quantity</th>
+                    <th class="text-right font-weight-bold" width="140">Price (MYR)</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let receiptItem of item?.items">
+                        <td>
+                            <span class="col p-0">{{ receiptItem.name }} {{ receiptItem.type !== 'default' ? '- ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span>
+                        </td>
+                        <td class="text-center">
+                            x {{ receiptItem.quantity}}
+                        </td>
+                        <td class="text-right">
+                            <span class="px-1">RM {{ receiptItem.price * receiptItem.quantity | number: '1.2-2' }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div *ngIf="!item.items?.length">
+                <p class="text-center py-4 mb-0">No Item</p>
+            </div>
+            <hr />
+            <table class="w-100">
+                <tr *ngIf="delivery">
+                    <td class="text-right font-weight-bold">Delivery Fee</td>
+                    <td width="150" class="text-right font-weight-bold">{{ delivery | number: '1.2-2' }}</td>
+                </tr>
+                <tr>
+                    <td class="text-right font-weight-bold">Subtotal</td>
+                    <td class="text-right font-weight-bold">{{ subtotal | number: '1.2-2' }}</td>
+                </tr>
+                <tr>
+                    <td class="text-right font-weight-bold">Discount</td>
+                    <td class="text-right font-weight-bold">{{ discount | number: '1.2-2' }}</td>
+                </tr>
+                <tr style="font-size: 1.3rem">
+                    <td class="pt-2 text-right font-weight-bold">Total (MYR)</td>
+                    <td class="pt-2 text-right font-weight-bold">{{ total | number: '1.2-2' }}</td>
+                </tr>
+            </table>
+            <hr />
+            <p class="mb-0 font-weight-bold text-center">** THANK YOU **</p>
+        </div>
+    </div>
+    <div *ngIf="showDeliveryDetails && isDeliveryDetailsAvailable">
+        <h5>Delivery Information</h5>
+        <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
+            <table>
+                <tr *ngIf="item?.delivery?.etaDate">
+                    <td class="py-2 align-text-top" width="140px">ETA Delivery Date:</td>
+                    <td class="py-2 align-text-top">{{ item?.delivery?.etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
+                </tr>
+                <tr *ngIf="item?.customer?.firstName && item?.customer?.lastName">
+                    <td class="py-2 align-text-top" width="140px">Contact Name:</td>
+                    <td class="py-2 align-text-top">{{ item?.customer?.firstName }} {{ item?.customer?.lastName }}</td>
+                </tr>
+                <tr *ngIf="item?.customer?.phoneNumber">
+                    <td class="py-2 align-text-top">Contact Tel:</td>
+                    <td class="py-2 align-text-top">{{ item?.customer?.phoneNumber }}</td>
+                </tr>
+                <tr *ngIf="item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
+                    <td class="py-2 align-text-top" width="140px">Delivery Address:</td>
+                    <td class="py-2 align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + item?.customer.address?.country }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

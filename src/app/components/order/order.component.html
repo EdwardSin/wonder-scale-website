@@ -1,0 +1,31 @@
+<div class="container py-4">
+    <div *ngIf="item && !loading.isRunning(); else loadingTemplate">
+        <p class="text-center mb-2">You are able to track your order here!</p>
+        <div class="alert alert-danger mb-3" *ngIf="item?.isPaid && item?.status == 'new'">Your payslip was rejected! Please upload again!</div>
+        <order-receipt [item]="item" [showDeliveryDetails]="item.status !== 'new'" [isPublic]="true" [showStatusDetails]="item.status !== 'new'"></order-receipt>
+        <div *ngIf="item.status === 'new'" class="row no-gutters justify-content-center">
+            <div class="mb-3 mr-lg-2 col-lg-3">
+                <button class="btn btn-receipt" [disabled]="uploadLoading.isRunning()" onclick="document.getElementById('updatePayslipInput').click()">Upload Payslip</button>
+                <ws-uploader [id]="'updatePayslipInput'" [max]="1"
+                        [input]="uploadingFiles"
+                        (output)="fileChangeEvent($event)"></ws-uploader>
+            </div>
+            <div class="col-lg-3">
+                <button [disabled]="!uploadingFiles?.length || uploadLoading.isRunning()" class="btn btn-receipt" (click)="uploadPayslip()">
+                    <ws-spinner class="mr-2" *ngIf="uploadLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <ng-container *ngIf="loading.isRunning(); else noReceipt">
+        <ws-spinner class="text-center d-block w-100" style="padding-top: 10vh; padding-bottom: 10vh" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>
+    </ng-container>
+</ng-template>
+
+<ng-template #noReceipt>
+    <div class="text-center w-100">
+        <h6 class="py-5">Order/Receipt cannot be found!</h6>
+    </div>
+</ng-template>
