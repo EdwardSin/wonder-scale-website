@@ -21,10 +21,11 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let receiptId = this.route.snapshot.queryParams['receiptId'];
+    let _id = this.route.snapshot.queryParams['s_id'];
+    let receiptId = this.route.snapshot.queryParams['r_id'];
     this.loading.start();
-    if (receiptId) {
-      this.orderReceiptService.getOrderReceiptById(receiptId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+    if (_id && receiptId) {
+      this.orderReceiptService.getOrderReceiptById(_id, receiptId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
         if (result) {
           this.item = result['result'];
           this.refreshReceipt();
@@ -35,9 +36,9 @@ export class OrderComponent implements OnInit {
     }
   }
   refreshReceipt() {
-    let receiptId = this.route.snapshot.queryParams['receiptId'];
-    
-    interval(60 * 1000).pipe(switchMap(() => {return this.orderReceiptService.getOrderReceiptById(receiptId)}),
+    let _id = this.route.snapshot.queryParams['s_id'];
+    let receiptId = this.route.snapshot.queryParams['r_id'];
+    interval(60 * 1000).pipe(switchMap(() => {return this.orderReceiptService.getOrderReceiptById(_id, receiptId)}),
     takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       if (result ) {
         this.item = result['result'];
