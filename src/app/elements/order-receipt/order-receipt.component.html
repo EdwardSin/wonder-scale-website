@@ -13,12 +13,16 @@
                                 <span class="ml-2">(Waiting for the confirmation)</span>
                             </span>
                             <span *ngSwitchCase="'in_progress'" class="font-8 badge badge-warning">In Progress</span>
-                            <span *ngSwitchCase="'delivered'" class="font-8 badge badge-warning">Delivered</span>
+                            <span *ngSwitchCase="'delivered'" class="font-8 badge badge-warning">{{item?.deliveryOption == 'delivery' ? 'Delivered' : 'Ready to pickup'}}</span>
                             <span *ngSwitchCase="'cancelled'" class="font-8 badge badge-danger">Cancelled</span>
                             <span *ngSwitchCase="'refunded'" class="font-8 badge badge-danger">Refunded</span>
                             <span *ngSwitchCase="'completed'" class="font-8 badge badge-success">Completed</span>
                         </ng-container>
                     </td>
+                </tr>
+                <tr>
+                    <td class="py-2 align-text-top">Delivery Option:</td>
+                    <td class="py-2 align-text-top">{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Self-pickup' }}</td>
                 </tr>
                 <tr>
                     <td class="py-2 align-text-top">Last Updated:</td>
@@ -96,11 +100,11 @@
         </div>
     </div>
     <div *ngIf="showDeliveryDetails && isDeliveryDetailsAvailable">
-        <h5>Delivery Information</h5>
+        <h5>{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Pickup'}} Information</h5>
         <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
             <table>
                 <tr *ngIf="item?.delivery?.etaDate">
-                    <td class="py-2 align-text-top" width="140px">ETA Delivery Date:</td>
+                    <td class="py-2 align-text-top" width="140px">ETA {{item?.deliveryOption == 'delivery' ? 'Delivery': 'Pickup'}} Date:</td>
                     <td class="py-2 align-text-top">{{ item?.delivery?.etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
                 </tr>
                 <tr *ngIf="item?.customer?.firstName && item?.customer?.lastName">
@@ -111,7 +115,7 @@
                     <td class="py-2 align-text-top">Contact Tel:</td>
                     <td class="py-2 align-text-top">{{ item?.customer?.phoneNumber }}</td>
                 </tr>
-                <tr *ngIf="item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
+                <tr *ngIf="item?.deliveryOption == 'delivery' && item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
                     <td class="py-2 align-text-top" width="140px">Delivery Address:</td>
                     <td class="py-2 align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + item?.customer.address?.country }}</td>
                 </tr>
