@@ -2,11 +2,11 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'order-receipt',
-  templateUrl: './order-receipt.component.html',
-  styleUrls: ['./order-receipt.component.scss']
+  selector: 'ws-invoice',
+  templateUrl: './ws-invoice.component.html',
+  styleUrls: ['./ws-invoice.component.scss']
 })
-export class OrderReceiptComponent implements OnInit {
+export class WsInvoiceComponent implements OnInit {
   @Input() item;
   @Input() isPublic: boolean;
   @Input() showDeliveryDetails;

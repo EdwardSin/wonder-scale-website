@@ -2,22 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { WsToastService } from '@elements/ws-toast/ws-toast.service';
-import { OrderReceiptService } from '@services/order-receipt.service';
+import { InvoiceService } from '@services/http/public/invoice.service';
 import { interval, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'order',
-  templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss']
+  selector: 'invoice',
+  templateUrl: './invoice.component.html',
+  styleUrls: ['./invoice.component.scss']
 })
-export class OrderComponent implements OnInit {
+export class InvoiceComponent implements OnInit {
   item;
   uploadingFiles = [];
   uploadLoading: WsLoading = new WsLoading;
   loading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
-  constructor(private orderReceiptService: OrderReceiptService, private route: ActivatedRoute) { 
+  constructor(private invoiceService: InvoiceService, private route: ActivatedRoute) { 
   }
 
   ngOnInit(): void {
@@ -25,7 +25,7 @@ export class OrderComponent implements OnInit {
     let receiptId = this.route.snapshot.queryParams['r_id'];
     this.loading.start();
     if (_id && receiptId) {
-      this.orderReceiptService.getOrderReceiptById(_id, receiptId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+      this.invoiceService.getInvoiceById(_id, receiptId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
         if (result) {
           this.item = result['result'];
           this.refreshReceipt();
@@ -38,7 +38,7 @@ export class OrderComponent implements OnInit {
   refreshReceipt() {
     let _id = this.route.snapshot.queryParams['s_id'];
     let receiptId = this.route.snapshot.queryParams['r_id'];
-    interval(60 * 1000).pipe(switchMap(() => {return this.orderReceiptService.getOrderReceiptById(_id, receiptId)}),
+    interval(60 * 1000).pipe(switchMap(() => {return this.invoiceService.getInvoiceById(_id, receiptId)}),
     takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       if (result ) {
         this.item = result['result'];
@@ -62,7 +62,7 @@ export class OrderComponent implements OnInit {
         file: this.uploadingFiles[0].base64
       }
       this.uploadLoading.start();
-      this.orderReceiptService.uploadPayslip(obj).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.uploadLoading.stop())).subscribe(result => {
+      this.invoiceService.uploadPayslip(obj).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.uploadLoading.stop())).subscribe(result => {
         if (result && result['result']) {
           this.item.status = 'paid';
           this.uploadingFiles = [];
