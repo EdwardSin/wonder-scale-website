@@ -6,6 +6,11 @@
 ---------------------------------------------
 - 2020-12-27                                -
 ---------------------------------------------
+.: WSM: Task: Style the font weight and adjust invoice size (WSW-94)
+
+---------------------------------------------
+- 2020-12-27                                -
+---------------------------------------------
 .: WSM: Task: Mark order as self-pickup (WSM-257)
 .: WSW: Task: Rename order to invoice (WSW-94)
 
