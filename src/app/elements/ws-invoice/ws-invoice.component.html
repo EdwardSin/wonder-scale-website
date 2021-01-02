@@ -20,6 +20,10 @@
                         </ng-container>
                     </td>
                 </tr>
+                <tr *ngIf="item?.status == 'refunded' || item?.status == 'cancelled'">
+                    <td class="py-2 align-text-top">Reason:</td>
+                    <td class="py-2 align-text-top">{{ item?.reason }}</td>
+                </tr>
                 <tr>
                     <td class="py-2 align-text-top">Delivery Option:</td>
                     <td class="py-2 align-text-top">{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Self-pickup' }}</td>
@@ -117,7 +121,7 @@
                 </tr>
                 <tr *ngIf="item?.deliveryOption == 'delivery' && item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
                     <td class="py-2 align-text-top" width="140px">Delivery Address:</td>
-                    <td class="py-2 align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + item?.customer.address?.country }}</td>
+                    <td class="py-2 align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + ', ' + item?.customer.address?.country }}</td>
                 </tr>
             </table>
         </div>

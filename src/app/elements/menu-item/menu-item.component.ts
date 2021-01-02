@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { SharedCartService } from '@services/shared/shared-cart.service';
 import { CartItem } from '@objects/cart-item';
 import { Item } from '@objects/item';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'menu-item',
@@ -21,10 +22,14 @@ export class MenuItemComponent implements OnInit {
   selectedImagesIndex: number = 0;
   environment = environment;
   selectedType = '';
+  currencies = [];
   ngUnsubscribe: Subject<any> = new Subject;
   constructor(public currencyService: CurrencyService, private sharedCartService: SharedCartService) { }
 
   ngOnInit(): void {
+    this.currencyService.currenciesBehaviourSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.currencies = result
+    });
   }
   increase() {
     this.quantity++;

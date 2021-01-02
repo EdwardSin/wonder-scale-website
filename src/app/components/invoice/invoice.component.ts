@@ -18,12 +18,12 @@ export class InvoiceComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
   constructor(private invoiceService: InvoiceService, private route: ActivatedRoute) { 
+    this.loading.start();
   }
 
   ngOnInit(): void {
     let _id = this.route.snapshot.queryParams['s_id'];
     let receiptId = this.route.snapshot.queryParams['r_id'];
-    this.loading.start();
     if (_id && receiptId) {
       this.invoiceService.getInvoiceById(_id, receiptId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
         if (result) {
