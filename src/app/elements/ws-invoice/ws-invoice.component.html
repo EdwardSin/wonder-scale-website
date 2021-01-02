@@ -47,12 +47,12 @@
                     <td class="py-1 align-text-top" width="140px">{{item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}} ID:</td>
                     <td class="py-1 align-text-top">{{ item?.receiptId }}</td>
                 </tr>
-                <tr *ngIf="item?.customer?.name">
+                <tr>
                     <td class="py-1 align-text-top">From:</td>
                     <td class="py-1 align-text-top" *ngIf="!isPublic">{{ item?.store?.name }}</td>
                     <td class="py-1 align-text-top" *ngIf="isPublic"><a [routerLink]="['/page', item?.store?.username]">{{ item?.store?.name}}</a></td>
                 </tr>
-                <tr *ngIf="item?.customer?.tel">
+                <tr>
                     <td class="py-1 align-text-top">Date:</td>
                     <td class="py-1 align-text-top">{{ item?.createdAt | date: 'MMM d, y, h:mm a'}}</td>
                 </tr>
