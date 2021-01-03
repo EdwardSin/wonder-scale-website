@@ -12,12 +12,12 @@
                         <span class="list-item-info__icon fas fa-store" (click)="navigateToStore()"></span>
                     </div>
                     <div class="list-item-info__price-container">
-                        <span class="d-inline-block mr-2 mb-0" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != item.price">
+                        <span class="d-inline-block mr-2 mb-0" *ngIf="currencies?.length && item?.currency && item?.isOffer && item.priceAfterDiscount != item.price">
                             <span class="list-item-info__details__original-price d-inline-block">
                                 <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
                         </span>
-                        <span class="list-item-info__details__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
-                        <span [class.list-item-info__details__price__offer]="item?.isDiscountExisting" class="list-item-info__details__price mb-1" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : defaultType?.discount }}</span>
+                        <span class="list-item-info__details__price mb-1" *ngIf="currencies?.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                        <span [class.list-item-info__details__price__offer]="item?.isDiscountExisting" class="list-item-info__details__price mb-1" *ngIf="currencies?.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : defaultType?.discount }}</span>
                         <span *ngIf="false && item?.quantity" class="list-item-info__details__quantity">Quantity: {{ quantity }}</span>
                     </div>
                 </div>
@@ -33,11 +33,11 @@
                                 <img style="width: 100%; object-fit: contain; height: initial" [lazyLoad]="environment.IMAGE_URL + image" [defaultImage]="'assets/images/png/itemProfile.png'" alt="image"/>
                                 <div [class.swiper__image-label-offer]="item?.isOffer && item.priceAfterDiscount != selectedType.price" class="swiper__image-label w-100 text-center font-8">
                                     <p class="d-inline-block mb-0">
-                                        <span *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != selectedType.price" class="d-inline-block mr-2 font-8" style="text-decoration: line-through;">
+                                        <span *ngIf="currencies?.length && item?.currency && item?.isOffer && item.priceAfterDiscount != selectedType.price" class="d-inline-block mr-2 font-8" style="text-decoration: line-through;">
                                             <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
                                         <span>
-                                            <span class="mb-1" *ngIf="currencyService.currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
-                                            <span class="mb-1" *ngIf="currencyService.currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</span>
+                                            <span class="mb-1" *ngIf="currencies?.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                                            <span class="mb-1" *ngIf="currencies?.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</span>
                                         </span>
                                     </p>
                                 </div>

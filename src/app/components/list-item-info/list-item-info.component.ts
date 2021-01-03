@@ -31,6 +31,7 @@ export class ListItemInfoComponent implements OnInit {
   selectedProfileIndex: number = 0;
   environment = environment;
   link: string;
+  currencies = [];
   shareLinkThroughFB: string;
   shareLinkThroughTwitter: string;
   shareLinkThroughEmail: string;
@@ -55,6 +56,9 @@ export class ListItemInfoComponent implements OnInit {
     } else {
       this.getItemById(itemId);
     }
+    this.currencyService.currenciesBehaviourSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.currencies = result;
+    })
   }
   getItemById(id) {
     this.loading.start();

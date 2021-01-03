@@ -29,6 +29,7 @@ export class AppComponent {
       .subscribe(result => {
         if (result) {
           let rates = result['rates'];
+          let currencies = [];
           this.currencyService.currencyRate.next(rates);
           this.currencyService.currencyFullnameArray.forEach(key => {
             let currency = new Currency();
@@ -36,8 +37,9 @@ export class AppComponent {
             currency.rate = rates[key];
             currency.symbol = this.currencyService.currencySymbols[key];
             currency.fullname = this.currencyService.currencyFullnames[key];
-            this.currencyService.currencies.push(currency);
+            currencies.push(currency);
           })
+          this.currencyService.currenciesBehaviourSubject.next(currencies);
         }
       });
     this.sharedLoadingService.screenLoading.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
