@@ -23,6 +23,7 @@ export class ListItemComponent implements OnInit {
   @Input() follow: boolean;
   @Output() followChanged: EventEmitter<any> = new EventEmitter;
   environment = environment;
+  currencies = [];
   saveLoading: WsLoading = new WsLoading;
   ngUnsubscribe: Subject<any> = new Subject;
   followItems: Array<string> = [];
@@ -48,6 +49,9 @@ export class ListItemComponent implements OnInit {
       this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.isAuthenticated = !!result;
       });
+      this.currencyService.currenciesBehaviourSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.currencies = result;
+      })
     }
 
   ngOnInit(): void {
