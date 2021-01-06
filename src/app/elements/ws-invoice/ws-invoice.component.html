@@ -28,6 +28,11 @@
                     <td class="py-2 align-text-top">Delivery Option:</td>
                     <td class="py-2 align-text-top">{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Self-pickup' }}</td>
                 </tr>
+                <tr *ngIf="item?.delivery?.etaDate">
+                    <td class="py-2 align-text-top" width="140px">ETA {{item?.deliveryOption == 'delivery' ? 'Delivery': 'Pickup'}} Date:</td>
+                    <td class="py-2 align-text-top" *ngIf="!item?.delivery?.etaHour">{{ etaDate | date: 'MMM d, y (EEEE)' }}</td>
+                    <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
+                </tr>
                 <tr>
                     <td class="py-2 align-text-top">Last Updated:</td>
                     <td class="py-2 align-text-top">{{ item?.updatedAt | date: 'MMM d, y (EEEE)' }}</td>
@@ -107,10 +112,6 @@
         <h5>{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Pickup'}} Information</h5>
         <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
             <table>
-                <tr *ngIf="item?.delivery?.etaDate">
-                    <td class="py-2 align-text-top" width="140px">ETA {{item?.deliveryOption == 'delivery' ? 'Delivery': 'Pickup'}} Date:</td>
-                    <td class="py-2 align-text-top">{{ item?.delivery?.etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
-                </tr>
                 <tr *ngIf="item?.customer?.firstName && item?.customer?.lastName">
                     <td class="py-2 align-text-top" width="140px">Contact Name:</td>
                     <td class="py-2 align-text-top">{{ item?.customer?.firstName }} {{ item?.customer?.lastName }}</td>
