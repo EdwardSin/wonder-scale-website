@@ -110,7 +110,7 @@
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.email, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditEmailClicked, addLabel: 'Add Email', isLink: true, icon: 'fas fa-envelope'}"></ng-container>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.website, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditWebsiteClicked, addLabel: 'Add Website', isLink: true, icon: 'fas fa-globe'}"></ng-container>
             </div>
-            <div class="social-media__container" *ngIf="store?.media?.length">
+            <div class="social-media__container" *ngIf="isEditing || store?.media?.length">
                 <h4 class="info__title">
                     Others
                 </h4>
