@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Store } from 'src/app/objects/store';
-import { takeUntil, tap } from 'rxjs/operators';
+import { finalize, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { StoreService } from '@services/http/public/store.service';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
@@ -143,7 +143,7 @@ export class MerchantMobileComponent implements OnInit {
     this.showSelection();
     this.storeService.getStoreByUsername(username).pipe(tap((result) => {
       this.store = result.result;
-    }), takeUntil(this.ngUnsubscribe)).subscribe(() => {
+    }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
       if (this.store) {
         DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
         this.storeId = this.store._id;
@@ -153,9 +153,7 @@ export class MerchantMobileComponent implements OnInit {
       } else {
         this.isShownSelection = false;
       }
-      this.loading.stop();
     }, () => {
-      this.loading.stop();
       this.isShownSelection = false;
     });
   }

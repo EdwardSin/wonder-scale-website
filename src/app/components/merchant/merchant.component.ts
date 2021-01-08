@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Store } from 'src/app/objects/store';
-import { takeUntil, tap } from 'rxjs/operators';
+import { finalize, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { StoreService } from '@services/http/public/store.service';
 import { ItemService } from '@services/http/public/item.service';
@@ -88,7 +88,7 @@ export class MerchantComponent implements OnInit {
         this.isFollowed = result['result'];
         this.isSaveLoading.stop();
       })
-    }), takeUntil(this.ngUnsubscribe)).subscribe(() => {
+    }), takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(() => {
       if (this.store) {
         this.sharedStoreService.store.next(this.store);
         this.banners = this.store.informationImages.map(informationImage => environment.IMAGE_URL + informationImage);

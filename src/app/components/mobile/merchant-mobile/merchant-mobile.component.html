@@ -17,6 +17,6 @@
 </ng-template>
 
 <ng-template #noStoreTemplate>
-    <h6 *ngIf="!message" class="my-5 py-5 text-center">Store is not found!</h6>
+    <h6 *ngIf="!message" class="my-5 py-5 text-center">Store is not found!<br/><br/>It might be under maintenance!</h6>
     <h6 *ngIf="message" class="my-5 py-5 text-center">{{ message }}</h6>
 </ng-template>
