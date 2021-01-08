@@ -7,6 +7,7 @@
 - 2021-01-08                                -
 ---------------------------------------------
 .: WSW: BugFix: When store is under maintenance, add the message (WSW-101)
+.: WSW: BugFix: Header overflow issue (WSW-102)
 
 ---------------------------------------------
 - 2021-01-06                                -
