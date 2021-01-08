@@ -20,7 +20,7 @@
                         </ng-container>
                     </td>
                 </tr>
-                <tr *ngIf="item?.status == 'refunded' || item?.status == 'cancelled'">
+                <tr *ngIf="(item?.status == 'refunded' || item?.status == 'cancelled') && item?.reason">
                     <td class="py-2 align-text-top">Reason:</td>
                     <td class="py-2 align-text-top">{{ item?.reason }}</td>
                 </tr>
@@ -33,9 +33,13 @@
                     <td class="py-2 align-text-top" *ngIf="!item?.delivery?.etaHour">{{ etaDate | date: 'MMM d, y (EEEE)' }}</td>
                     <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
                 </tr>
-                <tr>
+                <tr *ngIf="(item?.status == 'completed' || item?.status == 'refunded' || item?.status == 'cancelled') && item?.completedAt">
+                    <td class="py-2 align-text-top">Completion Date:</td>
+                    <td class="py-2 align-text-top">{{ item?.completedAt | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
+                </tr>
+                <tr *ngIf="item?.status !== 'completed' && item?.status !== 'refunded' && item?.status !== 'cancelled' && !item?.completedAt">
                     <td class="py-2 align-text-top">Last Updated:</td>
-                    <td class="py-2 align-text-top">{{ item?.updatedAt | date: 'MMM d, y (EEEE)' }}</td>
+                    <td class="py-2 align-text-top">{{ item?.updatedAt | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
                 </tr>
                 <tr *ngIf="item?.remark">
                     <td class="py-2 align-text-top">Remark:</td>
