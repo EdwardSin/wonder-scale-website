@@ -21,7 +21,7 @@ import { VisitorGuard } from 'src/app/guards/visitor.guard';
 export class HeaderComponent implements OnInit {
   keyword: string = '';
   user: User;
-  isMobileSize: boolean;
+  isMobileSize: boolean = null;
   @ViewChild('headerKeyword') headerKeyword: ElementRef;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private authUserService: AuthUserService,
