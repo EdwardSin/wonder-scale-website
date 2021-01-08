@@ -18,7 +18,7 @@
             </ul>
         </div>
         <div class="user-container">
-            <div *ngIf="!user && !isMobileSize">
+            <div *ngIf="!user && isMobileSize == false">
                 <a class="user-container__link" href="javascript:void(0)"
                 [routerLink]="[]" [queryParams]="{modal: 'login'}" [queryParamsHandling]="'merge'">Login</a>
                 <span class="user-container__text">|</span>
