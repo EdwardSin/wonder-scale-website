@@ -1,8 +1,8 @@
 <header>
     <div class="row no-gutters px-3">
-        <div class="float-left col row no-gutters">
-            <a [routerLink]="['/']" class="header__label">
-                <object style="pointer-events: none" type="image/svg+xml" data="assets/images/svg/icon-title.svg" width="150"></object>
+        <div *ngIf="isMobileSize !== null" class="float-left col row no-gutters">
+            <a [routerLink]="['/']" class="header__label" style="display: flex">
+                <object style="pointer-events: none;" type="image/svg+xml" data="assets/images/svg/icon-title.svg" height="70" width="150"></object>
             </a>
             <div *ngIf="false" class="position-relative col-sm-auto col pr-2">
                 <input #headerKeyword class="form-control header__searchbar" placeholder="Search..." (keydown.enter)="navigateTo()" [(ngModel)]="keyword"/>
@@ -18,7 +18,7 @@
             </ul>
         </div>
         <div class="user-container">
-            <div *ngIf="!user && !isMobileSize">
+            <div *ngIf="!user && isMobileSize == false">
                 <a class="user-container__link" href="javascript:void(0)"
                 [routerLink]="[]" [queryParams]="{modal: 'login'}" [queryParamsHandling]="'merge'">Login</a>
                 <span class="user-container__text">|</span>
