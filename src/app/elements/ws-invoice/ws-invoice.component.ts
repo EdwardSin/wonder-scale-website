@@ -17,12 +17,21 @@ export class WsInvoiceComponent implements OnInit {
   discount: number = 0;
   total: number = 0;
   isDeliveryDetailsAvailable: boolean;
+  etaDate;
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes && changes['item']) {
       this.notifyCalculation();
+      if (this.item && this.item.delivery && this.item.delivery.etaDate) {
+        let etaDate = new Date(this.item.delivery.etaDate);
+        if (this.item.delivery.etaHour) {
+          etaDate.setHours(this.item.delivery.etaHour);
+          etaDate.setMinutes(this.item.delivery.etaMin);
+        }
+        this.etaDate = etaDate;
+      }
       this.isDeliveryDetailsAvailable = this._isDeliveryDetailsAvailable();
     }
   }
@@ -43,8 +52,7 @@ export class WsInvoiceComponent implements OnInit {
     this.total = this.delivery + this.subtotal * (100 - discountValue) / 100;
   }
   _isDeliveryDetailsAvailable() {
-    return (this.item.delivery && this.item.delivery.etaDate) ||
-            (this.item.customer && this.item.customer.firstName && this.item.customer.lastName) ||
+    return (this.item.customer && this.item.customer.firstName && this.item.customer.lastName) ||
             (this.item.customer && this.item.customer.phoneNumber) ||
             (this.item.customer && this.item.customer.address && this.item.customer.address.address && this.item.customer.address.state && this.item.customer.address.postcode);
   }
