@@ -69,15 +69,15 @@
             <table class="w-100">
                 <thead>
                     <th class="font-weight-bold">Description</th>
-                    <th class="font-weight-bold text-center">Quantity</th>
+                    <th class="font-weight-bold text-center d-none d-lg-table-cell">Quantity</th>
                     <th class="text-right font-weight-bold" width="120">Price (MYR)</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let receiptItem of item?.items">
                         <td>
-                            <span class="col p-0">{{ receiptItem.name }} {{ receiptItem.type !== 'default' ? '- ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span>
+                            <span class="col p-0">{{ receiptItem.name }} {{ receiptItem.type !== 'Default' ? '- ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x' + receiptItem.quantity }}</span>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center d-none d-lg-table-cell">
                             x {{ receiptItem.quantity}}
                         </td>
                         <td class="text-right">
