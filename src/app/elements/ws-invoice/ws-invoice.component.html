@@ -9,7 +9,7 @@
                         <ng-container [ngSwitch]="item.status">
                             <span *ngSwitchCase="'new'" class="font-8 badge badge-light">New</span>
                             <span *ngSwitchCase="'paid'">
-                                <span class="badge badge-warning">Paid</span>
+                                <span class="font-8 badge badge-warning">Paid</span>
                                 <span class="ml-2">(Waiting for the confirmation)</span>
                             </span>
                             <span *ngSwitchCase="'in_progress'" class="font-8 badge badge-warning">In Progress</span>
