@@ -1,7 +1,7 @@
 <div class="container py-4">
     <div class="col-lg-8 center p-0" *ngIf="item && !loading.isRunning(); else loadingTemplate">
         <p class="text-center mb-2">You are able to track your order here!</p>
-        <div class="alert alert-danger mb-3" *ngIf="item?.isPaid && item?.status == 'new'">Your payslip was rejected! Please upload again!</div>
+        <div class="alert alert-danger mb-3" *ngIf="item?.paidAt && item?.status == 'new'">Your payslip was rejected! Please upload again!</div>
         <ws-invoice [item]="item" [showDeliveryDetails]="item.status !== 'new'" [isPublic]="true" [showStatusDetails]="item.status !== 'new'"></ws-invoice>
         <div *ngIf="item.status === 'new'" class="row no-gutters justify-content-center">
             <div class="mb-3 mr-lg-3 col-lg-5">
