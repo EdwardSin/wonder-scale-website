@@ -9,7 +9,7 @@
                         <ng-container [ngSwitch]="item.status">
                             <span *ngSwitchCase="'new'" class="font-8 badge badge-light">New</span>
                             <span *ngSwitchCase="'paid'">
-                                <span class="badge badge-warning">Paid</span>
+                                <span class="font-8 badge badge-warning">Paid</span>
                                 <span class="ml-2">(Waiting for the confirmation)</span>
                             </span>
                             <span *ngSwitchCase="'in_progress'" class="font-8 badge badge-warning">In Progress</span>
@@ -30,8 +30,8 @@
                 </tr>
                 <tr *ngIf="item?.delivery?.etaDate">
                     <td class="py-2 align-text-top" width="140px">ETA {{item?.deliveryOption == 'delivery' ? 'Delivery': 'Pickup'}} Date:</td>
-                    <td class="py-2 align-text-top" *ngIf="!item?.delivery?.etaHour">{{ etaDate | date: 'MMM d, y (EEEE)' }}</td>
-                    <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
+                    <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour == null || item?.delivery?.etaHour == undefined">{{ etaDate | date: 'MMM d, y (EEEE)' }}</td>
+                    <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour > -1">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
                 </tr>
                 <tr *ngIf="(item?.status == 'completed' || item?.status == 'refunded' || item?.status == 'cancelled') && item?.completedAt">
                     <td class="py-2 align-text-top">Completion Date:</td>
@@ -69,15 +69,15 @@
             <table class="w-100">
                 <thead>
                     <th class="font-weight-bold">Description</th>
-                    <th class="font-weight-bold text-center">Quantity</th>
+                    <th class="font-weight-bold text-center d-none d-lg-table-cell">Quantity</th>
                     <th class="text-right font-weight-bold" width="120">Price (MYR)</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let receiptItem of item?.items">
                         <td>
-                            <span class="col p-0">{{ receiptItem.name }} {{ receiptItem.type !== 'default' ? '- ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span>
+                            <span class="col p-0">{{ receiptItem.name }} {{ receiptItem.type !== 'Default' ? '- ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x' + receiptItem.quantity }}</span>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center d-none d-lg-table-cell">
                             x {{ receiptItem.quantity}}
                         </td>
                         <td class="text-right">
