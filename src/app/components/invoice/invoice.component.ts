@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { WsToastService } from '@elements/ws-toast/ws-toast.service';
+import { ImageHelper } from '@helpers/imagehelper/image.helper';
 import { InvoiceService } from '@services/http/public/invoice.service';
 import { interval, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
@@ -14,14 +15,13 @@ import { finalize, switchMap, takeUntil } from 'rxjs/operators';
 export class InvoiceComponent implements OnInit {
   item;
   uploadingFiles = [];
+  uploadingImage: string = '';
+  previewLoading: WsLoading = new WsLoading;
   uploadLoading: WsLoading = new WsLoading;
   loading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
   constructor(private invoiceService: InvoiceService, private route: ActivatedRoute) { 
     this.loading.start();
-  }
-
-  ngOnInit(): void {
     let _id = this.route.snapshot.queryParams['s_id'];
     let receiptId = this.route.snapshot.queryParams['r_id'];
     if (_id && receiptId) {
@@ -35,6 +35,9 @@ export class InvoiceComponent implements OnInit {
       this.loading.stop();
     }
   }
+
+  ngOnInit(): void {
+  }
   refreshReceipt() {
     let _id = this.route.snapshot.queryParams['s_id'];
     let receiptId = this.route.snapshot.queryParams['r_id'];
@@ -46,13 +49,18 @@ export class InvoiceComponent implements OnInit {
     });
   }
   fileChangeEvent(event) {
+    this.previewLoading.start();
     event.forEach(item => {
-      let exist = this.uploadingFiles.find(image => {
-        return image.name == item.name && image.file.size == item.file.size;
-      })
-      if (!exist) {
-        this.uploadingFiles.push(item);
-      }
+      ImageHelper.resizeImage(item.base64, null, null, .5).then(result => {
+        let exist = this.uploadingFiles.find(image => {
+          return image.name == item.name && image.file.size == item.file.size;
+        })
+        if (!exist) {
+          this.uploadingFiles.push(item);
+          this.uploadingImage = item.base64;
+          this.previewLoading.stop();
+        }
+      });
     });
   }
   uploadPayslip() {
@@ -72,5 +80,13 @@ export class InvoiceComponent implements OnInit {
     } else {
       WsToastService.toastSubject.next({ content: 'Please upload an image!', type: 'danger'});
     }
+  }
+  cancelUploading() {
+    this.uploadingFiles = [];
+    this.uploadingImage = '';
+  }
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

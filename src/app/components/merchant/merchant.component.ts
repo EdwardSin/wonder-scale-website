@@ -18,6 +18,7 @@ import { SharedStoreService } from '@services/shared-store.service';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { Meta } from '@angular/platform-browser';
+import { DateTimeHelper } from '../../helpers/datetimehelper/datetime.helper';
 
 @Component({
   selector: 'merchant',
@@ -52,8 +53,7 @@ export class MerchantComponent implements OnInit {
     public authFollowService: AuthFollowService,
     public facebookService: FacebookService,
     public itemService: ItemService) {
-    let date = new Date;
-    this.todayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+    this.todayDate = DateTimeHelper.getTodayWithCurrentTimezone()
   }
   ngOnInit() {
     let username = this.route.snapshot.params.username;
@@ -122,7 +122,7 @@ export class MerchantComponent implements OnInit {
   isTrackable() {
     let isTrackable = true;
     let previousTrack = this.getPreviousTrack();
-    let isNotToday = new Date(previousTrack.date).valueOf() != this.todayDate.valueOf();
+    let isNotToday = DateTimeHelper.getDateWithCurrentTimezone(new Date(previousTrack.date)).valueOf() != this.todayDate.valueOf();
     let isNotIncludeStore = typeof previousTrack.value == typeof [] && !previousTrack.value.includes(this.store._id)
     isTrackable = isNotToday || isNotIncludeStore;
     return isTrackable;
