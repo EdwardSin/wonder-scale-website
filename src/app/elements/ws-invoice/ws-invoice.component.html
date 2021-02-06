@@ -30,8 +30,8 @@
                 </tr>
                 <tr *ngIf="item?.delivery?.etaDate">
                     <td class="py-2 align-text-top" width="140px">ETA {{item?.deliveryOption == 'delivery' ? 'Delivery': 'Pickup'}} Date:</td>
-                    <td class="py-2 align-text-top" *ngIf="!item?.delivery?.etaHour">{{ etaDate | date: 'MMM d, y (EEEE)' }}</td>
-                    <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
+                    <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour == null || item?.delivery?.etaHour == undefined">{{ etaDate | date: 'MMM d, y (EEEE)' }}</td>
+                    <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour > -1">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
                 </tr>
                 <tr *ngIf="(item?.status == 'completed' || item?.status == 'refunded' || item?.status == 'cancelled') && item?.completedAt">
                     <td class="py-2 align-text-top">Completion Date:</td>

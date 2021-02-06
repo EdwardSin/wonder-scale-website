@@ -26,7 +26,7 @@ export class WsInvoiceComponent implements OnInit {
       this.notifyCalculation();
       if (this.item && this.item.delivery && this.item.delivery.etaDate) {
         let etaDate = new Date(this.item.delivery.etaDate);
-        if (this.item.delivery.etaHour) {
+        if (this.item.delivery.etaHour > -1) {
           etaDate.setHours(this.item.delivery.etaHour);
           etaDate.setMinutes(this.item.delivery.etaMin);
         }
