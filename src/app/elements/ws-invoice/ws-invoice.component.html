@@ -110,20 +110,20 @@
     <div *ngIf="showDeliveryDetails && isDeliveryDetailsAvailable">
         <h5>{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Pickup'}} Information</h5>
         <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
-            <table>
-                <tr *ngIf="item?.customer?.firstName && item?.customer?.lastName">
-                    <td class="py-2 align-text-top" width="140px">Contact Name:</td>
-                    <td class="py-2 align-text-top">{{ item?.customer?.firstName }} {{ item?.customer?.lastName }}</td>
-                </tr>
-                <tr *ngIf="item?.customer?.phoneNumber">
-                    <td class="py-2 align-text-top">Contact Tel:</td>
-                    <td class="py-2 align-text-top">{{ item?.customer?.phoneNumber }}</td>
-                </tr>
-                <tr *ngIf="item?.deliveryOption == 'delivery' && item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
-                    <td class="py-2 align-text-top" width="140px">Delivery Address:</td>
-                    <td class="py-2 align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + ', ' + item?.customer.address?.country }}</td>
-                </tr>
-            </table>
+            <div>
+                <div class="row no-gutters py-2" *ngIf="item?.customer?.firstName && item?.customer?.lastName">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Name:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer?.firstName }} {{ item?.customer?.lastName }}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.customer?.phoneNumber">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Tel:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer?.phoneNumber }}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.deliveryOption == 'delivery' && item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Delivery Address:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + ', ' + item?.customer.address?.country }}</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
