@@ -12,6 +12,7 @@ import { PaginationComponent } from '@elements/pagination/pagination.component';
 import { WsLoadingButtonComponent } from '@elements/ws-loading-button/ws-loading-button.component';
 import { WsLoadingScreenComponent } from '@elements/ws-loading-screen/ws-loading-screen.component';
 import { WsModalComponent } from '@elements/ws-modal/ws-modal.component';
+import { WsStepperComponent } from '@elements/ws-stepper/ws-stepper.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { WsModalComponent } from '@elements/ws-modal/ws-modal.component';
     WsModalComponent,
     PaginationComponent,
     WsLoadingButtonComponent,
-    WsLoadingScreenComponent
+    WsLoadingScreenComponent,
+    WsStepperComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { WsModalComponent } from '@elements/ws-modal/ws-modal.component';
     PaginationComponent,
     WsModalComponent,
     WsLoadingButtonComponent,
-    WsLoadingScreenComponent
+    WsLoadingScreenComponent,
+    WsStepperComponent
   ]
 })
 export class ElementModule { }

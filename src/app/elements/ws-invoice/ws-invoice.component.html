@@ -2,22 +2,17 @@
     <div *ngIf="showStatusDetails">
         <h5>Details</h5>
         <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
-            <table>
+            <table class="w-100">
                 <tr>
-                    <td class="py-2 align-text-top" width="140px">Status:</td>
-                    <td class="py-2 align-text-top">
-                        <ng-container [ngSwitch]="item.status">
-                            <span *ngSwitchCase="'new'" class="font-8 badge badge-light">New</span>
-                            <span *ngSwitchCase="'paid'">
-                                <span class="font-8 badge badge-warning">Paid</span>
-                                <span class="ml-2">(Waiting for the confirmation)</span>
-                            </span>
-                            <span *ngSwitchCase="'in_progress'" class="font-8 badge badge-warning">In Progress</span>
-                            <span *ngSwitchCase="'delivered'" class="font-8 badge badge-warning">{{item?.deliveryOption == 'delivery' ? 'Delivered' : 'Ready to pickup'}}</span>
-                            <span *ngSwitchCase="'cancelled'" class="font-8 badge badge-danger">Cancelled</span>
-                            <span *ngSwitchCase="'refunded'" class="font-8 badge badge-danger">Refunded</span>
-                            <span *ngSwitchCase="'completed'" class="font-8 badge badge-success">Completed</span>
-                        </ng-container>
+                    <td class="align-top" width="140px">Status:</td>
+                    <td class="align-top">
+                        <div *ngIf="item?.status !== 'refunded' && item?.status !== 'cancelled'" class="clickable" (click)="isShowStepper = !isShowStepper">
+                            <ws-stepper [deliveryOption]="item?.deliveryOption" [selectedStage]="item?.status" [isOpen]="isShowStepper"></ws-stepper>
+                        </div>
+                        <div *ngIf="item?.status === 'refunded' || item?.status === 'cancelled'">
+                            <span *ngIf="item?.status === 'cancelled'" class="badge badge-danger font-8">Cancelled</span>
+                            <span *ngIf="item?.status === 'refunded'" class="badge badge-danger font-8">Refunded</span>
+                        </div>
                     </td>
                 </tr>
                 <tr *ngIf="(item?.status == 'refunded' || item?.status == 'cancelled') && item?.reason">
