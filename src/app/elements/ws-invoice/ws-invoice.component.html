@@ -2,90 +2,85 @@
     <div *ngIf="showStatusDetails">
         <h5>Details</h5>
         <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
-            <table>
-                <tr>
-                    <td class="py-2 align-text-top" width="140px">Status:</td>
-                    <td class="py-2 align-text-top">
-                        <ng-container [ngSwitch]="item.status">
-                            <span *ngSwitchCase="'new'" class="font-8 badge badge-light">New</span>
-                            <span *ngSwitchCase="'paid'">
-                                <span class="font-8 badge badge-warning">Paid</span>
-                                <span class="ml-2">(Waiting for the confirmation)</span>
-                            </span>
-                            <span *ngSwitchCase="'in_progress'" class="font-8 badge badge-warning">In Progress</span>
-                            <span *ngSwitchCase="'delivered'" class="font-8 badge badge-warning">{{item?.deliveryOption == 'delivery' ? 'Delivered' : 'Ready to pickup'}}</span>
-                            <span *ngSwitchCase="'cancelled'" class="font-8 badge badge-danger">Cancelled</span>
-                            <span *ngSwitchCase="'refunded'" class="font-8 badge badge-danger">Refunded</span>
-                            <span *ngSwitchCase="'completed'" class="font-8 badge badge-success">Completed</span>
-                        </ng-container>
-                    </td>
-                </tr>
-                <tr *ngIf="(item?.status == 'refunded' || item?.status == 'cancelled') && item?.reason">
-                    <td class="py-2 align-text-top">Reason:</td>
-                    <td class="py-2 align-text-top">{{ item?.reason }}</td>
-                </tr>
-                <tr>
-                    <td class="py-2 align-text-top">Delivery Option:</td>
-                    <td class="py-2 align-text-top">{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Self-pickup' }}</td>
-                </tr>
-                <tr *ngIf="item?.delivery?.etaDate">
-                    <td class="py-2 align-text-top" width="140px">ETA {{item?.deliveryOption == 'delivery' ? 'Delivery': 'Pickup'}} Date:</td>
-                    <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour == null || item?.delivery?.etaHour == undefined">{{ etaDate | date: 'MMM d, y (EEEE)' }}</td>
-                    <td class="py-2 align-text-top" *ngIf="item?.delivery?.etaHour > -1">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
-                </tr>
-                <tr *ngIf="(item?.status == 'completed' || item?.status == 'refunded' || item?.status == 'cancelled') && item?.completedAt">
-                    <td class="py-2 align-text-top">Completion Date:</td>
-                    <td class="py-2 align-text-top">{{ item?.completedAt | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
-                </tr>
-                <tr *ngIf="item?.status !== 'completed' && item?.status !== 'refunded' && item?.status !== 'cancelled' && !item?.completedAt">
-                    <td class="py-2 align-text-top">Last Updated:</td>
-                    <td class="py-2 align-text-top">{{ item?.updatedAt | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
-                </tr>
-                <tr *ngIf="item?.remark">
-                    <td class="py-2 align-text-top">Remark:</td>
-                    <td class="py-2 align-text-top">{{ item?.remark }}</td>
-                </tr>
-            </table>
+            <div class="w-100">
+                <div class="row no-gutters">
+                    <div class="font-weight-bold align-top col-lg-auto pb-3" style="min-width: 140px">Status:</div>
+                    <div class="align-top col-lg pb-3">
+                        <div *ngIf="item?.status !== 'refunded' && item?.status !== 'cancelled'">
+                            <ws-stepper [deliveryOption]="item?.deliveryOption" [selectedStage]="item?.status" [isOpen]="true"></ws-stepper>
+                        </div>
+                        <div *ngIf="item?.status === 'refunded' || item?.status === 'cancelled'">
+                            <span *ngIf="item?.status === 'cancelled'" class="badge badge-danger font-8">Cancelled</span>
+                            <span *ngIf="item?.status === 'refunded'" class="badge badge-danger font-8">Refunded</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="(item?.status == 'refunded' || item?.status == 'cancelled') && item?.reason">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Reason:</div>
+                    <div class="col-lg align-text-top">{{ item?.reason }}</div>
+                </div>
+                <div class="row no-gutters py-2">
+                    <td class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Delivery Option:</td>
+                    <td class="col-lg align-text-top">{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Self-pickup' }}</td>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.delivery?.etaDate">
+                    <td class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">ETA {{item?.deliveryOption == 'delivery' ? 'Delivery': 'Pickup'}} Date:</td>
+                    <td class="col-lg align-text-top" *ngIf="item?.delivery?.etaHour == null || item?.delivery?.etaHour == undefined">{{ etaDate | date: 'MMM d, y (EEEE)' }}</td>
+                    <td class="col-lg align-text-top" *ngIf="item?.delivery?.etaHour > -1">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="(item?.status == 'completed' || item?.status == 'refunded' || item?.status == 'cancelled') && item?.completedAt">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Completion Date:</div>
+                    <div class="col-lg align-text-top">{{ item?.completedAt | date: 'MMM d, y, h:mm a (EEEE)' }}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.status !== 'completed' && item?.status !== 'refunded' && item?.status !== 'cancelled' && !item?.completedAt">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Last Updated:</div>
+                    <div class="col-lg align-text-top">{{ item?.updatedAt | date: 'MMM d, y, h:mm a (EEEE)' }}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.remark">
+                    <div class="font-weight-bold col-lg-auto align-text-top">Remark:</div>
+                    <div class="col-lg align-text-top">{{ item?.remark }}</div>
+                </div>
+            </div>
         </div>
     </div>
     <div>
         <h5>{{item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}}</h5>
         <div class="p-3 font-9 mb-3 receipt-table" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
-            <table class="mb-3">
-                <tr>
-                    <td class="py-1 align-text-top" width="140px">{{item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}} ID:</td>
-                    <td class="py-1 align-text-top">{{ item?.receiptId }}</td>
-                </tr>
-                <tr>
-                    <td class="py-1 align-text-top">From:</td>
-                    <td class="py-1 align-text-top" *ngIf="!isPublic">{{ item?.store?.name }}</td>
-                    <td class="py-1 align-text-top" *ngIf="isPublic"><a [routerLink]="['/page', item?.store?.username]">{{ item?.store?.name}}</a></td>
-                </tr>
-                <tr>
-                    <td class="py-1 align-text-top">Date:</td>
-                    <td class="py-1 align-text-top">{{ item?.createdAt | date: 'MMM d, y, h:mm a'}}</td>
-                </tr>
-            </table>
-            <table class="w-100">
-                <thead>
-                    <th class="font-weight-bold">Description</th>
-                    <th class="font-weight-bold text-center d-none d-lg-table-cell">Quantity</th>
-                    <th class="text-right font-weight-bold" width="120">Price (MYR)</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let receiptItem of item?.items">
-                        <td>
-                            <span class="col p-0">{{ receiptItem.name }} {{ receiptItem.type !== 'Default' ? '- ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x' + receiptItem.quantity }}</span>
-                        </td>
-                        <td class="text-center d-none d-lg-table-cell">
+            <div class="mb-3">
+                <div class="row no-gutters py-2">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">{{item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}} ID:</div>
+                    <div class="col-lg align-text-top">{{ item?.receiptId }}</div>
+                </div>
+                <div class="row no-gutters py-2">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">From:</div>
+                    <div class="col-lg align-text-top" *ngIf="!isPublic">{{ item?.store?.name }}</div>
+                    <div class="col-lg align-text-top" *ngIf="isPublic"><a [routerLink]="['/page', item?.store?.username]">{{ item?.store?.name}}</a></div>
+                </div>
+                <div class="row no-gutters py-2">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Date:</div>
+                    <div class="col-lg align-text-top">{{ item?.createdAt | date: 'MMM d, y, h:mm a'}}</div>
+                </div>
+            </div>
+            <div class="w-100">
+                <div class="row no-gutters pb-2">
+                    <div class="col-lg font-weight-bold">Description</div>
+                    <div class="col-lg-auto font-weight-bold text-center d-none d-lg-table-cell" style="min-width: 120px">Quantity</div>
+                    <div class="col-lg-auto font-weight-bold text-right d-none d-lg-table-cell" style="min-width: 120px">Price (MYR)</div>
+                </div>
+                <div>
+                    <div class="row no-gutters pb-2" *ngFor="let receiptItem of item?.items">
+                        <div class="col-lg">
+                            <span class="col p-0">{{ receiptItem.name }}{{ receiptItem.type !== 'Default' ? ' - ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x ' + receiptItem.quantity }}</span>
+                        </div>
+                        <div class="col-lg-auto text-center d-none d-lg-table-cell" style="min-width: 120px">
                             x {{ receiptItem.quantity}}
-                        </td>
-                        <td class="text-right">
-                            <span class="px-1">RM {{ receiptItem.price * receiptItem.quantity | number: '1.2-2' }}</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                        <div class="col-lg-auto text-right" style="min-width: 120px">
+                            <span class="font-weight-bold px-1">RM {{ receiptItem.price * receiptItem.quantity | number: '1.2-2' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div *ngIf="!item.items?.length">
                 <p class="text-center py-4 mb-0">No Item</p>
             </div>
@@ -115,20 +110,20 @@
     <div *ngIf="showDeliveryDetails && isDeliveryDetailsAvailable">
         <h5>{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Pickup'}} Information</h5>
         <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
-            <table>
-                <tr *ngIf="item?.customer?.firstName && item?.customer?.lastName">
-                    <td class="py-2 align-text-top" width="140px">Contact Name:</td>
-                    <td class="py-2 align-text-top">{{ item?.customer?.firstName }} {{ item?.customer?.lastName }}</td>
-                </tr>
-                <tr *ngIf="item?.customer?.phoneNumber">
-                    <td class="py-2 align-text-top">Contact Tel:</td>
-                    <td class="py-2 align-text-top">{{ item?.customer?.phoneNumber }}</td>
-                </tr>
-                <tr *ngIf="item?.deliveryOption == 'delivery' && item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
-                    <td class="py-2 align-text-top" width="140px">Delivery Address:</td>
-                    <td class="py-2 align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + ', ' + item?.customer.address?.country }}</td>
-                </tr>
-            </table>
+            <div>
+                <div class="row no-gutters py-2" *ngIf="item?.customer?.firstName && item?.customer?.lastName">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Name:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer?.firstName }} {{ item?.customer?.lastName }}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.customer?.phoneNumber">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Tel:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer?.phoneNumber }}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.deliveryOption == 'delivery' && item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Delivery Address:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + ', ' + item?.customer.address?.country }}</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
