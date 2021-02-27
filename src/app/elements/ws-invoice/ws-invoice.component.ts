@@ -18,6 +18,7 @@ export class WsInvoiceComponent implements OnInit {
   total: number = 0;
   isDeliveryDetailsAvailable: boolean;
   etaDate;
+  isShowStepper: boolean;
 
   constructor() { }
 
