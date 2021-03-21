@@ -39,18 +39,10 @@ export class WsInvoiceComponent implements OnInit {
   ngOnInit(): void {
   }
   notifyCalculation() {
-    let discountValue = 0;
-    if (this.promotion) {
-      discountValue = this.promotion;
-    }
-    if (this.item.delivery && this.item.delivery.fee) {
-      this.delivery = +this.item.delivery.fee;
-    }
-    this.subtotal = _.sumBy(this.item.items, function (x) {
-      return x.price * x.quantity;
-    });
-    this.discount = this.subtotal * discountValue / 100;
-    this.total = this.delivery + this.subtotal * (100 - discountValue) / 100;
+    this.delivery = this.item.totalDelivery;
+    this.discount = this.item.totalDiscount;
+    this.subtotal = this.item.subtotal;
+    this.total = this.item.total;
   }
   _isDeliveryDetailsAvailable() {
     return (this.item.customer && this.item.customer.firstName && this.item.customer.lastName) ||
