@@ -13,6 +13,7 @@
 - 2021-03-11                                -
 ---------------------------------------------
 .: WSM: Task - Save promotion to invoice as ObjectId (WSM-311)
+.: WSM: Task - Show ETA delivery date repeatedly in invoice (WSM-322)
 
 - v1.0.1080                                 -
 ---------------------------------------------

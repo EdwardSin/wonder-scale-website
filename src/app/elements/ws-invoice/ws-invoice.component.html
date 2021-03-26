@@ -26,7 +26,7 @@
                 <div class="row no-gutters py-2" *ngIf="item?.delivery?.etaDate">
                     <td class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">ETA {{item?.deliveryOption == 'delivery' ? 'Delivery': 'Pickup'}} Date:</td>
                     <td class="col-lg align-text-top" *ngIf="item?.delivery?.etaHour == null || item?.delivery?.etaHour == undefined">{{ etaDate | date: 'MMM d, y (EEEE)' }}</td>
-                    <td class="col-lg align-text-top" *ngIf="item?.delivery?.etaHour > -1">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
+                    <td class="col-lg align-text-top" *ngIf="item?.delivery?.etaHour != null && item?.delivery?.etaHour > -1">{{ etaDate | date: 'MMM d, y, h:mm a (EEEE)' }}</td>
                 </div>
                 <div class="row no-gutters py-2" *ngIf="(item?.status == 'completed' || item?.status == 'refunded' || item?.status == 'cancelled') && item?.completedAt">
                     <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Completion Date:</div>
