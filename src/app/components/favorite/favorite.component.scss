@@ -1,26 +1,21 @@
-.favorite__container{
-    background-color: #fff;
-    padding: 1.5rem;
-    min-height: calc(60vh + 226.98px);
-    .favorite__searchbar{
-        width: 300px;
-        .favorite__searchbar__input{
-            background-color: #f7f7f7;
-            border: 0;
-        }
-        .favorite__searchbar__button{
-            background-color: #f7f7f7;
-            border: 0;
-        }
+.favorite__searchbar{
+    width: 300px;
+    .favorite__searchbar__input{
+        background-color: #f7f7f7;
+        border: 0;
     }
-    .btn-logo{
-        width: 38px;
-        float: right;
-        cursor: pointer;
-        transition: transform ease .2s;
-        &:hover{
-            transform: scale(1.2);
-        }
+    .favorite__searchbar__button{
+        background-color: #f7f7f7;
+        border: 0;
+    }
+}
+.btn-logo{
+    width: 38px;
+    float: right;
+    cursor: pointer;
+    transition: transform ease .2s;
+    &:hover{
+        transform: scale(1.2);
     }
 }
 

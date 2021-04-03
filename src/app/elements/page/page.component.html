@@ -1,7 +1,11 @@
-<div class="page__image mb-1 p-1">
-    <img [routerLink]="['/page', item?.username]" class="w-100 h-100" style="object-fit: contain; border-radius: 3px" *ngIf="item?.profileImage" [src]="environment.IMAGE_URL + item.profileImage" alt="{{ 'item' + index }}" />
-    <img [routerLink]="['/page', item?.username]" class="w-100 h-100" style="object-fit: contain; background-color: whitesmoke; border-radius: 3px" *ngIf="!item?.profileImage" src="assets/images/png/shop.png" alt="{{ 'item' + index }}" />
-    <span *ngIf="removable" (click)="removeFollow()" class="page__remove-icon fas fa-times"></span>
-    <span *ngIf="savable" [class.selected]="follow" (click)="followClicked($event)" class="page__favorite-icon fas fa-heart"></span>
+<div class="page">
+    <div class="mb-1">
+        <div class="page__image">
+            <img [routerLink]="['/page', item?.username]" class="w-100 h-100" style="object-fit: contain; border-radius: 3px" *ngIf="item?.profileImage" [src]="environment.IMAGE_URL + item.profileImage" alt="profileImage" />
+            <img [routerLink]="['/page', item?.username]" class="w-100 h-100" style="object-fit: contain; background-color: whitesmoke; border-radius: 3px" *ngIf="!item?.profileImage" src="assets/images/png/shop.png" alt="profileImage" />
+        </div>
+        <span *ngIf="removable" (click)="removeFollow()" class="page__remove-icon fas fa-times"></span>
+        <span *ngIf="savable" [class.selected]="follow" (click)="followClicked($event)" class="page__favorite-icon fas fa-heart"></span>
+    </div>
+    <p [routerLink]="['/page', item?.username]" class="page__name mb-1 text-center">{{ item?.name }} </p>
 </div>
-<p [routerLink]="['/page', item?.username]" class="page__name mb-1 text-center">{{ item?.name }} </p>
