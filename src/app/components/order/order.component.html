@@ -1,5 +1,9 @@
 <div class="container py-3">
     <h1 class="h5 mb-3 font-weight-normal">Your Orders</h1>
+    <div class="mb-3">
+        <button [class.selected]="queryParams.selected == 'in_progress'" class="btn btn-sm btn-controller mr-2" (click)="navigateTo({selected: 'in_progress'})">In Progress</button>
+        <button [class.selected]="queryParams.selected == 'completed'" class="btn btn-sm btn-controller" (click)="navigateTo({selected: 'completed'})">Completed</button>
+    </div>
     <div class="row no-gutters mb-4" *ngIf="invoices?.length && !loading.isRunning(); else loadingTemplate">
         <div class="col-sm-6 col-lg-5ths p-2" *ngFor="let invoice of invoices">
             <div class="order" (click)="navigateToInvoice(invoice)">

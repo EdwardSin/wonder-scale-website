@@ -17,7 +17,8 @@ export class OrderComponent implements OnInit {
   invoices;
   loading: WsLoading = new WsLoading;
   queryParams: any = {
-    page: 1
+    page: 1,
+    selected: 'in_progress'
   };
   total = 0;
   private ngUnsubscribe: Subject<any> = new Subject();
@@ -29,9 +30,7 @@ export class OrderComponent implements OnInit {
     this.getInvoices(this.queryParams);
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(queryParams => {
       this.queryParams = queryParams;
-      if (queryParams.page) {
-        this.getInvoices({page: queryParams.page});
-      }
+      this.getInvoices({page: queryParams.page, selected: queryParams.selected});
     });
   }
 
