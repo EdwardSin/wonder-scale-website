@@ -3,7 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { WsToastService } from '@elements/ws-toast/ws-toast.service';
 import { ImageHelper } from '@helpers/imagehelper/image.helper';
+import { AuthInvoiceService } from '@services/http/auth/auth-invoice.service';
 import { InvoiceService } from '@services/http/public/invoice.service';
+import { SharedUserService } from '@services/shared/shared-user.service';
 import { interval, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
 
@@ -19,8 +21,12 @@ export class InvoiceComponent implements OnInit {
   previewLoading: WsLoading = new WsLoading;
   uploadLoading: WsLoading = new WsLoading;
   loading: WsLoading = new WsLoading;
+  isSaved: boolean;
+  isAuthenticated: boolean;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
-  constructor(private invoiceService: InvoiceService, private route: ActivatedRoute) { 
+  constructor(private invoiceService: InvoiceService, private route: ActivatedRoute,
+    private sharedUserService: SharedUserService,
+    private authInvoiceService: AuthInvoiceService) { 
     this.loading.start();
     let _id = this.route.snapshot.queryParams['s_id'];
     let receiptId = this.route.snapshot.queryParams['r_id'];
@@ -37,6 +43,12 @@ export class InvoiceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.isAuthenticated = !!result;
+      if (this.isAuthenticated) {
+        this.isSavedInvoice();
+      }
+    });
   }
   refreshReceipt() {
     let _id = this.route.snapshot.queryParams['s_id'];
@@ -84,6 +96,26 @@ export class InvoiceComponent implements OnInit {
   cancelUploading() {
     this.uploadingFiles = [];
     this.uploadingImage = '';
+  }
+  isSavedInvoice() {
+    let id = this.route.snapshot.queryParams['s_id'];
+    this.authInvoiceService.isSavedInvoice(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.isSaved = result['result'];
+    });
+  }
+  saveInvoice() {
+    this.authInvoiceService.saveInvoice(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      if (result['result']) {
+        this.isSaved = true;
+      }
+    });
+  }
+  unsaveInvoice() {
+    this.authInvoiceService.unsaveInvoice(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      if (result['result']) {
+        this.isSaved = false;
+      }
+    });
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();

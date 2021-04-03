@@ -11,6 +11,10 @@ export class WsInvoiceComponent implements OnInit {
   @Input() isPublic: boolean;
   @Input() showDeliveryDetails;
   @Input() showStatusDetails;
+  @Input() isSaveEnabled: boolean;
+  @Input() isSaved: boolean;
+  @Input() save: Function;
+  @Input() unsave: Function;
   promotion;
   delivery: number = 0;
   subtotal: number = 0;

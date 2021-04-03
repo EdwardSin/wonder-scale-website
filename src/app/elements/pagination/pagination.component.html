@@ -10,7 +10,7 @@
         </button>
     </li>
     <li>
-        <button class="pagination__next" [disabled]="pager.currentPage == pager.totalPages || pager.pages.length == 0" (click)="setPage(pager.currentPage + 1)">
+        <button class="pagination__next" [disabled]="pager.currentPage == pager.totalPages || pager.pages.length == 0" (click)="setPage(1 + (+pager.currentPage))">
             <span class="pagination__next-icon fas fa-chevron-right"></span>
         </button>
     </li>
