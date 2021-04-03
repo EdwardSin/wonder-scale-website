@@ -7,6 +7,7 @@
 - 2021-04-03                                -
 ---------------------------------------------
 .: WSW: Task - Receipt module to list, filter receipts and the store page details (WSW-100)
+.: WSW: Task - Update Favorite page UI (WSW-105)
 
 - v1.0.1091                                 -
 ---------------------------------------------

@@ -1,10 +1,12 @@
-:host{
-    width: 212px;
+.page{
+    background: #fff;
+    border-radius: 30px;
+    padding: 1.25rem 1rem .25rem 1rem;
+    position: relative;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, .16);
     transition: transform ease .2s;
-    &:hover{
-        transform: scale(1.03);
-        cursor: pointer;
-    }
+    cursor: pointer;
+
     .page__favorite-icon.fa-heart{
         color: #fff;
         position: absolute;
@@ -17,23 +19,28 @@
         }
     }
     .page__remove-icon.fa-times{
-        color: #282C35;
+        font-size: 1.2rem;
         position: absolute;
         right: 1rem;
         top: 1rem;
-        transition: color ease .1s;
-        &:hover{
-            color: #4d5466;
+        color: #ccc;
+        transition: transform ease .2s, color ease .2s;
+        display: none;
+
+        &:hover {
+            transform: scale(1.05);
+            color: #000;
         }
     }
     .page__image{
-        position: relative;
-        text-align: center;
-        max-width: 212px;
-        height: 212px;
         margin-left: auto;
         margin-right: auto;
+        border-radius: 20px;
+        overflow: hidden;
         user-select: none;
+        img {
+            outline: none;
+        }
     }
     .page__name{
         font-size: .9rem;
@@ -43,6 +50,14 @@
         overflow: hidden;
         padding-left: .5rem;
         padding-right: .5rem;
+        user-select: none;
+        outline: none;
+    }
+    &:hover {
+        transform: scale(1.05);
+        .page__remove-icon.fa-times {
+            display: block;
+        }
     }
 }
 

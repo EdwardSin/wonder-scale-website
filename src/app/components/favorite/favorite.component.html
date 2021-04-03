@@ -1,4 +1,4 @@
-<div class="favorite__container">
+<div class="container py-3">
     <h1 class="h5 mb-3 font-weight-normal">Your Favorites</h1>
     <div class="favorite__searchbar input-group mb-3">
         <input class="favorite__searchbar__input form-control" (input)="valueChanged($event)" [value]="queryParams.keyword" placeholder="Search..." />
@@ -9,29 +9,33 @@
         </div>
     </div>
     <div class="mb-3">
-        <button [class.selected]="selected == 'page'" class="btn btn-controller mr-2" (click)="navigateTo({selected: 'page'})">Page</button>
-        <button [class.selected]="selected == 'item'" class="btn btn-controller" (click)="navigateTo({selected: 'item'})">Item</button>
-        <img (click)="onFavoriteModalOpened(true)" class="btn-logo" src="assets/images/png/icon.png" alt="logo" />
+        <button [class.selected]="selected == 'page'" class="btn btn-sm btn-controller mr-2" (click)="navigateTo({selected: 'page'})">Page</button>
+        <button [class.selected]="selected == 'item'" class="btn btn-sm btn-controller" (click)="navigateTo({selected: 'item'})">Item</button>
+        <button class="btn btn-sm btn-controller float-right" (click)="onFavoriteModalOpened(true)">
+            <span class="fas fa-map-marked-alt mr-2 d-inline-block"></span>
+            View Location
+        </button>
     </div>
     <div class="items-container" *ngIf="!loading.isRunning() && displayItems.length; else loadingTemplate">
         <div class="row no-gutters mb-4" *ngIf="selected == 'page'">
-            <page [removable]="true" [savable]="false" [item]="item" (followChanged)="followStoreChanged()" class="mb-3" *ngFor="let item of displayItems"></page>
+            <page [removable]="true" [savable]="false" [item]="item" (followChanged)="followStoreChanged()" class="col-sm-6 col-lg-5ths p-2" *ngFor="let item of displayItems"></page>
         </div>
         <div class="row no-gutters mb-4" *ngIf="selected == 'item'">
-            <list-item [item]="item" class="px-1" (followChanged)="followItemChanged()" *ngFor="let item of displayItems"></list-item>
+            <list-item [item]="item" (followChanged)="followItemChanged()" *ngFor="let item of displayItems"></list-item>
         </div>
         <pagination class="pb-4 mb-5" [pageSize]="environment.ITEMS_PER_PAGE" [currentPage]="queryParams.page" [total]="total" (getPageNumber)="navigateTo({page: $event})"></pagination>
     </div>
 </div>
 
+
 <ng-template #loadingTemplate>
-    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding: 15vh 0"></ws-spinner>
 </ng-template>
 <ng-template #modalLoadingTemplate>
     <ws-spinner *ngIf="modalLoading.isRunning(); else noModalItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 28vh; padding-bottom:28vh"></ws-spinner>
 </ng-template>
 <ng-template #noItemTemplate>
-    <h6 class="text-center" style="padding-top: 30vh; padding-bottom: 30vh">No favorite {{ selected }}.</h6>
+    <h6 class="text-center" style="padding: 15vh 0">No favorite {{ selected }}.</h6>
 </ng-template>
 <ng-template #noModalItemTemplate>
     <h6 class="text-center mb-0" style="padding-top:28.588vh; padding-bottom:28.588vh">No favorite {{ modalType }}.</h6>
