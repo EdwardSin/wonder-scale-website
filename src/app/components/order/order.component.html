@@ -1,0 +1,47 @@
+<div class="container py-3">
+    <h1 class="h5 mb-3 font-weight-normal">Your Orders</h1>
+    <div class="row no-gutters mb-4" *ngIf="invoices?.length && !loading.isRunning(); else loadingTemplate">
+        <div class="col-sm-6 col-lg-5ths p-2" *ngFor="let invoice of invoices">
+            <div class="order" (click)="navigateToInvoice(invoice)">
+                <span class="order__icon fas fa-times" (click)="$event.stopPropagation(); unsaveInvoice(invoice?._id)"></span>
+                <div class="order__image mb-2">
+                    <img class="w-100 h-100" src="{{ environment.IMAGE_URL + invoice?.store?.profileImage }}" alt="profile image" />
+                </div>
+                <span class="d-block text-center text-muted font-9 mb-1">{{invoice?.receiptId}}</span>
+                <p class="mb-1 text-center">
+                    <ng-container [ngSwitch]="invoice?.status">
+                        <span *ngSwitchCase="'new'" class="badge badge-pill badge-warning">New</span>
+                        <span *ngSwitchCase="'in_progress'" class="badge badge-pill badge-warning">In Progress</span>
+                        <span *ngSwitchCase="'delivered'" class="badge badge-pill badge-warning">Delivered</span>
+                        <span *ngSwitchCase="'ready'" class="badge badge-pill badge-warning">Ready for delivery</span>
+                        <span *ngSwitchCase="'paid'" class="badge badge-pill badge-warning">Paid</span>
+                        <span *ngSwitchCase="'refunded'" class="badge badge-pill badge-danger">Refunded</span>
+                        <span *ngSwitchCase="'cancelled'" class="badge badge-pill badge-danger">Cancelled</span>
+                        <span *ngSwitchCase="'completed'" class="badge badge-pill badge-success">Completed</span>
+                    </ng-container>
+                </p>
+                <span class="d-flex justify-content-between align-items-end font-9 mb-2">
+                    <span class="align-bottom">Total:</span>
+                    <span class="float-right font-weight-bold" style="font-size: 1.2rem">RM {{invoice.total | number: '1.2-2'}}</span>
+                </span>
+                <div class="overflow-hidden text-truncate">
+                    <a [routerLink]="['/page', invoice?.store?.username]" class="default font-8 text-muted text-nowrap">
+                        {{invoice?.store?.name}}
+                    </a>
+                </div>
+                <span class="d-block font-8 text-muted" *ngIf="invoice?.status == 'completed' || invoice?.status == 'cancelled' || invoice?.status == 'refunded'">
+                    {{ invoice?.completedAt | date: 'MMM dd y, h:mm a' }}
+                </span>
+                <span style="height: 19px" *ngIf="invoice?.status !== 'completed' && invoice?.status !== 'cancelled' && invoice?.status !== 'refunded'"></span>
+            </div>
+        </div>
+    </div>
+    <!-- environment.ITEMS_PER_PAGE -->
+    <pagination class="pb-4 mb-5" [pageSize]="50" [currentPage]="queryParams.page" [total]="total" (getPageNumber)="navigateTo({page: $event})"></pagination>
+</div>
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
+</ng-template>
+<ng-template #noItemTemplate>
+    <h6 class="text-center" style="padding: 15vh 0">No order in the list!</h6>
+</ng-template>

@@ -31,6 +31,9 @@ const routes: Routes = [{
   path: 'invoice',
   loadChildren: () => import('./modules/invoice/invoice.module').then(m => m.InvoiceModule)
 }, {
+  path: 'order',
+  loadChildren: () => import('./modules/order/order.module').then(m => m.OrderModule)
+}, {
   path: '404',
   loadChildren: () => import('./modules/not-found/not-found.module').then(m => m.NotFoundModule)
 }, {
