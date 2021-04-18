@@ -20,7 +20,7 @@ import { ListItemComponent } from '@elements/list-item/list-item.component';
 import { FacebookModule } from 'ngx-facebook';
 import { PageComponent } from '@elements/page/page.component';
 import { AgmCoreModule } from '@agm/core';
-
+import { OrderModule } from 'ngx-order-pipe';
 
 @NgModule({
   declarations: [
@@ -30,6 +30,7 @@ import { AgmCoreModule } from '@agm/core';
   imports: [
     CommonModule,
     SharedRoutingModule,
+    OrderModule,
     PipeModule,
     ElementModule,
     FacebookModule,
@@ -42,6 +43,7 @@ import { AgmCoreModule } from '@agm/core';
     ListItemComponent,
     PageComponent,
     FormsModule,
+    OrderModule,
     ReactiveFormsModule,
     MatRadioModule,
     MatSelectModule,

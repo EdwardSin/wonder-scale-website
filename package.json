@@ -55,6 +55,7 @@
         "ng-lazyload-image": "^7.1.0",
         "ngx-cookie-service": "^3.0.4",
         "ngx-facebook": "^3.0.0-0",
+        "ngx-order-pipe": "^2.1.1",
         "ngx-progressbar": "^6.0.2",
         "ngx-swiper-wrapper": "^9.0.1",
         "rxjs": "~6.5.4",

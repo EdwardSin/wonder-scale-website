@@ -129,7 +129,7 @@ export class MerchantPageComponent implements OnInit {
                 }
             }
         }
-        if (currentSection !== this.selectedNavItem && this.selectedNavItem !== 'catalogue') {
+        if (currentSection !== this.selectedNavItem && this.selectedNavItem !== 'catalogue' && this.selectedNavItem !== 'delivery') {
           this.selectedNavItem = currentSection;
         }
     });

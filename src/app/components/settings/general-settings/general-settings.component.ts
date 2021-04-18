@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from '@objects/user';
 import { DateBuilder } from '@builders/date.builder';
-import { WSFormBuilder } from '@builders/wsformbuilder';
+import { WsFormBuilder } from '@builders/wsformbuilder';
 import { FormGroup } from '@angular/forms';
 import { AuthUserService } from '@services/http/general/auth-user.service';
 import { TelValidator } from '@validations/user-validation/tel.validator';
@@ -34,7 +34,7 @@ export class GeneralSettingsComponent implements OnInit {
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private authUserService: AuthUserService,
     private sharedUserService: SharedUserService) { 
-    this.form = WSFormBuilder.createInfoForm();
+    this.form = WsFormBuilder.createInfoForm();
     this.getProfile();
   }
 
