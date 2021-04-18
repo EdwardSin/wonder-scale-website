@@ -7,7 +7,7 @@ import { environment } from '@environments/environment';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DateBuilder } from '@builders/date.builder';
-import { WSFormBuilder } from '@builders/wsformbuilder';
+import { WsFormBuilder } from '@builders/wsformbuilder';
 import { FormGroup } from '@angular/forms';
 import { TelValidator } from '@validations/user-validation/tel.validator';
 import { GenderValidator } from '@validations/user-validation/gender.validator';
@@ -48,7 +48,7 @@ export class ProfileSettingsComponent implements OnInit {
     private sharedUserService: SharedUserService,
     private sanitization: DomSanitizer) { 
       DocumentHelper.setWindowTitleWithWonderScale('Profile');
-    this.form = WSFormBuilder.createInfoForm();
+    this.form = WsFormBuilder.createInfoForm();
     this.getProfile();
   }
 

@@ -4,7 +4,7 @@ import { GenderValidation } from "../validations/validators/gendervalidation";
 import { PasswordValidation } from './../validations/validators/passwordvalidation';
 
 
-export class WSFormBuilder {
+export class WsFormBuilder {
 
     public static createPasswordForm(): FormGroup {
         let formBuilder = new FormBuilder();

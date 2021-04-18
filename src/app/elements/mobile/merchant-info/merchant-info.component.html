@@ -125,10 +125,34 @@
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.wechat, isEditing: isEditing, onClick: onEditWechatClicked, addLabel: 'Add Wechat', icon: 'fa-weixin'}"></ng-container>
                 <a *ngIf="isEditing" class="merchant__edit-link text-center d-block" href="javascript:void(0)" (click)="onAddMediaClicked.emit($event)">+ Add Social Media</a>
             </div>
-
+            <div class="delivery__container" *ngIf="store?.deliveries || isEditing">
+                <h4 class="info__title mb-0">Delivery</h4>
+                <div *ngIf="store?.deliveries?.length; else noDeliveryTemplate">
+                    <table class="font-9 text-muted w-100">
+                        <tr *ngFor="let delivery of store?.deliveries | orderBy: 'fee'" class="border-bottom">
+                            <td class="align-top">
+                                <ul class="mb-0 py-2 pl-4">
+                                    <li class="text-break" *ngFor="let name of delivery?.name">
+                                        {{ name }}
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="align-top py-2 text-center" width="60">
+                                RM {{ delivery?.fee | number: '1.2-2' }}
+                            </td>
+                        </tr>
+                    </table>
+                    <p class="font-8 mb-0 text-muted py-2">
+                        Please contact seller if your location is not listed!
+                    </p>
+                </div>
+                <ng-template #noDeliveryTemplate>
+                    <p class="text-center" style="margin: 2rem 0">No delivery</p>
+                </ng-template>
+            </div>
             <div id="operatingHours" class="opening-info__container" *ngIf="store?.openingInfoType || isEditing">
                 <h5 class="info__title d-flex align-items-center">Opening Hour<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditOpeningHoursClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
-                <div *ngIf="store?.openingInfoType == 'temporary_closed' || store?.openingInfoType == 'always_open' || (store?.openingInfoType == 'selected_hours' && store?.openingInfo != null); else noOpeningHourTemplate" class="pb-2">
+                <div *ngIf="store?.openingInfoType == 'temporary_closed' || store?.openingInfoType == 'always_open' || (store?.openingInfoType == 'selected_hours' && store?.openingInfo != null); else noOpeningHourTemplate" class="pb-2 text-muted">
                     <table class="ml-2" *ngIf="store?.openingInfoType == 'selected_hours'">
                         <tr *ngFor="let day of store?.openingInfo">
                             <td style="width: 100px">{{ day.day }}</td>
@@ -143,7 +167,7 @@
                     </div>
                 </div>
                 <ng-template #noOpeningHourTemplate>
-                    <p class="text-center" style="margin: 2rem 0">No Opening Hour</p>
+                    <p class="text-center" style="margin: 2rem 0">No opening hour</p>
                 </ng-template>
             </div>
             <div id="location" class="location__container" *ngIf="store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0 || isEditing">
