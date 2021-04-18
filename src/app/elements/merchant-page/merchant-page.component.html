@@ -50,8 +50,8 @@
                 <ul class="merchant__nav list-group list-group-horizontal w-100">
                     <li (click)="scrollTo('overview')" [class.selected]="selectedNavItem == 'overview'" class="merchant__nav-item list-group-item selected">Overview</li>
                     <li *ngIf="store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0 || isEditing" (click)="scrollTo('location')" [class.selected]="selectedNavItem == 'location'" class="merchant__nav-item list-group-item">Location</li>
-                    <li  *ngIf="store?.openingInfoType || isEditing"(click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Opening Hours</li>
-                    <li  *ngIf="store?.deliveries?.length"(click)="scrollTo('delivery')" [class.selected]="selectedNavItem == 'delivery'" class="merchant__nav-item list-group-item">Delivery</li>
+                    <li  *ngIf="store?.openingInfoType || isEditing" (click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Opening Hours</li>
+                    <li  *ngIf="store?.deliveries?.length || isEditing" (click)="scrollTo('delivery')" [class.selected]="selectedNavItem == 'delivery'" class="merchant__nav-item list-group-item">Delivery</li>
                     <li (click)="scrollTo('catalogue')" [class.selected]="selectedNavItem == 'catalogue'" class="merchant__nav-item list-group-item ml-auto"><span class="fas fa-book-open"></span> Catalogue</li>
                 </ul>
                 <div class="mb-3" style="border-bottom: 2px solid #ccc; margin-top: -2px"></div>
@@ -135,29 +135,31 @@
                         </ng-template>
                     </div>
                 </div>
-                <div *ngIf="selectedNavItem == 'delivery' && store?.deliveries.length">
+                <div *ngIf="(selectedNavItem == 'delivery' && store?.deliveries.length) || isEditing">
                     <div id="delivery" class="mb-3 merchant__overview" style="min-height: 300px">
                         <h3 class="h5">Delivery:</h3>
-                        <table class="font-9 text-muted w-100">
-                            <tr *ngFor="let delivery of store?.deliveries | orderBy: 'fee'" class="border-bottom">
-                                <td class="align-top">
-                                    <ul class="mb-0 py-3">
-                                        <li *ngFor="let name of delivery?.name">
-                                            {{ name }}
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td class="align-top py-3 text-center">
-                                    RM {{ delivery?.fee | number: '1.2-2' }}
-                                </td>
-                            </tr>
-                        </table>
-                        <p class="font-8 mb-3 text-muted p-2">
-                            Please contact seller if your location is not listed!
-                        </p>
-                        <p class="text-center mb-0" style="padding: 30vh 0" *ngIf="!store?.deliveries?.length">
-                            No delivery is shown!
-                        </p>
+                        <div *ngIf="store?.deliveries?.length; else noDeliveryTemplate">
+                            <table class="font-9 text-muted w-100">
+                                <tr *ngFor="let delivery of store?.deliveries | orderBy: 'fee'" class="border-bottom">
+                                    <td class="align-top">
+                                        <ul class="mb-0 py-3">
+                                            <li *ngFor="let name of delivery?.name">
+                                                {{ name }}
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top py-3 text-center">
+                                        RM {{ delivery?.fee | number: '1.2-2' }}
+                                    </td>
+                                </tr>
+                            </table>
+                            <p class="font-8 mb-3 text-muted p-2">
+                                Please contact seller if your location is not listed!
+                            </p>
+                        </div>
+                        <ng-template #noDeliveryTemplate>
+                            <p class="text-center" style="margin: 2rem 0;">No delivery</p>
+                        </ng-template>
                     </div>
                 </div>
                 <div *ngIf="selectedNavItem == 'catalogue'">
