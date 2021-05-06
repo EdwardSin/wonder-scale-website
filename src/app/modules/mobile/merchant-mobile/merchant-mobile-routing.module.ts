@@ -16,7 +16,11 @@ const routes: Routes = [{
   },
   {
     path: 'menu',
-    loadChildren: () => import ('../ordering/merchant-mobile-menu/merchant-mobile-menu.module').then(m => m.MerchantMobileMenuModule)
+    loadChildren: () => import ('../merchant-mobile-menu/merchant-mobile-menu.module').then(m => m.MerchantMobileMenuModule)
+  },
+  {
+    path: 'shopping',
+    loadChildren: () => import ('../../menu/menu.module').then(m => m.MenuModule)
   },
   {
     path: 'share',

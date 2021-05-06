@@ -13,11 +13,11 @@
                 </div>
                 <div>
                     <p class="list-item__discount-price mb-0" *ngIf="currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != item.price" style="text-decoration: line-through;">
-                        Price: <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                        <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
                     <p class="list-item__price mb-0" *ngIf="currencies.length && item?.currency && item?.isOffer">
-                        Price: <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}</p>
+                        <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}</p>
                     <p class="list-item__price mb-1" *ngIf="currencies.length && item?.currency && !item?.isOffer">
-                        Price: <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                        <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
                 </div>
             </div>
             <div *ngIf="isAuthenticated" class="d-flex justify-content-center align-items-center px-3">

@@ -37,6 +37,10 @@ export class MerchantMobileFooterComponent implements OnInit {
     this.selectedNav = 'menu';
     this.router.navigate(['/page/mobile/' + this.store.username + '/menu'], { queryParamsHandling: 'merge' });
   }
+  navigateToShopping() {
+    this.selectedNav = 'shopping';
+    this.router.navigate(['/page/mobile/' + this.store.username + '/shopping'], { queryParamsHandling: 'merge' });
+  }
   navigateToShare() {
     this.selectedNav = 'share';
     this.router.navigate(['/page/mobile/' + this.store.username + '/share'], { queryParamsHandling: 'merge' });

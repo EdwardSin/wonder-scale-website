@@ -33,6 +33,7 @@ import { OrderModule } from 'ngx-order-pipe';
     OrderModule,
     PipeModule,
     ElementModule,
+    SwiperModule,
     FacebookModule,
     MDBBootstrapModule.forRoot(),
     AgmCoreModule.forRoot({

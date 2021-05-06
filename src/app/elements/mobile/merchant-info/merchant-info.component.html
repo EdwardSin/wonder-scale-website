@@ -14,7 +14,7 @@
     </div>
     <div *ngIf="isInformationOpened" class="information-fullscreen-container position-fixed pt-2">
         <span class="information-fullscreen__icon fas fa-times" (click)="isInformationOpened = false"></span>
-        <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}">
+        <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'horizontal', mousewheel: true}">
             <ng-container *ngIf="banners.length">
                 <ng-container *ngFor="let image of banners">
                     <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
@@ -137,13 +137,13 @@
                                     </li>
                                 </ul>
                             </td>
-                            <td class="align-top py-2 text-center" width="60">
+                            <td class="align-top py-2 text-center" width="200">
                                 RM {{ delivery?.fee | number: '1.2-2' }}
                             </td>
                         </tr>
                     </table>
                     <p class="font-8 mb-0 text-muted py-2">
-                        Please contact seller if your location is not listed!
+                        Please check with seller if your location is not listed!
                     </p>
                 </div>
                 <ng-template #noDeliveryTemplate>
