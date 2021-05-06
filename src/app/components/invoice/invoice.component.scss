@@ -26,5 +26,30 @@
     z-index: 999;
     background: #fff;
     overflow-y: auto;
-    padding: .5rem .5rem 4.5rem .5rem;
+    padding: .5rem .5rem .5rem .5rem;
+}
+.btn-upload {
+    border-radius: 20px;
+    box-shadow: 0 0 5px #ccc;
+    background-color: #b71c1c;
+    color: #fff;
+    
+    &:hover{
+        background-color: #841515;
+    }
+}
+.btn-save {
+    border-radius: 20px;
+    box-shadow: 0 0 5px #ccc;
+    background-color: #fff;
+    
+    &:hover{
+        background-color: #ddd;
+    }
+    .fa-star {
+        
+        &.is_saved {
+            color: gold;
+        }
+    }
 }

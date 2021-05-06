@@ -49,14 +49,14 @@ export class MerchantMobileComponent implements OnInit {
         this.router.navigate(['/page', username], {queryParamsHandling: 'merge' });
       }
     }
-    this.showFooter = !this.router.url.includes('/menu');
+    this.showFooter = !this.router.url.includes('/menu') && !this.router.url.includes('/shopping');
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
           if (this.store) {
             DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
           }
-          this.showFooter = !this.router.url.includes('/menu')
+          this.showFooter = !this.router.url.includes('/menu') && !this.router.url.includes('/shopping');
         }
       });
   }

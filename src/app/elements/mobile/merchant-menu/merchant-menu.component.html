@@ -1,7 +1,7 @@
 <div class="position-relative">
     <button class="btn-navigation" (click)="openNavigation()">
         <span class="fas fa-bars btn-navigation__icon"></span>
-        <span>Menu</span>
+        <span>{{ store?.type == 'restaurant' ? 'Menu': 'Catalogue'}}</span>
     </button>
     <button class="btn btn-store float-right border-0" (click)="navigateToStore()">Go To Store</button>
     <div class="menu-navigation" [class.menu-navigation__open]="isNavigationOpened">
@@ -42,7 +42,7 @@
     </div>
     <div *ngIf="isQuickMenuOpened" class="quick-menu-fullscreen-container position-fixed">
         <span class="quick-menu-fullscreen__icon fas fa-times" (click)="isQuickMenuOpened = false"></span>
-        <swiper [index]="selectedQuickMenuIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}">
+        <swiper [index]="selectedQuickMenuIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'horizontal', mousewheel: true}">
             <ng-container *ngIf="menuImages.length">
                 <ng-container *ngFor="let image of menuImages">
                     <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />

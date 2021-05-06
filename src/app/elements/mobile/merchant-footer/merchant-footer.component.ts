@@ -16,6 +16,7 @@ export class MerchantFooterComponent implements OnInit {
   @Input() selectedNav: string;
   @Input() navigateToInfo;
   @Input() navigateToMenu;
+  @Input() navigateToShopping;
   @Input() navigateToShare;
   @Input() authFollowService;
   @Input() sharedUserService;

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { WsToastService } from '@elements/ws-toast/ws-toast.service';
+import { PaymentMethodEnum } from '@enum/payment-method.enum';
 import { ImageHelper } from '@helpers/imagehelper/image.helper';
 import { AuthInvoiceService } from '@services/http/auth/auth-invoice.service';
 import { InvoiceService } from '@services/http/public/invoice.service';
 import { SharedUserService } from '@services/shared/shared-user.service';
-import { interval, Subject } from 'rxjs';
+import { interval, Observable, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -23,10 +24,12 @@ export class InvoiceComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   isSaved: boolean;
   isAuthenticated: boolean;
+  PaymentMethodEnum = PaymentMethodEnum;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
   constructor(private invoiceService: InvoiceService, private route: ActivatedRoute,
     private sharedUserService: SharedUserService,
-    private authInvoiceService: AuthInvoiceService) { 
+    private authInvoiceService: AuthInvoiceService,
+    private router: Router) { 
     this.loading.start();
     let _id = this.route.snapshot.queryParams['s_id'];
     let receiptId = this.route.snapshot.queryParams['r_id'];
@@ -41,7 +44,13 @@ export class InvoiceComponent implements OnInit {
       this.loading.stop();
     }
   }
-
+  @HostListener('window:beforeunload', ['$event'])
+  canDeactivate($event: any): Observable<boolean> | boolean {
+    return true;
+  }
+  isPrompt() {
+    return this.item.status !== 'rejected';
+  }
   ngOnInit(): void {
     this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.isAuthenticated = !!result;
@@ -55,10 +64,13 @@ export class InvoiceComponent implements OnInit {
     let receiptId = this.route.snapshot.queryParams['r_id'];
     interval(60 * 1000).pipe(switchMap(() => {return this.invoiceService.getInvoiceById(_id, receiptId)}),
     takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
-      if (result ) {
+      if (result) {
         this.item = result['result'];
       }
     });
+  }
+  navigateToEditInvoice() {
+    this.router.navigate(['/page', this.item?.store?.username ,'cart-menu'], {queryParamsHandling: 'merge'})
   }
   fileChangeEvent(event) {
     this.previewLoading.start();
