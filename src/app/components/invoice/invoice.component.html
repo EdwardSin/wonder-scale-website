@@ -1,7 +1,7 @@
 <div class="container py-4">
     <div class="col-lg-8 center p-0" *ngIf="item && !loading.isRunning(); else loadingTemplate">
         <div class="alert alert-danger mb-3" *ngIf="item?.paidAt && item?.status == 'new'">Your payslip was rejected! Please upload again!</div>
-        <div *ngIf="item?.store?.bankDetails && (item?.status == 'public_new' || item?.status == 'new')">
+        <div class="mb-3" *ngIf="item?.defaultSetting?.invoice?.isPublicReceivable && item?.store?.bankDetails && (item?.status == 'public_new' || item?.status == 'new'); else noBankDetailsProvidedTemplate">
             <h5 class="d-inline-block mt-3">Bank Details</h5>
             <div class="p-3 font-9" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
                 <p class="mb-0 text-muted">Kindly bank-in to the details below to complete your order.</p>
@@ -20,7 +20,7 @@
             </div>
             <p class="text-muted font-9 text-danger mt-2" *ngIf="item?.status == 'public_new'">Invoice will be removed permanently if not save or continue proceed.</p>
         </div>
-        <div *ngIf="item?.status == 'wait_for_approval' && item?.defaultSetting?.invoice?.isApprovalEnabled">
+        <div *ngIf="item?.status == 'wait_for_approval' && item?.defaultSetting?.invoice?.isApprovalEnabled" class="mb-3">
             <div class="p-3 py-4 text-center font-weight-bold" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
                 Wait for the confirmation from seller...
                 <p class="mb-0 font-weight-normal font-9">Seller will update the delivery fee..</p>
@@ -32,7 +32,7 @@
                 </button>
             </div>
         </div>
-        <div *ngIf="item?.status == 'rejected'">
+        <div *ngIf="item?.status == 'rejected'" class="mb-3">
             <div class="p-3 py-4" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
                 <span class="text-center font-weight-bold">Your order has been <span class="text-danger">rejected</span> by seller.</span>
                 <div class="font-9" *ngIf="item?.reason">Reason: <span>{{item?.reason}}</span></div>
@@ -46,7 +46,7 @@
                 </button>
             </div>
         </div>
-        <div *ngIf="(item?.status === 'wait_for_approval' && !item?.defaultSetting?.invoice?.isApprovalEnabled) || item.status === 'new' || item.status == 'public_new'" class="row no-gutters justify-content-center mt-3">
+        <div *ngIf="item?.defaultSetting?.invoice?.isPublicReceivable && ((item?.status === 'wait_for_approval' && !item?.defaultSetting?.invoice?.isApprovalEnabled) || item.status === 'new' || item.status == 'public_new')" class="row no-gutters justify-content-center">
             <div class="mb-3 mr-lg-3 mr-2">
                 <button class="btn btn-upload w-100" [disabled]="uploadLoading.isRunning()" onclick="document.getElementById('updatePayslipInput').click()">Upload Payslip</button>
                 <ws-uploader [id]="'updatePayslipInput'" [max]="1"
@@ -87,9 +87,9 @@
                     [showDeliveryDetails]="true"
                     [isPublic]="true"
                     [showStatusDetails]="item.status !== 'new' &&
-                                         item.status !== 'public_new' &&
-                                         item.status !== 'wait_for_approval' &&
-                                         item.status !== 'rejected'">
+                                            item.status !== 'public_new' &&
+                                            item.status !== 'wait_for_approval' &&
+                                            item.status !== 'rejected'">
         </ws-invoice>
     </div>
 </div>
@@ -103,5 +103,11 @@
 <ng-template #noReceipt>
     <div class="text-center w-100">
         <h6 class="py-5">Order/Receipt cannot be found!</h6>
+    </div>
+</ng-template>
+
+<ng-template #noBankDetailsProvidedTemplate>
+    <div class="alert alert-warning" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
+        This store stops selling to public currently.
     </div>
 </ng-template>
