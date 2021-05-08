@@ -9,7 +9,7 @@
             </div>
         </div>
         <div *ngIf="!loading.isRunning() && stores.length; else loadingTemplate">
-            <div class="row no-gutters">
+            <div class="row no-gutters mb-4">
                 <page class="col-sm-6 col-lg-5ths p-2" *ngFor="let store of stores" [item]="store"></page>
             </div>
         </div>

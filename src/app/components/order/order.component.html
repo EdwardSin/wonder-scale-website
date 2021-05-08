@@ -1,10 +1,24 @@
 <div class="container py-3">
     <h1 class="h5 mb-3 font-weight-normal">Your Orders</h1>
-    <div class="mb-3">
-        <button [class.selected]="queryParams.selected == 'wait_for_approval'" class="btn btn-sm btn-controller mr-2" (click)="navigateTo({selected: 'wait_for_approval'})">Wait for the approval</button>
-        <button [class.selected]="queryParams.selected == 'public_new'" class="btn btn-sm btn-controller mr-2" (click)="navigateTo({selected: 'public_new'})">Wait to pay</button>
-        <button [class.selected]="queryParams.selected == 'in_progress'" class="btn btn-sm btn-controller mr-2" (click)="navigateTo({selected: 'in_progress'})">In Progress</button>
-        <button [class.selected]="queryParams.selected == 'completed'" class="btn btn-sm btn-controller" (click)="navigateTo({selected: 'completed'})">Completed</button>
+    <div *ngIf="isMobileSize" mdbDropdown>
+        <button mdbDropdownToggle class="dropdown-toggle" class="btn btn-sm btn-controller">
+            <span *ngIf="queryParams?.selected == 'wait_for_approval'">Wait for the approval</span>
+            <span *ngIf="queryParams?.selected == 'public_new'">Wait for the payment</span>
+            <span *ngIf="queryParams?.selected == 'in_progress'">In Progress</span>
+            <span *ngIf="queryParams?.selected == 'completed'">Completed</span>
+        </button>
+        <div class="dropdown-menu dropdown-primary">
+            <a [class.selected]="queryParams?.selected == 'wait_for_approval'" class="dropdown-item" (click)="navigateTo({selected: 'wait_for_approval'})">Wait for the approval</a>
+            <a [class.selected]="queryParams?.selected == 'public_new'" class="dropdown-item" (click)="navigateTo({selected: 'public_new'})">Wait for the payment</a>
+            <a [class.selected]="queryParams?.selected == 'in_progress'" class="dropdown-item" (click)="navigateTo({selected: 'in_progress'})">In Progress</a>
+            <a [class.selected]="queryParams?.selected == 'completed'" class="dropdown-item" (click)="navigateTo({selected: 'completed'})">Completed</a>
+        </div>
+    </div>
+    <div class="mb-3" *ngIf="!isMobileSize">
+        <button [class.selected]="queryParams?.selected == 'wait_for_approval'" class="btn btn-sm btn-controller mr-2" (click)="navigateTo({selected: 'wait_for_approval'})">Wait for the approval</button>
+        <button [class.selected]="queryParams?.selected == 'public_new'" class="btn btn-sm btn-controller mr-2" (click)="navigateTo({selected: 'public_new'})">Wait for the payment</button>
+        <button [class.selected]="queryParams?.selected == 'in_progress'" class="btn btn-sm btn-controller mr-2" (click)="navigateTo({selected: 'in_progress'})">In Progress</button>
+        <button [class.selected]="queryParams?.selected == 'completed'" class="btn btn-sm btn-controller" (click)="navigateTo({selected: 'completed'})">Completed</button>
     </div>
     <div class="row no-gutters mb-4" *ngIf="invoices?.length && !loading.isRunning(); else loadingTemplate">
         <div class="col-sm-6 col-lg-5ths p-2" *ngFor="let invoice of invoices">

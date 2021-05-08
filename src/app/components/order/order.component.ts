@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { environment } from '@environments/environment';
+import { ScreenService } from '@services/general/screen.service';
 import { AuthInvoiceService } from '@services/http/auth/auth-invoice.service';
 import { Subject } from 'rxjs';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
@@ -21,8 +22,10 @@ export class OrderComponent implements OnInit {
     selected: 'in_progress'
   };
   total = 0;
+  isMobileSize: boolean;
   private ngUnsubscribe: Subject<any> = new Subject();
   constructor(private authInvoiceService: AuthInvoiceService,
+    private screenService: ScreenService,
     private router: Router,
     private route: ActivatedRoute) { }
 
@@ -32,6 +35,9 @@ export class OrderComponent implements OnInit {
       this.queryParams = {...this.queryParams, ...queryParams};
       this.getInvoices({page: queryParams.page, selected: queryParams.selected});
     });
+    this.screenService.isMobileSize.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.isMobileSize = result;
+    })
   }
 
   getInvoices(obj) {
