@@ -65,21 +65,24 @@
 
 @media(max-width:768px) {
     :host{
-        width: calc(44vw - 1rem);
-        .page__image {
-            width: calc(44vw - 1rem);
-            height: calc(44vw - 1rem);
-            max-width: calc(44vw - 1rem);
+        width: calc(50vw - 1rem);
+        .page{
+            .page__image {
+                width: calc(50vw - 90px);
+                height: calc(50vw - 90px);
+            }
         }
     }
 }
 @media(max-width:425px) {
     :host{
         width: calc(50vw - 1rem);
-        .page__image {
-            width: calc(50vw - 1rem);
-            height: calc(50vw - 1rem);
-            max-width: calc(50vw - 1rem);
+        .page{
+            padding: 1.25rem 0rem 0.25rem 0rem;
+            .page__image {
+                width: calc(50vw - 55px);
+                height: calc(50vw - 55px);
+            }
         }
     }
 }
