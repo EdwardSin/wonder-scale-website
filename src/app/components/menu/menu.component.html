@@ -147,7 +147,7 @@
         </div> -->
         <h6 class="text-center" style="padding: 10vh 0" *ngIf="!cartItems.length">No Item</h6>
     </div>
-    <div class="pt-2">
+    <div class="pt-2 px-2">
         <div class="row no-gutters">
             <span class="invoice__label col">Subtotal (RM):</span>
             <span class="invoice__value">{{ cashier?.getSubtotal() | number: '1.2-2' }}</span>
