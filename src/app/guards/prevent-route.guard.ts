@@ -20,8 +20,9 @@ export class PreventRouteGuard implements CanDeactivate<CanComponentDeactivate> 
         if (confirm('Are you sure to leave the page? Unsaved order will be lost tracking.')) {
           return component.canDeactivate ? component.canDeactivate() : true;
         }
+      } else {
+        return true;
       }
-      return true;
   }
   
 }

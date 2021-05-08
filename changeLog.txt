@@ -4,7 +4,12 @@
 
 - v1.0.1092                                 -
 ---------------------------------------------
-- 2021-04-18                                -
+- 2021-05-09                                -
+---------------------------------------------
+.: WSW: BugFix - Not able to navigate to other page when invoice is not found (WSW-106)
+
+---------------------------------------------
+- 2021-05-06                                -
 ---------------------------------------------
 .: WSW: Task - CLONE - Pre-order through local website or link to other website (WSW-106)
 

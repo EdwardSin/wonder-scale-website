@@ -49,7 +49,7 @@ export class InvoiceComponent implements OnInit {
     return true;
   }
   isPrompt() {
-    return this.item.status !== 'rejected';
+    return this.item && this.item?.status !== 'rejected';
   }
   ngOnInit(): void {
     this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
