@@ -47,7 +47,7 @@
             </div>
         </div>
         <div *ngIf="(item?.status === 'wait_for_approval' && !item?.defaultSetting?.invoice?.isApprovalEnabled) || item.status === 'new' || item.status == 'public_new'" class="row no-gutters justify-content-center mt-3">
-            <div class="mb-3 mr-lg-3">
+            <div class="mb-3 mr-lg-3 mr-2">
                 <button class="btn btn-upload w-100" [disabled]="uploadLoading.isRunning()" onclick="document.getElementById('updatePayslipInput').click()">Upload Payslip</button>
                 <ws-uploader [id]="'updatePayslipInput'" [max]="1"
                         [input]="uploadingFiles"

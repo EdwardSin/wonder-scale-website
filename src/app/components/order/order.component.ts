@@ -19,7 +19,7 @@ export class OrderComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   queryParams: any = {
     page: 1,
-    selected: 'in_progress'
+    selected: 'public_new'
   };
   total = 0;
   isMobileSize: boolean;
@@ -33,7 +33,7 @@ export class OrderComponent implements OnInit {
     this.getInvoices(this.queryParams);
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(queryParams => {
       this.queryParams = {...this.queryParams, ...queryParams};
-      this.getInvoices({page: queryParams.page, selected: queryParams.selected});
+      this.getInvoices({page: this.queryParams.page, selected: this.queryParams.selected});
     });
     this.screenService.isMobileSize.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.isMobileSize = result;
