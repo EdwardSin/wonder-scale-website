@@ -21,7 +21,7 @@
         <button [class.selected]="queryParams?.selected == 'completed'" class="btn btn-sm btn-controller" (click)="navigateTo({selected: 'completed'})">Completed</button>
     </div>
     <div class="row no-gutters mb-4" *ngIf="invoices?.length && !loading.isRunning(); else loadingTemplate">
-        <div class="col-sm-6 col-lg-5ths p-2" *ngFor="let invoice of invoices">
+        <div class="col-6 col-lg-5ths p-2" *ngFor="let invoice of invoices">
             <div class="order" (click)="navigateToInvoice(invoice)">
                 <span class="order__icon fas fa-times" (click)="$event.stopPropagation(); unsaveInvoice(invoice?._id)"></span>
                 <div class="order__image mb-2">
@@ -30,7 +30,7 @@
                 <span class="d-block text-center text-muted font-9 mb-1">{{invoice?.receiptId}}</span>
                 <p class="mb-1 text-center">
                     <ng-container [ngSwitch]="invoice?.status">
-                        <span *ngSwitchCase="'new'" class="badge badge-pill badge-warning">New</span>
+                        <span *ngSwitchCase="'new'" class="badge badge-pill badge-warning">Wait for the payment</span>
                         <span *ngSwitchCase="'in_progress'" class="badge badge-pill badge-warning">In Progress</span>
                         <span *ngSwitchCase="'delivered'" class="badge badge-pill badge-warning">Delivered</span>
                         <span *ngSwitchCase="'ready'" class="badge badge-pill badge-warning">Ready for delivery</span>

@@ -71,6 +71,10 @@
                 width: calc(50vw - 90px);
                 height: calc(50vw - 90px);
             }
+
+            .page__remove-icon.fa-times{
+                 display: block;
+            }
         }
     }
 }

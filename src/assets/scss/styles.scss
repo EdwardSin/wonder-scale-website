@@ -146,6 +146,7 @@ select.nooutline:focus,
         left: inherit;
         .dropdown-item {
             font-size: .8rem;
+
             &:hover{
                 color: #000;
                 background-color: #ebecf0;
@@ -173,7 +174,6 @@ select.nooutline:focus,
             background-color: map-get($ws-color, primary);
         }
     }
-    
 }
 
 ws-loading{
