@@ -1,21 +1,27 @@
 <div>
     <div *ngIf="showStatusDetails">
-        <h5>Details</h5>
+        <h5 class="d-inline-block mt-3">Details</h5>
+        <button *ngIf="isSaveEnabled" (click)="isSaved ? unsave() : save()" [class.selected]="isSaved" class="btn btn-favorite float-right mb-2">
+            <span class="fas fa-flag btn-favorite-icon mr-2"></span>
+            {{isSaved ? 'Saved' : 'Save'}}
+        </button>
+        <div class="clearfix"></div>
         <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
             <div class="w-100">
-                <div class="row no-gutters">
-                    <div class="font-weight-bold align-top col-lg-auto pb-3" style="min-width: 140px">Status:</div>
-                    <div class="align-top col-lg pb-3">
-                        <div *ngIf="item?.status !== 'refunded' && item?.status !== 'cancelled'">
-                            <ws-stepper [deliveryOption]="item?.deliveryOption" [selectedStage]="item?.status" [isOpen]="true"></ws-stepper>
+                <div *ngIf="showStatusStepper" class="row no-gutters">
+                    <div class="font-weight-bold align-top col-lg-auto pb-2" style="min-width: 140px">Status:</div>
+                    <div class="align-top col-lg pb-2">
+                        <div *ngIf="item?.status !== 'refunded' && item?.status !== 'cancelled' && item?.status !== 'rejected'">
+                            <ws-stepper [isApprovalEnabled]="item?.defaultSetting?.invoice?.isApprovalEnabled" [deliveryOption]="item?.deliveryOption" [selectedStage]="item?.status" [isOpen]="true"></ws-stepper>
                         </div>
-                        <div *ngIf="item?.status === 'refunded' || item?.status === 'cancelled'">
+                        <div>
                             <span *ngIf="item?.status === 'cancelled'" class="badge badge-danger font-8">Cancelled</span>
                             <span *ngIf="item?.status === 'refunded'" class="badge badge-danger font-8">Refunded</span>
+                            <span *ngIf="item?.status === 'rejected'" class="badge badge-danger font-8">Rejected</span>
                         </div>
                     </div>
                 </div>
-                <div class="row no-gutters py-2" *ngIf="(item?.status == 'refunded' || item?.status == 'cancelled') && item?.reason">
+                <div class="row no-gutters py-2" *ngIf="(item?.status == 'refunded' || item?.status == 'cancelled' || item?.status == 'rejected') && item?.reason">
                     <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Reason:</div>
                     <div class="col-lg align-text-top">{{ item?.reason }}</div>
                 </div>
@@ -43,12 +49,46 @@
             </div>
         </div>
     </div>
+    <div *ngIf="showDeliveryDetails && isDeliveryDetailsAvailable">
+        <h5>{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Pickup'}} Information</h5>
+        <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
+            <div>
+                <div class="row no-gutters py-2" *ngIf="item?.customer?.firstName && item?.customer?.lastName">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Name:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer?.firstName }} {{ item?.customer?.lastName }}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.customer?.phoneNumber">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Tel:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer?.phoneNumber }}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.deliveryOption == 'delivery' && item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Delivery Address:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + ', ' + item?.customer.address?.country }}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngIf="item?.delivery || !isPublic">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Delivery Fee:</div>
+                    <div *ngIf="isPublic || (!isPublic && item?.status !== 'wait_for_approval' && item?.status !== 'new')">
+                        <div class="align-text-top">RM{{ item?.delivery?.fee | number: '1.2-2' }}</div>
+                    </div>
+                    <div *ngIf="!isPublic && (item?.status === 'wait_for_approval' || item?.status === 'new')" class="col">
+                        <mat-select class="form-control form-control-sm" [(ngModel)]="selectedDelivery" placeholder="Select a delivery" (selectionChange)="onDeliveryChange()">
+                            <mat-option value="">Custom</mat-option>
+                            <mat-option [value]="delivery.fee" *ngFor="let delivery of deliveries">{{delivery.name}}</mat-option>
+                        </mat-select>
+                        <input class="form-control form-control-sm mt-2" placeholder="Enter the delivery fee" [disabled]="selectedDelivery !== ''" [(ngModel)]="delivery" (input)="onDeliveryInputChange($event)" name="deliveryFee" />
+                        <button class="btn btn-sm btn-controller mt-2 float-right" (click)="onUpdateDeliveryClicked()">Update</button>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div>
-        <h5>{{item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}}</h5>
+        <h5>{{item?.status == 'wait_for_approval' || item?.status == 'public_new' || item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}}</h5>
         <div class="p-3 font-9 mb-3 receipt-table" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
             <div class="mb-3">
                 <div class="row no-gutters py-2">
-                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">{{item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}} ID:</div>
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">{{item?.status == 'wait_for_approval' || item?.status == 'public_new' || item?.status == 'new' || item?.status == 'paid' ? 'Invoice': 'Receipt'}} ID:</div>
                     <div class="col-lg align-text-top">{{ item?.receiptId }}</div>
                 </div>
                 <div class="row no-gutters py-2">
@@ -70,7 +110,7 @@
                 <div>
                     <div class="row no-gutters pb-2" *ngFor="let receiptItem of item?.items">
                         <div class="col-lg">
-                            <span class="col p-0">{{ receiptItem.name }}{{ receiptItem.type !== 'Default' ? ' - ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x ' + receiptItem.quantity }}</span>
+                            <span class="col p-0">{{ receiptItem.name }}{{ (receiptItem.type !== 'Default' && receiptItem.type !== null) ? ' - ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x ' + receiptItem.quantity }}</span>
                         </div>
                         <div class="col-lg-auto text-center d-none d-lg-table-cell" style="min-width: 120px">
                             x {{ receiptItem.quantity}}
@@ -105,25 +145,6 @@
             </table>
             <hr />
             <p class="mb-0 font-weight-bold text-center">** THANK YOU **</p>
-        </div>
-    </div>
-    <div *ngIf="showDeliveryDetails && isDeliveryDetailsAvailable">
-        <h5>{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Pickup'}} Information</h5>
-        <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
-            <div>
-                <div class="row no-gutters py-2" *ngIf="item?.customer?.firstName && item?.customer?.lastName">
-                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Name:</div>
-                    <div class="col-lg align-text-top">{{ item?.customer?.firstName }} {{ item?.customer?.lastName }}</div>
-                </div>
-                <div class="row no-gutters py-2" *ngIf="item?.customer?.phoneNumber">
-                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Tel:</div>
-                    <div class="col-lg align-text-top">{{ item?.customer?.phoneNumber }}</div>
-                </div>
-                <div class="row no-gutters py-2" *ngIf="item?.deliveryOption == 'delivery' && item?.customer?.address && item?.customer?.address?.address && item?.customer?.address?.state && item?.customer?.address?.postcode">
-                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Delivery Address:</div>
-                    <div class="col-lg align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + ', ' + item?.customer.address?.country }}</div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

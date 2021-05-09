@@ -93,8 +93,9 @@
     }
 
     .merchant__nav{
-        overflow-x: auto;
-        overflow-y: hidden;
+        position: relative;
+        // overflow-x: auto;
+        // overflow-y: hidden;
 
         .merchant__nav-item {
             border-top: 0;
@@ -102,6 +103,7 @@
             border-right: 0;
             border-radius: 0;
             color: #707070;
+            border-color: #ccc;
             background-color: transparent;
             transition: all ease .1s;
             cursor: pointer;
@@ -110,6 +112,30 @@
             &.selected {
                 color: #b71c1c;
                 border-bottom: 2px solid #b71c1c;
+            }
+            &.merchant__nav-item__highlight {
+                position: absolute;
+                right: 0;
+                top: -1rem;
+                width: 58px;
+                height: 58px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #e34f4f;
+                color: #fff;
+                border-radius: 1rem;
+                box-shadow: 0 0 5px #888;
+                border-bottom: 0;
+                transition: background-color ease .2s;
+                
+                &:hover{
+                    background-color: #b71c1c;
+                }
+            }
+            .blinking {
+                animation: enlarge infinite 1s;
+                font-size: 1.3rem;
             }
         }
     }

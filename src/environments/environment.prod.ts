@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   IMAGE_URL: 'https://assets.wonderscale.com/',
-  ITEMS_PER_PAGE: 25,
+  ITEMS_PER_PAGE: 50,
   RETURN_URL: '',
   SOURCE: 'website',
   QRCODE_BORDER: 'assets/images/png/icon-with-profile-image-borderless.png',

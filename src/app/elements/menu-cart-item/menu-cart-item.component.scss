@@ -1,0 +1,177 @@
+:host {
+    padding: .75rem .5rem;
+    display: block;
+    width: 100%;
+
+    .menu-cart-item__container {
+        background-color: #fff;
+        width: 100%;
+        border-radius: 1rem;
+        position: relative;
+        transition: all ease .2s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+        overflow: hidden;
+
+        .menu-cart-item__image-container {
+            text-align: center;
+            width: 125px;
+            height: 125px;
+            background-color: #f7f7f7;
+            overflow: hidden;
+            color: #ccc;
+            transition: all ease .1s;
+
+            &:hover {
+                color: rgba(0, 0, 0, .8);
+            }
+        }
+
+        .menu-cart-item__image {
+            width: 125px;
+            height: 125px;
+            object-fit: contain;
+        }
+
+        .menu-cart-item__image-hint{
+            transition: background-color ease .2s;
+
+            .menu-cart-item__image-hint-icon{
+                transition: color ease .2s;
+            }
+        }
+        
+        .menu-cart-item__image:hover + 
+        .menu-cart-item__image-hint,
+        .menu-cart-item__image-hint:hover{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 125px;
+            height: 125px;
+            background-color: rgba(0, 0, 0, .4);
+
+            .menu-cart-item__image-hint-icon{
+                position: absolute;
+                color: #fff;
+                top: .5rem;
+                right: .5rem;
+            }
+        }
+
+        .menu-cart-item__middle {
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+            height: 125px;
+
+            .menu-cart-item__text {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin-bottom: 0;
+            }
+
+            .menu-cart-item__price {
+                display: inline-block;
+                border-radius: 1.5rem;
+                color: #222;
+                padding: .05rem .5rem;
+                font-size: .8rem;
+                background-color: #f7f7f7;
+                &.menu-cart-item__price__offer{
+                    background-color: #990000;
+                }
+            }
+
+            .menu-cart-item__discount-price {
+                font-size: .8rem;
+                display: inline-block;
+                margin-right: .5rem;
+            }
+
+            .menu-cart-item__number-cart-item {
+                background-color: #b71c1c;
+                box-shadow: 0 3px 5px #888;
+                border-radius: 1rem;
+                position: absolute;
+                top: .5rem;
+                right: .5rem;
+                padding: .15rem .5rem;
+                font-size: .8rem;
+                color: #fff;
+            }
+        }
+
+        .menu-cart-item__quantity{
+            display: flex;
+            align-items: center;
+            padding-right: 2rem;
+        }
+
+        .menu-cart-item__input,
+        .menu-cart-item__textarea{
+            border: 0;
+            background-color: #fff;
+            box-shadow: 0 1px 4px #ccc;
+        }
+        
+        .menu-cart-item__input {
+            height: 38px;
+            line-height: 38px;
+            text-align: right;
+            width: 60px;
+        }
+
+        .menu-cart-item__remove{
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #ccc;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all ease .2s;
+
+            &:hover{
+                background-color: #b71c1c;
+                color: #fff;
+            }
+        }
+
+        &:hover {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+        }
+    }
+}
+
+.images-fullscreen-container {
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+
+    .images-fullscreen__icon{
+        width: 2.5rem;
+        line-height: 2.5rem;
+        text-align: center;
+        border-radius: 50%;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        z-index: 2;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, .1);
+        transition: background-color ease .2s;
+        &:hover{
+            background-color: rgba(0, 0, 0, .2);
+        }
+    }
+
+    ::ng-deep .swiper-pagination-bullet-active {
+        border: 0;
+        background-color: #282C35;
+    }
+}

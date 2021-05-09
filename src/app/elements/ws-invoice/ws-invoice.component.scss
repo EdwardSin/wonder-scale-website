@@ -1,0 +1,33 @@
+
+.btn-favorite {
+    border: 1px solid #b71c1c;
+    color: #b71c1c;
+    border-radius: 25px;
+    text-align: center;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    transition: all ease .5s;
+    
+    .btn-favorite-icon {
+        color: transparent;
+        -webkit-text-fill-color: #fff;
+        -webkit-text-stroke-width: .5px;
+        -webkit-text-stroke-color: #b71c1c;
+        transition: all ease .2s;
+    }
+
+    &.selected {
+        .btn-favorite-icon {
+            color: transparent;
+            -webkit-text-fill-color: #b71c1c;
+            -webkit-text-stroke-width: .5px;
+            -webkit-text-stroke-color: #b71c1c;
+        }
+    }
+
+    &:hover{
+        .btn-favorite-icon {
+            transform: scale(1.2);
+        }
+    }
+}

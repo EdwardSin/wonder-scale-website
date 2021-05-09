@@ -182,7 +182,8 @@
 .feature_container,
 .location__container,
 .opening-info__container,
-.social-media__container {
+.social-media__container,
+.delivery__container {
     padding: 1rem;
     background-color: #fff;
     .info__title{
@@ -214,7 +215,8 @@
     }
 }
 .contact__container,
-.social-media__container {
+.social-media__container,
+.delivery__container {
     background-color: #fff;
     padding: 1rem;
     >div{
@@ -223,6 +225,7 @@
     .info__title{
         font-size: 1.2rem;
         padding-bottom: .25rem;
+        font-weight: normal;
     }
     :last-child{
         margin-bottom: 0;

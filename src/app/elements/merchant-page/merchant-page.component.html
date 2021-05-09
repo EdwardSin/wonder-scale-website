@@ -14,7 +14,7 @@
     </div>
     <div *ngIf="isInformationOpened" class="information-fullscreen-container position-fixed pt-2">
         <span class="information-fullscreen__icon fas fa-times" (click)="isInformationOpened = false"></span>
-        <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}">
+        <swiper [index]="selectedInformationIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'horizontal', mousewheel: true}">
             <ng-container *ngIf="banners.length">
                 <ng-container *ngFor="let image of banners">
                     <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
@@ -50,11 +50,13 @@
                 <ul class="merchant__nav list-group list-group-horizontal w-100">
                     <li (click)="scrollTo('overview')" [class.selected]="selectedNavItem == 'overview'" class="merchant__nav-item list-group-item selected">Overview</li>
                     <li *ngIf="store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0 || isEditing" (click)="scrollTo('location')" [class.selected]="selectedNavItem == 'location'" class="merchant__nav-item list-group-item">Location</li>
-                    <li  *ngIf="store?.openingInfoType || isEditing"(click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Opening Hours</li>
-                    <li (click)="scrollTo('catalogue')" [class.selected]="selectedNavItem == 'catalogue'" class="merchant__nav-item list-group-item ml-auto"><span class="fas fa-book-open"></span> Catalogue</li>
+                    <li  *ngIf="store?.openingInfoType || isEditing" (click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Opening Hours</li>
+                    <li  *ngIf="store?.deliveries?.length || isEditing" (click)="scrollTo('delivery')" [class.selected]="selectedNavItem == 'delivery'" class="merchant__nav-item list-group-item">Delivery</li>
+                    <li (click)="scrollTo('catalogue')" [class.selected]="selectedNavItem == 'catalogue'" class="merchant__nav-item list-group-item ml-auto"  [style.margin-right]="store?.defaultSetting?.invoice?.isPublicReceivable ? '5rem' : '0'"><span class="fas fa-book-open"></span> Catalogue</li>
+                    <li *ngIf="store?.defaultSetting?.invoice?.isPublicReceivable" (click)="navigateToShopping()" title="Shopping" [class.selected]="selectedNavItem == 'shopping'" class="merchant__nav-item merchant__nav-item__highlight"><span class="fas fa-shopping-cart blinking"></span></li>
                 </ul>
-                <div class="mb-3" style="border-bottom: 2px solid #ccc; margin-top: -2px"></div>
-                <div *ngIf="selectedNavItem != 'catalogue'" class="details-container">
+                <div class="mb-3" style="border-bottom: 2px solid #ccc; margin-top: -2px" [style.width]="store?.defaultSetting?.invoice?.isPublicReceivable ? 'calc(100% - 5rem)' : '100%'"></div>
+                <div *ngIf="selectedNavItem != 'catalogue' && selectedNavItem != 'delivery'" class="details-container">
                     <div id="overview" class="mb-3 merchant__overview" style="min-height: 300px">
                         <button *ngIf="store?.description && isEditing" class="btn btn-sm btn-controller float-right" (click)="onEditDescriptionClicked.emit($event)"><span class="fas fa-edit"></span></button>
                         <p *ngIf="store?.description; else noDescriptionTemplate" class="info__text mb-0" style="white-space: break-spaces">{{ store?.description }}</p>
@@ -79,7 +81,7 @@
                     </div>
                     <div *ngIf="isQuickMenuOpened" class="quick-menu-fullscreen-container position-fixed">
                         <span class="quick-menu-fullscreen__icon fas fa-times" (click)="isQuickMenuOpened = false"></span>
-                        <swiper [index]="selectedQuickMenuIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'vertical', mousewheel: true}">
+                        <swiper [index]="selectedQuickMenuIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'horizontal', mousewheel: true}">
                             <ng-container *ngIf="menuImages.length">
                                 <ng-container *ngFor="let image of menuImages">
                                     <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
@@ -131,6 +133,33 @@
                         </div>
                         <ng-template #noOpeningHourTemplate>
                             <p class="text-center" style="margin: 2rem 0">No Opening Hour</p>
+                        </ng-template>
+                    </div>
+                </div>
+                <div *ngIf="selectedNavItem == 'delivery' && (store?.deliveries.length || isEditing)">
+                    <div id="delivery" class="mb-3 merchant__overview" style="min-height: 300px">
+                        <h3 class="h5">Delivery:</h3>
+                        <div *ngIf="store?.deliveries?.length; else noDeliveryTemplate">
+                            <table class="font-9 text-muted w-100">
+                                <tr *ngFor="let delivery of store?.deliveries | orderBy: 'fee'" class="border-bottom">
+                                    <td class="align-top col px-0">
+                                        <ul class="mb-0 py-2 pl-4">
+                                            <li class="text-break" *ngFor="let name of delivery?.name">
+                                                {{ name }}
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top py-2 text-right col-auto text-nowrap">
+                                        RM {{ delivery?.fee | number: '1.2-2' }}
+                                    </td>
+                                </tr>
+                            </table>
+                            <p class="font-8 mb-3 text-muted p-2">
+                                Please check with seller if your location is not listed!
+                            </p>
+                        </div>
+                        <ng-template #noDeliveryTemplate>
+                            <p class="text-center" style="margin: 2rem 0;">No delivery</p>
                         </ng-template>
                     </div>
                 </div>

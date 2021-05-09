@@ -2,6 +2,32 @@
 - Wonder Scale Website                      -
 ---------------------------------------------
 
+- v1.0.1092                                 -
+---------------------------------------------
+- 2021-05-08                                -
+---------------------------------------------
+.: WSW: BugFix - Not able to navigate to other page when invoice is not found (WSW-106)
+.: WSW: Task - Add mobile size supported for order (WSW-105)
+.: WSW: BugFix - Display hover remove icon in mobile size (WSW-100)
+.: WSW: BugFix - Show no bank details message (WSW-106)
+.: WSW: BugFix - Update delivery table style (WSW-106)
+
+---------------------------------------------
+- 2021-05-06                                -
+---------------------------------------------
+.: WSW: Task - CLONE - Pre-order through local website or link to other website (WSW-106)
+
+---------------------------------------------
+- 2021-04-18                                -
+---------------------------------------------
+.: WSW: Task - CLONE - Add delivery and price (WSW-107)
+
+---------------------------------------------
+- 2021-04-03                                -
+---------------------------------------------
+.: WSW: Task - Receipt module to list, filter receipts and the store page details (WSW-100)
+.: WSW: Task - Update Favorite page UI (WSW-105)
+
 - v1.0.1091                                 -
 ---------------------------------------------
 - 2021-03-26                                -
@@ -162,6 +188,12 @@
 ---------------------------------------------
 .: WSW: Task: CLONE - Change 'page' and 'shop' to store' (WSW-78)
 .: WSW: Task: Revert Ordering Service (WSM-74)
+
+- v1.0.1031                                 -
+---------------------------------------------
+- 2020-08-28                                -
+---------------------------------------------
+.: WSM: Story: Ordering System (WSM-84)
 
 - v1.0.1031                                 -
 ---------------------------------------------

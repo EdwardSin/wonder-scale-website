@@ -7,7 +7,7 @@ import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { PasswordValidator } from '@validations/user-validation/password.validator';
 import { FormGroup } from '@angular/forms';
 import { WsToastService } from '@elements/ws-toast/ws-toast.service';
-import { WSFormBuilder } from '@builders/wsformbuilder';
+import { WsFormBuilder } from '@builders/wsformbuilder';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 
 @Component({
@@ -24,7 +24,7 @@ export class SecuritySettingsComponent implements OnInit {
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private authUserService: AuthUserService) { 
     DocumentHelper.setWindowTitleWithWonderScale('Security');
-    this.form = WSFormBuilder.createPasswordForm();
+    this.form = WsFormBuilder.createPasswordForm();
     this.getProfile();
   }
 

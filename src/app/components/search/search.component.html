@@ -9,8 +9,8 @@
             </div>
         </div>
         <div *ngIf="!loading.isRunning() && stores.length; else loadingTemplate">
-            <div class="row no-gutters">
-                <page *ngFor="let store of stores" [item]="store"></page>
+            <div class="row no-gutters mb-4">
+                <page class="col-sm-6 col-lg-5ths p-2" *ngFor="let store of stores" [item]="store"></page>
             </div>
         </div>
         <div class="pb-4">
@@ -19,7 +19,7 @@
         <div *ngIf="!loading.isRunning() && recommandedStores.length">
             <h1 class="h5 mb-3">Recommandation</h1>
             <div class="row no-gutters">
-                <page *ngFor="let store of recommandedStores" [item]="store"></page>
+                <page class="col-sm-6 col-lg-5ths p-2" *ngFor="let store of recommandedStores" [item]="store"></page>
             </div>
         </div>
     </div>

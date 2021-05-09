@@ -129,7 +129,7 @@ export class MerchantPageComponent implements OnInit {
                 }
             }
         }
-        if (currentSection !== this.selectedNavItem && this.selectedNavItem !== 'catalogue') {
+        if (currentSection !== this.selectedNavItem && this.selectedNavItem !== 'catalogue' && this.selectedNavItem !== 'delivery') {
           this.selectedNavItem = currentSection;
         }
     });
@@ -259,6 +259,12 @@ export class MerchantPageComponent implements OnInit {
   }
   navigateToMap() {
     window.open(`http://www.google.com/maps/place/${this.store.location.coordinates[1]},${this.store.location.coordinates[0]}`, '_blank');
+  }
+  navigateToShopping() {
+    if (this.isEditing) {
+      return;
+    }
+    this.router.navigate(['/page', this.store.username, 'cart-menu']);
   }
   navigateByContactButton() {
     if (this.store.contactButton) {

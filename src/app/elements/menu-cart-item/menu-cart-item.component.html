@@ -1,0 +1,27 @@
+<div class="menu-cart-item__container">
+    <div class="menu-cart-item">
+        <div class="row no-gutters">
+            <span class="menu-cart-item__image-container">
+                <img *ngIf="item?.profileImage" [src]="environment.IMAGE_URL + item?.profileImage" class="menu-cart-item__image" alt="profile Image" />
+                <img *ngIf="!item?.profileImage" src="/assets/images/png/profileImage.png" class="menu-cart-item__image" alt="item detault profile image" />
+            </span>
+            <div class="menu-cart-item__middle col px-2 px-lg-3" (click)="isShown = !isShown">
+                <p class="menu-cart-item__text">{{ item?.name }}</p>
+                <p class="menu-cart-item__text font-9" class="text-muted" *ngIf="item?.type">{{ item?.type?.name }}</p>
+                <p class="menu-cart-item__text font-weight-bold">RM {{ item?.amount() | number: '1.2-2' }}</p>
+            </div>
+            <div class="row no-gutters col-lg-auto py-3 justify-content-lg-right justify-content-center">
+                <div class="menu-cart-item__quantity float-right mx-2">
+                    <span class="fas fa-minus font-8 mr-3 clickable" (click)="decrease()"></span>
+                    <input class="menu-cart-item__input text-center" [(ngModel)]="item.quantity" readonly />
+                    <span class="fas fa-plus font-8 ml-3 clickable" (click)="increase()"></span>
+                </div>
+                <div class="d-flex align-items-center pr-3">
+                    <div class="menu-cart-item__remove" (click)="removeFromCartItems()">
+                        <span class="fas fa-times"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

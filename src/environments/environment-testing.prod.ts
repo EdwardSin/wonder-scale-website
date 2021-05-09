@@ -5,7 +5,7 @@ export const environment = {
     HERE_APP_API: 'h9LLOE7i3CG3y1OKhWxw',
     HERE_APP_CODE: 'ERx9SWBfCHLlbN1vKOvlng',
     FACEBOOK_APP_ID: '246047829574930',
-    ITEMS_PER_PAGE: 25,
+    ITEMS_PER_PAGE: 50,
     RETURN_URL: '',
     SOURCE: 'website',
     QRCODE_BORDER: 'assets/images/png/icon-with-profile-image-borderless.png',
