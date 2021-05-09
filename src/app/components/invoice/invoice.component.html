@@ -1,7 +1,7 @@
 <div class="container py-4">
     <div class="col-lg-8 center p-0" *ngIf="item && !loading.isRunning(); else loadingTemplate">
         <div class="alert alert-danger mb-3" *ngIf="item?.paidAt && item?.status == 'new'">Your payslip was rejected! Please upload again!</div>
-        <div class="mb-3" *ngIf="item?.defaultSetting?.invoice?.isPublicReceivable && item?.store?.bankDetails && (item?.status == 'public_new' || item?.status == 'new'); else noBankDetailsProvidedTemplate">
+        <div class="mb-3" *ngIf="item?.defaultSetting?.invoice?.isPublicReceivable && item?.store?.bankDetails && (item?.status == 'public_new' || item?.status == 'new');">
             <h5 class="d-inline-block mt-3">Bank Details</h5>
             <div class="p-3 font-9" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
                 <p class="mb-0 text-muted">Kindly bank-in to the details below to complete your order.</p>
@@ -19,6 +19,11 @@
                 </div>
             </div>
             <p class="text-muted font-9 text-danger mt-2" *ngIf="item?.status == 'public_new'">Invoice will be removed permanently if not save or continue proceed.</p>
+        </div>
+        <div *ngIf="!item?.defaultSetting?.invoice?.isPublicReceivable || !item?.store?.bankDetails">
+            <div class="alert alert-warning" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
+                This store stops selling to public currently.
+            </div>
         </div>
         <div *ngIf="item?.status == 'wait_for_approval' && item?.defaultSetting?.invoice?.isApprovalEnabled" class="mb-3">
             <div class="p-3 py-4 text-center font-weight-bold" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
@@ -103,11 +108,5 @@
 <ng-template #noReceipt>
     <div class="text-center w-100">
         <h6 class="py-5">Order/Receipt cannot be found!</h6>
-    </div>
-</ng-template>
-
-<ng-template #noBankDetailsProvidedTemplate>
-    <div class="alert alert-warning" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
-        This store stops selling to public currently.
     </div>
 </ng-template>
