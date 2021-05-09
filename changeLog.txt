@@ -10,6 +10,7 @@
 .: WSW: Task - Add mobile size supported for order (WSW-105)
 .: WSW: BugFix - Display hover remove icon in mobile size (WSW-100)
 .: WSW: BugFix - Show no bank details message (WSW-106)
+.: WSW: BugFix - Update delivery table style (WSW-106)
 
 ---------------------------------------------
 - 2021-05-06                                -

@@ -142,14 +142,14 @@
                         <div *ngIf="store?.deliveries?.length; else noDeliveryTemplate">
                             <table class="font-9 text-muted w-100">
                                 <tr *ngFor="let delivery of store?.deliveries | orderBy: 'fee'" class="border-bottom">
-                                    <td class="align-top">
-                                        <ul class="mb-0 py-3">
-                                            <li *ngFor="let name of delivery?.name">
+                                    <td class="align-top col">
+                                        <ul class="mb-0 py-2 pl-4">
+                                            <li class="text-break" *ngFor="let name of delivery?.name">
                                                 {{ name }}
                                             </li>
                                         </ul>
                                     </td>
-                                    <td class="align-top py-3 text-center">
+                                    <td class="align-top py-2 text-right col-auto text-nowrap">
                                         RM {{ delivery?.fee | number: '1.2-2' }}
                                     </td>
                                 </tr>
