@@ -10,6 +10,7 @@
 .: WSW: BugFix - Delivery fee show empty rather than not show (WSW-114)
 .: WSW: Task - Add description in cart item (WSW-112)
 .: WSW: Task - Remove "remove" button in Orders (WSW-111)
+.: WSW: Task - Must login as user to place order (WSW-110)
 
 - v1.0.1092                                 -
 ---------------------------------------------
