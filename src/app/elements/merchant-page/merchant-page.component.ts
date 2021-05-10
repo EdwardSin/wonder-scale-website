@@ -10,7 +10,6 @@ import { WsLoading } from '@elements/ws-loading/ws-loading';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import { QRCodeBuilder } from '@builders/qrcodebuilder';
-import { templateJitUrl } from '@angular/compiler';
 
 @Component({
   selector: 'merchant-page',
