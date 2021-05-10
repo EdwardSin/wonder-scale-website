@@ -233,8 +233,8 @@
                             </div>
                         </div>
                         <p class="merchant__sub-menu-label">Contact Details:</p>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.phone, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditPhoneClicked, addLabel: 'Add Phone', isLink: true, icon: 'fas fa-phone'}"></ng-container>
-                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.email, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditEmailClicked, addLabel: 'Add Email', isLink: true, icon: 'fas fa-envelope'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.phone, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditPhoneClicked, addLabel: 'Add Phone', prefixLink: 'tel:', isLink: true, icon: 'fas fa-phone'}"></ng-container>
+                        <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.email, isEditing: isEditing, type: 'email', isEmptyDisplayed: true, onClick: onEditEmailClicked, addLabel: 'Add Email', prefixLink: 'mailto:', isLink: true, icon: 'fas fa-envelope'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.website, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditWebsiteClicked, addLabel: 'Add Website', isLink: true, icon: 'fas fa-globe'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.facebook, isEditing: isEditing, onClick: onEditFacebookClicked, addLabel: 'Add Facebook', prefixLink: 'https://www.facebook.com/', isLink: true, icon: 'fa-facebook-f'}"></ng-container>
                         <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: medias?.instagram, isEditing: isEditing, onClick: onEditInstagramClicked, addLabel: 'Add Instagram', prefixLink: 'https://www.instagram.com/', isLink: true, icon: 'fa-instagram'}"></ng-container>
@@ -264,13 +264,13 @@
     </div>
 </div>
 
-<ng-template #mediaTemplate let-medias="medias" let-isEditing="isEditing" let-isEmptyDisplayed="isEmptyDisplayed" let-onClick="onClick" let-addLabel="addLabel" let-icon="icon" let-prefixLink="prefixLink" let-isLink="isLink">
+<ng-template #mediaTemplate let-medias="medias" let-isEditing="isEditing" let-isEmptyDisplayed="isEmptyDisplayed" let-onClick="onClick" let-addLabel="addLabel" let-icon="icon" let-prefixLink="prefixLink" let-isLink="isLink" let-type="type">
     <div class="d-flex align-items-center mb-3 pb-3 px-3 merchant__contact" *ngIf="medias?.length || (isEditing && isEmptyDisplayed)">
         <span class="merchant__contact-icon fab mr-3" [ngClass]="icon"></span>
         <div class="d-inline-block">
             <span class="merchant__contact-detail" *ngFor="let media of medias">
                 <span *ngIf="!isLink">{{ media }}</span>
-                <a *ngIf="isLink" target="_blank" href="{{ prefixLink + media }}">{{ media }}</a>
+                <a *ngIf="isLink" target="_blank" [href]="(prefixLink || '') + media">{{ media }}</a>
             </span>
             <a *ngIf="!medias.length && isEditing" href="javascript:void(0)" class="merchant__edit-link w-100 d-inline-block" (click)="onClick.emit($event)">{{addLabel}}</a>
         </div>
