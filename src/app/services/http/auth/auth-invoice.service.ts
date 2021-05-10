@@ -24,24 +24,29 @@ export class AuthInvoiceService {
       }));
     }
   getInvoices(obj) {
-    return this.isAuthenticatedWithObservableCallback(this.http.get('/api/auth-users/users/invoices', {
+    return this.isAuthenticatedWithObservableCallback(this.http.get('/api/auth-users/invoice-users', {
       params: obj
     }), of(false).pipe(tap(() => {
       this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
+  placeorder(obj) {
+    return this.isAuthenticatedWithObservableCallback(this.http.post('/api/auth-users/invoice-users/placeorder', obj) , of(false).pipe(tap(() => {
+      this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
+    })));
+  }
   isSavedInvoice(id) {
-    return this.isAuthenticatedWithObservableCallback(this.http.post('/api/auth-users/users/is-saved/invoice', {id}) , of(false).pipe(tap(() => {
+    return this.isAuthenticatedWithObservableCallback(this.http.post('/api/auth-users/invoice-users/is-saved', {id}) , of(false).pipe(tap(() => {
       this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
   saveInvoice(id) {
-    return this.isAuthenticatedWithObservableCallback(this.http.post('/api/auth-users/users/save/invoice', {id}) , of(false).pipe(tap(() => {
+    return this.isAuthenticatedWithObservableCallback(this.http.post('/api/auth-users/invoice-users/save', {id}) , of(false).pipe(tap(() => {
       this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
   unsaveInvoice(id) {
-    return this.isAuthenticatedWithObservableCallback(this.http.post('/api/auth-users/users/unsave/invoice', {id}) , of(false).pipe(tap(() => {
+    return this.isAuthenticatedWithObservableCallback(this.http.post('/api/auth-users/invoice-users/unsave', {id}) , of(false).pipe(tap(() => {
       this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
     })));
   }
