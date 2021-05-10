@@ -7,6 +7,7 @@
 - 2021-05-10                                -
 ---------------------------------------------
 .: WSW: BugFix - Link is not able to be clicked (WSW-113)
+.: WSW: BugFix - Delivery fee show empty rather than not show (WSW-114)
 
 ---------------------------------------------
 - 2021-05-08                                -
