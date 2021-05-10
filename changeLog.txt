@@ -9,6 +9,7 @@
 .: WSW: BugFix - Link is not able to be clicked (WSW-113)
 .: WSW: BugFix - Delivery fee show empty rather than not show (WSW-114)
 .: WSW: Task - Add description in cart item (WSW-112)
+.: WSW: Task - Remove "remove" button in Orders (WSW-111)
 
 - v1.0.1092                                 -
 ---------------------------------------------

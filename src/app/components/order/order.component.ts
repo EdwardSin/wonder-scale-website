@@ -30,7 +30,6 @@ export class OrderComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getInvoices(this.queryParams);
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(queryParams => {
       this.queryParams = {...this.queryParams, ...queryParams};
       this.getInvoices({page: this.queryParams.page, selected: this.queryParams.selected});

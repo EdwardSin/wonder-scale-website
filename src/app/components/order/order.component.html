@@ -23,7 +23,7 @@
     <div class="row no-gutters mb-4" *ngIf="invoices?.length && !loading.isRunning(); else loadingTemplate">
         <div class="col-6 col-lg-5ths p-2" *ngFor="let invoice of invoices">
             <div class="order" (click)="navigateToInvoice(invoice)">
-                <span class="order__icon fas fa-times" (click)="$event.stopPropagation(); unsaveInvoice(invoice?._id)"></span>
+                <!-- <span class="order__icon fas fa-times" (click)="$event.stopPropagation(); unsaveInvoice(invoice?._id)"></span> -->
                 <div class="order__image mb-2">
                     <img class="w-100 h-100" src="{{ environment.IMAGE_URL + invoice?.store?.profileImage }}" alt="profile image" />
                 </div>
