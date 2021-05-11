@@ -276,8 +276,8 @@
                 </mat-radio-group> -->
             </div>
         </div>
-        <button class="btn btn-checkout ml-auto d-block" (click)="placeorder()">
-            Place Order
+        <button class="btn btn-checkout ml-auto d-block" [disabled]="checkoutLoading.isRunning()" (click)="placeorder()">
+            <ws-spinner class="mr-2" *ngIf="checkoutLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="1" [spinnerColor]="'#fff'"></ws-spinner>Place Order
         </button>
     </form>
 </ng-template>

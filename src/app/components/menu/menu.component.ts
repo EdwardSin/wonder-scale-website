@@ -182,9 +182,6 @@ export class MenuComponent implements OnInit {
   removeCartItem(cartItem) {
     this.sharedCartService.removeCartItem(cartItem);
   }
-  confirmPayment() {
-    this.checkoutLoading.start();
-  }
   checkout() {
     this.phase.next();
     window.scrollTo(0, 0);
@@ -281,14 +278,14 @@ export class MenuComponent implements OnInit {
         items,
         storeId: this.store._id
       };
-      this.authInvoiceService.placeorder(obj).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.checkoutLoading.start();
+      this.authInvoiceService.placeorder(obj).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.checkoutLoading.stop())).subscribe(result => {
         if (result['result']) {
           let s_id = result['data'].s_id;
           let r_id = result['data'].r_id;
           this.router.navigate(['/invoice'], {queryParams: {s_id, r_id}});
         }
       }, err => {
-        console.log(err);
         if (err?.status == '403') {
           WsToastService.toastSubject.next({ content: 'Seller is no longer receive order publicly!<br/>Please contact the seller for more information!', type: 'danger'});
         } else {
