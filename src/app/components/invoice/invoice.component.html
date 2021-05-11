@@ -69,7 +69,7 @@
                     <ws-spinner *ngIf="previewLoading.isRunning()" class="text-center d-block w-100" style="padding-top: 10vh; padding-bottom: 10vh" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>
                     <div *ngIf="!previewLoading.isRunning()">
                         <div class="d-flex align-items-center py-3" style="height: 80vh">
-                            <img class="uploading-image center h-100" [src]="uploadingImage" alt="uploading-image" />
+                            <img class="uploading-image center h-100 w-100" style="object-fit: contain;" [src]="uploadingImage" alt="uploading-image" />
                         </div>
                         <div class="row no-gutters mb-3">
                             <div class="col-lg-6 p-1">
