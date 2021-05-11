@@ -25,7 +25,8 @@
             <div class="order" (click)="navigateToInvoice(invoice)">
                 <!-- <span class="order__icon fas fa-times" (click)="$event.stopPropagation(); unsaveInvoice(invoice?._id)"></span> -->
                 <div class="order__image mb-2">
-                    <img class="w-100 h-100" src="{{ environment.IMAGE_URL + invoice?.store?.profileImage }}" alt="profile image" />
+                    <img *ngIf="invoice?.store?.profileImage" class="w-100 h-100" src="{{ environment.IMAGE_URL + invoice?.store?.profileImage }}" alt="profile image" />
+                    <img *ngIf="!invoice?.store?.profileImage" class="w-100 h-100" src="assets/images/png/shop.png" alt="profile image" />
                 </div>
                 <span class="d-block text-center text-muted font-9 mb-1">{{invoice?.receiptId}}</span>
                 <p class="mb-1 text-center">
