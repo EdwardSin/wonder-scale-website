@@ -264,7 +264,7 @@
     </div>
 </div>
 
-<ng-template #mediaTemplate let-medias="medias" let-isEditing="isEditing" let-isEmptyDisplayed="isEmptyDisplayed" let-onClick="onClick" let-addLabel="addLabel" let-icon="icon" let-prefixLink="prefixLink" let-isLink="isLink" let-type="type">
+<ng-template #mediaTemplate let-medias="medias" let-isEditing="isEditing" let-isEmptyDisplayed="isEmptyDisplayed" let-onClick="onClick" let-addLabel="addLabel" let-icon="icon" let-prefixLink="prefixLink" let-isLink="isLink">
     <div class="d-flex align-items-center mb-3 pb-3 px-3 merchant__contact" *ngIf="medias?.length || (isEditing && isEmptyDisplayed)">
         <span class="merchant__contact-icon fab mr-3" [ngClass]="icon"></span>
         <div class="d-inline-block">
