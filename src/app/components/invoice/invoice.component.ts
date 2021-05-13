@@ -44,13 +44,6 @@ export class InvoiceComponent implements OnInit {
       this.loading.stop();
     }
   }
-  @HostListener('window:beforeunload', ['$event'])
-  canDeactivate($event: any): Observable<boolean> | boolean {
-    return true;
-  }
-  isPrompt() {
-    return this.item && this.item?.status !== 'rejected' && !this.isSaved;
-  }
   ngOnInit(): void {
     this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.isAuthenticated = !!result;

@@ -20,6 +20,8 @@ import { StoreService } from '@services/http/public/store.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InvoiceService } from '@services/http/public/invoice.service';
 import { ScreenService } from '@services/general/screen.service';
+import { AuthenticationService } from '@services/http/general/authentication.service';
+import { AuthInvoiceService } from '@services/http/auth/auth-invoice.service';
 
 @Component({
   selector: 'menu',
@@ -56,8 +58,10 @@ export class MenuComponent implements OnInit {
     private sharedCartService: SharedCartService,
     private sharedStoreService: SharedStoreService,
     private invoiceService: InvoiceService,
+    private authInvoiceService: AuthInvoiceService,
     private storeService: StoreService,
     private screenService: ScreenService,
+    private authenticationService: AuthenticationService,
     private itemService: ItemService) {
       
     this.sharedCartService.cartItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
@@ -81,13 +85,6 @@ export class MenuComponent implements OnInit {
       delivery: ['']
     })
   }
-  // @HostListener('window:beforeunload', ['$event'])
-  // canDeactivate($event: any): Observable<boolean> | boolean {
-  //   if (confirm('Are you sure to leave the page?')) {
-  //     this.phase.setStep(0);
-  //   }
-  //   return false;
-  // }
   ngOnInit(): void {
     this.itemLoading.start();
     window.scrollTo({ top: 0 });
@@ -185,9 +182,6 @@ export class MenuComponent implements OnInit {
   removeCartItem(cartItem) {
     this.sharedCartService.removeCartItem(cartItem);
   }
-  confirmPayment() {
-    this.checkoutLoading.start();
-  }
   checkout() {
     this.phase.next();
     window.scrollTo(0, 0);
@@ -222,7 +216,13 @@ export class MenuComponent implements OnInit {
   }
   continueToDetails() {
     if (this.allCartItems.length) {
-      this.phase.next();
+      this.authenticationService.isAuthenticated().then(result => {
+        if (result) {
+          this.phase.next();
+        } else {
+          this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
+        }
+      })
     }
   }
   placeorder() {
@@ -278,25 +278,14 @@ export class MenuComponent implements OnInit {
         items,
         storeId: this.store._id
       };
-      this.invoiceService.placeorder(obj).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.checkoutLoading.start();
+      this.authInvoiceService.placeorder(obj).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.checkoutLoading.stop())).subscribe(result => {
         if (result['result']) {
           let s_id = result['data'].s_id;
           let r_id = result['data'].r_id;
           this.router.navigate(['/invoice'], {queryParams: {s_id, r_id}});
-          // if (typeof sessionStorage !== undefined) {
-          //   let currentOrders = JSON.parse(sessionStorage.getItem('c_orders'));
-          //   if (this.isJsonString(currentOrders)) {
-          //     let currentOrder = {};
-          //     currentOrder[this.store._id] = this.allCartItems;
-          //     sessionStorage.setItem('c_orders', JSON.stringify({
-          //       ...currentOrders,
-          //       ...currentOrder
-          //     }));
-          //   }
-          // }
         }
       }, err => {
-        console.log(err);
         if (err?.status == '403') {
           WsToastService.toastSubject.next({ content: 'Seller is no longer receive order publicly!<br/>Please contact the seller for more information!', type: 'danger'});
         } else {

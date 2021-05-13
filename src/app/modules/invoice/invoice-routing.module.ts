@@ -6,8 +6,7 @@ import { PreventRouteGuard } from '@guards/prevent-route.guard';
 
 const routes: Routes = [{
   path: '',
-  component: InvoiceComponent,
-  canDeactivate: [PreventRouteGuard]
+  component: InvoiceComponent
 }];
 
 @NgModule({

@@ -43,6 +43,10 @@
             </div>
         </div>
         <div class="p-3" *ngIf="isShown">
+            <div class="mb-2" *ngIf="item?.description">
+                <p class="mb-0 text-muted font-8">{{ item?.description }}</p>
+                <hr />
+            </div>
             <div class="mb-3 h-100 w-100 justify-content-between d-flex align-items-center">
                 <p class="menu-item__title d-inline-block mb-0">Quantity</p>
                 <div class="menu-item__quantity float-right d-inline-block mx-2">

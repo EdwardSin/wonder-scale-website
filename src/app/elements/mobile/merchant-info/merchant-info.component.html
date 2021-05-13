@@ -106,8 +106,8 @@
                 <h4 class="info__title">
                     Contact
                 </h4>
-                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.phone, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditPhoneClicked, addLabel: 'Add Phone', isLink: true, icon: 'fas fa-phone'}"></ng-container>
-                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.email, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditEmailClicked, addLabel: 'Add Email', isLink: true, icon: 'fas fa-envelope'}"></ng-container>
+                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.phone, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditPhoneClicked, addLabel: 'Add Phone', prefixLink: 'tel:', isLink: true, icon: 'fas fa-phone'}"></ng-container>
+                <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.email, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditEmailClicked, addLabel: 'Add Email', prefixLink: 'mailto:', isLink: true, icon: 'fas fa-envelope'}"></ng-container>
                 <ng-container *ngTemplateOutlet="mediaTemplate; context: {medias: store?.website, isEditing: isEditing, isEmptyDisplayed: true, onClick: onEditWebsiteClicked, addLabel: 'Add Website', isLink: true, icon: 'fas fa-globe'}"></ng-container>
             </div>
             <div class="social-media__container" *ngIf="isEditing || store?.media?.length">
@@ -203,7 +203,7 @@
         <div class="d-inline-block">
             <span class="social-media__detail" *ngFor="let media of medias">
                 <span *ngIf="!isLink">{{ media }}</span>
-                <a *ngIf="isLink" target="_blank" href="{{ prefixLink + media }}">{{ media }}</a>
+                <a *ngIf="isLink" target="_blank" [href]="(prefixLink || '') + media">{{ media }}</a>
             </span>
             <a *ngIf="!medias.length && isEditing" href="javascript:void(0)" class="merchant__edit-link w-100 d-inline-block" (click)="onClick.emit($event)">{{addLabel}}</a>
         </div>

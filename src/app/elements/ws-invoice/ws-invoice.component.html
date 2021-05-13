@@ -1,10 +1,10 @@
 <div>
     <div *ngIf="showStatusDetails">
         <h5 class="d-inline-block mt-3">Details</h5>
-        <button *ngIf="isSaveEnabled" (click)="isSaved ? unsave() : save()" [class.selected]="isSaved" class="btn btn-favorite float-right mb-2">
+        <!-- <button *ngIf="isSaveEnabled" (click)="isSaved ? unsave() : save()" [class.selected]="isSaved" class="btn btn-favorite float-right mb-2">
             <span class="fas fa-flag btn-favorite-icon mr-2"></span>
             {{isSaved ? 'Saved' : 'Save'}}
-        </button>
+        </button> -->
         <div class="clearfix"></div>
         <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
             <div class="w-100">
@@ -65,12 +65,15 @@
                     <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Delivery Address:</div>
                     <div class="col-lg align-text-top">{{ item?.customer.address?.address + ', ' + item?.customer.address?.state + ', ' + item?.customer.address?.postcode + ', ' + item?.customer.address?.country }}</div>
                 </div>
-                <div class="row no-gutters py-2" *ngIf="item?.delivery || !isPublic">
+                <div class="row no-gutters py-2" *ngIf="(item?.delivery && isPublic) || !isPublic && item?.delivery && (item?.status !== 'wait_for_approval' && item?.status !== 'new')">
                     <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Delivery Fee:</div>
-                    <div *ngIf="isPublic || (!isPublic && item?.status !== 'wait_for_approval' && item?.status !== 'new')">
-                        <div class="align-text-top">RM{{ item?.delivery?.fee | number: '1.2-2' }}</div>
+                    <div>
+                        <div class="align-text-top">RM{{ (item?.delivery?.fee || 0) | number: '1.2-2' }}</div>
                     </div>
-                    <div *ngIf="!isPublic && (item?.status === 'wait_for_approval' || item?.status === 'new')" class="col">
+                </div>
+                <div class="row no-gutters py-2" *ngIf="!isPublic && (item?.status === 'wait_for_approval' || item?.status === 'new')">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Delivery Fee:</div>
+                    <div class="col">
                         <mat-select class="form-control form-control-sm" [(ngModel)]="selectedDelivery" placeholder="Select a delivery" (selectionChange)="onDeliveryChange()">
                             <mat-option value="">Custom</mat-option>
                             <mat-option [value]="delivery.fee" *ngFor="let delivery of deliveries">{{delivery.name}}</mat-option>

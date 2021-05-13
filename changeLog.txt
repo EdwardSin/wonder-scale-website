@@ -2,6 +2,21 @@
 - Wonder Scale Website                      -
 ---------------------------------------------
 
+- v1.0.10921                                -
+---------------------------------------------
+- 2021-05-11                                -
+---------------------------------------------
+.: WSW: Task - Display default store profile image (WSW-111)
+
+---------------------------------------------
+- 2021-05-10                                -
+---------------------------------------------
+.: WSW: BugFix - Link is not able to be clicked (WSW-113)
+.: WSW: BugFix - Delivery fee show empty rather than not show (WSW-114)
+.: WSW: Task - Add description in cart item (WSW-112)
+.: WSW: Task - Remove "remove" button in Orders (WSW-111)
+.: WSW: Task - Must login as user to place order (WSW-110)
+
 - v1.0.1092                                 -
 ---------------------------------------------
 - 2021-05-08                                -

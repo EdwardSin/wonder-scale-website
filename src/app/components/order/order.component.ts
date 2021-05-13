@@ -30,7 +30,6 @@ export class OrderComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getInvoices(this.queryParams);
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(queryParams => {
       this.queryParams = {...this.queryParams, ...queryParams};
       this.getInvoices({page: this.queryParams.page, selected: this.queryParams.selected});
@@ -43,8 +42,10 @@ export class OrderComponent implements OnInit {
   getInvoices(obj) {
     this.loading.start();
     this.authInvoiceService.getInvoices(obj).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
-      this.invoices = result['result'];
-      this.total = result['meta']['total'];
+      if (result) {
+        this.invoices = result['result'];
+        this.total = result['meta']['total'];
+      }
     });
   }
   unsaveInvoice(id) {

@@ -28,10 +28,10 @@
         <div *ngIf="item?.status == 'wait_for_approval' && item?.defaultSetting?.invoice?.isApprovalEnabled" class="mb-3">
             <div class="p-3 py-4 text-center font-weight-bold" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
                 Wait for the confirmation from seller...
-                <p class="mb-0 font-weight-normal font-9">Seller will update the delivery fee..</p>
+                <p class="mb-0 font-weight-normal font-9">Seller will calculate the delivery fee.</p>
             </div>
-            <p class="font-8 text-danger my-2">* Kindly save the order to avoid lost tracking.</p>
-            <div class="row no-gutters justify-content-center mt-3 mb-3">
+            <p *ngIf="!item?.user" class="font-8 text-danger my-2">* Kindly save the order to avoid lost tracking.</p>
+            <div *ngIf="!item?.user" class="row no-gutters justify-content-center mt-3 mb-3">
                 <button class="btn btn-save" (click)="isSaved ? unsaveInvoice(): saveInvoice()">
                     <span class="mr-1" [ngClass]="isSaved? 'is_saved fas fa-star' : 'far fa-star'"></span>Save To Track Later
                 </button>
@@ -46,7 +46,7 @@
                 <button class="btn btn-save mr-3" (click)="navigateToEditInvoice()">
                     Edit Invoice
                 </button>
-                <button class="btn btn-save" (click)="isSaved ? unsaveInvoice(): saveInvoice()">
+                <button *ngIf="!item?.user" class="btn btn-save" (click)="isSaved ? unsaveInvoice(): saveInvoice()">
                     <span class="mr-1" [ngClass]="isSaved? 'is_saved fas fa-star' : 'far fa-star'"></span>Save To Track Later
                 </button>
             </div>
@@ -59,7 +59,7 @@
                         (output)="fileChangeEvent($event)"></ws-uploader>
             </div>
             <div class="mb-3" >
-                <button class="btn btn-save" (click)="isSaved ? unsaveInvoice(): saveInvoice()">
+                <button *ngIf="!item?.user" class="btn btn-save" (click)="isSaved ? unsaveInvoice(): saveInvoice()">
                     <span class="mr-1" [ngClass]="isSaved? 'is_saved fas fa-star': 'far fa-star'"></span>Save To Upload Later
                 </button>
             </div>
@@ -69,7 +69,7 @@
                     <ws-spinner *ngIf="previewLoading.isRunning()" class="text-center d-block w-100" style="padding-top: 10vh; padding-bottom: 10vh" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>
                     <div *ngIf="!previewLoading.isRunning()">
                         <div class="d-flex align-items-center py-3" style="height: 80vh">
-                            <img class="uploading-image center h-100" [src]="uploadingImage" alt="uploading-image" />
+                            <img class="uploading-image center h-100 w-100" style="object-fit: contain;" [src]="uploadingImage" alt="uploading-image" />
                         </div>
                         <div class="row no-gutters mb-3">
                             <div class="col-lg-6 p-1">
