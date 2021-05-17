@@ -29,7 +29,7 @@
                             centeredSlides: true,
                             pagination: false,
                             navigation: false}">
-                            <div *ngFor="let image of profileImages">
+                            <div *ngFor="let image of profileImages" class="d-flex" style="background: #fefefe;">
                                 <img style="width: 100%; object-fit: contain; height: initial" [lazyLoad]="environment.IMAGE_URL + image" [defaultImage]="'assets/images/png/itemProfile.png'" alt="image"/>
                                 <div [class.swiper__image-label-offer]="item?.isOffer && item.priceAfterDiscount != selectedType.price" class="swiper__image-label w-100 text-center font-8">
                                     <p class="d-inline-block mb-0">
