@@ -28,7 +28,7 @@
                 <div class="merchant__profile-container row no-gutters">
                     <div class="merchant__profile-image__container">
                         <img *ngIf="profileImage" class="merchant__profile-image" [src]="profileImage" alt="profile-image"/>
-                        <img *ngIf="!profileImage && isEditing" class="merchant__profile-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk0AAAAC4AKhMfIC0AAAAASUVORK5CYII="/>
+                        <img *ngIf="!profileImage && isEditing" class="merchant__profile-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8+h8AAu8B9totwrcAAAAASUVORK5CYII="/>
                         <span *ngIf="isEditing" class="merchant__profile-image__edit" (click)="onEditProfileImageClicked.emit($event)"><span class="fas fa-camera" style="font-size: 1.5rem"></span></span>
                     </div>
                     <div class="col merchant__name-container" [class.px-0]="!profileImage && !isEditing">
