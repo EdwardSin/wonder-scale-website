@@ -111,7 +111,7 @@ export class ProfileSettingsComponent implements OnInit {
     $('.croppie-container').remove();
   }
   async uploadImage() {
-    let result = await this.croppieObj.result();
+    let result = await this.croppieObj.result({ width: 500, height: 500});
     this.uploadLoading.start();
     this.authUserService.editProfile({file: result}).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.uploadLoading.stop())).subscribe(result => {
       this.user.profileImage = result['data'];
@@ -126,8 +126,8 @@ export class ProfileSettingsComponent implements OnInit {
       this.croppieObj = new Croppie(document.getElementById('id-preview-image'), { 
           zoom: 1,
           viewport: {
-          width: 100, 
-          height: 100, 
+          width: 200, 
+          height: 200, 
           type: 'circle' 
         }});
     });

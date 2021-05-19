@@ -416,9 +416,9 @@
 }
 .quick-menu-container{
     .swiper-container__image{
-        height: 200px;
-        width: 200px;
-        object-fit: contain;
+        height: 125px;
+        width: 125px;
+        object-fit: cover;
         background-color:#f7f7f7;
         cursor: pointer;
         border-radius: 5px;
