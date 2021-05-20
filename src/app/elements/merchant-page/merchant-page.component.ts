@@ -88,7 +88,7 @@ export class MerchantPageComponent implements OnInit {
       this.shareLinkThroughFB = this.link;
       this.shareMessage = `View ${this.store.name} - Wonder Scale.`;
       this.shareLinkThroughTwitter = `https://twitter.com/intent/tweet?text=${this.shareMessage} ${this.link}`;
-      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/png/shop.png';
+      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : '';
       this.showQrcode();
       this.mapStore();
     }
@@ -110,7 +110,7 @@ export class MerchantPageComponent implements OnInit {
           this.displayImage = 'api/images/' + this.store.profileImage.replace(/\//g, ',');
         }
       } else {
-        this.displayImage = 'assets/images/png/shop.png';
+        this.displayImage = '';
       }
       this.showQrcode();
     }
@@ -136,21 +136,33 @@ export class MerchantPageComponent implements OnInit {
   showQrcode() {
     setTimeout(() => {
       this.isQrcodeLoading.start();
-      let newImage = <HTMLImageElement>document.createElement('img');
-      newImage.alt = 'profile-image';
-      newImage.src = this.displayImage;
       let target = '.qrcode';
       $(target).empty();
-      newImage.addEventListener('load', e => {
+      if (this.displayImage) {
+        let newImage = <HTMLImageElement>document.createElement('img');
+        newImage.alt = 'profile-image';
+        newImage.src = this.displayImage;
+        newImage.addEventListener('load', e => {
+          $(target).empty();
+          let url = environment.URL + 'page/' + this.store.username;
+          QRCodeBuilder.createQRcode(target, url, {
+            width: 100, height: 100, color: '#505f79', callback: () => {
+              this.isQrcodeLoading.stop();
+            }
+          })
+            .then(() => {
+              QRCodeBuilder.renderProfileImageToQrcode(target, newImage, 100);
+            });
+        });
+      } else {
         $(target).empty();
         let url = environment.URL + 'page/' + this.store.username;
-        QRCodeBuilder.createQRcode(target, url, { width: 100, height: 100, color: '#666', callback: () => {
-          this.isQrcodeLoading.stop();
-        }})
-        .then(() => {
-          QRCodeBuilder.renderProfileImageToQrcode(target, newImage, 100);
-        });
-      });
+        QRCodeBuilder.createQRcode(target, url, {
+          width: 100, height: 100, color: '#505f79', callback: () => {
+            this.isQrcodeLoading.stop();
+          }
+        })
+      }
     });
   }
   openInformation(index) {
