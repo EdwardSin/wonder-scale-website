@@ -134,7 +134,7 @@ export class MenuComponent implements OnInit {
         this.store = result;
         this.mapStore();
       }
-      if (!this.saleLoading.isRunning()) {
+      if (result && !this.saleLoading.isRunning()) {
         this.itemLoading.stop();
       }
     });
