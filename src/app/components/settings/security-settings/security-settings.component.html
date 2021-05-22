@@ -1,3 +1,4 @@
+<h1 class="h5 ">Security</h1>
 <div *ngIf="!loading.isRunning() && user; else loadingTemplate" [formGroup]="form" class="security-settings">
     <div *ngIf="user.existsPassword" class="security-settings__form-group mb-3 row no-gutters">
         <label class="col-lg-3 security-settings__label">Old Password:</label>

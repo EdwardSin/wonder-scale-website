@@ -372,3 +372,61 @@
     margin: 0 auto;
     padding: .5rem 0;
   }
+
+  .address-book__container {
+    .address-book-item {
+        background-color: #f7f7f7;
+        border-radius: 5px;
+        padding: 1rem;
+        position: relative;
+        transition: background-color ease .2s;
+        cursor: default;
+
+        .address-book-item__header {
+            font-weight: bold;
+            font-size: .9rem;
+        }
+
+        .address-book-item__phone {
+            font-weight: normal;
+            font-size: .7rem;
+        }
+
+        .address-book-item__address {
+            font-size: .8rem;
+        }
+
+        .address-book-item__edit {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: .9rem;
+        }
+
+        .address-book-item__tag {
+            font-size: .7rem;
+            background: transparent;
+            border: 1px solid goldenrod;
+            color: goldenrod;
+            text-transform: uppercase;
+
+            &.address-book-item__tag-default {
+                color: #000;
+                border-color: #000;
+            }
+        }
+
+        &:hover {
+            background-color: #ebecf0;
+            cursor: pointer;
+        }
+
+        &.address-book-item__selected {
+            background-color: #d3d6de;
+
+            &:hover {
+                background-color: #d3d6de;
+            }
+        }
+    }
+}

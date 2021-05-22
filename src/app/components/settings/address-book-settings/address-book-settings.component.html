@@ -1,0 +1,91 @@
+
+<div>
+    <h1 class="h5 ">Address Book</h1>
+    <div>
+        <button class="btn btn-sm btn-controller float-right" (click)="openModifyAddressItemModal(null)">
+            <span class="fas fa-plus d-inline-block mr-2"></span>Add New Address
+        </button>
+    </div>
+    <div class="clearfix mb-3"></div>
+    <div class="address-book__container row no-gutters" *ngIf="addressItems?.length && !loading.isRunning(); else loadingTemplate">
+        <div class="col-lg-4 p-1" *ngFor="let item of addressItems">
+            <div class="address-book-item">
+                <p class="address-book-item__header mb-0">{{ item?.recipientName }} <span class="address-book-item__phone text-muted">{{item?.phone}}</span></p>
+                <p class="address-book-item__address mb-0">{{item?.address}}</p>
+                <p class="address-book-item__address mb-0">{{item?.state}}, {{item?.country}} - {{item?.postcode}}</p>
+                <span class="address-book-item__tag badge badge-sm">{{item?.from}}</span>
+                <span *ngIf="item?.isDefaultBilling && item?.isDefaultShipping" class="ml-1 address-book-item__tag address-book-item__tag-default badge badge-sm">Default (shipping & billing address)</span>
+                <span *ngIf="item?.isDefaultBilling && !item?.isDefaultShipping" class="ml-1 address-book-item__tag address-book-item__tag-default badge badge-sm">Default (billing address)</span>
+                <span *ngIf="!item?.isDefaultBilling && item?.isDefaultShipping" class="ml-1 address-book-item__tag address-book-item__tag-default badge badge-sm">Default (shipping address)</span>
+                <a href="javascript: void(0)" class="address-book-item__edit" (click)="openModifyAddressItemModal(item)">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ws-modal *ngIf="isModifyAddressModalOpened" [(isOpened)]="isModifyAddressModalOpened" [isCloseIconDisplayed]="false" [maxWidth]="500">
+    <form modalBody [formGroup]="form">
+        <label class="mb-0 font-8">Recipient's Name</label>
+        <input name="recipientName" class="form-control form-control-sm" [maxlength]="64" formControlName="recipientName" />
+        <label class="mb-0 font-8">Phone</label>
+        <input name="phone" class="form-control form-control-sm" [maxlength]="32" formControlName="phone" />
+        <label class="mb-0 font-8">Address</label>
+        <input name="address" class="form-control form-control-sm" [maxlength]="128" formControlName="address" />
+        <label class="mb-0 font-8">Postcode</label>
+        <input name="postcode" class="form-control form-control-sm" [maxlength]="32" formControlName="postcode" />
+        <label class="mb-0 font-8">State</label>
+        <input name="state" class="form-control form-control-sm" [maxlength]="32" formControlName="state" />
+        <label class="mb-0 font-8">Country</label>
+        <mat-select name="country" class="form-control form-control-sm mb-2" formControlName="country" >
+            <mat-option [value]="'MYS'">Malaysia</mat-option>
+        </mat-select>
+        <label class="mb-0 font-8">Address Category</label>
+        <mat-radio-group formControlName="from" class="d-block">
+            <mat-radio-button [color]="'primary'" class="font-8" style="width: 100px" [value]="'home'">
+                <span class="mr-3">Home</span>
+            </mat-radio-button>
+            <mat-radio-button [color]="'primary'" class="font-8" [value]="'office'">
+                <span class="mr-3">Office</span>
+            </mat-radio-button>
+        </mat-radio-group>
+        <div *ngIf="selectedAddressItem">
+            <label class="mb-0 font-8">Default Shipping Address</label>
+            <mat-radio-group formControlName="isDefaultShipping" [disabled]="selectedAddressItem?.isDefaultShipping" class="d-block">
+                <mat-radio-button [color]="'primary'" class="font-8" style="width: 100px" [value]="true">
+                    <span class="mr-3">On</span>
+                </mat-radio-button>
+                <mat-radio-button [color]="'primary'" class="font-8" [value]="false">
+                    <span class="mr-3">Off</span>
+                </mat-radio-button>
+            </mat-radio-group>
+            <label class="mb-0 font-8">Default Billing Address</label>
+            <mat-radio-group formControlName="isDefaultBilling" [disabled]="selectedAddressItem?.isDefaultBilling" class="d-block">
+                <mat-radio-button [color]="'primary'" class="font-8" style="width: 100px" [value]="true">
+                    <span class="mr-3">On</span>
+                </mat-radio-button>
+                <mat-radio-button [color]="'primary'" class="font-8" [value]="false">
+                    <span class="mr-3">Off</span>
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="mt-2">
+            <button *ngIf="selectedAddressItem" class="btn btn-sm btn-danger" (click)="removeAddress()" [disabled]="modifyLoading.isRunning()">
+                <ws-spinner class="mr-2" *ngIf="modifyLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>Delete Address</button>
+            <div class="float-right">
+                <button class="btn btn-sm btn-controller mr-2" (click)="saveAddress()" [disabled]="modifyLoading.isRunning()">
+                    <ws-spinner class="mr-2" *ngIf="modifyLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>{{ selectedAddressItem ? 'Edit' : 'Add'}}
+                </button>
+                <button class="btn btn-sm btn-controller" (click)="isModifyAddressModalOpened = false">Cancel</button>
+            </div>
+        </div>
+    </form>
+</ws-modal>
+
+
+<ng-template #loadingTemplate>
+    <ws-spinner *ngIf="loading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding: 15vh 0"></ws-spinner>
+</ng-template>
+
+<ng-template #noItemTemplate>
+    <h6 class="text-center" style="padding: 15vh 0">No address</h6>
+</ng-template>
