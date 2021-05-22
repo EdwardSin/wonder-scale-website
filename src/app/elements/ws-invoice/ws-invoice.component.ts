@@ -58,7 +58,7 @@ export class WsInvoiceComponent implements OnInit {
     this.total = this.item.total;
   }
   _isDeliveryDetailsAvailable() {
-    return (this.item.customer && this.item.customer.firstName && this.item.customer.lastName) ||
+    return (this.item.customer && this.item.customer.recipientName) ||
             (this.item.customer && this.item.customer.phoneNumber) ||
             (this.item.customer && this.item.customer.address && this.item.customer.address.address && this.item.customer.address.state && this.item.customer.address.postcode);
   }
