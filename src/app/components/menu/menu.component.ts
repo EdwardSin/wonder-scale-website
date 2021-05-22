@@ -85,7 +85,7 @@ export class MenuComponent implements OnInit {
     
     let formBuilder = new FormBuilder;
     this.detailsForm = formBuilder.group({
-      firstName: ['', [Validators.required, Validators.maxLength(36)]],
+      recipientName: ['', [Validators.required, Validators.maxLength(36)]],
       phoneNumber: ['', [Validators.required, Validators.maxLength(36)]],
       deliveryOption: ['delivery', [Validators.required]],
       address: ['', [Validators.required, Validators.maxLength(128)]],
@@ -249,7 +249,7 @@ export class MenuComponent implements OnInit {
   }
   placeorder() {
     this.detailsForm.patchValue({
-      firstName: this.selectedAddressItem?.recipientName,
+      recipientName: this.selectedAddressItem?.recipientName,
       phoneNumber: this.selectedAddressItem?.phone,
       address: this.selectedAddressItem?.address,
       postcode: this.selectedAddressItem?.postcode,
@@ -274,7 +274,7 @@ export class MenuComponent implements OnInit {
         }
       });
       let obj = {
-        firstName: this.detailsForm.value.firstName.trim(),
+        recipientName: this.detailsForm.value.recipientName.trim(),
         phoneNumber: this.detailsForm.value.phoneNumber.trim(),
         deliveryOption: this.detailsForm.value.deliveryOption,
         address: this.detailsForm.value.address.trim(),
