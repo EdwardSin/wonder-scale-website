@@ -63,16 +63,42 @@
         }
     }
     
-    .btn-contact{
+    .btn-shopping {
         background-color: #b71c1c;
         color: #fff;
         border-radius: 25px;
+        text-align: center;
         padding: .5rem 2rem;
-
-        .merchant__message-text-icon{
+        font-size: 1.1rem;
+        
+        .btn-shopping-icon {
             transition: all ease .2s;
         }
-        
+
+        &:hover{
+            .btn-shopping-icon {
+                transform: scale(1.2);
+            }
+        }
+    }
+
+    .btn-contact{
+        border: 1px solid #b71c1c;
+        color: #b71c1c;
+        border-radius: 25px;
+        text-align: center;
+        padding: .5rem 2rem;
+        font-size: 1.1rem;
+        transition: all ease .5s;
+
+        .merchant__message-text-icon {
+            color: transparent;
+            -webkit-text-fill-color: #fff;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: #b71c1c;
+            transition: all ease .2s;
+        }
+
         &:hover{
             .merchant__message-text-icon {
                 transform: scale(1.2);

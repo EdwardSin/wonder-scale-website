@@ -25,14 +25,17 @@
     <div class="row no-gutters merchant mb-2">
         <div class="col-lg order-11 order-lg-1">
             <div class="merchant__profile-container">
-                <button *ngIf="!store?.contactButton && isEditing" class="btn btn-contact-empty btn-block mt-4" (click)="onEditContactButtonClicked.emit($event)">
+                <button *ngIf="store?.defaultSetting?.invoice?.isPublicReceivable" class="btn btn-shopping btn-block mt-3" (click)="navigateToShopping()">
+                    <span class="fas fa-shopping-cart btn-shopping-icon mr-2"></span>Go Shopping
+                </button>
+                <button *ngIf="!store?.contactButton && isEditing" class="btn btn-contact-empty btn-block mt-3" (click)="onEditContactButtonClicked.emit($event)">
                     <span class="fas fa-plus merchant__message-text-icon mr-2"></span>Add Button
                 </button>
                 <div *ngIf="store?.contactButton" mdbDropdown>
-                    <button *ngIf="isEditing" class="btn btn-contact btn-block mt-4" mdbDropdownToggle>
+                    <button *ngIf="isEditing" class="btn btn-contact btn-block mt-3" mdbDropdownToggle>
                         <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
                     </button>
-                    <button *ngIf="!isEditing" class="btn btn-contact btn-block mt-4" (click)="navigateByContactButton()">
+                    <button *ngIf="!isEditing" class="btn btn-contact btn-block mt-3" (click)="navigateByContactButton()">
                         <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
                     </button>
                     <ng-template #contactButtonTemplate>
