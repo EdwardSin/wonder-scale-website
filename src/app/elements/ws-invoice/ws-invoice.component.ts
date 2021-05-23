@@ -46,6 +46,9 @@ export class WsInvoiceComponent implements OnInit {
         this.etaDate = etaDate;
       }
       this.selectedDelivery = this.item?.delivery?.fee;
+      if (this.item?.delivery?._id) {
+        this.selectedDelivery = this.item?.delivery?._id;
+      }
       this.isDeliveryDetailsAvailable = this._isDeliveryDetailsAvailable();
     }
   }
@@ -66,7 +69,12 @@ export class WsInvoiceComponent implements OnInit {
     if (this.selectedDelivery == '') {
       this.delivery = 0;
     } else {
-      this.delivery = this.selectedDelivery;
+      let delivery = this.deliveries.find(delivery => {
+        return delivery._id === this.selectedDelivery;
+      });
+      if (delivery) {
+        this.delivery = delivery.fee;
+      }
     }
     this.total = this.item.subtotal + this.delivery - this.discount;
   }
@@ -77,6 +85,7 @@ export class WsInvoiceComponent implements OnInit {
     if (this.updateDelivery && this.delivery >= 0) {
       this.item.delivery = {
         ...this.item.delivery,
+        _id: this.selectedDelivery,
         fee: this.delivery,
       };
       this.updateDelivery(this.item);

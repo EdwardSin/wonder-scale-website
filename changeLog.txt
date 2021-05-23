@@ -4,6 +4,11 @@
 
 - v1.0.10923                                -
 ---------------------------------------------
+- 2021-05-23                                -
+---------------------------------------------
+.: WSM: Task - Showing the number of the products which is going to be prepared in In Progress phase (WSM-352)
+
+---------------------------------------------
 - 2021-05-22                                -
 ---------------------------------------------
 .: WSW: Task - Retrieve user details to place order + save inserted details (WSW-115)
