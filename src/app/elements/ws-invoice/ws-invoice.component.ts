@@ -29,7 +29,7 @@ export class WsInvoiceComponent implements OnInit {
   isDeliveryDetailsAvailable: boolean;
   etaDate;
   isShowStepper: boolean;
-  selectedDelivery;
+  selectedDelivery = '';
   private ngUnsubscribe: Subject<any> = new Subject;
 
   constructor() { }
@@ -45,9 +45,8 @@ export class WsInvoiceComponent implements OnInit {
         }
         this.etaDate = etaDate;
       }
-      this.selectedDelivery = this.item?.delivery?.fee;
       if (this.item?.delivery?._id) {
-        this.selectedDelivery = this.item?.delivery?._id;
+        this.selectedDelivery = this.item?.delivery?._id || '';
       }
       this.isDeliveryDetailsAvailable = this._isDeliveryDetailsAvailable();
     }
