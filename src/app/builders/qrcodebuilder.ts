@@ -59,13 +59,13 @@ export class QRCodeBuilder {
             context.save();
             context.imageSmoothingEnabled = true;
             context.beginPath();
+            // context.rect(offsetX, offsetY, width, width);
             context.arc(offsetX + width / 2, offsetY + width / 2, width / 2, 0, 2 * Math.PI);
             context.fill();
             context.clip();
             context.drawImage(image, offsetX, offsetY, width, height);
             context.restore();
             $(target).find('canvas')[0].replaceWith(new_canvas);
-            this.createBorder(environment.QRCODE_BORDER, $(target).find('canvas')[0], size);
         }
     }
     static createBorder (src, targetCanvas, size) {

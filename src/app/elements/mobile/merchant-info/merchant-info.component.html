@@ -25,14 +25,17 @@
     <div class="row no-gutters merchant mb-2">
         <div class="col-lg order-11 order-lg-1">
             <div class="merchant__profile-container">
-                <button *ngIf="!store?.contactButton && isEditing" class="btn btn-contact-empty btn-block mt-4" (click)="onEditContactButtonClicked.emit($event)">
+                <button *ngIf="store?.defaultSetting?.invoice?.isPublicReceivable" class="btn btn-shopping btn-block mt-3" (click)="navigateToShopping()">
+                    <span class="fas fa-shopping-cart btn-shopping-icon mr-2"></span>Go Shopping
+                </button>
+                <button *ngIf="!store?.contactButton && isEditing" class="btn btn-contact-empty btn-block mt-3" (click)="onEditContactButtonClicked.emit($event)">
                     <span class="fas fa-plus merchant__message-text-icon mr-2"></span>Add Button
                 </button>
                 <div *ngIf="store?.contactButton" mdbDropdown>
-                    <button *ngIf="isEditing" class="btn btn-contact btn-block mt-4" mdbDropdownToggle>
+                    <button *ngIf="isEditing" class="btn btn-contact btn-block mt-3" mdbDropdownToggle>
                         <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
                     </button>
-                    <button *ngIf="!isEditing" class="btn btn-contact btn-block mt-4" (click)="navigateByContactButton()">
+                    <button *ngIf="!isEditing" class="btn btn-contact btn-block mt-3" (click)="navigateByContactButton()">
                         <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
                     </button>
                     <ng-template #contactButtonTemplate>
@@ -61,7 +64,7 @@
                 <div class="d-flex align-items-center py-3">
                     <div class="merchant__profile-image__container">
                         <img *ngIf="profileImage" class="merchant__profile-image" [src]="profileImage" alt="profile-image"/>
-                        <img *ngIf="!profileImage && isEditing" class="merchant__profile-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk0AAAAC4AKhMfIC0AAAAASUVORK5CYII="/>
+                        <img *ngIf="!profileImage && isEditing" class="merchant__profile-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8+h8AAu8B9totwrcAAAAASUVORK5CYII="/>
                         <span *ngIf="isEditing" class="merchant__profile-image__edit" (click)="onEditProfileImageClicked.emit($event)"><span class="fas fa-camera" style="font-size: .75rem"></span></span>
                     </div>
                     <div class="merchant__name-container" [ngStyle]="{padding: profileImage || isEditing ? '.25rem .5rem' : '0'}">

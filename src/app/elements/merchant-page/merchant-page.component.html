@@ -52,10 +52,9 @@
                     <li *ngIf="store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0 || isEditing" (click)="scrollTo('location')" [class.selected]="selectedNavItem == 'location'" class="merchant__nav-item list-group-item">Location</li>
                     <li  *ngIf="store?.openingInfoType || isEditing" (click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Opening Hours</li>
                     <li  *ngIf="store?.deliveries?.length || isEditing" (click)="scrollTo('delivery')" [class.selected]="selectedNavItem == 'delivery'" class="merchant__nav-item list-group-item">Delivery</li>
-                    <li (click)="scrollTo('catalogue')" [class.selected]="selectedNavItem == 'catalogue'" class="merchant__nav-item list-group-item ml-auto"  [style.margin-right]="store?.defaultSetting?.invoice?.isPublicReceivable ? '5rem' : '0'"><span class="fas fa-book-open"></span> Catalogue</li>
-                    <li *ngIf="store?.defaultSetting?.invoice?.isPublicReceivable" (click)="navigateToShopping()" title="Shopping" [class.selected]="selectedNavItem == 'shopping'" class="merchant__nav-item merchant__nav-item__highlight"><span class="fas fa-shopping-cart blinking"></span></li>
+                    <li (click)="scrollTo('catalogue')" [class.selected]="selectedNavItem == 'catalogue'" class="merchant__nav-item list-group-item ml-auto"><span class="fas fa-book-open"></span> Catalogue</li>
                 </ul>
-                <div class="mb-3" style="border-bottom: 2px solid #ccc; margin-top: -2px" [style.width]="store?.defaultSetting?.invoice?.isPublicReceivable ? 'calc(100% - 5rem)' : '100%'"></div>
+                <div class="mb-3" style="border-bottom: 2px solid #ccc; margin-top: -2px"></div>
                 <div *ngIf="selectedNavItem != 'catalogue' && selectedNavItem != 'delivery'" class="details-container">
                     <div id="overview" class="mb-3 merchant__overview" style="min-height: 300px">
                         <button *ngIf="store?.description && isEditing" class="btn btn-sm btn-controller float-right" (click)="onEditDescriptionClicked.emit($event)"><span class="fas fa-edit"></span></button>
@@ -184,14 +183,18 @@
             </div>
             <div class="col-lg-4">
                 <div class="merchant__sidebar">
+                    <button *ngIf="store?.defaultSetting?.invoice?.isPublicReceivable" class="btn btn-shopping" (click)="navigateToShopping()">
+                        <span class="fas fa-shopping-cart btn-shopping-icon mr-2"></span>Go Shopping
+                    </button>
+                    <hr *ngIf="store?.defaultSetting?.invoice?.isPublicReceivable" class="my-3" />
                     <button *ngIf="!store?.contactButton && isEditing" class="btn btn-contact-empty mb-4" (click)="onEditContactButtonClicked.emit($event)">
                         <span class="fas fa-plus merchant__message-text-icon mr-2"></span>Add Button
                     </button>
-                    <div *ngIf="store?.contactButton" mdbDropdown class="d-inline-block">
-                        <button *ngIf="isEditing" class="btn btn-contact mb-4" mdbDropdownToggle>
+                    <div *ngIf="store?.contactButton" mdbDropdown class="d-block">
+                        <button *ngIf="isEditing" class="btn btn-contact mb-3" mdbDropdownToggle>
                             <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
                         </button>
-                        <button *ngIf="!isEditing" class="btn btn-contact mb-4" (click)="navigateByContactButton()">
+                        <button *ngIf="!isEditing" class="btn btn-contact mb-3" (click)="navigateByContactButton()">
                             <ng-container *ngTemplateOutlet="contactButtonTemplate"></ng-container>
                         </button>
                         <ng-template #contactButtonTemplate>

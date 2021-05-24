@@ -53,9 +53,9 @@
         <h5>{{ item?.deliveryOption == 'delivery' ? 'Delivery' : 'Pickup'}} Information</h5>
         <div class="p-3 font-9 mb-3" style="box-shadow: 0 3px 6px rgba(0,0,0,.16)">
             <div>
-                <div class="row no-gutters py-2" *ngIf="item?.customer?.firstName && item?.customer?.lastName">
-                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Name:</div>
-                    <div class="col-lg align-text-top">{{ item?.customer?.firstName }} {{ item?.customer?.lastName }}</div>
+                <div class="row no-gutters py-2" *ngIf="item?.customer?.recipientName">
+                    <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Recipient's Name:</div>
+                    <div class="col-lg align-text-top">{{ item?.customer?.recipientName }}</div>
                 </div>
                 <div class="row no-gutters py-2" *ngIf="item?.customer?.phoneNumber">
                     <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Contact Tel:</div>
@@ -76,7 +76,7 @@
                     <div class="col">
                         <mat-select class="form-control form-control-sm" [(ngModel)]="selectedDelivery" placeholder="Select a delivery" (selectionChange)="onDeliveryChange()">
                             <mat-option value="">Custom</mat-option>
-                            <mat-option [value]="delivery.fee" *ngFor="let delivery of deliveries">{{delivery.name}}</mat-option>
+                            <mat-option [value]="delivery?._id" *ngFor="let delivery of deliveries">{{delivery.name}}</mat-option>
                         </mat-select>
                         <input class="form-control form-control-sm mt-2" placeholder="Enter the delivery fee" [disabled]="selectedDelivery !== ''" [(ngModel)]="delivery" (input)="onDeliveryInputChange($event)" name="deliveryFee" />
                         <button class="btn btn-sm btn-controller mt-2 float-right" (click)="onUpdateDeliveryClicked()">Update</button>
@@ -113,7 +113,7 @@
                 <div>
                     <div class="row no-gutters pb-2" *ngFor="let receiptItem of item?.items">
                         <div class="col-lg">
-                            <span class="col p-0">{{ receiptItem.name }}{{ (receiptItem.type !== 'Default' && receiptItem.type !== null) ? ' - ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x ' + receiptItem.quantity }}</span>
+                            <span class="col p-0">{{ receiptItem.name }}{{ (receiptItem?.type?.toLowerCase() !== 'default' && receiptItem.type) ? ' - ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x ' + receiptItem.quantity }}</span>
                         </div>
                         <div class="col-lg-auto text-center d-none d-lg-table-cell" style="min-width: 120px">
                             x {{ receiptItem.quantity}}

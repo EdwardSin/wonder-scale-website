@@ -22,6 +22,9 @@ import { InvoiceService } from '@services/http/public/invoice.service';
 import { ScreenService } from '@services/general/screen.service';
 import { AuthenticationService } from '@services/http/general/authentication.service';
 import { AuthInvoiceService } from '@services/http/auth/auth-invoice.service';
+import { AuthUserService } from '@services/http/general/auth-user.service';
+import { AddressBookItem } from '@objects/address-book-item';
+import { AddressBookValidator } from '@validations/addressbook-validation/addressbook.validator';
 
 @Component({
   selector: 'menu',
@@ -43,6 +46,7 @@ export class MenuComponent implements OnInit {
   checkoutLoading: WsLoading = new WsLoading;
   itemLoading: WsLoading = new WsLoading;
   saleLoading: WsLoading = new WsLoading;
+  addressLoading: WsLoading = new WsLoading;
   isNavigationOpened: boolean;
   store: Store;
   cashier: Cashier = new Cashier();
@@ -53,6 +57,12 @@ export class MenuComponent implements OnInit {
   paymentFail: boolean;
   isMobileSize: boolean;
   downloading: WsLoading = new WsLoading;
+  isModifyAddressModalOpened: boolean;
+  isAddressModalOpened: boolean;
+  form: FormGroup;
+  modifyLoading: WsLoading = new WsLoading();
+  selectedAddressItem: AddressBookItem;
+  addressItems: Array<AddressBookItem> = [];
   private ngUnsubscribe: Subject<any> = new Subject<any>();
   constructor(private ref: ChangeDetectorRef, private router: Router, private route: ActivatedRoute,
     private sharedCartService: SharedCartService,
@@ -62,6 +72,7 @@ export class MenuComponent implements OnInit {
     private storeService: StoreService,
     private screenService: ScreenService,
     private authenticationService: AuthenticationService,
+    private authUserService: AuthUserService,
     private itemService: ItemService) {
       
     this.sharedCartService.cartItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
@@ -74,8 +85,7 @@ export class MenuComponent implements OnInit {
     
     let formBuilder = new FormBuilder;
     this.detailsForm = formBuilder.group({
-      firstName: ['', [Validators.required, Validators.maxLength(36)]],
-      lastName: ['', [Validators.required, Validators.maxLength(36)]],
+      recipientName: ['', [Validators.required, Validators.maxLength(36)]],
       phoneNumber: ['', [Validators.required, Validators.maxLength(36)]],
       deliveryOption: ['delivery', [Validators.required]],
       address: ['', [Validators.required, Validators.maxLength(128)]],
@@ -124,7 +134,7 @@ export class MenuComponent implements OnInit {
         this.store = result;
         this.mapStore();
       }
-      if (!this.saleLoading.isRunning()) {
+      if (result && !this.saleLoading.isRunning()) {
         this.itemLoading.stop();
       }
     });
@@ -179,6 +189,17 @@ export class MenuComponent implements OnInit {
         });
     }
   }
+  getAddressbook(isSetDefault=false) {
+    this.addressLoading.start();
+    this.authUserService.getAddressbook().pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.addressLoading.stop())).subscribe(result => {
+      this.addressItems = result['result'];
+      if (isSetDefault) {
+        this.selectedAddressItem = this.addressItems.find(item => {
+          return item.isDefaultShipping;
+        });
+      }
+    });
+  }
   removeCartItem(cartItem) {
     this.sharedCartService.removeCartItem(cartItem);
   }
@@ -219,6 +240,7 @@ export class MenuComponent implements OnInit {
       this.authenticationService.isAuthenticated().then(result => {
         if (result) {
           this.phase.next();
+          this.getAddressbook(true);
         } else {
           this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
         }
@@ -226,32 +248,20 @@ export class MenuComponent implements OnInit {
     }
   }
   placeorder() {
+    this.detailsForm.patchValue({
+      recipientName: this.selectedAddressItem?.recipientName,
+      phoneNumber: this.selectedAddressItem?.phone,
+      address: this.selectedAddressItem?.address,
+      postcode: this.selectedAddressItem?.postcode,
+      state: this.selectedAddressItem?.state,
+      country: this.selectedAddressItem?.country
+    });
     let form = this.detailsForm;
-    if (!form.value.firstName.trim()) {
-      return WsToastService.toastSubject.next({ content: 'Please enter your first name!', type: 'danger'});
+    if (!this.selectedAddressItem) {
+      WsToastService.toastSubject.next({ content: 'Please add your shipping address!', type: 'danger'});
+      return;
     }
-    else if (!form.value.lastName.trim()) {
-      return WsToastService.toastSubject.next({ content: 'Please enter your last name!', type: 'danger'});
-    }
-    else if (!form.value.phoneNumber.trim()) {
-      return WsToastService.toastSubject.next({ content: 'Please enter your phone number!', type: 'danger'});
-    }
-    else if (!this.regex.test(form.value.phoneNumber.trim())) {
-      return WsToastService.toastSubject.next({ content: 'Please enter a valid phone number!', type: 'danger'});
-    }
-    else if (!form.value.address.trim()) {
-      return WsToastService.toastSubject.next({ content: 'Please enter your address!', type: 'danger'});
-    }
-    else if (!form.value.postcode.trim()) {
-      return WsToastService.toastSubject.next({ content: 'Please enter your postcode!', type: 'danger'});
-    }
-    else if (!form.value.state.trim()) {
-      return WsToastService.toastSubject.next({ content: 'Please enter your state!', type: 'danger'});
-    }
-    else if (!form.value.country.trim()) {
-      return WsToastService.toastSubject.next({ content: 'Please enter your country!', type: 'danger'});
-    }
-    else if (form.status == 'VALID' && this.allCartItems.length) {
+    if (form.status == 'VALID' && this.allCartItems.length) {
       let items = this.allCartItems.map(item => {
         let name = item.name + (item?.type ? ' - ' + item?.type?.name : '');
         return {
@@ -264,8 +274,7 @@ export class MenuComponent implements OnInit {
         }
       });
       let obj = {
-        firstName: this.detailsForm.value.firstName.trim(),
-        lastName: this.detailsForm.value.lastName.trim(),
+        recipientName: this.detailsForm.value.recipientName.trim(),
         phoneNumber: this.detailsForm.value.phoneNumber.trim(),
         deliveryOption: this.detailsForm.value.deliveryOption,
         address: this.detailsForm.value.address.trim(),
@@ -304,7 +313,7 @@ export class MenuComponent implements OnInit {
         return false;
     }
     return true;
-}
+  }
   backToHome() {
     if (confirm('Are you sure to leave the page?')) {
       this.phase.setStep(0);
@@ -314,7 +323,6 @@ export class MenuComponent implements OnInit {
   navigateToStore() {
     this.router.navigate(['/page/mobile/' + this.store.username + '/info'], {queryParamsHandling: 'merge'});
   }
-
   openNavigation() {
     this.isNavigationOpened = true;
     document.getElementsByTagName('body')[0].style.overflow = 'hidden';
@@ -322,6 +330,51 @@ export class MenuComponent implements OnInit {
   closeNavigation() {
     this.isNavigationOpened = false;
     document.getElementsByTagName('body')[0].style.overflow = 'auto';
+  }
+  openModifyAddressItemModal() {
+    this.isModifyAddressModalOpened = true;
+    this.createForm();
+  }
+  createForm() {
+    let formBuilder = new FormBuilder();
+    this.form = formBuilder.group({
+      recipientName: [''],
+      phone: [''],
+      address: [''],
+      postcode: [''],
+      state: [''],
+      country: ['MYS'],
+      from: ['home'],
+      isDefaultBilling: [false],
+      isDefaultShipping: [false]
+    });
+  }
+  saveAddress() {
+    let obj: AddressBookItem = {
+      recipientName: this.form.value.recipientName,
+      phone: this.form.value.phone,
+      address: this.form.value.address,
+      postcode: this.form.value.postcode,
+      state: this.form.value.state,
+      country: this.form.value.country,
+      from: this.form.value.from,
+      isDefaultBilling: false,
+      isDefaultShipping: false
+    }
+    let addressbookValidator = new AddressBookValidator(this.form);
+    if (addressbookValidator.validate()) {
+      this.modifyLoading.start();
+      this.authUserService.saveAddress(obj).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.modifyLoading.stop())).subscribe(result => {
+        this.getAddressbook();
+        this.selectedAddressItem = result['data'];
+        this.isModifyAddressModalOpened = false;
+        this.isAddressModalOpened = false;
+      }, error => {
+        if (error?.status == '403' || error?.status == '400') {
+          WsToastService.toastSubject.next({ content: error?.error, type: 'danger'});
+        }
+      });
+    }
   }
   ngOnDestroy() {
     this.sharedCartService.cartItems.next([]);

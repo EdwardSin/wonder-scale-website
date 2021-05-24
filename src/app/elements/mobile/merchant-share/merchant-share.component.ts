@@ -43,7 +43,7 @@ export class MerchantShareComponent implements OnInit {
       this.shareMessage = `View ${this.store.name} - Wonder Scale.`;
       this.shareLinkThroughTwitter = `https://twitter.com/intent/tweet?text=${this.shareMessage} ${this.link}`;
       this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
-      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : 'assets/images/png/shop.png';
+      this.displayImage = this.store.profileImage ? 'api/images/' + this.store.profileImage.replace(/\//g, ',') : '';
       
       if (this.store.phone) {
         this.store.phone = _.filter(this.store.phone, (phone) => !_.isEmpty(phone));
@@ -66,7 +66,7 @@ export class MerchantShareComponent implements OnInit {
           this.displayImage = 'api/images/' + this.store.profileImage.replace(/\//g, ',');
         }
       } else {
-        this.displayImage = 'assets/images/png/shop.png';
+        this.displayImage = '';
       }
       this.showQrcode(true);
     }
@@ -92,21 +92,32 @@ export class MerchantShareComponent implements OnInit {
     if (event)  {
       setTimeout(() => {
         this.isQrcodeLoading.start();
-        let newImage = <HTMLImageElement>document.createElement('img');
         let target = '.qrcode';
-        newImage.alt = 'profile-image';
-        newImage.src = this.displayImage;
-        $(target).empty();
-        newImage.addEventListener('load', e => {
-          $(target).empty();
-          let url = environment.URL + 'page/' + this.store.username + '?&type=qr_scan';
-          QRCodeBuilder.createQRcode(target, url, { width: 150, height: 150, color: '#666', callback: () => {
-            this.isQrcodeLoading.stop();
-          }})
-          .then(() => {
-            QRCodeBuilder.renderProfileImageToQrcode(target, newImage, 150);
+        if (this.displayImage) {
+          let newImage = <HTMLImageElement>document.createElement('img');
+          newImage.alt = 'profile-image';
+          newImage.src = this.displayImage;
+          newImage.addEventListener('load', e => {
+            $(target).empty();
+            let url = environment.URL + 'page/' + this.store.username + '?&type=qr_scan';
+            QRCodeBuilder.createQRcode(target, url, {
+              width: 150, height: 150, color: '#505f79', callback: () => {
+                this.isQrcodeLoading.stop();
+              }
+            })
+              .then(() => {
+                QRCodeBuilder.renderProfileImageToQrcode(target, newImage, 150);
+              });
           });
-        });
+        } else {
+          $(target).empty();
+          let url = environment.URL + 'page/' + this.store.username;
+          QRCodeBuilder.createQRcode(target, url, {
+            width: 150, height: 150, color: '#505f79', callback: () => {
+              this.isQrcodeLoading.stop();
+            }
+          })
+        }
       });
     } else {
       $('.qrcode').empty();

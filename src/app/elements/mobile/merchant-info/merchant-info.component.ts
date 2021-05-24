@@ -4,6 +4,7 @@ import { Store } from '@objects/store';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { environment } from '@environments/environment';
 import * as _ from 'lodash';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'merchant-info',
@@ -49,7 +50,7 @@ export class MerchantInfoComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   private ngUnsubscribe: Subject<any> = new Subject;
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -85,6 +86,12 @@ export class MerchantInfoComponent implements OnInit {
   }
   navigateToMap() {
     window.open(`http://www.google.com/maps/place/${this.store.location.coordinates[1]},${this.store.location.coordinates[0]}`, '_blank');
+  }
+  navigateToShopping() {
+    if (this.isEditing) {
+      return;
+    }
+    this.router.navigate(['/page', this.store.username, 'cart-menu']);
   }
   isAddressExisting () {
     return this.store && this.store.fullAddress && this.store.fullAddress.address && this.store.fullAddress.state && this.store.fullAddress.postcode && this.store.fullAddress.country;

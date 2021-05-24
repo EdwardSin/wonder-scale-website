@@ -113,9 +113,15 @@
 <ng-template #loadingTemplate>
     <ws-spinner *ngIf="itemLoading.isRunning(); else noItemTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 30vh"></ws-spinner>
 </ng-template>
+<ng-template #addressLoadingTemplate>
+    <ws-spinner *ngIf="addressLoading.isRunning(); else noAddressTemplate" class="text-center d-block w-100 py-5" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>
+</ng-template>
 
 <ng-template #noItemTemplate>
     <h6 class="text-center py-5">Item is not found!</h6>
+</ng-template>
+<ng-template #noAddressTemplate>
+    <h6 class="text-center py-5">Add new address</h6>
 </ng-template>
 
 <ng-template #invoiceTemplate let-cartItems="cartItems" let-cashier="cashier" let-canModify="canModify">
@@ -184,20 +190,21 @@
 <ng-template #detailsTemplate>
     <form [formGroup]="detailsForm" class="col-lg-6 center mb-5">
         <div class="details my-3">
-            <h6 class="details__title mb-2">Customer Details</h6>
-            <div class="details__container">
-                <div class="mb-3">
-                    <div class="mb-2">
-                        <label id="firstName" class="mb-0 font-9">First Name:</label>
-                        <input for="firstName" class="form-control form-control-sm" maxlength="36" formControlName="firstName"/>
+            <h6 class="details__title mb-2">Recipient Details</h6>
+            <div class="address-book__container row no-gutters" *ngIf="!addressLoading.isRunning(); else addressLoadingTemplate">
+                <div class="py-1 w-100" *ngIf="!addressItems?.length">
+                    <div class="address-book-item w-100" (click)="openModifyAddressItemModal()">
+                        <span class="fas fa-plus mr-2"></span>Add new address
                     </div>
-                    <div class="mb-2">
-                        <label id="lastName" class="mb-0 font-9">Last Name:</label>
-                        <input for="lastName" class="form-control form-control-sm" maxlength="36" formControlName="lastName"/>
-                    </div>
-                    <div class="mb-2">
-                        <label id="phoneNumber" class="mb-0 font-9">Phone Number:</label>
-                        <input for="phoneNumber" class="form-control form-control-sm" maxlength="36" formControlName="phoneNumber"/>
+                </div>
+                <div class="py-1 w-100" *ngIf="addressItems?.length && selectedAddressItem" (click)="isAddressModalOpened = true">
+                    <div class="address-book-item w-100">
+                        <p class="address-book-item__header mb-0">{{ selectedAddressItem?.recipientName }} <span class="address-book-item__phone text-muted">{{selectedAddressItem?.phone}}</span></p>
+                        <p class="address-book-item__address mb-0">{{selectedAddressItem?.address}}</p>
+                        <p class="address-book-item__address mb-0">{{selectedAddressItem?.state}}, {{selectedAddressItem?.country}} - {{selectedAddressItem?.postcode}}</p>
+                        <span class="address-book-item__tag badge badge-sm">{{selectedAddressItem?.from}}</span>
+                        <span *ngIf="selectedAddressItem?.isDefaultShipping" class="ml-1 address-book-item__tag address-book-item__tag-default badge badge-sm">Default (shipping address)</span>
+                        <span class="fas fa-chevron-right position-absolute font-9" style="top: calc(50% - .5rem); right: 1.5rem;"></span>
                     </div>
                 </div>
             </div>
@@ -215,32 +222,6 @@
                 </mat-radio-group>
             </div>
         </div> -->
-        <div class="details my-3">
-            <h6 class="details__title mb-2">Delivery Address:</h6>
-            <div class="details__container">
-                <div class="mb-3">
-                    <div class="mb-2">
-                        <label id="address" class="mb-0 font-9">Address:</label>
-                        <input for="address" class="form-control form-control-sm" maxlength="36" formControlName="address"/>
-                    </div>
-                    <div class="mb-2">
-                        <label id="postcode" class="mb-0 font-9">Postcode:</label>
-                        <input for="postcode" class="form-control form-control-sm" maxlength="36" formControlName="postcode"/>
-                    </div>
-                    <div class="mb-2">
-                        <label id="state" class="mb-0 font-9">State:</label>
-                        <input for="state" class="form-control form-control-sm" maxlength="36" formControlName="state"/>
-                    </div>
-                    <div class="mb-2">
-                        <label id="country" class="mb-0 font-9">Country:</label>
-                        <mat-select for="country" class="form-control form-control-sm" formControlName="country">
-                            <!-- <mat-option [value]="''">Select a country</mat-option> -->
-                            <mat-option [value]="'MYS'">Malaysia</mat-option>
-                        </mat-select>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="details my-3" *ngIf="store?.deliveries?.length">
             <h6 class="details__title mb-2">Delivery:</h6>
             <div class="details__container">
@@ -289,3 +270,60 @@
         <button class="btn btn-sm btn-second d-block center" (click)="backToHome()">Back to menu</button>
     </div>
 </ng-template>
+<ws-modal *ngIf="isAddressModalOpened" [(isOpened)]="isAddressModalOpened" [isCloseIconDisplayed]="false" [maxWidth]="500">
+    <div modalBody class="address-book__container py-3">
+        <div class="address-book-item w-100 mb-3" (click)="openModifyAddressItemModal()">
+            <span class="fas fa-plus mr-2"></span>Add new address
+        </div>
+        <div class="py-1 w-100" *ngFor="let item of (addressItems | orderBy: 'isDefaultShipping' : true)" (click)="selectedAddressItem = item; isAddressModalOpened = false">
+            <div class="address-book-item w-100" [class.address-book-item__selected]="selectedAddressItem == item">
+                <p class="address-book-item__header mb-0">{{ item.recipientName }} <span class="address-book-item__phone text-muted">{{item.phone}}</span></p>
+                <p class="address-book-item__address mb-0">{{item.address}}</p>
+                <p class="address-book-item__address mb-0">{{item.state}}, {{item.country}} - {{item.postcode}}</p>
+                <span class="address-book-item__tag badge badge-sm">{{item.from}}</span>
+                <span *ngIf="item?.isDefaultShipping" class="ml-1 address-book-item__tag address-book-item__tag-default badge badge-sm">Default (shipping address)</span>
+            </div>
+        </div>
+        <div class="mt-2">
+            <div class="float-right">
+                <button class="btn btn-sm btn-controller" (click)="isAddressModalOpened = false">Cancel</button>
+            </div>
+        </div>
+    </div>
+</ws-modal>
+
+<ws-modal *ngIf="isModifyAddressModalOpened" [(isOpened)]="isModifyAddressModalOpened" [isCloseIconDisplayed]="false" [maxWidth]="500">
+    <form modalBody [formGroup]="form">
+        <label class="mb-0 font-8">Recipient's Name</label>
+        <input name="recipientName" class="form-control form-control-sm" [maxlength]="64" formControlName="recipientName" />
+        <label class="mb-0 font-8">Phone</label>
+        <input name="phone" class="form-control form-control-sm" [maxlength]="32" formControlName="phone" />
+        <label class="mb-0 font-8">Address</label>
+        <input name="address" class="form-control form-control-sm" [maxlength]="128" formControlName="address" />
+        <label class="mb-0 font-8">Postcode</label>
+        <input name="postcode" class="form-control form-control-sm" [maxlength]="32" formControlName="postcode" />
+        <label class="mb-0 font-8">State</label>
+        <input name="state" class="form-control form-control-sm" [maxlength]="32" formControlName="state" />
+        <label class="mb-0 font-8">Country</label>
+        <mat-select name="country" class="form-control form-control-sm mb-2" formControlName="country" >
+            <mat-option [value]="'MYS'">Malaysia</mat-option>
+        </mat-select>
+        <label class="mb-0 font-8">Address Category</label>
+        <mat-radio-group formControlName="from" class="d-block">
+            <mat-radio-button [color]="'primary'" class="font-8" style="width: 100px" [value]="'home'">
+                <span class="mr-3">Home</span>
+            </mat-radio-button>
+            <mat-radio-button [color]="'primary'" class="font-8" [value]="'office'">
+                <span class="mr-3">Office</span>
+            </mat-radio-button>
+        </mat-radio-group>
+        <div class="mt-2">
+            <div class="float-right">
+                <button class="btn btn-sm btn-controller mr-2" (click)="saveAddress()" [disabled]="modifyLoading.isRunning()">
+                    <ws-spinner class="mr-2" *ngIf="modifyLoading.isRunning()" [width]="15" [height]="15" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>Add
+                </button>
+                <button class="btn btn-sm btn-controller" (click)="isModifyAddressModalOpened = false">Cancel</button>
+            </div>
+        </div>
+    </form>
+</ws-modal>
