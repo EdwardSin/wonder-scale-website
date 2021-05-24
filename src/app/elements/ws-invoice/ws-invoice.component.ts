@@ -84,7 +84,7 @@ export class WsInvoiceComponent implements OnInit {
     if (this.updateDelivery && this.delivery >= 0) {
       this.item.delivery = {
         ...this.item.delivery,
-        _id: this.selectedDelivery,
+        _id: this.selectedDelivery || undefined,
         fee: this.delivery,
       };
       this.updateDelivery(this.item);
