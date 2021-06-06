@@ -23,25 +23,29 @@ export class AppComponent {
   private currencyService: CurrencyService,
     private screenService: ScreenService,
     private sharedLoadingService: SharedLoadingService) {
-    this.currencyService
-      .getCurrency()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(result => {
-        if (result) {
-          let rates = result['rates'];
-          let currencies = [];
-          this.currencyService.currencyRate.next(rates);
-          this.currencyService.currencyFullnameArray.forEach(key => {
-            let currency = new Currency();
-            currency.code = key;
-            currency.rate = rates[key];
-            currency.symbol = this.currencyService.currencySymbols[key];
-            currency.fullname = this.currencyService.currencyFullnames[key];
-            currencies.push(currency);
-          })
-          this.currencyService.currenciesBehaviourSubject.next(currencies);
-        }
-      });
+    let platform = isPlatformBrowser(this.platformId);
+    if (platform) {
+      this.currencyService
+        .getCurrency()
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(result => {
+          if (result) {
+            let rates = result['rates'];
+            let currencies = [];
+            this.currencyService.currencyRate.next(rates);
+
+            this.currencyService.currencyFullnameArray.forEach(key => {
+              let currency = new Currency();
+              currency.code = key;
+              currency.rate = rates[key];
+              currency.symbol = this.currencyService.currencySymbols[key];
+              currency.fullname = this.currencyService.currencyFullnames[key];
+              currencies.push(currency);
+            })
+            this.currencyService.currenciesBehaviourSubject.next(currencies);
+          }
+        });
+    }
     this.sharedLoadingService.screenLoading.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.screenLoading = result.loading;
       this.loadingLabel = result.label;

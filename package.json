@@ -15,7 +15,7 @@
         "build:ssr": "ng build --prod && ng run wonder-scale-website:server:production",
         "prerender": "node ./seo/list-url-scripts.js --prod && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js",
         "prerender-dev": "node ./seo/list-url-scripts.js --dev && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js --dev",
-        "prerender-testing": "node ./seo/list-url-scripts.js --testing && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js --testing",
+        "prerender-testing": "node ./seo/list-url-scripts.js --testing && ng run wonder-scale-website:prerender && node ./seo/update-meta-data.js --testing",
         "deploy": "npm run prerender && openode deploy -t 83371eaa7faa67ba8521d3df5fe655ea -s ws-website",
         "deploy-testing": "npm run prerender-testing && openode deploy -t 83371eaa7faa67ba8521d3df5fe655ea -s testing-website"
     },
@@ -58,6 +58,7 @@
         "ngx-order-pipe": "^2.1.1",
         "ngx-progressbar": "^6.0.2",
         "ngx-swiper-wrapper": "^9.0.1",
+        "prom-client": "^13.1.0",
         "rxjs": "~6.5.4",
         "tslib": "^1.10.0",
         "zone.js": "~0.10.2"

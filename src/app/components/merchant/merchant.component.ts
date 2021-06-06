@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Store } from 'src/app/objects/store';
 import { finalize, takeUntil, tap } from 'rxjs/operators';
@@ -19,6 +19,7 @@ import { SharedUserService } from '@services/shared/shared-user.service';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { Meta } from '@angular/platform-browser';
 import { DateTimeHelper } from '../../helpers/datetimehelper/datetime.helper';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'merchant',
@@ -41,6 +42,7 @@ export class MerchantComponent implements OnInit {
   selectedNavItem = 'overview';
   isFollowed: boolean;
   todayDate;
+  platform;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -52,10 +54,12 @@ export class MerchantComponent implements OnInit {
     private meta: Meta,
     public authFollowService: AuthFollowService,
     public facebookService: FacebookService,
-    public itemService: ItemService) {
+    public itemService: ItemService,
+    @Inject(PLATFORM_ID) private platformId) {
     this.todayDate = DateTimeHelper.getTodayWithCurrentTimezone()
   }
   ngOnInit() {
+    this.platform = isPlatformBrowser(this.platformId);
     let username = this.route.snapshot.params.username;
     let isMobileDevice = this.screenService.isMobileDevice.value;
     let nav = this.route.snapshot.queryParams.nav || this.selectedNavItem;
@@ -65,8 +69,8 @@ export class MerchantComponent implements OnInit {
       if (!this.router.url.includes('/page/mobile/')) {
         this.router.navigate(['/page', 'mobile', username], {queryParamsHandling: 'merge' });
       }
-    } else {
-        this.getStoreByUsername(username);
+    } else if (this.platform) {
+      this.getStoreByUsername(username);
     }
     this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.isAuthenticated = !!result;
@@ -75,7 +79,7 @@ export class MerchantComponent implements OnInit {
     this.router.events.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
-          if (this.store) {
+          if (this.store && this.platform) {
             DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
           }
         }
@@ -94,10 +98,14 @@ export class MerchantComponent implements OnInit {
         this.banners = this.store.informationImages.map(informationImage => environment.IMAGE_URL + informationImage);
         this.menuImages = this.store.menuImages.map(menuImage => environment.IMAGE_URL + menuImage);
         this.profileImage = this.store.profileImage ? environment.IMAGE_URL + this.store.profileImage: null;
-        DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
+        if (this.platform) {
+          DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
+        }
         this.meta.updateTag({ name: 'title', content: this.store.name });
         this.meta.updateTag({ name: 'description', content: this.store.description });
-        this.isPrivateMode(() => {}, this.recordTrack.bind(this));
+        if (this.platform) {
+          this.isPrivateMode(() => {}, this.recordTrack.bind(this));
+        }
         this.loading.stop()
       }
     });
@@ -153,7 +161,7 @@ export class MerchantComponent implements OnInit {
       db.onsuccess = normalModeCallback;
     } else if (BrowserService.isSafari) {
       try {
-        localStorage.test = 2;        
+        localStorage.test = 2;
         normalModeCallback();
       } catch (e) {
         isPrivateModeCallback();
