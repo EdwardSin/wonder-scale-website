@@ -42,7 +42,8 @@ export function app() {
     res.on('finish', function () {
       if (req.originalUrl !== '/private/ws-metrics' &&
           req.originalUrl !== '/favicon.ico' &&
-          !req.originalUrl.startsWith('/api/')) {
+          !req.originalUrl.startsWith('/api/') &&
+          req.originalUrl !== '/') {
         httpRequestDurationMicroseconds.inc({
             method: req.method,
             route: req.originalUrl,
