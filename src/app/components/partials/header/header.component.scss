@@ -1,126 +1,234 @@
 header {
-  position: fixed;
-  z-index: 998;
-  width: 100%;
-  height: 70px;
-  background-color: #fff;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
-  transition: all ease .5s;
-  user-select: none;
-  
+    position: fixed;
+    z-index: 998;
+    width: 100%;
+    height: 70px;
+    background-color: #fff;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+    transition: all ease .5s;
+    user-select: none;
 
-  &.header__collapsed {
-    height: 50px;
 
-    .user-container__link {
-      line-height: 50px;
+    &.header__collapsed {
+        height: 50px;
+
+        .user-container__link {
+            line-height: 50px;
+        }
+
+        .header__searchbar {
+            margin-top: 11px;
+            height: 28px;
+        }
+
+        .header__searchbar-icon {
+            top: 1rem;
+        }
+
+        .header__icon {
+            width: 50px;
+            height: 50px;
+        }
+
+        .dropdown-menu {
+            margin-top: 28px;
+            right: 0;
+            left: inherit;
+        }
+
+        .nav {
+            line-height: 50px;
+            margin-left: .5rem;
+
+            .nav-item {
+                padding: 0 .5rem;
+            }
+        }
+
+        .user-container__profile-container {
+            padding: .7rem 1rem;
+
+            .user-container__profile {
+                width: 30px;
+                height: 30px;
+            }
+        }
     }
 
-    .header__searchbar {
-      margin-top: 11px;
-      height: 28px;
-    }
-
-    .header__searchbar-icon{
-      top: 1rem;
+    .header__label {
+        font-family: 'Bauhaus 93';
+        color: #b71c1c;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
     }
 
     .header__icon {
-      width: 50px;
-      height: 50px;
+        display: inline-block;
+        width: 80px;
+        height: 70px;
+        padding: .5rem;
+        transition: all ease .5s;
+        cursor: pointer;
+
+        img {
+            height: 100%;
+        }
     }
-    .dropdown-menu{
-      margin-top: 28px;
-      right:0;
-      left: inherit;
+
+    .header__searchbar {
+        margin-top: 21px;
+        background-color: rgba(255, 255, 255, .2);
+        border: 0;
+        color: #fff;
+        transition: all .5s ease;
+        width: 100%;
+        max-width: 300px;
+        padding-right: 3rem;
+
+        &:focus {
+            background-color: rgba(255, 255, 255, .2);
+            color: #fff;
+        }
+
+        &::placeholder {
+            color: #fff;
+        }
     }
+
+    .header__searchbar-icon {
+        position: absolute;
+        font-size: 1rem;
+        color: #fff;
+        top: 2rem;
+        right: 1rem;
+        transition: top ease .5s;
+    }
+
     .nav {
-      line-height: 50px;
-      margin-left: .5rem;
-      .nav-item{
-          padding: 0 .5rem;
-      }
-    }
-    .user-container__profile-container{
-      padding: .7rem 1rem;
-      .user-container__profile{
-        width: 30px;
-        height: 30px;
-      }
-    }
-  }
+        padding-left: 2rem;
 
-  .header__label{
-    font-family: 'Bauhaus 93';
-    color: #b71c1c;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  .header__icon {
-    display: inline-block;
-    width: 80px;
-    height: 70px;
-    padding: .5rem;
-    transition: all ease .5s;
-    cursor: pointer;
+        .nav-item {
+            text-align: center;
+            padding: 0 1rem;
 
-    img {
-      height: 100%;
+            .nav-link {
+                padding: .5rem 1rem;
+                border-radius: 20px;
+                transition: all ease .15s;
+                color: #b71c1c;
+
+                &:hover {
+                    background-color: #f7f7f7;
+                }
+            }
+        }
+
+        .nav-link {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
     }
-  }
 
-  .header__searchbar {
-    margin-top: 21px;
-    background-color: rgba(255, 255, 255, .2);
-    border: 0;
-    color: #fff;
-    transition: all .5s ease;
-    width: 100%;
-    max-width: 300px;
-    padding-right: 3rem;
-    &:focus{
-      background-color: rgba(255, 255, 255, .2);
-      color: #fff;
-    }
-    &::placeholder {
-      color: #fff;
-    }
-  }
-  .header__searchbar-icon{
-    position: absolute;
-    font-size: 1rem;
-    color: #fff;
-    top: 2rem;
-    right: 1rem;
-    transition: top ease .5s;
-  }
+    .user-container__notification-container {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-right: 1rem;
+        transition: all ease .2s;
+        cursor: pointer;
+        position: relative;
 
-  .nav {
-    padding-left: 2rem;
-  
-    .nav-item {
-      text-align: center;
-      padding: 0 1rem;
 
-      .nav-link{
-        padding: .5rem 1rem;
-        border-radius: 20px;
-        transition: all ease .15s;
-        color: #b71c1c;
+
+        .user-container__notification-icon {
+            font-size: 1.3rem;
+            color: #888;
+            transition: all ease .2s;
+        }
+
+        .user-container__notification-badge {
+            font-size: .55rem;
+            background-color: #b71c1c;
+            border-radius: 50%;
+            color: #fff;
+            display: inline-block;
+            position: absolute;
+            left: 1.35rem;
+            top: .5rem;
+            padding: 0.1rem 0.25rem;
+        }
 
         &:hover {
-          background-color: #f7f7f7;
+            background-color: #f7f7f7;
+
+            .user-container__notification {
+                color: #555;
+            }
         }
-      }
+
+        &:active {
+            width: 46px;
+            height: 46px;
+            border: 1px solid #ccc;
+            background-color: transparent;
+        }
     }
 
-    .nav-link {
-      padding-top: 0;
-      padding-bottom: 0;
+    .user-container__notification {
+        background-color: #fff;
+        box-shadow: 0 0 .25rem #ccc;
+        border-radius: .35rem;
+        width: 400px;
+        position: absolute;
+        right: 60px;
+        top: .25rem;
+
+        .user-container__notification-header {
+            font-size: 1.1rem;
+            display: block;
+            padding: .85rem 1rem;
+            font-weight: 400;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .user-container__notification-message__empty {
+            display: flex;
+            padding: .75rem 1rem;
+            transition: all ease .1s;
+            font-size: .9rem;
+            position: relative;
+        }
+
+        .user-container__notification-message {
+            display: flex;
+            transition: all ease .1s;
+            font-size: .9rem;
+            position: relative;
+            border-bottom: 1px solid #ddd;
+
+            .user-container__notification__padding {
+                padding: .75rem 1rem;
+            }
+
+            &:hover {
+                cursor: pointer;
+                background-color: rgba(0, 0, 0, .1);
+            }
+
+            &.user-container__notification-message__new {
+                background-color: rgba(0, 0, 0, .05);
+
+                &:hover {
+                    background-color: rgba(0, 0, 0, .1);
+                }
+            }
+        }
     }
-  }
 }
 
 .user-container {
@@ -149,74 +257,80 @@ header {
         }
     }
 
-  .user-container__profile-container {
-    display: inline-block;
-    padding: .5rem 1.5rem;
-    transition: background-color ease .5s;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: #f7f7f7;
+    .user-container__profile-container {
+        display: inline-block;
+        padding: .5rem 1.5rem;
+        transition: background-color ease .5s;
+        border-radius: 20px;
+        cursor: pointer;
+        background-color: #f7f7f7;
 
-    .user-container__profile {
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        user-select: none;
-        transition: all ease .5s;
+        .user-container__profile {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            user-select: none;
+            transition: all ease .5s;
+        }
+
+        .user-container__chevron-icon {
+            margin-left: .5rem;
+        }
+
+        &:hover {
+            background-color: #ddd;
+        }
     }
 
-    .user-container__chevron-icon {
-        margin-left: .5rem;
+    .dropdown-menu {
+        margin-top: 19px;
+        right: 0;
+        left: inherit;
+        z-index: 999;
+        padding-top: 0;
+        padding-bottom: 0;
+        transition: margin-top ease .5s;
+
+        .dropdown-item {
+            font-size: .9rem;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+
+            &:hover {
+                color: #fff;
+                background-color: #b71c1c;
+            }
+
+            &:active {
+                background-color: #b71c1c;
+            }
+        }
+
+        .dropdown-divider {
+            margin: 0;
+        }
     }
 
-    &:hover {
-        background-color: #ddd;
+    .dropdown-toggle::after {
+        display: none;
     }
-  }
-  .dropdown-menu{
-    margin-top: 19px;
-    right:0;
-    left: inherit;
-    z-index: 999;
-    padding-top: 0;
-    padding-bottom: 0;
-    transition: margin-top ease .5s;
-    .dropdown-item{
-      font-size: .9rem;
-      padding-top: .5rem;
-      padding-bottom: .5rem;
-      &:hover{
-        color: #fff;
-        background-color: #b71c1c;
-      }
-      &:active{
-        background-color: #b71c1c;
-      }
-    }
-    .dropdown-divider{
-      margin: 0;
-    }
-  }
-  .dropdown-toggle::after{
-    display: none;
-  }
 
-  .user-container__text {
-    color: white;
-  }
+    .user-container__text {
+        color: white;
+    }
 }
 
 .header__padding {
-  padding-top: 70px;
+    padding-top: 70px;
 
-  &.header__padding-collapsed {
-    padding-top: 50px;
-  }
+    &.header__padding-collapsed {
+        padding-top: 50px;
+    }
 }
 
 
 @media(max-width:992px) {
-  .user-container{
-    background-color: transparent;
-  }
+    .user-container {
+        background-color: transparent;
+    }
 }
