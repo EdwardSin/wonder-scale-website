@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuthItemContributorUrl, ItemUrl } from '@enum/url.enum';
 import { Item } from '@objects/item';
 import { Result } from '@objects/result';
 import { Observable } from 'rxjs';
@@ -11,25 +12,25 @@ export class ItemService {
 
   constructor(private http: HttpClient) { }
   getPreviewItemWithSellerById(id, storeId): Observable<Result<Item>>{
-    return this.http.get<Result<Item>>('/api/auth-stores/item-contributors/preview/item/' + id, { headers: { "access-store": storeId }});
+    return this.http.get<Result<Item>>(AuthItemContributorUrl.getPreviewItemWithSellerByIdUrl + '/' + id, { headers: { "access-store": storeId }});
   }
   getItemWithSellerById(id): Observable<Result<Item>>{
-    return this.http.get<Result<Item>>('/api/items/item-with-seller/' + id);
+    return this.http.get<Result<Item>>(ItemUrl.getItemWithSellerByIdUrl + '/' + id);
   }
   getAllItemsByStoreId(id): Observable<Result<Array<Item>>> {
-    return this.http.get<Result<Array<Item>>>('/api/items/public/all/' + id);
+    return this.http.get<Result<Array<Item>>>(ItemUrl.getAllItemsByStoreIdUrl + '/' + id);
   }
   getNewItemsByStoreId(id): Observable<Result<Array<Item>>> {
-    return this.http.get<Result<Array<Item>>>('/api/items/public/new/' + id);
+    return this.http.get<Result<Array<Item>>>(ItemUrl.getNewItemsByStoreIdUrl + '/' + id);
   }
   getDiscountItemsByStoreId(id): Observable<Result<Array<Item>>> {
-    return this.http.get<Result<Array<Item>>>('/api/items/public/discount/' + id);
+    return this.http.get<Result<Array<Item>>>(ItemUrl.getDiscountItemsByStoreIdUrl + '/' + id);
   }
   getTodaySpecialItemsByStoreId(id): Observable<Result<Array<Item>>> {
-    return this.http.get<Result<Array<Item>>>('/api/items/public/todayspecial/' + id);
+    return this.http.get<Result<Array<Item>>>(ItemUrl.getTodaySpecialItemsByStoreIdUrl + '/' + id);
   }
   getItemsByCategoryId(categoryId): Observable<Result<Array<Item>>> {
-    return this.http.get<Result<Array<Item>>>('/api/items/public/' + categoryId);
+    return this.http.get<Result<Array<Item>>>(ItemUrl.getItemsByCategoryIdUrl + '/' + categoryId);
   }
 }
 

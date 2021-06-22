@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DateTimeHelper } from '../../../helpers/datetimehelper/datetime.helper';
+import { TrackUrl } from '@enum/url.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class TrackService {
 
   addTrack(obj) {
     let dateAsString = DateTimeHelper.getTodayWithCurrentTimezone().toISOString();
-    return this.http.post('/api/tracks?date=' + dateAsString, obj);
+    return this.http.post(TrackUrl.addTrackUrl + '?date=' + dateAsString, obj);
   }
 
 }
