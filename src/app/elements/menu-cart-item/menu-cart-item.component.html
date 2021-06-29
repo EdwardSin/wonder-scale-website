@@ -5,10 +5,16 @@
                 <img *ngIf="item?.profileImage" [src]="environment.IMAGE_URL + item?.profileImage" class="menu-cart-item__image" alt="profile Image" />
                 <img *ngIf="!item?.profileImage" src="/assets/images/png/profileImage.png" class="menu-cart-item__image" alt="item detault profile image" />
             </span>
-            <div class="menu-cart-item__middle col px-2 px-lg-3" (click)="isShown = !isShown">
+            <div class="menu-cart-item__middle col px-2">
                 <p class="menu-cart-item__text">{{ item?.name }}</p>
                 <p class="menu-cart-item__text font-9" class="text-muted" *ngIf="item?.type">{{ item?.type?.name }}</p>
                 <p class="menu-cart-item__text font-weight-bold">RM {{ item?.amount() | number: '1.2-2' }}</p>
+                <ul class="mb-0 font-9 text-muted p-2 pl-3" *ngIf="item?.subItems?.length">
+                    <li *ngFor="let subItem of item?.subItems">
+                        {{ subItem?.name }}<br/>
+                        <span>RM {{ subItem?.price | number: '1.2-2' }} x {{ subItem?.quantity }}</span>
+                    </li>
+                </ul>
             </div>
             <div class="row no-gutters col-lg-auto py-3 justify-content-lg-right justify-content-center">
                 <div class="menu-cart-item__quantity float-right mx-2">

@@ -1,14 +1,14 @@
-<div class="container position-relative px-0" *ngIf="!saleLoading.isRunning() && !itemLoading.isRunning(); else loadingTemplate">
+<div class="container position-relative px-0 py-3" *ngIf="!saleLoading.isRunning() && !itemLoading.isRunning(); else loadingTemplate">
     <div [ngSwitch]="phase.step">
         <ng-container *ngSwitchCase="0">
-            <div class="btn-navigation" (click)="openNavigation()">
+            <div class="btn-navigation" (click)="openNavigation()" *ngIf="categories.length">
                 <span class="fas fa-bars btn-navigation__icon"></span>
                 <span>{{ store?.type == 'restaurant' ? 'Menu': 'Catalogue'}}</span>
             </div>
             <button class="btn btn-store float-right border-0" (click)="navigateToStore()">Go To Store</button>
             <div class="menu-navigation" [class.menu-navigation__open]="isNavigationOpened">
                 <span class="fas fa-times menu-navigation__closed" (click)="closeNavigation()"></span>
-                <h5 class="menu-navigation-title">Menu</h5>
+                <h5 class="menu-navigation-title">{{ store?.type == 'restaurant' ? 'Menu': 'Catalogue'}}</h5>
                 <ul class="menu-navigation-list list-unstyled mb-0">
                     <li class="menu-navigation-item" *ngIf="allItems.length" [class.selected]="selectedCategory == 'all'" (click)="getItemsByCategoryId('all')">
                         All
@@ -28,7 +28,13 @@
                 </ul>
             </div>
             <div class="w-100 pb-3">
-                <menu-item class="px-2 py-2" *ngFor="let item of items" [item]="item"></menu-item>
+                <menu-item class="px-2 py-2" *ngFor="let item of items"
+                    [isAddedToCart]="isItemInCart(item)"
+                    [onSellingItem]="item"
+                    (onAddToCartClicked)="onAddToCartClicked($event)"
+                ></menu-item>
+                <h6 *ngIf="!items.length" class="text-center" style="padding: 15vh 0 0 0">Seller is preparing.</h6>
+                <h6 *ngIf="!items.length" class="text-center" style="padding: 0 0 15vh 0">No item is selling currently.</h6>
             </div>
             <div style="height: 120px"></div>
             <div *ngIf="allCartItems.length" class="btn-cart">

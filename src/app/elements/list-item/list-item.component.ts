@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { Item } from '@objects/item';
 import { environment } from '@environments/environment';
 import { CurrencyService } from '@services/http/general/currency.service';
 import { Subject } from 'rxjs';
@@ -9,6 +8,7 @@ import { SharedUserService } from '@services/shared/shared-user.service';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
+import { OnSellingItem } from '@objects/on-selling-item';
 
 @Component({
   selector: 'list-item',
@@ -16,7 +16,7 @@ import { WsLoading } from '@elements/ws-loading/ws-loading';
   styleUrls: ['./list-item.component.scss']
 })
 export class ListItemComponent implements OnInit {
-  @Input() item: Item;
+  @Input() item: OnSellingItem;
   @Input() index: number;
   @Input() savable: boolean = true;
   @Input() removable: boolean;
@@ -65,7 +65,7 @@ export class ListItemComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['item'] && this.item) {
       this.follow = this.followItems.includes(this.item._id);
-      this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
+      // this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
       let queryParams = this.route.snapshot.queryParams;
       if (queryParams['modal'] && queryParams['modal'] == 'item' && queryParams['item_id'] && this.item && queryParams['item_id'] == this.item._id) {
         this.createLazyItemInfoComponent();

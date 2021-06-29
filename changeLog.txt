@@ -6,6 +6,12 @@
 ---------------------------------------------
 - 2021-06-20                                -
 ---------------------------------------------
+.: WSW: Task - CLONE - Create a product template which is based on the product template to create the item (WSW-125)
+
+- v1.0.1094                                 -
+---------------------------------------------
+- 2021-06-20                                -
+---------------------------------------------
 .: WSW: Task - Update to use long polling to get notification (WSW-123)
 
 ---------------------------------------------
