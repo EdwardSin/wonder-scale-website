@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import * as _ from 'lodash';
 import { SharedUserService } from '@services/shared/shared-user.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { debounceTime, delay, finalize, switchMap, takeUntil } from 'rxjs/operators';
+import { of, Subject, Subscription, timer } from 'rxjs';
 import { User } from '@objects/user';
 import { AuthenticationService } from '@services/http/general/authentication.service';
 import { AuthUserService } from '@services/http/general/auth-user.service';
@@ -11,6 +11,10 @@ import { SharedLoadingService } from '@services/shared/shared-loading.service';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { ScreenService } from '@services/general/screen.service';
 import { VisitorGuard } from 'src/app/guards/visitor.guard';
+import { WsLoading } from '@elements/ws-loading/ws-loading';
+import { AuthNotificationUserService } from '@services/http/auth/auth-notification-user.service';
+import * as moment from 'moment';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +25,18 @@ import { VisitorGuard } from 'src/app/guards/visitor.guard';
 export class HeaderComponent implements OnInit {
   keyword: string = '';
   user: User;
+  moment = moment;
+  environment = environment;
+  isNotificationDropdown: boolean;
+  notificationLazyLoading: WsLoading = new WsLoading();
+  notificationLoading: WsLoading = new WsLoading();
+  updatedAt = new Date;
+  notifications;
+  checkNotificationSubscription;
+  REFRESHER_NOTIFICATIONS_INTERVAL = 30 * 1000;
+  numberOfNewNotifications: number;
   isMobileSize: boolean = null;
+  private currentStream: Subscription;
   @ViewChild('headerKeyword') headerKeyword: ElementRef;
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private authUserService: AuthUserService,
@@ -31,6 +46,7 @@ export class HeaderComponent implements OnInit {
     private viewContainerRef: ViewContainerRef,
     private cfr: ComponentFactoryResolver,
     private route: ActivatedRoute,
+    private authNotificationUserService: AuthNotificationUserService,
     private screenService: ScreenService,
     private sharedUserService: SharedUserService,
     private authFollowService: AuthFollowService,
@@ -43,6 +59,10 @@ export class HeaderComponent implements OnInit {
         if (result) {
           this.getFollowStores();
           this.getFollowItems();
+          this.getNotifications();
+          this.checkNotifications();
+          // temp disable sse
+          // this.setupNotificationStream();
         }
       })
     this.authenticationService.isAuthenticated().then(result => {
@@ -85,7 +105,44 @@ export class HeaderComponent implements OnInit {
   isAuthenticateUrl(url) {
     return url =='login' || url == 'register' || url == 'forgot-password' || url == 'activate' || url == 'reset-password';
   }
-
+  // temp disable sse
+  // setupNotificationStream(delaySeconds=0) {
+  //   if (this.currentStream) {
+  //     this.currentStream.unsubscribe();
+  //   }
+  //   this.currentStream = of('init').pipe(delay(delaySeconds), switchMap(() => {
+  //     return this.authNotificationUserService.getNotificationStream()
+  //   }), switchMap((result) => {
+  //     if (result['data'] === 'true') {
+  //       return this.authNotificationUserService.getNotifications();
+  //     }
+  //     return of(null);
+  //   }), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+  //     if (result) {
+  //       this.notifications = [...result['result']];
+  //       this.numberOfNewNotifications = result['meta']['isNewItem'];
+  //     }
+  //   }, err => {
+  //     this.setupNotificationStream(30000);
+  //   });
+  // }
+  checkNotifications() {
+    if (this.checkNotificationSubscription) {
+      this.checkNotificationSubscription.unsubscribe();
+    }
+    this.checkNotificationSubscription = timer(5000, this.REFRESHER_NOTIFICATIONS_INTERVAL).pipe(
+      switchMap(() => {
+        let obj = { updatedAt: this.updatedAt };
+        return this.authNotificationUserService.checkNotifications(obj)}),
+      takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      if (result['result'] && result['result'].notification) {
+        this.updatedAt = result['result'].notification;
+        this.getNotifications();
+      }
+    }, err => {
+      this.checkNotifications();
+    });
+  }
   async createLazyLoginComponent() {
     this.viewContainerRef.clear();
     await import ('../../../modules/authentication/login/login.module');
@@ -134,6 +191,47 @@ export class HeaderComponent implements OnInit {
       this.sharedUserService.followItems.next(result['result']);
     })
   }
+  openNotificationDropdown() {
+    this.isNotificationDropdown = true;
+    this.getNotifications();
+  }
+  getNotifications(event?) {
+    if (event) {
+      this.notificationLazyLoading.start();
+      this.authNotificationUserService.getNotifications().pipe(debounceTime(500), takeUntil(this.ngUnsubscribe), finalize(() => this.notificationLazyLoading.stop())).subscribe(result => {
+        this.notifications = [...result['result']];
+        this.numberOfNewNotifications = result['meta']['isNewItem'];
+      });
+    } 
+    if (event === undefined) {
+      this.notificationLoading.start();
+      this.authNotificationUserService.getNotifications().pipe(debounceTime(500), takeUntil(this.ngUnsubscribe), finalize(() => this.notificationLoading.stop())).subscribe(result => {
+        this.notifications = [...result['result']];
+        this.numberOfNewNotifications = result['meta']['isNewItem'];
+      });
+    }
+  }
+  loadedNewNotifications() {
+    if (this.isNotificationDropdown) {
+      this.isNotificationDropdown = false;
+      let notifications = this.notifications.filter(result => {
+        return result['isNewItem'];
+      }).map(result => {
+        return result['_id'];
+      });
+      this.authNotificationUserService.loadedNewNotifications(notifications).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        this.numberOfNewNotifications = 0;
+      });
+    }
+  }
+  navigateToInvoice(notification) {
+    this.loadedNewNotifications();
+    this.isNotificationDropdown = false;
+    this.authNotificationUserService.readNotification(notification?._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      notification.isRead = true;
+    });
+    this.router.navigate(['/invoice'], { queryParams: {s_id: notification?.data?.invoiceId, r_id: notification?.data?.receiptId }});
+  }
   navigateTo() {
     this.headerKeyword.nativeElement.blur();
     this.router.navigate(['/search'], {queryParams: {keyword: this.keyword}});
@@ -144,6 +242,9 @@ export class HeaderComponent implements OnInit {
       setTimeout(() => {
         this.sharedLoadingService.screenLoading.next({loading: false});
         this.router.navigate(['']);
+        if (this.checkNotificationSubscription) {
+          this.checkNotificationSubscription.unsubscribe();
+        }
       }, 500);
     });
   }

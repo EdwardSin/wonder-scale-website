@@ -31,6 +31,30 @@
                     <span class="fas fa-sign-in-alt"></span>
                 </a>
             </div>
+            <div *ngIf="user" class="position-relative" (clickOutside)="loadedNewNotifications()">
+                <div class="user-container__notification-container" wsDebounceClick [debounceTime]="250" (debounceClick)="openNotificationDropdown()">
+                    <span class="fas fa-bell user-container__notification-icon"></span>
+                    <span class="user-container__notification-badge" *ngIf="numberOfNewNotifications" [style.padding]="numberOfNewNotifications > 9 ? '0.1rem 0.25rem' : '0.1rem 0.35rem'">
+                        <span *ngIf="numberOfNewNotifications < 10">{{numberOfNewNotifications}}</span>
+                        <span *ngIf="numberOfNewNotifications > 9">9+</span></span>
+                </div>
+                <div class="user-container__notification" *ngIf="isNotificationDropdown">
+                    <span class="user-container__notification-header">Notification</span>
+                    <div *ngIf="notificationLoading.isRunning()" class="d-flex justify-content-center align-items-center" style="height: 400px">
+                        <ws-spinner [width]="30" [height]="30" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>
+                    </div>
+                    <div *ngIf="!notificationLoading.isRunning() && !notifications.length" class="user-container__notification-message__empty justify-content-center align-items-center" style="height: 400px">
+                        No notification
+                    </div>
+                    <div *ngIf="!notificationLoading.isRunning() && notifications.length" (ngLazyLoadScroll)="getNotifications($event)" class="scrollbar" style="max-height: calc(70vh - 80px)">
+                        <div *ngFor="let notification of notifications" class="user-container__notification-message"
+                        [class.user-container__notification-message__new]="notification.isNewItem">
+                            <ng-container *ngTemplateOutlet="notificationInvoice; context: {notification: notification}"></ng-container>
+                        </div>
+                        <ws-spinner *ngIf="notificationLazyLoading.isRunning()" class="d-flex align-items-center justify-content-center py-3" [width]="30" [height]="30" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>
+                    </div>
+                </div>
+            </div>
             <div *ngIf="user" class="btn-group" mdbDropdown>
                 <div mdbDropdownToggle class="user-container__profile-container dropdown-toggle">
                   <img class='user-container__profile mr-1' src="{{user?.profileImage}}" alt="profile" />
@@ -53,3 +77,142 @@
     </div>
 </header>
 <div class="header__padding"></div>
+
+
+<ng-template #notificationInvoice let-notification="notification">
+    <ng-container [ngSwitch]="notification.version">
+        <div *ngSwitchCase="1">
+            <ng-container [ngSwitch]="notification.type">
+                <div *ngSwitchCase="'invoice-new'" class="user-container__notification__padding" (click)="navigateToInvoice(notification)">
+                    <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
+                    <div class="row no-gutters">
+                        <div class="mr-3 col-auto">
+                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p class="inline-block mb-0">Invoice <span class="font-weight-bold">{{ notification.data?.receiptId }}</span> has been approved</p>
+                                <p class="mb-1 inline-block">Wait for the payment</p>
+                            </div>
+                            <span class="d-block text-muted font-8">{{ moment(notification.updatedAt).fromNow() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'invoice-new-rejected'" class="user-container__notification__padding" (click)="navigateToInvoice(notification)">
+                    <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
+                    <div class="row no-gutters">
+                        <div class="mr-3 col-auto">
+                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p class="inline-block mb-0">Payment of invoice <span class="font-weight-bold">{{ notification.data?.receiptId }}</span> has been rejected</p>
+                                <p class="mb-1 inline-block">Try to upload the payslip again</p>
+                            </div>
+                            <span class="d-block text-muted font-8">{{ moment(notification.updatedAt).fromNow() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'invoice-in-progress'" class="user-container__notification__padding" (click)="navigateToInvoice(notification)">
+                    <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
+                    <div class="row no-gutters">
+                        <div class="mr-3 col-auto">
+                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p class="inline-block mb-2">Invoice <span class="font-weight-bold">{{ notification.data?.receiptId }}</span> is confirmed and preparing</p>
+                            </div>
+                            <span class="d-block text-muted font-8">{{ moment(notification.updatedAt).fromNow() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'invoice-ready'" class="user-container__notification__padding" (click)="navigateToInvoice(notification)">
+                    <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
+                    <div class="row no-gutters">
+                        <div class="mr-3 col-auto">
+                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p class="inline-block mb-2">Invoice <span class="font-weight-bold">{{ notification.data?.receiptId }}</span> is ready and waiting for delivery</p>
+                            </div>
+                            <span class="d-block text-muted font-8">{{ moment(notification.updatedAt).fromNow() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'invoice-delivery'" class="user-container__notification__padding" (click)="navigateToInvoice(notification)">
+                    <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
+                    <div class="row no-gutters">
+                        <div class="mr-3 col-auto">
+                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p class="inline-block mb-0">Invoice <span class="font-weight-bold">{{ notification.data?.receiptId }}</span> is delivered</p>
+                                <p class="inline-block mb-2">Wait to receive your purchase</p>
+                            </div>
+                            <span class="d-block text-muted font-8">{{ moment(notification.updatedAt).fromNow() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'invoice-rejected'" class="user-container__notification__padding" (click)="navigateToInvoice(notification)">
+                    <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
+                    <div class="row no-gutters">
+                        <div class="mr-3 col-auto">
+                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p class="inline-block mb-2">Invoice <span class="font-weight-bold">{{ notification.data?.receiptId }}</span> is rejected</p>
+                            </div>
+                            <span class="d-block text-muted font-8">{{ moment(notification.updatedAt).fromNow() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'invoice-cancelled'" class="user-container__notification__padding" (click)="navigateToInvoice(notification)">
+                    <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
+                    <div class="row no-gutters">
+                        <div class="mr-3 col-auto">
+                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p class="inline-block mb-2">Invoice <span class="font-weight-bold">{{ notification.data?.receiptId }}</span> is cancelled</p>
+                            </div>
+                            <span class="d-block text-muted font-8">{{ moment(notification.updatedAt).fromNow() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'invoice-refunded'" class="user-container__notification__padding" (click)="navigateToInvoice(notification)">
+                    <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
+                    <div class="row no-gutters">
+                        <div class="mr-3 col-auto">
+                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p class="inline-block mb-2">Invoice <span class="font-weight-bold">{{ notification.data?.receiptId }}</span> is refunded</p>
+                            </div>
+                            <span class="d-block text-muted font-8">{{ moment(notification.updatedAt).fromNow() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'invoice-completed'" class="user-container__notification__padding" (click)="navigateToInvoice(notification)">
+                    <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
+                    <div class="row no-gutters">
+                        <div class="mr-3 col-auto">
+                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p class="inline-block mb-2">Invoice <span class="font-weight-bold">{{ notification.data?.receiptId }}</span> is completed and closed</p>
+                            </div>
+                            <span class="d-block text-muted font-8">{{ moment(notification.updatedAt).fromNow() }}</span>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</ng-template>

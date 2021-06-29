@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
 import { WsToastService } from '@elements/ws-toast/ws-toast.service';
 import { PaymentMethodEnum } from '@enum/payment-method.enum';
@@ -29,7 +29,22 @@ export class InvoiceComponent implements OnInit {
   constructor(private invoiceService: InvoiceService, private route: ActivatedRoute,
     private sharedUserService: SharedUserService,
     private authInvoiceService: AuthInvoiceService,
-    private router: Router) { 
+    private router: Router) {
+    this.router.events.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          let _id = this.route.snapshot.queryParams['s_id'];
+          let receiptId = this.route.snapshot.queryParams['r_id'];
+          if (_id && receiptId) {
+            this.loading.start();
+            this.invoiceService.getInvoiceById(_id, receiptId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+              if (result) {
+                this.item = result['result'];
+              }
+            });
+          }
+        }
+      });
     this.loading.start();
     let _id = this.route.snapshot.queryParams['s_id'];
     let receiptId = this.route.snapshot.queryParams['r_id'];
@@ -55,15 +70,15 @@ export class InvoiceComponent implements OnInit {
   refreshReceipt() {
     let _id = this.route.snapshot.queryParams['s_id'];
     let receiptId = this.route.snapshot.queryParams['r_id'];
-    interval(60 * 1000).pipe(switchMap(() => {return this.invoiceService.getInvoiceById(_id, receiptId)}),
-    takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
-      if (result) {
-        this.item = result['result'];
-      }
-    });
+    interval(60 * 1000).pipe(switchMap(() => { return this.invoiceService.getInvoiceById(_id, receiptId) }),
+      takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+        if (result) {
+          this.item = result['result'];
+        }
+      });
   }
   navigateToEditInvoice() {
-    this.router.navigate(['/page', this.item?.store?.username ,'cart-menu'], {queryParamsHandling: 'merge'})
+    this.router.navigate(['/page', this.item?.store?.username, 'cart-menu'], { queryParamsHandling: 'merge' })
   }
   fileChangeEvent(event) {
     this.previewLoading.start();
@@ -91,11 +106,11 @@ export class InvoiceComponent implements OnInit {
         if (result && result['result']) {
           this.item.status = 'paid';
           this.uploadingFiles = [];
-          WsToastService.toastSubject.next({ content: 'It will take a moment for the confirmation!', type: 'success'});
+          WsToastService.toastSubject.next({ content: 'It will take a moment for the confirmation!', type: 'success' });
         }
       });
     } else {
-      WsToastService.toastSubject.next({ content: 'Please upload an image!', type: 'danger'});
+      WsToastService.toastSubject.next({ content: 'Please upload an image!', type: 'danger' });
     }
   }
   cancelUploading() {
@@ -105,7 +120,7 @@ export class InvoiceComponent implements OnInit {
   isSavedInvoice() {
     let id = this.route.snapshot.queryParams['s_id'];
     this.authInvoiceService.isSavedInvoice(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        this.isSaved = result['result'];
+      this.isSaved = result['result'];
     });
   }
   saveInvoice() {

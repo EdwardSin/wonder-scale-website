@@ -14,6 +14,7 @@ export const environment = {
   HERE_APP_CODE: 'ERx9SWBfCHLlbN1vKOvlng',
   ACTIVATED_MESSAGE: 'Start to view page now!',
   URL: 'https://192.168.1.111:4200/',
+  MERCHANT_URL: 'https://localhost:4201/',
   braintreeAuthorization: 'sandbox_8tn3f6nk_bm2v725w33trg4y8'
 };
 
