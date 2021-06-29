@@ -50,9 +50,9 @@
                 <ul class="merchant__nav list-group list-group-horizontal w-100">
                     <li (click)="scrollTo('overview')" [class.selected]="selectedNavItem == 'overview'" class="merchant__nav-item list-group-item selected">Overview</li>
                     <li *ngIf="store?.location?.coordinates?.length && store?.location?.coordinates[0] != 0 && store?.location?.coordinates[1] != 0 || isEditing" (click)="scrollTo('location')" [class.selected]="selectedNavItem == 'location'" class="merchant__nav-item list-group-item">Location</li>
-                    <li  *ngIf="store?.openingInfoType || isEditing" (click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Opening Hours</li>
-                    <li  *ngIf="store?.deliveries?.length || isEditing" (click)="scrollTo('delivery')" [class.selected]="selectedNavItem == 'delivery'" class="merchant__nav-item list-group-item">Delivery</li>
-                    <li (click)="scrollTo('catalogue')" [class.selected]="selectedNavItem == 'catalogue'" class="merchant__nav-item list-group-item ml-auto"><span class="fas fa-book-open"></span> Catalogue</li>
+                    <li *ngIf="store?.openingInfoType || isEditing" (click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Opening Hours</li>
+                    <li *ngIf="store?.deliveries?.length || isEditing" (click)="scrollTo('delivery')" [class.selected]="selectedNavItem == 'delivery'" class="merchant__nav-item list-group-item">Delivery</li>
+                    <li *ngIf="allItems?.length" (click)="scrollTo('catalogue')" [class.selected]="selectedNavItem == 'catalogue'" class="merchant__nav-item list-group-item ml-auto"><span class="fas fa-book-open"></span> Catalogue</li>
                 </ul>
                 <div class="mb-3" style="border-bottom: 2px solid #ccc; margin-top: -2px"></div>
                 <div *ngIf="selectedNavItem != 'catalogue' && selectedNavItem != 'delivery'" class="details-container">
@@ -166,9 +166,9 @@
                     <div *ngIf="!isEditing" id="items" class="category-container mb-3">
                         <mat-select class="form-control category-container__dropdown" [(value)]="selectedCategory" (selectionChange)="getItemsByCategoryId(selectedCategory)">
                             <mat-option [value]="'all'">All</mat-option>
-                            <mat-option *ngIf="todaySpecialItems.length" [value]="'todayspecial'">Today Special</mat-option>
-                            <mat-option *ngIf="newItems.length" [value]="'new'">New</mat-option>
-                            <mat-option *ngIf="discountItems.length" [value]="'discount'">Discount</mat-option>
+                            <!-- <mat-option *ngIf="todaySpecialItems.length" [value]="'todayspecial'">Today Special</mat-option> -->
+                            <!-- <mat-option *ngIf="newItems.length" [value]="'new'">New</mat-option>
+                            <mat-option *ngIf="discountItems.length" [value]="'discount'">Discount</mat-option> -->
                             <mat-option [value]="category?._id" *ngFor="let category of categories">{{ category?.name }}</mat-option>
                         </mat-select>
                     </div>
