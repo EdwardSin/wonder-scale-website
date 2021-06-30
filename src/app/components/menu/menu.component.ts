@@ -150,7 +150,7 @@ export class MenuComponent implements OnInit {
   mapStore() {
     if (this.store) {
       this.allItems = this.store['allItems'];
-      // this.newItems = this.store['newItems'];
+      this.newItems = this.store['newItems'];
       // this.discountItems = this.store['discountItems'];
       // this.todaySpecialItems = this.store['todaySpecialItems'];
       this.categories = this.store['onSellingCategories'];
