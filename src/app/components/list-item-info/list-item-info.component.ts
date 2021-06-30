@@ -1,8 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ItemService } from '@services/http/public/item.service';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Subject, combineLatest, timer } from 'rxjs';
 import { takeUntil, finalize, map } from 'rxjs/operators';
-import { Item } from '@objects/item';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@environments/environment';
 import * as _ from 'lodash';
@@ -12,6 +10,9 @@ import { SharedUserService } from '@services/shared/shared-user.service';
 import { FacebookService, UIParams } from 'ngx-facebook';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
+import { OnSellingItem } from '@objects/on-selling-item';
+import { OnSellingItemService } from '@services/http/public/on-selling-item.service';
+import { Item } from '@objects/item';
 
 @Component({
   selector: 'list-item-info',
@@ -19,7 +20,7 @@ import { DocumentHelper } from '@helpers/documenthelper/document.helper';
   styleUrls: ['./list-item-info.component.scss']
 })
 export class ListItemInfoComponent implements OnInit {
-  item: Item;
+  onSellingItem: OnSellingItem;
   name: string = '';
   price: number = 0;
   discount: number = 0;
@@ -43,7 +44,8 @@ export class ListItemInfoComponent implements OnInit {
   constructor(public currencyService: CurrencyService,
     private route: ActivatedRoute,
     private router: Router,
-    private itemService: ItemService,
+    private ref: ChangeDetectorRef,
+    private onSellingItemService: OnSellingItemService,
     private facebookService: FacebookService,
     private authFollowService: AuthFollowService,
     private sharedUserService: SharedUserService) { }
@@ -62,9 +64,9 @@ export class ListItemInfoComponent implements OnInit {
   }
   getItemById(id) {
     this.loading.start();
-    this.itemService.getItemWithSellerById(id).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+    this.onSellingItemService.getItemWithSellerById(id).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       if (result && result.result) {
-        this.item = result.result;
+        this.onSellingItem = result.result;
         this.mapItem();
       }
     })
@@ -72,82 +74,81 @@ export class ListItemInfoComponent implements OnInit {
   getPreviewItemById(id) {
     this.loading.start();
     let storeId = this.route.snapshot.queryParams.id;
-    this.itemService.getPreviewItemWithSellerById(id, storeId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
+    this.onSellingItemService.getPreviewItemWithSellerById(id, storeId).pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.loading.stop())).subscribe(result => {
       if (result && result.result) {
-        this.item = result.result;
+        this.onSellingItem = result.result;
         this.mapItem();
       }
     })
   }
   mapItem() {
-    DocumentHelper.setWindowTitleWithWonderScale(this.item.name);
-    if (this.item.types.length > 0) {
-      this.item.types = this.item.types.map(type => {
+    let item = this.onSellingItem?.item as Item;
+    DocumentHelper.setWindowTitleWithWonderScale(item?.name);
+    if (item?.types?.length > 0) {
+      item.types = item?.types.map(type => {
         return {
           ...type,
-          images: type.images.length > 0 ? type.images : this.item.profileImages.length > 0 ? this.item.profileImages : [],
-          quantity: type.quantity || this.item.quantity,
-          price: type.price || this.item.price,
-          discount: type.discount || this.item.discount,
+          images: type.images.length > 0 ? type.images : item.profileImages.length > 0 ? item.profileImages : [],
+          quantity: type.quantity || item?.quantity,
+          price: type.price || item?.price,
+          discount: type.discount || item?.discount,
         }
       });
     } else {
-      this.item.types = [{
-        quantity: this.item.quantity,
-        price: this.item.price,
-        discount: this.item.discount,
-        images: this.item.profileImages,
-        weight: this.item.weight
+      item.types = [{
+        quantity: this.onSellingItem.quantity,
+        price: item?.price,
+        discount: item?.discount,
+        images: item?.profileImages,
+        weight: item?.weight
       }];
     }
-    this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
-    this.defaultType = this.item.types[0];
-    this.selectedType = this.item.types[0];
-    this.name = this.item.name;
+    this.onSellingItem['isDiscountExisting'] = item.isOffer && (item.types.find(type => type.discount > 0) != null || item.discount > 0);
+    this.defaultType = item.types[0];
+    this.selectedType = item.types[0];
+    this.name = item.name;
     this.price = this.defaultType.price;
     this.quantity = this.defaultType.quantity;
     this.discount = this.defaultType.discount;
-    this.selectedProfileIndex = this.item.profileImageIndex > -1 ? this.item.profileImageIndex : 0;
-    this.profileImages = _.union(_.flattenDeep([this.item.profileImages, this.item.types.map(type => type.images), (this.item.descriptionImages || [])]));
+    this.selectedProfileIndex = item.profileImageIndex > -1 ? item.profileImageIndex : 0;
+    this.profileImages = _.union(_.flattenDeep([item.profileImages, item.types.map(type => type.images), (item.descriptionImages || [])]));
     this.profileImages = _.filter(this.profileImages, image => !_.isEmpty(image));
     this.profileImages = this.profileImages.slice(0, 16);
     this.renderItemInfo();
   }
   renderItemInfo() {
     this.isFollowedItem();
-    if (this.item.store) {
-      this.link = environment.URL + '?id=' + this.item.store._id + '&item_id=' + this.item._id;
+    if (this.onSellingItem.store) {
+      this.link = environment.URL + '?id=' + this.onSellingItem.store['_id'] + '&item_id=' + this.onSellingItem._id;
       this.shareLinkThroughFB = this.link;
       this.shareLinkThroughTwitter = 'https://twitter.com/intent/tweet?text=Welcome to view my page now. ' + this.link;
       this.shareLinkThroughEmail = 'mailto:?body=' + this.link;
     }
   }
   isFollowedItem() {
-    this.authFollowService.isFollowedItem(this.item._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.authFollowService.isFollowedItem(this.onSellingItem._id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.saved = result['result'];
     })
   }
   saveItem() {
-    combineLatest(timer(500),
-    this.authFollowService.followItem(this.item._id))
-    .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.authFollowService.followItem(this.onSellingItem._id)
+    .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
         this.saved = result['result'];
         let followItems = this.sharedUserService.followItems.value;
         followItems = _.uniq(followItems);
-        followItems.push(this.item._id);
+        followItems.push(this.onSellingItem._id);
         this.sharedUserService.followItems.next(followItems);
       }
     });
   }
   unsaveItem() {
-    combineLatest(timer(500),
-    this.authFollowService.unfollowItem(this.item._id))
-    .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    this.authFollowService.unfollowItem(this.onSellingItem._id)
+    .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
         this.saved = result['result'];
         let followItems = this.sharedUserService.followItems.value;
-        followItems = _.filter(followItems, (id) => id != this.item._id);
+        followItems = _.filter(followItems, (id) => id != this.onSellingItem._id);
         this.sharedUserService.followItems.next(followItems);
       }
     });
@@ -182,11 +183,12 @@ export class ListItemInfoComponent implements OnInit {
     }
   }
   getItemBySelectedImage(image) {
-    let type = this.item.types.find(type => {
+    let item = this.onSellingItem.item as Item;
+    let type = item.types.find(type => {
       return type.images.includes(image);
     });
     if (!type) {
-      type = this.item.types[0];
+      type = item.types[0];
     }
     return type;
   }
@@ -195,7 +197,7 @@ export class ListItemInfoComponent implements OnInit {
   }
   navigateToStore() {
     this.router.navigate([], {queryParams: {modal: null}}).then(() => {
-      this.router.navigate(['/page', this.item.store.username]);
+      this.router.navigate(['/page', this.onSellingItem.store['username']]);
     })
   }
   ngOnDestroy() {
