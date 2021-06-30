@@ -9,6 +9,7 @@
 .: WSW: BugFix - Profile image is not shown when store has no image in notification (WSW-124)
 .: WSW: BugFix - Fix the items display in favorite (WSW-127)
 .: WSW: Task - CLONE - Display New Products Category (WSW-126)
+.: WSW: Task - Create a copy icon to copy account No when clicking on it (WSW-120)
 
 ---------------------------------------------
 - 2021-06-29                                -
