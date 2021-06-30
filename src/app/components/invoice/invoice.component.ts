@@ -137,6 +137,17 @@ export class InvoiceComponent implements OnInit {
       }
     });
   }
+  copy(event, value) {
+    event.stopPropagation();
+    var tempInput = document.createElement("input");
+    tempInput.style.cssText = "position: absolute; left: -1000px; top: -1000px";
+    tempInput.value = value.trim();
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    WsToastService.toastSubject.next({ content: 'Account number is copied!', type: 'success'}); 
+  }
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

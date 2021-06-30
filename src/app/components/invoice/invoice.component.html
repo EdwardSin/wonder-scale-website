@@ -15,7 +15,7 @@
                 </div>
                 <div class="row no-gutters py-2">
                     <td class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Account No:</td>
-                    <td class="col-lg align-text-top">{{item?.store?.bankDetails?.accountNo}}</td>
+                    <td class="col-lg align-text-top">{{item?.store?.bankDetails?.accountNo}} <span class="btn btn-sm btn-controller fas fa-copy ml-1 clickable" (click)="copy($event, item?.store?.bankDetails?.accountNo)"></span></td>
                 </div>
             </div>
             <p class="text-muted font-9 text-danger mt-2" *ngIf="item?.status == 'public_new'">Invoice will be removed permanently if not save or continue proceed.</p>
