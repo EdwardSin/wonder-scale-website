@@ -2,9 +2,14 @@
 - Wonder Scale Website                      -
 ---------------------------------------------
 
-- v1.0.1094                                 -
+- v1.0.10941                                -
 ---------------------------------------------
-- 2021-06-20                                -
+- 2021-06-30                                -
+---------------------------------------------
+.: WSW: BugFix - Profile image is not shown when store has no image in notification (WSW-124)
+
+---------------------------------------------
+- 2021-06-29                                -
 ---------------------------------------------
 .: WSW: Task - CLONE - Create a product template which is based on the product template to create the item (WSW-125)
 
