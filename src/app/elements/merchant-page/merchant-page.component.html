@@ -167,8 +167,8 @@
                         <mat-select class="form-control category-container__dropdown" [(value)]="selectedCategory" (selectionChange)="getItemsByCategoryId(selectedCategory)">
                             <mat-option [value]="'all'">All</mat-option>
                             <!-- <mat-option *ngIf="todaySpecialItems.length" [value]="'todayspecial'">Today Special</mat-option> -->
-                            <!-- <mat-option *ngIf="newItems.length" [value]="'new'">New</mat-option>
-                            <mat-option *ngIf="discountItems.length" [value]="'discount'">Discount</mat-option> -->
+                            <mat-option *ngIf="newItems.length" [value]="'new'">New</mat-option>
+                            <!-- <mat-option *ngIf="discountItems.length" [value]="'discount'">Discount</mat-option> -->
                             <mat-option [value]="category?._id" *ngFor="let category of categories">{{ category?.name }}</mat-option>
                         </mat-select>
                     </div>

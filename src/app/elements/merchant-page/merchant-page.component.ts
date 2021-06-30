@@ -190,11 +190,11 @@ export class MerchantPageComponent implements OnInit {
     //     this.items = this.discountItems;
     //     this.itemLoading.stop();
     //   }, 500);
-    // } else if (value == 'new') {
-    //   _.delay(() => {
-    //     this.items = this.newItems;
-    //     this.itemLoading.stop();
-    //   }, 500);
+    } else if (value == 'new') {
+      _.delay(() => {
+        this.items = this.newItems;
+        this.itemLoading.stop();
+      }, 500);
     } else {
         this.itemService.getItemsByCategoryId(value)
         .pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.itemLoading.stop())).subscribe(result => {
@@ -226,7 +226,7 @@ export class MerchantPageComponent implements OnInit {
     if (this.store) {
       this.storeId = this.store._id;
       this.allItems = this.store['allItems'];
-      // this.newItems = this.store['newItems'];
+      this.newItems = this.store['newItems'];
       // this.discountItems = this.store['discountItems'];
       // this.todaySpecialItems = this.store['todaySpecialItems'];
       this.categories = this.store['onSellingCategories'];
