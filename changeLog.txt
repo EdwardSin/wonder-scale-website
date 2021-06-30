@@ -6,7 +6,7 @@
 ---------------------------------------------
 - 2021-06-30                                -
 ---------------------------------------------
-.: WSW: Task - Profile image is not shown when store has no image in notification (WSW-124)
+.: WSW: BugFix - Profile image is not shown when store has no image in notification (WSW-124)
 
 ---------------------------------------------
 - 2021-06-29                                -
