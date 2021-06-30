@@ -1,10 +1,10 @@
 <ws-modal [closeCallback]="closeModal.bind(this)" [maxWidth]="520">
     <div class="pt-3" modalBody>
-        <div *ngIf="item && !loading.isRunning(); else loadingTemplate">
+        <div *ngIf="onSellingItem && !loading.isRunning(); else loadingTemplate">
             <div class="list-item-info">
-                <h1 class="list-item-info__title h4 mb-3">{{ item?.name }}</h1>
-                <p class="px-3 font-9" *ngIf="item.isEntityNew"><span class="fas fa-tag list-item-info__details__new-banner mr-2"></span>New Product</p>
-                <p class="px-3 font-9" *ngIf="item.isDiscountExisting"><span class="fas fa-tag list-item-info__details__discount-banner mr-2"></span>Discount</p>
+                <h1 class="list-item-info__title h4 mb-3">{{ onSellingItem?.item?.name }}</h1>
+                <p class="px-3 font-9" *ngIf="onSellingItem?.isEntityNew"><span class="fas fa-tag list-item-info__details__new-banner mr-2"></span>New Product</p>
+                <!-- <p class="px-3 font-9" *ngIf="onSellingItem?.isDiscountExisting"><span class="fas fa-tag list-item-info__details__discount-banner mr-2"></span>Discount</p> -->
                 <div class="list-item-info__details">
                     <div class="list-item-info__icons">
                         <span class="list-item-info__icon fas fa-heart" [ngClass]="saved? 'fas selected': ''" (click)="saved? unsaveItem(): saveItem()"></span>
@@ -12,48 +12,50 @@
                         <span class="list-item-info__icon fas fa-store" (click)="navigateToStore()"></span>
                     </div>
                     <div class="list-item-info__price-container">
-                        <span class="d-inline-block mr-2 mb-0" *ngIf="currencies?.length && item?.currency && item?.isOffer && item.priceAfterDiscount != item.price">
+                        <!--  && item.priceAfterDiscount != item.price -->
+                        <span class="d-inline-block mr-2 mb-0" *ngIf="currencies?.length && onSellingItem?.item?.currency && onSellingItem?.item?.isOffer">
                             <span class="list-item-info__details__original-price d-inline-block">
-                                <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                                <span class="pr-1">RM</span>{{ defaultType?.price | wsCurrency: 1: 1 }}</span>
                         </span>
-                        <span class="list-item-info__details__price mb-1" *ngIf="currencies?.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
-                        <span [class.list-item-info__details__price__offer]="item?.isDiscountExisting" class="list-item-info__details__price mb-1" *ngIf="currencies?.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ defaultType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : defaultType?.discount }}</span>
-                        <span *ngIf="false && item?.quantity" class="list-item-info__details__quantity">Quantity: {{ quantity }}</span>
+                        <span class="list-item-info__details__price mb-1" *ngIf="currencies?.length && onSellingItem?.item?.currency && !onSellingItem?.item?.isOffer"><span class="pr-1">RM</span>{{ defaultType?.price | wsCurrency: 1: 1 }}</span>
+                        <span [class.list-item-info__details__price__offer]="onSellingItem?.item?.isDiscountExisting" class="list-item-info__details__price mb-1" *ngIf="currencies?.length && onSellingItem?.item?.currency && onSellingItem?.item?.isOffer"><span class="pr-1">RM</span>{{ defaultType?.price | wsCurrency: 1: 1 | discountconverter : defaultType?.discount }}</span>
+                        <span *ngIf="false && onSellingItem?.item?.quantity" class="list-item-info__details__quantity">Quantity: {{ quantity }}</span>
                     </div>
                 </div>
                 <div class="clearfix mb-3"></div>
-                <p *ngIf="item?.description" class="list-item-info__description">{{ item?.description }}</p>
+                <p *ngIf="onSellingItem?.item?.description" class="list-item-info__description">{{ onSellingItem?.item?.description }}</p>
                 <div *ngIf="profileImages.length" class="list-item-info__profile-container row no-gutters">
                     <div class="list-item-info__profile mb-2">
                         <swiper #galleryThumbs (indexChange)="onIndexChange($event)" [(index)]="selectedProfileIndex" [config]="{
                             centeredSlides: true,
                             pagination: false,
                             navigation: false}">
+                            <!--  && item.priceAfterDiscount != selectedType.price -->
                             <div *ngFor="let image of profileImages" class="d-flex" style="background: #fefefe;">
                                 <img style="width: 100%; object-fit: contain; height: initial" [lazyLoad]="environment.IMAGE_URL + image" [defaultImage]="'assets/images/png/itemProfile.png'" alt="image"/>
-                                <div [class.swiper__image-label-offer]="item?.isOffer && item.priceAfterDiscount != selectedType.price" class="swiper__image-label w-100 text-center font-8">
+                                <div [class.swiper__image-label-offer]="onSellingItem?.item?.isOffer" class="swiper__image-label w-100 text-center font-8">
                                     <p class="d-inline-block mb-0">
-                                        <span *ngIf="currencies?.length && item?.currency && item?.isOffer && item.priceAfterDiscount != selectedType.price" class="d-inline-block mr-2 font-8" style="text-decoration: line-through;">
-                                            <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
+                                        <span *ngIf="currencies?.length && onSellingItem?.item?.currency && onSellingItem?.item?.isOffer" class="d-inline-block mr-2 font-8" style="text-decoration: line-through;">
+                                            <span class="pr-1">RM</span>{{ selectedType?.price | wsCurrency: 1: 1 }}</span>
                                         <span>
-                                            <span class="mb-1" *ngIf="currencies?.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
-                                            <span class="mb-1" *ngIf="currencies?.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</span>
+                                            <span class="mb-1" *ngIf="currencies?.length && onSellingItem?.item?.currency && !onSellingItem?.item?.isOffer"><span class="pr-1">RM</span>{{ selectedType?.price | wsCurrency: 1: 1 }}</span>
+                                            <span class="mb-1" *ngIf="currencies?.length && onSellingItem?.item?.currency && onSellingItem?.item?.isOffer"><span class="pr-1">RM</span>{{ selectedType?.price | wsCurrency: 1: 1 | discountconverter : selectedType?.discount }}</span>
                                         </span>
                                     </p>
                                 </div>
                             </div>
                         </swiper>
                     </div>
-                    <div *ngIf="item.types?.length > 1" class="w-100 py-3" style="position: relative; z-index: 1">
-                        <span *ngFor="let type of item.types; let i = index" class="list-item-info__profile-image-container mr-1 mb-1 clickable">
+                    <div *ngIf="onSellingItem?.item.types?.length > 1" class="w-100 py-3" style="position: relative; z-index: 1">
+                        <span *ngFor="let type of onSellingItem?.item.types; let i = index" class="list-item-info__profile-image-container mr-1 mb-1 clickable">
                             <img *ngIf="!type.images?.length" class="list-item-info__profile-image" (click)="selectItemType(type)" src="assets/images/png/profileImage.png" alt="image"/>
                             <img *ngIf="type.images?.length" class="list-item-info__profile-image" (click)="selectItemType(type)" [src]="environment.IMAGE_URL + type.images[0]" alt="image"/>
                             <span *ngIf="type == selectedType" class="list-item-info__profile-image__overlay"></span>
                         </span>
                     </div>
                 </div>
-                <!-- <div *ngIf="false && item?.description" class="list-item-info__container">
-                    <div class="list-item-info__description-image mb-4" *ngFor="let descriptionImage of item?.descriptionImages">
+                <!-- <div *ngIf="false && onSellingItem?.item?.description" class="list-item-info__container">
+                    <div class="list-item-info__description-image mb-4" *ngFor="let descriptionImage of onSellingItem?.item?.descriptionImages">
                         <img [src]="environment.IMAGE_URL + descriptionImage" alt="description image" />
                     </div>
                 </div> -->

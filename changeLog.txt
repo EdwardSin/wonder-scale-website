@@ -7,6 +7,7 @@
 - 2021-06-30                                -
 ---------------------------------------------
 .: WSW: BugFix - Profile image is not shown when store has no image in notification (WSW-124)
+.: WSW: BugFix - Fix the items display in favorite (WSW-127)
 
 ---------------------------------------------
 - 2021-06-29                                -
