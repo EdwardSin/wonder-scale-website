@@ -24,9 +24,6 @@ export class OnSellingItemService {
   getNewItemsByStoreId(id): Observable<Result<Array<OnSellingItem>>> {
     return this.http.get<Result<Array<OnSellingItem>>>(ItemUrl.getNewItemsByStoreIdUrl + '/' + id);
   }
-  getDiscountItemsByStoreId(id): Observable<Result<Array<OnSellingItem>>> {
-    return this.http.get<Result<Array<OnSellingItem>>>(ItemUrl.getDiscountItemsByStoreIdUrl + '/' + id);
-  }
   getTodaySpecialItemsByStoreId(id): Observable<Result<Array<OnSellingItem>>> {
     return this.http.get<Result<Array<OnSellingItem>>>(ItemUrl.getTodaySpecialItemsByStoreIdUrl + '/' + id);
   }

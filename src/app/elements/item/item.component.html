@@ -5,10 +5,10 @@
 </div>
 <p [routerLink]="['/items', item._id]" class="item__name mb-1 text-center">{{ item?.name }}</p>
 <div class="text-center">
-    <span *ngIf="item?.discount > 0 && item?.isOffer && item?.currency" class="item__discount-price mr-2" style="text-decoration: line-through;">
-        <span class="mr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}
-    </span>
-    <span class="item__price d-inline-block" *ngIf="item?.currency">
-        <span class="mr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}
+    <!-- <span *ngIf="item?.discount > 0 && item?.isOffer && item?.currency" class="item__discount-price mr-2" style="text-decoration: line-through;">
+        <span class="mr-1">RM</span>{{ item?.price | wsCurrency: 1:1 | discountconverter : item?.discount }}
+    </span> -->
+    <span class="item__price d-inline-block">
+        <span class="mr-1">RM</span>{{ item?.price | wsCurrency: 1:1 }}
     </span>
 </div>

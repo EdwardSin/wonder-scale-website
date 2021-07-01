@@ -12,12 +12,13 @@
                     <!-- <p class="font-8 mb-0" *ngIf="item?.isDiscountExisting"><span class="fas fa-tag list-item__discount mr-2"></span>Discount</p> -->
                 </div>
                 <div>
-                    <p class="list-item__discount-price mb-0" *ngIf="currencies.length && item?.item?.currency && item?.item?.isOffer && item?.item?.priceAfterDiscount != item?.item?.price" style="text-decoration: line-through;">
-                        <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.item?.price | currency: currencyService.getCurrencyWithCode(item?.item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                    <!-- <p class="list-item__discount-price mb-0" *ngIf="currencies.length && item?.item?.currency && item?.item?.isOffer && item?.item?.priceAfterDiscount != item?.item?.price" style="text-decoration: line-through;">
+                        <span class="pr-1">RM</span>{{ item?.item?.price | wsCurrency: 1: 1 }}</p>
                     <p class="list-item__price mb-0" *ngIf="currencies.length && item?.item?.currency && item?.item?.isOffer">
-                        <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.item?.price | currency: currencyService.getCurrencyWithCode(item?.item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.item?.discount }}</p>
-                    <p class="list-item__price mb-1" *ngIf="currencies.length && item?.item?.currency && !item?.item?.isOffer">
-                        <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.item?.price | currency: currencyService.getCurrencyWithCode(item?.item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                        <span class="pr-1">RM</span>{{ item?.item?.price | wsCurrency: 1: 1 | discountconverter : item?.item?.discount }}</p> -->
+                    <!--  *ngIf="currencies.length && item?.item?.currency && !item?.item?.isOffer" -->
+                    <p class="list-item__price mb-1">
+                        <span class="pr-1">RM</span>{{ item?.item?.price | wsCurrency: 1: 1 }}</p>
                 </div>
             </div>
             <div *ngIf="isAuthenticated" class="d-flex justify-content-center align-items-center px-3">

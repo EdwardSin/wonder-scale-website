@@ -4,7 +4,6 @@ import { takeUntil, finalize, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@environments/environment';
 import * as _ from 'lodash';
-import { CurrencyService } from '@services/http/general/currency.service';
 import { WsLoading } from 'src/app/elements/ws-loading/ws-loading';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import { FacebookService, UIParams } from 'ngx-facebook';
@@ -23,7 +22,6 @@ export class ListItemInfoComponent implements OnInit {
   onSellingItem: OnSellingItem;
   name: string = '';
   price: number = 0;
-  discount: number = 0;
   quantity: number;
   selectedType;
   defaultType;
@@ -41,7 +39,7 @@ export class ListItemInfoComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   @ViewChild('galleryThumbs') galleryThumbs: ElementRef;
   private ngUnsubscribe: Subject<any> = new Subject;
-  constructor(public currencyService: CurrencyService,
+  constructor(
     private route: ActivatedRoute,
     private router: Router,
     private ref: ChangeDetectorRef,
@@ -58,9 +56,6 @@ export class ListItemInfoComponent implements OnInit {
     } else {
       this.getItemById(itemId);
     }
-    this.currencyService.currenciesBehaviourSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.currencies = result;
-    })
   }
   getItemById(id) {
     this.loading.start();
@@ -90,26 +85,22 @@ export class ListItemInfoComponent implements OnInit {
           ...type,
           images: type.images.length > 0 ? type.images : item.profileImages.length > 0 ? item.profileImages : [],
           quantity: type.quantity || item?.quantity,
-          price: type.price || item?.price,
-          discount: type.discount || item?.discount,
+          price: type.price || item?.price
         }
       });
     } else {
       item.types = [{
         quantity: this.onSellingItem.quantity,
         price: item?.price,
-        discount: item?.discount,
         images: item?.profileImages,
         weight: item?.weight
       }];
     }
-    this.onSellingItem['isDiscountExisting'] = item.isOffer && (item.types.find(type => type.discount > 0) != null || item.discount > 0);
     this.defaultType = item.types[0];
     this.selectedType = item.types[0];
     this.name = item.name;
     this.price = this.defaultType.price;
     this.quantity = this.defaultType.quantity;
-    this.discount = this.defaultType.discount;
     this.selectedProfileIndex = item.profileImageIndex > -1 ? item.profileImageIndex : 0;
     this.profileImages = _.union(_.flattenDeep([item.profileImages, item.types.map(type => type.images), (item.descriptionImages || [])]));
     this.profileImages = _.filter(this.profileImages, image => !_.isEmpty(image));
@@ -177,7 +168,6 @@ export class ListItemInfoComponent implements OnInit {
     this.selectedType = itemType;
     this.price = this.selectedType.price;
     this.quantity = this.selectedType.quantity;
-    this.discount = this.selectedType.discount;
     if (this.selectedType['images'].length > 0) {
       this.selectProfileImage(this.selectedType['images'][0]);
     }

@@ -20,14 +20,7 @@
                     <span *ngIf="item?.isEntityNew" class="item-info__details__new-banner badge badge-danger ml-2">New</span>
                 </p>
             </div>
-            <p class="item-info__details__price mb-1" *ngIf="item?.currency && item?.isOffer"><span>{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : selectedType?.discount }}</p>
-            <p class="item-info__details__price mb-1" *ngIf="item?.currency && !item?.isOffer"><span>{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
-            <p class="mb-3" *ngIf="item?.currency && item?.isOffer">
-                <span class="item-info__details__original-price d-inline-block">
-                    <span>{{ currencyService.currencySymbols['MYR'] }}</span>{{ selectedType?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</span>
-                <span class="badge badge-warning ml-2" style="font-size: .8rem; vertical-align: text-top;">{{ discount }}%</span>
-            </p>
-            
+            <p class="item-info__details__price mb-1" *ngIf="item?.currency && !item?.isOffer"><span>RM</span>{{ selectedType?.price | wsCurrency: 1: 1 }}</p>
             <p class="item-info__details__quantity">Quantity: {{ quantity }}</p>
             <div class="row no-gutters">
                 <div class="item-info__item-type mr-3" *ngFor="let itemType of item?.types" (click)="selectItemType(itemType)">

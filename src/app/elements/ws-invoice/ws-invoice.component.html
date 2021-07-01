@@ -146,10 +146,10 @@
                     <td class="text-right font-weight-bold">Subtotal</td>
                     <td class="text-right font-weight-bold">{{ subtotal | number: '1.2-2' }}</td>
                 </tr>
-                <!-- <tr>
+                <tr *ngIf="discount">
                     <td class="text-right font-weight-bold">Discount</td>
                     <td class="text-right font-weight-bold">(-) {{ discount | number: '1.2-2' }}</td>
-                </tr> -->
+                </tr>
                 <tr style="font-size: 1.3rem">
                     <td class="pt-2 text-right font-weight-bold">Total (MYR)</td>
                     <td class="pt-2 text-right font-weight-bold">{{ total | number: '1.2-2' }}</td>
