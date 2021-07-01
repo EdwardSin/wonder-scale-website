@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Item } from '@objects/item';
 import { environment } from '@environments/environment';
-import { CurrencyService } from '@services/http/general/currency.service';
-import { ItemService } from '@services/http/public/item.service';
 import { Subject } from 'rxjs';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { takeUntil } from 'rxjs/operators';
@@ -24,7 +22,7 @@ export class ItemComponent implements OnInit {
   environment = environment;
   ngUnsubscribe: Subject<any> = new Subject;
   followItems: Array<string> = [];
-  constructor(public currencyService: CurrencyService,
+  constructor(
     private sharedUserService: SharedUserService,
     private authFollowService: AuthFollowService) { 
       this.sharedUserService.followItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {

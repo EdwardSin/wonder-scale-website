@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CurrencyService } from '@services/http/general/currency.service';
 import { environment } from '@environments/environment';
 import { Subject } from 'rxjs';
 import { SharedCartService } from '@services/shared/shared-cart.service';
@@ -26,12 +25,9 @@ export class MenuCartItemComponent implements OnInit {
   currencies = [];
   ngUnsubscribe: Subject<any> = new Subject;
   cartItems: Array<CartItem> = [];
-  constructor(public currencyService: CurrencyService, private sharedCartService: SharedCartService) { }
+  constructor(private sharedCartService: SharedCartService) { }
 
   ngOnInit(): void {
-    this.currencyService.currenciesBehaviourSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.currencies = result
-    });
     this.sharedCartService.cartItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(cartItems => {
       this.cartItems = cartItems;
     });

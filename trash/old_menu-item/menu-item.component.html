@@ -7,24 +7,6 @@
                 <span *ngIf="images?.length" class="menu-item__image-hint" (click)="isImagesOpened = true">
                     <span class="menu-item__image-hint-icon fas fa-images"></span>
                 </span>
-            <!-- </span>
-            <div class="menu-item__middle col px-2 px-lg-3" (click)="isShown = !isShown">
-                <p class="menu-item__text">{{ item?.name }}</p>
-                <p class="menu-item__discount-price mb-0" *ngIf="currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != item.price" style="text-decoration: line-through;"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
-                <p [class.menu-item__price__offer]="item.isDiscountExisting" class="menu-item__price mb-0" *ngIf="currencies.length && item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}</p>
-                <p class="menu-item__price mb-1" *ngIf="currencies.length && item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div *ngIf="isImagesOpened" class="images-fullscreen-container position-fixed pt-2">
-    <span class="images-fullscreen__icon fas fa-times" (click)="isImagesOpened = false"></span>
-    <swiper [index]="selectedImagesIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'horizontal', mousewheel: true}"> 
-        <ng-container class="swiper-slide" *ngFor="let image of item?.profileImages">
-            <img class="w-100 mb-2" style="object-fit: contain;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
-        </ng-container>
-    </swiper> -->
                 <div *ngIf="isImagesOpened" class="images-fullscreen-container position-fixed pt-2">
                     <span class="images-fullscreen__icon fas fa-times" (click)="isImagesOpened = false"></span>
                     <swiper [index]="selectedImagesIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'horizontal', mousewheel: true}"> 
@@ -36,9 +18,7 @@
             </span>
             <div class="menu-item__middle col px-2 px-lg-3" (click)="isShown = !isShown">
                 <p class="menu-item__text">{{ item?.name }}</p>
-                <p [class.menu-item__price__offer]="item?.isDiscountExisting" class="menu-item__price mb-0" *ngIf="item?.currency && item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}</p>
-                <p class="menu-item__price mb-1" *ngIf="item?.currency && !item?.isOffer"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
-                <p class="menu-item__discount-price mb-0" *ngIf="item?.currency && item?.isOffer && item.priceAfterDiscount != item.price" style="text-decoration: line-through;"><span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                <p class="menu-item__price mb-1"><span class="pr-1">RM</span>{{ item?.price | wsCurrency: 1: 1 }}</p>
                 <div class="menu-item__number-cart-item" *ngIf="isAddedToCart">Added</div>
             </div>
         </div>

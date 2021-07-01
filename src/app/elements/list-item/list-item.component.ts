@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { environment } from '@environments/environment';
-import { CurrencyService } from '@services/http/general/currency.service';
 import { Subject } from 'rxjs';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { takeUntil } from 'rxjs/operators';
@@ -33,7 +32,6 @@ export class ListItemComponent implements OnInit {
     private router: Router,
     private viewContainerRef: ViewContainerRef,
     private cfr: ComponentFactoryResolver,
-    public currencyService: CurrencyService,
     private sharedUserService: SharedUserService,
     private authFollowService: AuthFollowService) { 
       this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe))
@@ -49,9 +47,6 @@ export class ListItemComponent implements OnInit {
       this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.isAuthenticated = !!result;
       });
-      this.currencyService.currenciesBehaviourSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        this.currencies = result;
-      })
     }
 
   ngOnInit(): void {

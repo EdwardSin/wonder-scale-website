@@ -4,7 +4,6 @@
             <div class="list-item-info">
                 <h1 class="list-item-info__title h4 mb-3">{{ onSellingItem?.item?.name }}</h1>
                 <p class="px-3 font-9" *ngIf="onSellingItem?.isEntityNew"><span class="fas fa-tag list-item-info__details__new-banner mr-2"></span>New Product</p>
-                <!-- <p class="px-3 font-9" *ngIf="onSellingItem?.isDiscountExisting"><span class="fas fa-tag list-item-info__details__discount-banner mr-2"></span>Discount</p> -->
                 <div class="list-item-info__details">
                     <div class="list-item-info__icons">
                         <span class="list-item-info__icon fas fa-heart" [ngClass]="saved? 'fas selected': ''" (click)="saved? unsaveItem(): saveItem()"></span>
@@ -12,13 +11,11 @@
                         <span class="list-item-info__icon fas fa-store" (click)="navigateToStore()"></span>
                     </div>
                     <div class="list-item-info__price-container">
-                        <!--  && item.priceAfterDiscount != item.price -->
                         <span class="d-inline-block mr-2 mb-0" *ngIf="currencies?.length && onSellingItem?.item?.currency && onSellingItem?.item?.isOffer">
                             <span class="list-item-info__details__original-price d-inline-block">
                                 <span class="pr-1">RM</span>{{ defaultType?.price | wsCurrency: 1: 1 }}</span>
                         </span>
                         <span class="list-item-info__details__price mb-1" *ngIf="currencies?.length && onSellingItem?.item?.currency && !onSellingItem?.item?.isOffer"><span class="pr-1">RM</span>{{ defaultType?.price | wsCurrency: 1: 1 }}</span>
-                        <span [class.list-item-info__details__price__offer]="onSellingItem?.item?.isDiscountExisting" class="list-item-info__details__price mb-1" *ngIf="currencies?.length && onSellingItem?.item?.currency && onSellingItem?.item?.isOffer"><span class="pr-1">RM</span>{{ defaultType?.price | wsCurrency: 1: 1 | discountconverter : defaultType?.discount }}</span>
                         <span *ngIf="false && onSellingItem?.item?.quantity" class="list-item-info__details__quantity">Quantity: {{ quantity }}</span>
                     </div>
                 </div>
@@ -30,17 +27,11 @@
                             centeredSlides: true,
                             pagination: false,
                             navigation: false}">
-                            <!--  && item.priceAfterDiscount != selectedType.price -->
                             <div *ngFor="let image of profileImages" class="d-flex" style="background: #fefefe;">
                                 <img style="width: 100%; object-fit: contain; height: initial" [lazyLoad]="environment.IMAGE_URL + image" [defaultImage]="'assets/images/png/itemProfile.png'" alt="image"/>
                                 <div [class.swiper__image-label-offer]="onSellingItem?.item?.isOffer" class="swiper__image-label w-100 text-center font-8">
                                     <p class="d-inline-block mb-0">
-                                        <span *ngIf="currencies?.length && onSellingItem?.item?.currency && onSellingItem?.item?.isOffer" class="d-inline-block mr-2 font-8" style="text-decoration: line-through;">
-                                            <span class="pr-1">RM</span>{{ selectedType?.price | wsCurrency: 1: 1 }}</span>
-                                        <span>
-                                            <span class="mb-1" *ngIf="currencies?.length && onSellingItem?.item?.currency && !onSellingItem?.item?.isOffer"><span class="pr-1">RM</span>{{ selectedType?.price | wsCurrency: 1: 1 }}</span>
-                                            <span class="mb-1" *ngIf="currencies?.length && onSellingItem?.item?.currency && onSellingItem?.item?.isOffer"><span class="pr-1">RM</span>{{ selectedType?.price | wsCurrency: 1: 1 | discountconverter : selectedType?.discount }}</span>
-                                        </span>
+                                        <span class="mb-1"><span class="pr-1">RM</span>{{ selectedType?.price | wsCurrency: 1: 1 }}</span>
                                     </p>
                                 </div>
                             </div>

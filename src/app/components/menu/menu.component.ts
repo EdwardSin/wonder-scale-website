@@ -174,12 +174,12 @@ export class MenuComponent implements OnInit {
         this.itemLoading.stop();
         this.closeNavigation();
       }, 500);
-    } else if (value == 'discount') {
-      _.delay(() => {
-        this.items = this.discountItems;
-        this.itemLoading.stop();
-        this.closeNavigation();
-      }, 500);
+    // } else if (value == 'discount') {
+    //   _.delay(() => {
+    //     this.items = this.discountItems;
+    //     this.itemLoading.stop();
+    //     this.closeNavigation();
+    //   }, 500);
     } else if (value == 'new') {
       _.delay(() => {
         this.items = this.newItems;
