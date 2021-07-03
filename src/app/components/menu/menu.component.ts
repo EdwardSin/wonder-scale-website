@@ -144,7 +144,7 @@ export class MenuComponent implements OnInit {
   }
   isItemInCart(item) {
     return this.allCartItems.filter(cartItem => {
-      return cartItem.itemId == item._id;
+      return cartItem?.itemId?.toString() == item?._id?.toString();
     }).length > 0;
   }
   mapStore() {
@@ -313,7 +313,7 @@ export class MenuComponent implements OnInit {
     }
   }
   onAddToCartClicked(event) {
-      this.sharedCartService.addCartItem(event);
+    this.sharedCartService.addCartItem(event);
   }
   isJsonString(str) {
     try {
