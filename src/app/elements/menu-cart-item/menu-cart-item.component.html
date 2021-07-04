@@ -7,7 +7,7 @@
             </span>
             <div class="menu-cart-item__middle col px-2">
                 <p class="menu-cart-item__text">{{ item?.name }}</p>
-                <p class="menu-cart-item__text font-8" class="text-muted" *ngIf="item?.type">Type: {{ item?.type }}</p>
+                <p class="menu-cart-item__text font-8 text-muted" *ngIf="item?.type">Type: {{ item?.type }}</p>
                 <p class="menu-cart-item__text font-weight-bold">RM {{ item?.amount() | number: '1.2-2' }}</p>
                 <ul class="mb-0 font-9 text-muted p-2 pl-3" *ngIf="item?.subItems?.length">
                     <li *ngFor="let subItem of item?.subItems">
@@ -18,9 +18,9 @@
             </div>
             <div class="row no-gutters col-lg-auto py-3 justify-content-lg-right justify-content-center">
                 <div class="menu-cart-item__quantity float-right mx-2">
-                    <span class="fas fa-minus font-8 mr-3 clickable" (click)="decrease()"></span>
+                    <button class="btn btn-controller fas fa-minus font-8 mr-2 clickable" (click)="decrease()"></button>
                     <input class="menu-cart-item__input text-center" [(ngModel)]="item.quantity" readonly />
-                    <span class="fas fa-plus font-8 ml-3 clickable" (click)="increase()"></span>
+                    <button class="btn btn-controller fas fa-plus font-8 ml-2 clickable" (click)="increase()"></button>
                 </div>
                 <div class="d-flex align-items-center pr-3">
                     <div class="menu-cart-item__remove" (click)="removeFromCartItems()">
