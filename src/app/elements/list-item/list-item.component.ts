@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { Item } from '@objects/item';
 import { environment } from '@environments/environment';
-import { CurrencyService } from '@services/http/general/currency.service';
 import { Subject } from 'rxjs';
 import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { takeUntil } from 'rxjs/operators';
@@ -9,6 +7,7 @@ import { SharedUserService } from '@services/shared/shared-user.service';
 import * as _ from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WsLoading } from '@elements/ws-loading/ws-loading';
+import { OnSellingItem } from '@objects/on-selling-item';
 
 @Component({
   selector: 'list-item',
@@ -16,7 +15,7 @@ import { WsLoading } from '@elements/ws-loading/ws-loading';
   styleUrls: ['./list-item.component.scss']
 })
 export class ListItemComponent implements OnInit {
-  @Input() item: Item;
+  @Input() item: OnSellingItem;
   @Input() index: number;
   @Input() savable: boolean = true;
   @Input() removable: boolean;
@@ -33,7 +32,6 @@ export class ListItemComponent implements OnInit {
     private router: Router,
     private viewContainerRef: ViewContainerRef,
     private cfr: ComponentFactoryResolver,
-    public currencyService: CurrencyService,
     private sharedUserService: SharedUserService,
     private authFollowService: AuthFollowService) { 
       this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe))
@@ -49,9 +47,6 @@ export class ListItemComponent implements OnInit {
       this.sharedUserService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.isAuthenticated = !!result;
       });
-      this.currencyService.currenciesBehaviourSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        this.currencies = result;
-      })
     }
 
   ngOnInit(): void {
@@ -65,7 +60,7 @@ export class ListItemComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['item'] && this.item) {
       this.follow = this.followItems.includes(this.item._id);
-      this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
+      // this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
       let queryParams = this.route.snapshot.queryParams;
       if (queryParams['modal'] && queryParams['modal'] == 'item' && queryParams['item_id'] && this.item && queryParams['item_id'] == this.item._id) {
         this.createLazyItemInfoComponent();

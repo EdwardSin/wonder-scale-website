@@ -1,23 +1,20 @@
-<div class="container position-relative px-0" *ngIf="!saleLoading.isRunning() && !itemLoading.isRunning(); else loadingTemplate">
+<div class="container position-relative px-0 py-3" *ngIf="!saleLoading.isRunning() && !itemLoading.isRunning(); else loadingTemplate">
     <div [ngSwitch]="phase.step">
         <ng-container *ngSwitchCase="0">
-            <div class="btn-navigation" (click)="openNavigation()">
+            <div class="btn-navigation" (click)="openNavigation()" *ngIf="categories.length">
                 <span class="fas fa-bars btn-navigation__icon"></span>
                 <span>{{ store?.type == 'restaurant' ? 'Menu': 'Catalogue'}}</span>
             </div>
             <button class="btn btn-store float-right border-0" (click)="navigateToStore()">Go To Store</button>
             <div class="menu-navigation" [class.menu-navigation__open]="isNavigationOpened">
                 <span class="fas fa-times menu-navigation__closed" (click)="closeNavigation()"></span>
-                <h5 class="menu-navigation-title">Menu</h5>
+                <h5 class="menu-navigation-title">{{ store?.type == 'restaurant' ? 'Menu': 'Catalogue'}}</h5>
                 <ul class="menu-navigation-list list-unstyled mb-0">
                     <li class="menu-navigation-item" *ngIf="allItems.length" [class.selected]="selectedCategory == 'all'" (click)="getItemsByCategoryId('all')">
                         All
                     </li>
                     <li class="menu-navigation-item" *ngIf="newItems.length" [class.selected]="selectedCategory == 'new'" (click)="getItemsByCategoryId('new')">
                         New
-                    </li>
-                    <li class="menu-navigation-item" *ngIf="discountItems.length" [class.selected]="selectedCategory == 'discount'" (click)="getItemsByCategoryId('discount')">
-                        Discount
                     </li>
                     <li class="menu-navigation-item" *ngIf="todaySpecialItems.length" [class.selected]="selectedCategory == 'todayspecial'" (click)="getItemsByCategoryId('todayspecial')">
                         Today Special
@@ -28,7 +25,13 @@
                 </ul>
             </div>
             <div class="w-100 pb-3">
-                <menu-item class="px-2 py-2" *ngFor="let item of items" [item]="item"></menu-item>
+                <menu-item class="px-2 py-2" *ngFor="let item of items"
+                    [isAddedToCart]="isItemInCart(item)"
+                    [onSellingItem]="item"
+                    (onAddToCartClicked)="onAddToCartClicked($event)"
+                ></menu-item>
+                <h6 *ngIf="!items.length" class="text-center" style="padding: 15vh 0 0 0">Seller is preparing.</h6>
+                <h6 *ngIf="!items.length" class="text-center" style="padding: 0 0 15vh 0">No item is selling currently.</h6>
             </div>
             <div style="height: 120px"></div>
             <div *ngIf="allCartItems.length" class="btn-cart">
@@ -127,30 +130,6 @@
 <ng-template #invoiceTemplate let-cartItems="cartItems" let-cashier="cashier" let-canModify="canModify">
     <div class="border-bottom pb-2">
         <menu-cart-item  *ngFor="let cartItem of cartItems;" [item]="cartItem"></menu-cart-item>
-        <!-- <div *ngFor="let cartItem of cartItems;">
-            <div class="row no-gutters">
-                <div class="col">
-                    <div class="row no-gutters">
-                        <span *ngIf="canModify" class="invoice__remove fas fa-times mx-2" (click)="removeCartItem(cartItem)"></span>
-                        <span class="invoice__item col">{{ cartItem.name }} x {{ cartItem.quantity }}</span>
-                    </div>
-                </div>
-                <span class="invoice__value">{{ (cartItem?.price * cartItem.quantity) | number: '1.2-2'}}</span>
-            </div>
-            <div class="row no-gutters" *ngIf="cartItem?.type">
-                <div [style.margin-left.rem]="canModify ? 2.5: 1" class="invoice__item-type col">{{ cartItem?.type?.name }}</div>
-                <span class="invoice__value">{{ (cartItem?.typePrice() * cartItem.quantity) | number: '1.2-2'}}</span>
-            </div>
-            <div class="row no-gutters" *ngIf="cartItem?.discount && cartItem?.discount > 0">
-                <div [style.margin-left.rem]="canModify ? 2.5: 1" class="invoice__item-type col">Discount (%)</div>
-                <span class="invoice__value">{{ -(cartItem?.discountValue() * cartItem.quantity) | number: '1.2-2'}}</span>
-            </div>
-            <div class="row no-gutters" *ngFor="let discount of cashier?.discount">
-                <div [style.margin-left.rem]="canModify ? 2.5: 1" class="invoice__item col">{{ discount?.name | titlecase }} 
-                    <span *ngIf="discount?.isPercentage">(%)</span></div>
-                <span class="invoice__value">{{ -(cashier?.getDiscountByName(discount.name)) | number: '1.2-2'}}</span>
-            </div>
-        </div> -->
         <h6 class="text-center" style="padding: 10vh 0" *ngIf="!cartItems.length">No Item</h6>
     </div>
     <div class="pt-2 px-2">

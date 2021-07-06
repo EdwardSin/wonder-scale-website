@@ -3,7 +3,7 @@ import { SharedCartService } from '@services/shared/shared-cart.service';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { SharedStoreService } from '@services/shared-store.service';
-import { ItemService } from '@services/http/public/item.service';
+import { OnSellingItemService } from '@services/http/public/on-selling-item.service';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
 import { environment } from '@environments/environment';
@@ -73,7 +73,7 @@ export class MenuComponent implements OnInit {
     private screenService: ScreenService,
     private authenticationService: AuthenticationService,
     private authUserService: AuthUserService,
-    private itemService: ItemService) {
+    private onSellingItemService: OnSellingItemService) {
       
     this.sharedCartService.cartItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       this.allCartItems = result;
@@ -142,13 +142,18 @@ export class MenuComponent implements OnInit {
       this.isMobileSize = result;
     })
   }
+  isItemInCart(item) {
+    return this.allCartItems.filter(cartItem => {
+      return cartItem?.itemId?.toString() == item?._id?.toString();
+    }).length > 0;
+  }
   mapStore() {
     if (this.store) {
       this.allItems = this.store['allItems'];
       this.newItems = this.store['newItems'];
-      this.discountItems = this.store['discountItems'];
-      this.todaySpecialItems = this.store['todaySpecialItems'];
-      this.categories = this.store['categories'];
+      // this.discountItems = this.store['discountItems'];
+      // this.todaySpecialItems = this.store['todaySpecialItems'];
+      this.categories = this.store['onSellingCategories'];
       this.items = this.allItems;
       this.ref.detectChanges();
     }
@@ -169,12 +174,12 @@ export class MenuComponent implements OnInit {
         this.itemLoading.stop();
         this.closeNavigation();
       }, 500);
-    } else if (value == 'discount') {
-      _.delay(() => {
-        this.items = this.discountItems;
-        this.itemLoading.stop();
-        this.closeNavigation();
-      }, 500);
+    // } else if (value == 'discount') {
+    //   _.delay(() => {
+    //     this.items = this.discountItems;
+    //     this.itemLoading.stop();
+    //     this.closeNavigation();
+    //   }, 500);
     } else if (value == 'new') {
       _.delay(() => {
         this.items = this.newItems;
@@ -182,7 +187,7 @@ export class MenuComponent implements OnInit {
         this.closeNavigation();
       }, 500);
     } else {
-      this.itemService.getItemsByCategoryId(value)
+      this.onSellingItemService.getItemsByCategoryId(value)
         .pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.itemLoading.stop())).subscribe(result => {
           this.items = result.result;
           this.closeNavigation();
@@ -270,6 +275,7 @@ export class MenuComponent implements OnInit {
           profileImage: item.profileImage,
           quantity: item.quantity,
           price: item.amount(),
+          subItems: item.subItems,
           type: item.type ? item.type.name : null
         }
       });
@@ -305,6 +311,9 @@ export class MenuComponent implements OnInit {
     else {
       WsToastService.toastSubject.next({ content: 'There is an invalid input!<br/>Please correct it!', type: 'danger'});
     }
+  }
+  onAddToCartClicked(event) {
+    this.sharedCartService.addCartItem(event);
   }
   isJsonString(str) {
     try {

@@ -2,22 +2,23 @@
     <div class="list-item">
         <div class="row no-gutters">
             <span class="list-item__image-container">
-                <img *ngIf="item?.profileImages?.length" [src]="environment.IMAGE_URL + item?.profileImages[item?.profileImageIndex]" class="list-item__image" alt="profile Image" />
-                <img *ngIf="!item?.profileImages?.length" class="list-item__image" src="/assets/images/png/profileImage.png" alt="item detault profile image" />
+                <img *ngIf="item?.item?.profileImages?.length" [src]="environment.IMAGE_URL + item?.item?.profileImages[item?.item?.profileImageIndex]" class="list-item__image" alt="profile Image" />
+                <img *ngIf="!item?.item?.profileImages?.length" class="list-item__image" src="/assets/images/png/profileImage.png" alt="item detault profile image" />
             </span>
             <div class="list-item__middle col px-2 px-lg-3">
                 <div>
-                    <p class="list-item__text">{{ item?.name }}</p>
-                    <p class="font-8 mb-0" *ngIf="item.isEntityNew"><span class="fas fa-tag list-item__new mr-2"></span>New Product</p>
-                    <p class="font-8 mb-0" *ngIf="item.isDiscountExisting"><span class="fas fa-tag list-item__discount mr-2"></span>Discount</p>
+                    <p class="list-item__text">{{ item?.item?.name }}</p>
+                    <p class="font-8 mb-0" *ngIf="item?.isEntityNew"><span class="fas fa-tag list-item__new mr-2"></span>New Product</p>
+                    <!-- <p class="font-8 mb-0" *ngIf="item?.isDiscountExisting"><span class="fas fa-tag list-item__discount mr-2"></span>Discount</p> -->
                 </div>
                 <div>
-                    <p class="list-item__discount-price mb-0" *ngIf="currencies.length && item?.currency && item?.isOffer && item.priceAfterDiscount != item.price" style="text-decoration: line-through;">
-                        <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
-                    <p class="list-item__price mb-0" *ngIf="currencies.length && item?.currency && item?.isOffer">
-                        <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate | discountconverter : item?.discount }}</p>
-                    <p class="list-item__price mb-1" *ngIf="currencies.length && item?.currency && !item?.isOffer">
-                        <span class="pr-1">{{ currencyService.currencySymbols['MYR'] }}</span>{{ item?.price | currency: currencyService.getCurrencyWithCode(item?.currency).rate: currencyService.getCurrencyWithCode('MYR').rate }}</p>
+                    <!-- <p class="list-item__discount-price mb-0" *ngIf="currencies.length && item?.item?.currency && item?.item?.isOffer && item?.item?.priceAfterDiscount != item?.item?.price" style="text-decoration: line-through;">
+                        <span class="pr-1">RM</span>{{ item?.item?.price | wsCurrency: 1: 1 }}</p>
+                    <p class="list-item__price mb-0" *ngIf="currencies.length && item?.item?.currency && item?.item?.isOffer">
+                        <span class="pr-1">RM</span>{{ item?.item?.price | wsCurrency: 1: 1 | discountconverter : item?.item?.discount }}</p> -->
+                    <!--  *ngIf="currencies.length && item?.item?.currency && !item?.item?.isOffer" -->
+                    <p class="list-item__price mb-1">
+                        <span class="pr-1">RM</span>{{ item?.item?.price | wsCurrency: 1: 1 }}</p>
                 </div>
             </div>
             <div *ngIf="isAuthenticated" class="d-flex justify-content-center align-items-center px-3">

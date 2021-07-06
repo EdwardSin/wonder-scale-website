@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import { CurrencyService } from '@services/http/general/currency.service';
 import { environment } from '@environments/environment';
 import { Subject } from 'rxjs';
 import { SharedCartService } from '@services/shared/shared-cart.service';
@@ -23,27 +22,22 @@ export class MenuItemComponent implements OnInit {
   isImagesOpened: boolean;
   selectedImagesIndex: number = 0;
   environment = environment;
-  selectedType = '';
-  currencies = [];
-  ngUnsubscribe: Subject<any> = new Subject;
+  selectedType = '';  ngUnsubscribe: Subject<any> = new Subject;
   cartItems: Array<CartItem> = [];
   isAddedToCart: boolean;
   images: Array<string> = [];
   imageIndex: number;
-  constructor(public currencyService: CurrencyService, private sharedCartService: SharedCartService) { }
+  constructor(private sharedCartService: SharedCartService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes && changes['item']) {
       this.images = _.union(_.flattenDeep([this.item.profileImages, this.item.types.map(type => type.images), (this.item.descriptionImages || [])]));
       this.images = _.filter(this.images, image => !_.isEmpty(image));
       this.imageIndex = this.item.profileImageIndex > -1 ? this.item.profileImageIndex : 0;
-      this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
+      // this.item.isDiscountExisting = this.item.isOffer && (this.item.types.find(type => type.discount > 0) != null || this.item.discount > 0);
     }
   }
   ngOnInit(): void {
-    this.currencyService.currenciesBehaviourSubject.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      this.currencies = result
-    });
     this.sharedCartService.cartItems.pipe(takeUntil(this.ngUnsubscribe)).subscribe(cartItems => {
       this.cartItems = cartItems;
       this.isAddedToCart = this.cartItems.filter(cartItem => {
@@ -64,7 +58,7 @@ export class MenuItemComponent implements OnInit {
     cartItem.name = this.item.name;
     cartItem.price = this.item.price;
     cartItem.currency = this.item.currency;
-    cartItem.discount = this.item.isOffer ? this.item.discount : 0;
+    cartItem.discount = 0;
     cartItem.type = this.selectedType == null ? undefined : this.selectedType;
     cartItem.quantity = this.quantity;
     cartItem.remark = this.remark;

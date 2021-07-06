@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from 'src/app/objects/store';
-import { takeUntil, finalize, map } from 'rxjs/operators';
-import { Subject, combineLatest, timer } from 'rxjs';
+import { takeUntil, finalize } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { environment } from '@environments/environment';
 import { Item } from '@objects/item';
 import { Category } from '@objects/category';
@@ -56,7 +56,7 @@ export class MerchantPageComponent implements OnInit {
   items: Array<any> = [];
   allItems: Array<Item> = [];
   newItems: Array<Item> = [];
-  todaySpecialItems: Array<Item> = [];
+  // todaySpecialItems: Array<Item> = [];
   discountItems: Array<Item> = [];
   categories: Array<Category> = [];
   itemLoading: WsLoading = new WsLoading;
@@ -180,34 +180,32 @@ export class MerchantPageComponent implements OnInit {
         this.items = this.allItems;
         this.itemLoading.stop()
       }, 500);
-    } else if (value == 'todayspecial') {
-      _.delay(() => {
-        this.items = this.todaySpecialItems;
-        this.itemLoading.stop();
-      }, 500);
-    } else if (value == 'discount') {
-      _.delay(() => {
-        this.items = this.discountItems;
-        this.itemLoading.stop();
-      }, 500);
+    // } else if (value == 'todayspecial') {
+    //   _.delay(() => {
+    //     this.items = this.todaySpecialItems;
+    //     this.itemLoading.stop();
+    //   }, 500);
+    // } else if (value == 'discount') {
+    //   _.delay(() => {
+    //     this.items = this.discountItems;
+    //     this.itemLoading.stop();
+    //   }, 500);
     } else if (value == 'new') {
       _.delay(() => {
         this.items = this.newItems;
         this.itemLoading.stop();
       }, 500);
     } else {
-      combineLatest(timer(500),
-        this.itemService.getItemsByCategoryId(value))
-        .pipe(takeUntil(this.ngUnsubscribe), map(x => x[1]), finalize(() => this.itemLoading.stop())).subscribe(result => {
+        this.itemService.getItemsByCategoryId(value)
+        .pipe(takeUntil(this.ngUnsubscribe), finalize(() => this.itemLoading.stop())).subscribe(result => {
           this.items = result['result'];
         });
     }
   }
   saveStore() {
     this.isSaveLoading.start();
-    combineLatest(timer(500),
-      this.authFollowService.followStore(this.store._id))
-      .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.authFollowService.followStore(this.store._id)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.isFollowed = result['result'];
         this.isSaveLoading.stop();
       }, () => {
@@ -216,9 +214,8 @@ export class MerchantPageComponent implements OnInit {
   }
   unsaveStore() {
     this.isSaveLoading.start();
-    combineLatest(timer(500),
-      this.authFollowService.unfollowStore(this.store._id))
-      .pipe(map(x => x[1]), takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.authFollowService.unfollowStore(this.store._id)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         this.isFollowed = result['result'];
         this.isSaveLoading.stop();
       }, () => {
@@ -230,9 +227,9 @@ export class MerchantPageComponent implements OnInit {
       this.storeId = this.store._id;
       this.allItems = this.store['allItems'];
       this.newItems = this.store['newItems'];
-      this.discountItems = this.store['discountItems'];
-      this.todaySpecialItems = this.store['todaySpecialItems'];
-      this.categories = this.store['categories'];
+      // this.discountItems = this.store['discountItems'];
+      // this.todaySpecialItems = this.store['todaySpecialItems'];
+      this.categories = this.store['onSellingCategories'];
       this.items = this.allItems;
       if (this.store.media) {
         this.medias = _.mapValues(_.groupBy(this.store.media, 'type'), medias => medias.map(media => media.value));

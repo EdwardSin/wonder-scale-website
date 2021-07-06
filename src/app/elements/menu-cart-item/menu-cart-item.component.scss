@@ -14,12 +14,13 @@
 
         .menu-cart-item__image-container {
             text-align: center;
-            width: 125px;
-            height: 125px;
+            width: 75px;
+            height: 75px;
             background-color: #f7f7f7;
             overflow: hidden;
             color: #ccc;
             transition: all ease .1s;
+            margin: 1rem;
 
             &:hover {
                 color: rgba(0, 0, 0, .8);
@@ -27,8 +28,8 @@
         }
 
         .menu-cart-item__image {
-            width: 125px;
-            height: 125px;
+            width: 75px;
+            height: 75px;
             object-fit: cover;
         }
 
@@ -59,9 +60,9 @@
         }
 
         .menu-cart-item__middle {
-            padding-top: .5rem;
-            padding-bottom: .5rem;
-            height: 125px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            min-height: 125px;
 
             .menu-cart-item__text {
                 overflow: hidden;
@@ -114,10 +115,10 @@
         }
         
         .menu-cart-item__input {
-            height: 38px;
-            line-height: 38px;
+            height: 30px;
+            line-height: 30px;
             text-align: right;
-            width: 60px;
+            width: 36px;
         }
 
         .menu-cart-item__remove{

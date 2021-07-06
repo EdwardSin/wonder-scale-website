@@ -14,9 +14,9 @@
             <li class="menu-navigation-item" *ngIf="newItems?.length" [class.selected]="selectedCategory == 'new'" (click)="getItemsByCategoryId('new')">
                 New
             </li>
-            <li class="menu-navigation-item" *ngIf="discountItems?.length" [class.selected]="selectedCategory == 'discount'" (click)="getItemsByCategoryId('discount')">
+            <!-- <li class="menu-navigation-item" *ngIf="discountItems?.length" [class.selected]="selectedCategory == 'discount'" (click)="getItemsByCategoryId('discount')">
                 Discount
-            </li>
+            </li> -->
             <li class="menu-navigation-item" *ngIf="todaySpecialItems?.length" [class.selected]="selectedCategory == 'todayspecial'" (click)="getItemsByCategoryId('todayspecial')">
                 Today Special
             </li>

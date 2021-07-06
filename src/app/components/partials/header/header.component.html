@@ -13,7 +13,7 @@
                     <a [routerLink]="['/']" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a target="_blank" href="https://merchant.wonderscale.com" class="nav-link">Start Listing</a>
+                    <a target="_blank" [href]="environment.MERCHANT_URL" class="nav-link">Start Listing</a>
                 </li>
             </ul>
         </div>
@@ -68,7 +68,7 @@
                   <a class="dropdown-item" [routerLink]="['order']">Orders</a>
                   <a class="dropdown-item" [routerLink]="['settings']">Settings</a>
                   <div class="divider dropdown-divider"></div>
-                  <a class="dropdown-item" target="_blank" href="https://merchant.wonderscale.com">Start Listing</a>
+                  <a class="dropdown-item" target="_blank" [href]="environment.MERCHANT_URL">Start Listing</a>
                   <div class="divider dropdown-divider"></div>
                   <a class="dropdown-item" (click)="logout()">Logout</a>
                 </div>
@@ -87,7 +87,8 @@
                     <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
                     <div class="row no-gutters">
                         <div class="mr-3 col-auto">
-                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="notification?.fromStore?.profileImage" [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="!notification?.fromStore?.profileImage" [src]="'assets/images/png/shop.png'" style="width: 75px; height: 75px" alt="profile image" />
                         </div>
                         <div class="col">
                             <div>
@@ -102,7 +103,8 @@
                     <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
                     <div class="row no-gutters">
                         <div class="mr-3 col-auto">
-                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="notification?.fromStore?.profileImage" [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="!notification?.fromStore?.profileImage" [src]="'assets/images/png/shop.png'" style="width: 75px; height: 75px" alt="profile image" />
                         </div>
                         <div class="col">
                             <div>
@@ -117,7 +119,8 @@
                     <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
                     <div class="row no-gutters">
                         <div class="mr-3 col-auto">
-                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="notification?.fromStore?.profileImage" [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="!notification?.fromStore?.profileImage" [src]="'assets/images/png/shop.png'" style="width: 75px; height: 75px" alt="profile image" />
                         </div>
                         <div class="col">
                             <div>
@@ -131,7 +134,8 @@
                     <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
                     <div class="row no-gutters">
                         <div class="mr-3 col-auto">
-                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="notification?.fromStore?.profileImage" [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="!notification?.fromStore?.profileImage" [src]="'assets/images/png/shop.png'" style="width: 75px; height: 75px" alt="profile image" />
                         </div>
                         <div class="col">
                             <div>
@@ -145,7 +149,8 @@
                     <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
                     <div class="row no-gutters">
                         <div class="mr-3 col-auto">
-                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="notification?.fromStore?.profileImage" [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="!notification?.fromStore?.profileImage" [src]="'assets/images/png/shop.png'" style="width: 75px; height: 75px" alt="profile image" />
                         </div>
                         <div class="col">
                             <div>
@@ -160,7 +165,8 @@
                     <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
                     <div class="row no-gutters">
                         <div class="mr-3 col-auto">
-                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="notification?.fromStore?.profileImage" [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="!notification?.fromStore?.profileImage" [src]="'assets/images/png/shop.png'" style="width: 75px; height: 75px" alt="profile image" />
                         </div>
                         <div class="col">
                             <div>
@@ -174,7 +180,8 @@
                     <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
                     <div class="row no-gutters">
                         <div class="mr-3 col-auto">
-                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="notification?.fromStore?.profileImage" [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="!notification?.fromStore?.profileImage" [src]="'assets/images/png/shop.png'" style="width: 75px; height: 75px" alt="profile image" />
                         </div>
                         <div class="col">
                             <div>
@@ -188,7 +195,8 @@
                     <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
                     <div class="row no-gutters">
                         <div class="mr-3 col-auto">
-                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="notification?.fromStore?.profileImage" [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="!notification?.fromStore?.profileImage" [src]="'assets/images/png/shop.png'" style="width: 75px; height: 75px" alt="profile image" />
                         </div>
                         <div class="col">
                             <div>
@@ -202,7 +210,8 @@
                     <span *ngIf="!notification.isRead" class="px-2 fas fa-circle text-muted position-absolute" style="top: .15rem; right: .05rem; font-size: .4rem; line-height: 1rem; vertical-align: middle"></span>
                     <div class="row no-gutters">
                         <div class="mr-3 col-auto">
-                            <img [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="notification?.fromStore?.profileImage" [src]="environment.IMAGE_URL + notification?.fromStore?.profileImage" style="width: 75px; height: 75px" alt="profile image" />
+                            <img *ngIf="!notification?.fromStore?.profileImage" [src]="'assets/images/png/shop.png'" style="width: 75px; height: 75px" alt="profile image" />
                         </div>
                         <div class="col">
                             <div>
