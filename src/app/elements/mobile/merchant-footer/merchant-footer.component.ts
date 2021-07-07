@@ -18,6 +18,7 @@ export class MerchantFooterComponent implements OnInit {
   @Input() navigateToMenu;
   @Input() navigateToShopping;
   @Input() navigateToShare;
+  @Input() navigateToFAQ;
   @Input() authFollowService;
   @Input() sharedUserService;
   loading: WsLoading = new WsLoading;

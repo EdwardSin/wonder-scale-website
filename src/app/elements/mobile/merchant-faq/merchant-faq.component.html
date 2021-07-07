@@ -1,0 +1,19 @@
+<div class="faq__container">
+    <h5>FAQ<button *ngIf="isEditing" class="btn btn-sm btn-controller float-right" (click)="onEditFAQClicked.emit($event)">
+        <span class="fas fa-edit"></span>
+    </button></h5>
+    <div class="border-bottom py-3" *ngFor="let faq of store?.faq; let i = index">
+        <button *ngIf="isEditing" class="float-right btn btn-controller btn-sm" (click)="onDeleteFAQClicked.emit(i)">
+            <span class="fas fa-times"></span>
+        </button>
+        <button *ngIf="isEditing" class="float-right btn btn-controller btn-sm mr-2" (click)="onEditFAQClicked.emit(i)">
+            <span class="fas fa-edit"></span>
+        </button>
+        <h6>{{faq.question}}</h6>
+        <p class="mb-0 font-9">{{faq.answer}}</p>
+    </div>
+    <div class="py-5 text-center" *ngIf="!store?.faq?.length">
+        No FAQ
+    </div>
+</div>
+

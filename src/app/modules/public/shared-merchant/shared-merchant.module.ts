@@ -11,6 +11,7 @@ import { MerchantShareComponent } from '@elements/mobile/merchant-share/merchant
 import { MerchantFooterComponent } from '@elements/mobile/merchant-footer/merchant-footer.component';
 import { MenuItemComponent } from '@elements/menu-item/menu-item.component';
 import { MenuCartItemComponent } from '@elements/menu-cart-item/menu-cart-item.component';
+import { MerchantFaqComponent } from '@elements/mobile/merchant-faq/merchant-faq.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { MenuCartItemComponent } from '@elements/menu-cart-item/menu-cart-item.c
     MerchantInfoComponent,
     MerchantMenuComponent,
     MerchantShareComponent,
+    MerchantFaqComponent,
     MerchantFooterComponent,
     MenuItemComponent,
     MenuCartItemComponent
@@ -36,6 +38,7 @@ import { MenuCartItemComponent } from '@elements/menu-cart-item/menu-cart-item.c
     MerchantInfoComponent,
     MerchantMenuComponent,
     MerchantShareComponent,
+    MerchantFaqComponent,
     MerchantFooterComponent,
     MenuItemComponent,
     MenuCartItemComponent
