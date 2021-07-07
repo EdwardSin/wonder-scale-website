@@ -25,6 +25,10 @@ const routes: Routes = [{
   {
     path: 'share',
     loadChildren: () => import ('../merchant-mobile-share/merchant-mobile-share.module').then(m => m.MerchantMobileShareModule)
+  },
+  {
+    path: 'faq',
+    loadChildren: () => import ('../merchant-mobile-faq/merchant-mobile-faq.module').then(m => m.MerchantMobileFaqModule)
   }]
 }];
 

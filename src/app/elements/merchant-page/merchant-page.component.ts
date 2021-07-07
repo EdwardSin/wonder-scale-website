@@ -48,6 +48,8 @@ export class MerchantPageComponent implements OnInit {
   @Output() onEditSnapchatClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditTelegramClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditWechatClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onEditFAQClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onDeleteFAQClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAddMediaClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDeleteContactButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   
@@ -128,7 +130,10 @@ export class MerchantPageComponent implements OnInit {
                 }
             }
         }
-        if (currentSection !== this.selectedNavItem && this.selectedNavItem !== 'catalogue' && this.selectedNavItem !== 'delivery') {
+        if (currentSection !== this.selectedNavItem && 
+            this.selectedNavItem !== 'catalogue' && 
+            this.selectedNavItem !== 'delivery' && 
+            this.selectedNavItem !== 'faq') {
           this.selectedNavItem = currentSection;
         }
     });
