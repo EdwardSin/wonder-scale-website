@@ -113,7 +113,7 @@
                 <div>
                     <div class="row no-gutters pb-2" *ngFor="let receiptItem of item?.items">
                         <div class="col-lg">
-                            <span class="col p-0">{{ receiptItem.name }}{{ (receiptItem?.type?.toLowerCase() !== 'default' && receiptItem.type) ? ' - ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x ' + receiptItem.quantity }}</span>
+                            <span class="col p-0">{{ receiptItem.name }}{{ receiptItem.type ? ' - ' + receiptItem.type : '' }} - RM {{ receiptItem.price  | number: '1.2-2' }}</span><span class="d-inline-block d-lg-none ml-1">{{ 'x ' + receiptItem.quantity }}</span>
                             <ul class="mb-0 p-0 list-unstyled">
                                 <li class="ml-2 font-8 text-muted" *ngFor="let subitem of receiptItem?.subItems">{{subitem?.name}} - RM {{subitem?.price | number: '1.2-2'}}</li>
                             </ul>

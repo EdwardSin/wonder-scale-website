@@ -9,8 +9,8 @@
         <button *ngIf="isEditing" class="float-right btn btn-controller btn-sm mr-2" (click)="onEditFAQClicked.emit(i)">
             <span class="fas fa-edit"></span>
         </button>
-        <h6>{{faq.question}}</h6>
-        <p class="mb-0 font-9">{{faq.answer}}</p>
+        <h5>{{faq.question}}</h5>
+        <p class="mb-0 font-9" style="white-space: pre;">{{faq.answer}}</p>
     </div>
     <div class="py-5 text-center" *ngIf="!store?.faq?.length">
         No FAQ
