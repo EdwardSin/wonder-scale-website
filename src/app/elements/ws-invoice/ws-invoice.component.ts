@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { environment } from '@environments/environment';
 import { Delivery } from '@objects/delivery';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'ws-invoice',
@@ -21,6 +21,7 @@ export class WsInvoiceComponent implements OnInit {
   @Input() unsave: Function;
   @Input() updateDelivery: Function;
   @Input() deliveries: Array<Delivery> = [];
+  @Output() onPayslipClicked: EventEmitter<any> = new EventEmitter<any>();
   promotion;
   delivery: number = 0;
   subtotal: number = 0;
@@ -30,6 +31,7 @@ export class WsInvoiceComponent implements OnInit {
   etaDate;
   isShowStepper: boolean;
   selectedDelivery = '';
+  environment = environment;
   private ngUnsubscribe: Subject<any> = new Subject;
 
   constructor() { }
