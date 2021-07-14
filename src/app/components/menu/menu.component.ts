@@ -268,15 +268,14 @@ export class MenuComponent implements OnInit {
     }
     if (form.status == 'VALID' && this.allCartItems.length) {
       let items = this.allCartItems.map(item => {
-        let name = item.name + (item?.type ? ' - ' + item?.type?.name : '');
         return {
           itemId: item.itemId,
-          name,
+          name: item.name,
           profileImage: item.profileImage,
           quantity: item.quantity,
           price: item.amount(),
           subItems: item.subItems,
-          type: item.type ? item.type.name : null
+          type: item.type ? item.type : null
         }
       });
       let obj = {
