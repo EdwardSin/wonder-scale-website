@@ -45,6 +45,10 @@ export class MerchantMobileFooterComponent implements OnInit {
     this.selectedNav = 'share';
     this.router.navigate(['/page/mobile/' + this.store.username + '/share'], { queryParamsHandling: 'merge' });
   }
+  navigateToFAQ() {
+    this.selectedNav = 'faq';
+    this.router.navigate(['/page/mobile/' + this.store.username + '/faq'], { queryParamsHandling: 'merge' });
+  }
   getLinkActive(): string {
     const queryParamsIndex = this.router.url.indexOf('?');
     const baseUrl = queryParamsIndex === -1 ? this.router.url : this.router.url.slice(0, queryParamsIndex);
