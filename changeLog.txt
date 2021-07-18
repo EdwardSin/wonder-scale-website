@@ -6,7 +6,8 @@
 ---------------------------------------------
 - 2021-07-18                                -
 ---------------------------------------------
-.: WSM: Task - Send an email to notify once order has been approved by merchant (CMS3-397)
+.: WSM: Task - Send an email to notify once order has been approved by merchant (WSM-397)
+.: WSM: Task - Add free delivery confirmation (WSM-418)
 
 - v1.0.10942                                -
 ---------------------------------------------

@@ -85,7 +85,7 @@
                             <mat-option [value]="delivery?._id" *ngFor="let delivery of deliveries">{{delivery.name}}</mat-option>
                         </mat-select>
                         <input class="form-control form-control-sm mt-2" placeholder="Enter the delivery fee" [(ngModel)]="delivery" (input)="onDeliveryInputChange($event)" name="deliveryFee" />
-                        <button class="btn btn-sm btn-controller mt-2 float-right" (click)="onUpdateDeliveryClicked()">Update</button>
+                        <button *ngIf="item?.status == 'new'" class="btn btn-sm btn-controller mt-2 float-right" (click)="onUpdateDeliveryClicked()">Update</button>
                         <div class="clearfix"></div>
                     </div>
                 </div>
