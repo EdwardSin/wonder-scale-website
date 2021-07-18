@@ -1,0 +1,123 @@
+1. Misleading Or False Shops
+Shops must not be misleading, fraudulent, or deceptive.
+For Example:
+i.  Scams
+ii. A shop that makes a false promise of money if you view
+
+2.  Impersonation
+Shops must not impersonate or falsely represent a brand, entity, or public figure. Where a Shop is being used to express support for or interest in a brand, entity, or public figure, it must make clear in the name or description that it is not an official representation.
+For Example:
+i.   Impersonating a shop
+
+3.  Gambling
+Shops must not facilitate or promote online gambling, online real money, games of skill, or online lotteries without our prior written permission.
+
+4.  Inaccurately Tagged Content
+Shops must not inaccurately tag content or encourage users to inaccurately tag content.
+
+5.  Incentivization
+Shops must not incentivize people to misuse WonderScale features or functionality.
+For Example:
+i.  Encouraging users to give false reviews in return for free goods
+
+Promotions on Shops
+Communicating a Promotion
+If you use WonderScale to communicate or administer a promotion (ex: a contest or sweepstakes), you are responsible for the lawful operation of that promotion, including:
+i.   The official rules;
+     Offer terms and eligibility requirements (ex: age and residency restrictions); and
+     Compliance with applicable rules and regulations governing the promotion and all prizes offered (ex: registration and obtaining necessary regulatory approvals).
+
+ii.  Required Content
+     Promotions on WonderScale must include the following:
+     A complete release of WonderScale by each entrant or participant; and
+     Acknowledgement that the promotion is in no way sponsored, endorsed, administered by or associated with WonderScale.
+
+iii. Administration of a Promotion
+     Promotions may be administered on Shops, or within apps on WonderScale. Personal Timelines and friend connections must not be used to administer promotions (ex: “share on your Timeline to enter” or “share on your friend's Timeline to get additional entries”, and "tag your friends in this post to enter" are not permitted).
+
+iv.  Assisting Promotions
+     WonderScale will not assist you in the administration of your promotion, and you agree that if you use our service to administer your promotion, you do so at your own risk.
+
+Collecting Data From Users
+If you collect content and information directly from users, your Shop must make it clear that you (and not WonderScale) are collecting it, and must provide notice about and obtain user consent for your use of the content and information that you collect. Regardless of how you obtain content and information from users, you are responsible for securing all necessary permissions to reuse their content and information.
+
+Automated Collection of Data
+Your Shop must not collect users' content or information, or otherwise access WonderScale, using automated means (such as harvesting bots, robots, spiders, or scrapers) without written permission from WonderScale.
+
+Calls to Action
+Your Shop cannot use information obtained from a person’s interaction with your Shop's call-to-action button for any purpose other than to provide the service associated with the call-to-action button. If you want to use this information for any other purpose, first obtain a person’s explicit consent.
+
+Shops-Specific Policies
+1.  Platform Policy
+    Apps on your Shop must comply with the WonderScale Platform Policy.
+2.  Shop Names
+    Shop names must not include profanity, excessively incorrect grammar or punctuation, and must not consist solely of generic terms or locations.
+3.  Content Visibility
+    Content posted to a Shop is public and can be viewed by everyone who can see the Shop.
+4.  Third Party Brands and Profile Photos
+    Your Shop's cover photo or profile picture must not include third-party products, brands or sponsors.
+5.  Showmarks
+    Showmarks on Show Shops must accurately represent the show, and must not represent the parent entity or network.
+6.  Online Pharmacies
+    Shops must not promote the sale of prescription pharmaceuticals. Shops for online pharmacies may be permitted with WonderScale's prior approval.
+7.  Age Gating
+    You must restrict access by age using WonderScale Shop gating functionality as necessary to comply with applicable laws and regulations.
+8.  Post Preview
+    When sharing a third party link from your Shop, you must not edit any elements of the post preview.
+9.  Upload Functionality
+    You must not misuse WonderScale's upload functionality in connection with your Shop
+10. Name Change and Merges
+    Name changes and merges must not result in a misleading or unintended connection and must not substantially change the Shop’s subject matter
+11. Regulated Goods
+    Shops promoting the private sale of regulated goods or services (including firearms, alcohol, tobacco, or adult products) must restrict access to a minimum age of 18.
+
+Misleading, Deceptive, or Fraudulent Jobs
+Job posts must not promote employment opportunities that are misleading, deceptive, or fraudulent.
+For Example:
+i.   Multi-level marketing schemes
+ii.  Unclear business models that do not explicitly state how to make money or how value is created
+iii. Posts asking for payment prior to applying
+
+Illegal Products and Services
+Job posts must not promote employment opportunities that involve illegal activity, products, or services.
+For Example:
+i.   Illegal criminal activity
+ii.  Use, sale, or service of illegal drugs
+iii. Human trafficking
+iv.  Counterfeit documents or currency
+
+Discrimination
+Job posts must not unlawfully discriminate against applicants based on any protected characteristics, including, but not limited to, race, ethnicity, color, national origin, religion, age, sex, sexual orientation, gender identity, family status, disability, medical or genetic condition or any other basis protected under federal, state or local law. Job posts must comply with all applicable laws prohibiting discrimination.
+For Example:
+i.   Only looking for female applicants
+ii.  Must be under age 35 to apply
+iii. No Catholic applicants welcome
+iv.  Unmarried applicants preferred
+
+Sexually Suggestive Jobs
+Job posts must not promote employment opportunities in a sexually suggestive manner.
+For Example:
+i.   Explicit sexual language
+ii.  Implied sexual acts
+iii. Images with implied nudity
+
+Adult Products and Services
+Job posts must not promote employment opportunities that require adult services or use of adult products.
+For Example:
+i.   Escort services
+ii.  Jobs that involve sex toys
+iii. Jobs that involve sexual enhancement products
+iv.  Jobs that involve videos, publications or live shows that are sexual in nature or involve nudity
+
+Personal Information
+Job posts must not solicit personal identification or financial information from any potential applicants.
+For Example:
+i.   Credit card information
+ii.  Bank account information
+iii. Government issued ID information
+
+Events-Specific Policies
+1.  Automated Events
+    Events cannot use automated means to generate event invites.
+2.  Cost Disclosures
+    Events must provide clear and up-front disclosure for any actions or additional costs associated with an event ticket purchase.
