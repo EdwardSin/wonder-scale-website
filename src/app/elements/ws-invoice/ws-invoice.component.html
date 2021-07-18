@@ -49,7 +49,7 @@
                 <div class="row no-gutters py-2" *ngIf="item?.payslip && !isPublic">
                     <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Payslip:</div>
                     <div class="col-lg align-text-top">
-                        <img class="img-shadow img-hoverable" (click)="onPayslipClicked.emit(true)" style="height: 60px; width: 60px" src="{{environment.IMAGE_URL + item?.payslip}}" alt="payslip" />
+                        <img class="img-shadow img-hoverable" (click)="onPayslipClicked.emit(true)" style="max-height: 60px; width: 60px; object-fit: contain;" src="{{environment.IMAGE_URL + item?.payslip}}" alt="payslip" />
                     </div>
                 </div>
             </div>
