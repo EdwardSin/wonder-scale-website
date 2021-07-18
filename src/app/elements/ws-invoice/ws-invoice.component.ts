@@ -78,9 +78,15 @@ export class WsInvoiceComponent implements OnInit {
       }
     }
     this.total = this.item.subtotal + this.delivery - this.discount;
+    if (this.item.status == 'wait_for_approval') {
+      this.onUpdateDeliveryClicked();
+    }
   }
   onDeliveryInputChange(event) {
     this.total = this.item.subtotal + (+this.delivery) - this.discount;
+    if (this.item.status == 'wait_for_approval') {
+      this.onUpdateDeliveryClicked();
+    }
   }
   onUpdateDeliveryClicked() {
     if (this.updateDelivery && this.delivery >= 0) {
