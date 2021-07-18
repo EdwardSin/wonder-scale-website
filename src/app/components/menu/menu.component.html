@@ -137,6 +137,10 @@
             <span class="invoice__label col">Subtotal (RM):</span>
             <span class="invoice__value">{{ cashier?.getSubtotal() | number: '1.2-2' }}</span>
         </div>
+        <div class="row no-gutters">
+            <span class="invoice__label col">Delivery Fee (RM):</span>
+            <span class="invoice__value font-8">To be confirmed</span>
+        </div>
         <!-- <div class="row no-gutters">
             <span class="invoice__label col">Discount</span>
             <span class="invoice__value"><span *ngIf="cashier?.getDiscount() > 0">-</span>{{ cashier?.getDiscount() | number: '1.2-2' }}</span>
@@ -163,6 +167,7 @@
         <button class="btn btn-checkout float-right" [disabled]="!allCartItems.length" (click)="continueToDetails()">
             Continue
         </button>
+        <div class="clearfix mb-4"></div>
     </div>
 </ng-template>
 
