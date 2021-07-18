@@ -8,6 +8,7 @@
 ---------------------------------------------
 .: WSM: Task - Send an email to notify once order has been approved by merchant (WSM-397)
 .: WSM: Task - Add free delivery confirmation (WSM-418)
+.: WSM: Task - Add user data deletion for Facebook (WSM-414)
 
 - v1.0.10942                                -
 ---------------------------------------------

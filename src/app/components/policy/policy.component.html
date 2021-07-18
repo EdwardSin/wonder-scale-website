@@ -1,0 +1,14 @@
+<div class="container">
+    <title class="mt-3" [title]="'Policy'"></title>
+    <div *ngIf="!loading.isRunning(); else loadingTemplate" class="ws-background mt-3 mb-3">
+        <div class="mt-3 font-9">
+            <h4 class="ws-title">Policy</h4>
+            <p [innerHTML]="text"></p>
+        </div>
+    </div>
+</div>
+<ng-template #loadingTemplate>
+    <ng-container>
+        <ws-spinner class="text-center d-block w-100" style="padding-top: 25vh; padding-bottom: 25vh" [borderWidth]="1" [spinnerColor]="'#b71c1c'"></ws-spinner>
+    </ng-container>
+</ng-template>

@@ -34,6 +34,9 @@ const routes: Routes = [{
   path: 'order',
   loadChildren: () => import('./modules/order/order.module').then(m => m.OrderModule)
 }, {
+  path: 'policy',
+  loadChildren: () => import('./modules/policy/policy.module').then(m => m.PolicyModule)
+}, {
   path: '404',
   loadChildren: () => import('./modules/not-found/not-found.module').then(m => m.NotFoundModule)
 }, {
