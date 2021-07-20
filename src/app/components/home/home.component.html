@@ -4,11 +4,10 @@
             <object style="pointer-events: none" type="image/svg+xml" data="assets/images/svg/icon-title.svg" width="300"></object>
         </div>
         <p class="home__label">Find, view and collect your favorite stores</p>
-        
+
         <div class="col-lg-6 center">
             <div class="searchbar input-group">
-                <input name="keyword" class="searchbar__input form-control" placeholder="Search..." [(ngModel)]="keyword"
-                (keydown.enter)="navigationSearch()"/>
+                <input name="keyword" class="searchbar__input form-control" placeholder="Search..." [(ngModel)]="keyword" (keydown.enter)="navigationSearch()" />
                 <div class="input-group-append">
                     <a class="searchbar__button input-group-text" [routerLink]="['/search']" [queryParams]="{keyword: keyword}">
                         <span class="searchbar__icon fas fa-search"></span>
@@ -28,3 +27,53 @@
         </div>
     </div>
 </div>
+<footer class="pt-3">
+    <div></div>
+    <div class='container-fluid col-md-8 pt-20 pl-0 pr-0'>
+        <div class='row no-gutters'>
+            <div class="footer-box-left col-md-4 mb-2" *ngIf="false">
+                <div>
+                    <a id="facebook" href='https://www.facebook.com/wonderscale/' aria-label="facebook" rel="noopener" target="_blank">
+                        <span class="fab fa-facebook-square"></span></a>
+                    <!-- <a id="instagram" href='https://www.instagram.com' target="_blank" aria-label="insta" rel="noopener"
+              class='ml-3'>
+              <span class="fab fa-instagram"></span>
+            </a>
+            <a id="twitter" href='https://www.twitter.com' target="_blank" aria-label="insta" rel="noopener" class='ml-3'>
+              <span class="fab fa-twitter"></span>
+            </a> -->
+                </div>
+            </div>
+            <div class="col-md-8 no-gutters row text-center text-lg-left" style="display: flex; align-items: center">
+                <span class="col-lg-auto" style="display: flex; align-items: center; justify-content: center">
+                    <object style="pointer-events: none" type="image/svg+xml" data="assets/images/svg/icon-title.svg" width="120"></object>
+                </span>
+                <div class="col-lg mt-lg-0 mt-3">
+                    <!-- <span class="col-lg">
+                        <a class="font-9 ws-secondary" [routerLink]="['/contact-us']">Contact Us</a>
+                    </span>| -->
+                    <span class="col-lg">
+                        <a class="font-9 ws-secondary" [routerLink]="['/policy']">Policy</a>
+                    </span>
+                </div>
+                <!-- <li class="col">
+                <a class="font-9" routerLink="/about-us">About Us</a>
+              </li>
+              <li *ngIf="false">
+                <a routerLink="/help">Help</a>
+              </li> -->
+            </div>
+            <div class="col-md-4 pt-3 footer-box-right" style="font-size: .9rem">
+                <!-- <p class="text-md-right text-center ws-white">Wonder Scale &#169;
+            <br>Copyright {{year}}. All Rights Reserved.</p> -->
+                <div class="fb-like mb-2 float-right" data-href="https://www.facebook.com/wonderscale/" data-layout="button" data-action="like" data-size="small" data-show-faces="false" data-share="true"></div>
+            </div>
+        </div>
+        <div class="row no-gutters" style="font-size: .9rem">
+            <div class="row no-gutters w-100 pt-2 font-9">
+                <div class="offset-6 col row no-gutters">
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
