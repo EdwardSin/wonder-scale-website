@@ -51,8 +51,9 @@ export class MenuComponent implements OnInit {
   store: Store;
   cashier: Cashier = new Cashier();
   regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
-  phase: Phase<Number> = new Phase(0, 3);
+  phase: Phase<Number> = new Phase(0, 4);
   sale;
+  notesForm: FormGroup;
   detailsForm: FormGroup;
   paymentFail: boolean;
   isMobileSize: boolean;
@@ -94,6 +95,11 @@ export class MenuComponent implements OnInit {
       country: ['MYS', [Validators.required, Validators.maxLength(3)]],
       delivery: ['']
     })
+    this.notesForm = formBuilder.group({
+      isGift: [false],
+      giftMessage: ['', Validators.maxLength(256)],
+      orderNotes: ['', Validators.maxLength(256)]
+    })
   }
   ngOnInit(): void {
     this.itemLoading.start();
@@ -117,6 +123,13 @@ export class MenuComponent implements OnInit {
           this.detailsForm.patchValue({
             ...result?.['result']?.['customer'],
             ...result?.['result']?.['customer']?.['address']
+          });
+          let giftNote = result?.['result']?.orderNotes?.find(x => x.type == 'gift');
+          let generalNote = result?.['result']?.orderNotes?.find(x => x.type == 'general');
+          this.notesForm.patchValue({
+            isGift: result?.['result'].isGift,
+            giftMessage: giftNote ? giftNote.message : '',
+            orderNotes: generalNote ? generalNote.message: ''
           });
           this.sharedCartService.cartItems.next(cartItems);
           this.phase.setStep(1);
@@ -240,6 +253,20 @@ export class MenuComponent implements OnInit {
   backToCart() {
     this.phase.previous();
   }
+  backToNotes() {
+    this.phase.previous();
+  }
+  continueToNotes() {
+    if (this.allCartItems.length) {
+      this.authenticationService.isAuthenticated().then(result => {
+        if (result) {
+          this.phase.next();
+        } else {
+          this.router.navigate([], {queryParams: {modal: 'login'}, queryParamsHandling: 'merge'});
+        }
+      })
+    }
+  }
   continueToDetails() {
     if (this.allCartItems.length) {
       this.authenticationService.isAuthenticated().then(result => {
@@ -278,6 +305,19 @@ export class MenuComponent implements OnInit {
           type: item.type ? item.type : null
         }
       });
+      let orderNotes = [];
+      if (this.notesForm.value.orderNotes.trim().length > 0) {
+        orderNotes.push({
+          type: 'general',
+          message: this.notesForm.value.orderNotes.trim()
+        });
+      }
+      if (this.notesForm.value.isGift && this.notesForm.value.giftMessage.trim().length > 0) {
+        orderNotes.push({
+          type: 'gift',
+          message: this.notesForm.value.giftMessage.trim()
+        });
+      }
       let obj = {
         recipientName: this.detailsForm.value.recipientName.trim(),
         phoneNumber: this.detailsForm.value.phoneNumber.trim(),
@@ -287,6 +327,8 @@ export class MenuComponent implements OnInit {
         state: this.detailsForm.value.state.trim(),
         country: this.detailsForm.value.country.trim(),
         delivery: this.detailsForm.value.delivery === '' ? null : this.detailsForm.value.delivery,
+        isGift: this.notesForm.value.isGift,
+        orderNotes,
         s_id: this.s_id,
         r_id: this.r_id,
         items,

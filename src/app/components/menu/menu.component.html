@@ -62,6 +62,15 @@
                 <span class="fas fa-chevron-left"></span>
                 <span>Back</span>
             </a>
+            <div class="notes">
+                <ng-container *ngTemplateOutlet="orderNotesTemplate"></ng-container>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="3">
+            <a href="javascript:void(0)" class="btn-back" (click)="backToNotes()">
+                <span class="fas fa-chevron-left"></span>
+                <span>Back</span>
+            </a>
             <div class="details">
                 <ng-container *ngTemplateOutlet="detailsTemplate"></ng-container>
             </div>
@@ -164,11 +173,27 @@
             <span class="invoice__total">{{ cashier?.getTotal() | number: '1.2-2' }}</span>
         </div>
 
-        <button class="btn btn-checkout float-right" [disabled]="!allCartItems.length" (click)="continueToDetails()">
+        <button class="btn btn-checkout float-right" [disabled]="!allCartItems.length" (click)="continueToNotes()">
             Continue
         </button>
         <div class="clearfix mb-4"></div>
     </div>
+</ng-template>
+
+<ng-template #orderNotesTemplate>
+    <form [formGroup]="notesForm" class="col-lg-6 center mb-5">
+        <div class="details my-3">
+            <div class="mb-3">
+                <label class="mb-2">Message to seller:</label>
+                <textarea class="form-control font-9" rows="5" formControlName="orderNotes" style="resize: none" maxlength="256" placeholder="Write down your order notes here..."></textarea>
+            </div>
+            <div>
+                <mat-checkbox [color]="'primary'" class="font-9" formControlName="isGift">Purchase as a gift?</mat-checkbox>
+                <textarea *ngIf="notesForm.value.isGift" class="form-control font-9" rows="5" formControlName="giftMessage" style="resize: none" maxlength="256" placeholder="Write down your wish here..."></textarea>
+            </div>
+        </div>
+        <button class="btn btn-checkout ml-auto d-block" (click)="continueToDetails()">Continue</button>
+    </form>
 </ng-template>
 
 <ng-template #detailsTemplate>
