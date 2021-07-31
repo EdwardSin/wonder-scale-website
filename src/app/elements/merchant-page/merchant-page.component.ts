@@ -27,6 +27,7 @@ export class MerchantPageComponent implements OnInit {
   @Input() itemService;
   @Input() authFollowService;
   @Input() facebookService;
+  @Input() reviewService;
   @Output() onEditBannersClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditProfileImageClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEditQuickMenuClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -61,11 +62,14 @@ export class MerchantPageComponent implements OnInit {
   // todaySpecialItems: Array<Item> = [];
   discountItems: Array<Item> = [];
   categories: Array<Category> = [];
+  reviews = [];
+  reviewPage = 1;
   itemLoading: WsLoading = new WsLoading;
   isInformationOpened: boolean;
   selectedInformationIndex: number = 0;
   isQuickMenuOpened: boolean;
   selectedQuickMenuIndex: number = 0;
+  totalOfReviews: number = 0;
   medias;
   link: string;
   shareMessage: string = '';
@@ -74,6 +78,8 @@ export class MerchantPageComponent implements OnInit {
   storeId;
   isSaveLoading: WsLoading = new WsLoading;
   isQrcodeLoading: WsLoading = new WsLoading;
+  reviewLoading: WsLoading = new WsLoading;
+  reviewLazyLoading: WsLoading = new WsLoading;
   displayImage: string = '';
   selectedNavItem = 'overview';
   todayDate;
@@ -133,8 +139,19 @@ export class MerchantPageComponent implements OnInit {
         if (currentSection !== this.selectedNavItem && 
             this.selectedNavItem !== 'catalogue' && 
             this.selectedNavItem !== 'delivery' && 
-            this.selectedNavItem !== 'faq') {
+            this.selectedNavItem !== 'faq' &&
+            this.selectedNavItem !== 'reviews') {
           this.selectedNavItem = currentSection;
+        }
+        if (this.selectedNavItem === 'reviews') {
+          const scrollHeight = document.documentElement.scrollHeight;
+          const clientHeight = document.documentElement.clientHeight;
+          if ((scrollHeight - clientHeight - scrollTop) < 50) {
+            if (!this.reviewLazyLoading.isRunning()) {
+              this.reviewPage++;
+              this.getReviews(true);
+            }
+          }
         }
     });
   }
@@ -303,6 +320,23 @@ export class MerchantPageComponent implements OnInit {
         contactValue,
         '_blank' // <- This is what makes it open in a new window.
       );
+    }
+  }
+  getReviews(lazyLoad=false) {
+    if (this.reviewService) {
+      if (lazyLoad) {
+        this.reviewLazyLoading.start();
+      } else {
+        this.reviewLoading.start();
+      }
+      this.reviewService.getReviews({store: this.store._id, page: this.reviewPage}).pipe(takeUntil(this.ngUnsubscribe), finalize(() => {this.reviewLoading.stop(); this.reviewLazyLoading.stop()})).subscribe(result => {
+        this.totalOfReviews = result['total'];
+        if (lazyLoad) {
+          this.reviews = [...this.reviews, ...result['result']]
+        } else {
+          this.reviews = result['result'];
+        }
+      });
     }
   }
   ngOnDestroy() {

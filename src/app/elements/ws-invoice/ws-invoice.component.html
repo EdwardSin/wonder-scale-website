@@ -1,4 +1,79 @@
 <div>
+    <div *ngIf="showReview && item?.status == 'completed'" class="py-3">
+        <div *ngIf="!item?.review" class="d-flex justify-content-center flex-column">
+            <h5>Request for your review</h5>
+            <div class="d-flex flex-column justify-content-center align-items-center pt-3">
+                <div style="max-width: 500px;" class="w-100">
+                    <div class="row no-gutters mb-2">
+                        <p class="d-inline-block mb-0 text-muted font-9" style="width: 130px;">Product Quality</p>
+                        <ws-rating [name]="productQualityRating" [(rating)]="productQualityRating"></ws-rating>
+                    </div>
+                    <div class="row no-gutters mb-2">
+                        <p class="d-inline-block mb-0 text-muted font-9" style="width: 130px;">Seller's Service</p>
+                        <ws-rating [name]="'sellerServiceRating'" [(rating)]="sellerServiceRating"></ws-rating>
+                    </div>
+                    <div class="row no-gutters mb-2">
+                        <p class="d-inline-block mb-0 text-muted font-9" style="width: 130px;">Delivery Service</p>
+                        <ws-rating [name]="'deliveryServiceRating'" [(rating)]="deliveryServiceRating"></ws-rating>
+                    </div>
+                    <textarea class="form-control form-control-sm mb-2" style="resize: none" [maxlength]="256" rows="5" [(ngModel)]="comment" placeholder="Place your comment here..."></textarea>
+                    <button class="btn btn-sm btn-controller float-right" (click)="onReviewSubmit()" [disabled]="reviewSubmit">Submit</button>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="item?.review" class="d-flex justify-content-center flex-column">
+            <h5>Posted your review</h5>
+            <div class="d-flex justify-content-center">
+                <div  style="box-shadow: 0 3px 6px rgba(0,0,0,.16);" class="w-100">
+                    <div class="d-inline-block px-4 py-3">
+                        <div class="row no-gutters">
+                            <p class="d-inline-block mb-0 text-muted font-9" style="width: 130px;">Product Quality</p>
+                            <div class="font-9">
+                                <span *ngFor="let mark of [].constructor(item?.review.productQuality)" class="fas fa-star" style="color: #b71c1c"></span>
+                                <span *ngFor="let mark of [].constructor(5 - item?.review.productQuality)" class="far fa-star" style="color: #ddd"></span>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <p class="d-inline-block mb-0 text-muted font-9" style="width: 130px;">Seller's Service</p>
+                            <div class="font-9">
+                                <span *ngFor="let mark of [].constructor(item?.review.sellerService)" class="fas fa-star" style="color: #b71c1c"></span>
+                                <span *ngFor="let mark of [].constructor(5 - item?.review.sellerService)" class="far fa-star" style="color: #ddd"></span>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <p class="d-inline-block mb-0 text-muted font-9" style="width: 130px;">Delivery Service</p>
+                            <div class="font-9">
+                                <span *ngFor="let mark of [].constructor(item?.review.deliveryService)" class="fas fa-star" style="color: #b71c1c"></span>
+                                <span *ngFor="let mark of [].constructor(5 - item?.review.deliveryService)" class="far fa-star" style="color: #ddd"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row no-gutters d-flex py-3 border-top">
+                        <div class="px-3">
+                            <div style="border: 1px solid #eee; border-radius: 50%; width: 65px; height: 65px">
+                                <div style="border-radius: 50%; width: 55px; height: 55px; overflow: hidden; margin: 4px">
+                                    <img class="w-100 h-100" style="object-fit: cover;" *ngIf="item?.review?.user?.profileImage" src="{{item?.review?.user?.profileImage}}" alt="profile image" />
+                                    <img class="w-100 h-100" *ngIf="!item?.review?.user?.profileImage" src="{{environment.IMAGE_URL + 'upload/images/profile.png'}}" alt="profile image" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pr-3 col text-left">
+                            <p class="mb-0 font-9">{{ item?.review?.name }}</p>
+                            <div class="font-9 mb-2">
+                                <span *ngFor="let mark of [].constructor(item?.review.overall)" class="fas fa-star" style="color: #b71c1c"></span>
+                                <span *ngFor="let mark of [].constructor(5 - item?.review.overall)" class="far fa-star" style="color: #ddd"></span>
+                            </div>
+                            <div class="font-9 text-break">
+                                {{item?.review?.comment}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <ws-review [item]="review" *ngIf="review"></ws-review> -->
+    </div>
     <div *ngIf="showStatusDetails">
         <h5 class="d-inline-block mt-3">Details</h5>
         <!-- <button *ngIf="isSaveEnabled" (click)="isSaved ? unsave() : save()" [class.selected]="isSaved" class="btn btn-favorite float-right mb-2">
@@ -108,6 +183,16 @@
                 <div class="row no-gutters py-2">
                     <div class="font-weight-bold col-lg-auto align-text-top" style="min-width: 140px">Date:</div>
                     <div class="col-lg align-text-top">{{ item?.createdAt | date: 'MMM d, y, h:mm a'}}</div>
+                </div>
+                <div class="row no-gutters py-2" *ngFor="let note of item?.orderNotes">
+                    <div *ngIf="note.type == 'general'" class="w-100">
+                        <div class="font-weight-bold" style="min-width: 140px">Order Notes:</div>
+                        <div class="w-100 scrollbar" style="white-space: pre-line; max-height: 80px">{{ note.message || '-' }}</div>
+                    </div>
+                    <div *ngIf="note.type == 'gift'" class="w-100">
+                        <div class="font-weight-bold" style="min-width: 140px">Gift Message:</div>
+                        <div class="w-100 scrollbar" style="white-space: pre-line; max-height: 80px">{{ note.message || '-' }}</div>
+                    </div>
                 </div>
             </div>
             <div class="w-100">

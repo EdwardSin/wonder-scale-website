@@ -20,6 +20,7 @@ import { AuthFollowService } from '@services/http/auth/auth-follow.service';
 import { Meta } from '@angular/platform-browser';
 import { DateTimeHelper } from '../../helpers/datetimehelper/datetime.helper';
 import { isPlatformBrowser } from '@angular/common';
+import { ReviewService } from '@services/http/public/review.service';
 
 @Component({
   selector: 'merchant',
@@ -29,6 +30,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class MerchantComponent implements OnInit {
   loading: WsLoading = new WsLoading;
   store: Store;
+  totalOfReviews: Number = 0;
   banners: Array<string> = [];
   menuImages: Array<string> = [];
   profileImage: string;
@@ -48,6 +50,7 @@ export class MerchantComponent implements OnInit {
     private route: ActivatedRoute,
     private screenService: ScreenService,
     private storeService: StoreService,
+    public reviewService: ReviewService,
     private sharedUserService: SharedUserService,
     private sharedStoreService: SharedStoreService,
     private trackService: TrackService,
