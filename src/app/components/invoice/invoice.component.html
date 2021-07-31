@@ -89,6 +89,8 @@
                     [isSaved]="isSaved"
                     [save]="saveInvoice.bind(this)"
                     [unsave]="unsaveInvoice.bind(this)"
+                    [submitReview]="onReviewSubmit.bind(this)"
+                    [showReview]="true"
                     [showDeliveryDetails]="true"
                     [isPublic]="true"
                     [showStatusDetails]="item.status !== 'new' &&
