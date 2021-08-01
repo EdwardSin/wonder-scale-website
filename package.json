@@ -12,12 +12,13 @@
         "e2e": "ng e2e",
         "dev:ssr": "ng run wonder-scale-website:serve-ssr",
         "serve:ssr": "node dist/wonder-scale-website/server/main.js",
-        "build:ssr": "ng build --prod && ng run wonder-scale-website:server:production",
+        "build:ssr": "ng build --configuration production && ng run wonder-scale-website:server:production",
+        "build-testing:ssr": "ng build --configuration qa && ng run wonder-scale-website:server:qa",
         "prerender": "node ./seo/list-url-scripts.js --prod && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js",
         "prerender-dev": "node ./seo/list-url-scripts.js --dev && ng run wonder-scale-website:prerender --routesFile ./seo/routes.txt && node ./seo/update-meta-data.js --dev",
         "prerender-testing": "node ./seo/list-url-scripts.js --testing && ng run wonder-scale-website:prerender && node ./seo/update-meta-data.js --testing",
-        "deploy": "npm run prerender && openode deploy -t 83371eaa7faa67ba8521d3df5fe655ea -s ws-website",
-        "deploy-testing": "npm run prerender-testing && openode deploy -t 83371eaa7faa67ba8521d3df5fe655ea -s testing-website"
+        "deploy": "npm run build:ssr",
+        "deploy-testing": "npm run build-testing:ssr"
     },
     "engines": {
         "node": "10.22.0",
