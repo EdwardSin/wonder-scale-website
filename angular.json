@@ -194,6 +194,17 @@
               ],
               "sourceMap": false,
               "optimization": true
+            },
+            "qa": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment-testing.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
             }
           }
         },
@@ -207,6 +218,10 @@
             "production": {
               "browserTarget": "wonder-scale-website:build:production",
               "serverTarget": "wonder-scale-website:server:production"
+            },
+            "qa": {
+              "browserTarget": "wonder-scale-website:build:qa",
+              "serverTarget": "wonder-scale-website:server:qa"
             }
           }
         },
