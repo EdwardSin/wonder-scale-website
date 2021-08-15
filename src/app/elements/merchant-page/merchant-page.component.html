@@ -53,10 +53,11 @@
                     <li *ngIf="store?.openingInfoType || isEditing" (click)="scrollTo('operatingHours')" [class.selected]="selectedNavItem == 'operatingHours'" class="merchant__nav-item list-group-item">Opening Hours</li>
                     <li *ngIf="store?.deliveries?.length || isEditing" (click)="scrollTo('delivery')" [class.selected]="selectedNavItem == 'delivery'" class="merchant__nav-item list-group-item">Delivery</li>
                     <li *ngIf="store?.faq?.length || isEditing" (click)="scrollTo('faq')" [class.selected]="selectedNavItem == 'faq'" class="merchant__nav-item list-group-item">FAQ</li>
+                    <li (click)="scrollTo('reviews'); getReviews();" [class.selected]="selectedNavItem == 'reviews'" class="merchant__nav-item list-group-item">Reviews</li>
                     <li *ngIf="allItems?.length" (click)="scrollTo('catalogue')" [class.selected]="selectedNavItem == 'catalogue'" class="merchant__nav-item list-group-item ml-auto"><span class="fas fa-book-open"></span> Catalogue</li>
                 </ul>
                 <div class="mb-3" style="border-bottom: 2px solid #ccc; margin-top: -2px"></div>
-                <div *ngIf="selectedNavItem != 'catalogue' && selectedNavItem != 'delivery' && selectedNavItem != 'faq'" class="details-container">
+                <div *ngIf="selectedNavItem != 'catalogue' && selectedNavItem != 'delivery' && selectedNavItem != 'faq' && selectedNavItem != 'reviews'" class="details-container">
                     <div id="overview" class="mb-3 merchant__overview" style="min-height: 300px">
                         <button *ngIf="store?.description && isEditing" class="btn btn-sm btn-controller float-right" (click)="onEditDescriptionClicked.emit($event)"><span class="fas fa-edit"></span></button>
                         <p *ngIf="store?.description; else noDescriptionTemplate" class="info__text mb-0" style="white-space: break-spaces">{{ store?.description }}</p>
@@ -215,6 +216,22 @@
                         </div>
                         <ng-template #noFAQTemplate>
                             <p class="text-center" style="margin: 2rem 0;">No FAQ</p>
+                        </ng-template>
+                    </div>
+                </div>
+                <div *ngIf="selectedNavItem == 'reviews'">
+                    <div id="reviews" class="mb-3 merchant__overview" style="min-height: 300px">
+                        <h3 class="h5">Reviews ({{totalOfReviews}}):</h3>
+                        <div *ngIf="reviews?.length; else reviewLoadingTemplate">
+                            <ws-review *ngFor="let review of reviews" [item]="review"></ws-review>
+                            <ws-spinner *ngIf="reviewLazyLoading.isRunning();" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding: 1rem 0;"></ws-spinner>
+                        </div>
+                        <ng-template #reviewLoadingTemplate>
+                            <ws-spinner *ngIf="reviewLoading.isRunning(); else noReviewsTemplate" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding: 5rem 0;"></ws-spinner>
+                        </ng-template>
+                        <ng-template #noReviewsTemplate>
+                            <p *ngIf="!isEditing" class="text-center" style="margin: 2rem 0;">No Review</p>
+                            <p *ngIf="isEditing" class="text-center" style="margin: 2rem 0;">No review is shown currently</p>
                         </ng-template>
                     </div>
                 </div>

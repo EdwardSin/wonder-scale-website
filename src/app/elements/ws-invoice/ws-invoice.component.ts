@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { WsToastService } from '@elements/ws-toast/ws-toast.service';
 import { environment } from '@environments/environment';
 import { Delivery } from '@objects/delivery';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'ws-invoice',
@@ -12,6 +14,7 @@ import { Subject } from 'rxjs';
 export class WsInvoiceComponent implements OnInit {
   @Input() item;
   @Input() isPublic: boolean;
+  @Input() showReview;
   @Input() showDeliveryDetails;
   @Input() showStatusDetails;
   @Input() showStatusStepper = true;
@@ -20,6 +23,7 @@ export class WsInvoiceComponent implements OnInit {
   @Input() save: Function;
   @Input() unsave: Function;
   @Input() updateDelivery: Function;
+  @Input() submitReview: Function;
   @Input() deliveries: Array<Delivery> = [];
   @Output() onPayslipClicked: EventEmitter<any> = new EventEmitter<any>();
   promotion;
@@ -27,6 +31,11 @@ export class WsInvoiceComponent implements OnInit {
   subtotal: number = 0;
   discount: number = 0;
   total: number = 0;
+  productQualityRating: number = 0;
+  sellerServiceRating: number = 0;
+  deliveryServiceRating: number = 0;
+  comment: string = '';
+  reviewSubmit: boolean;
   isDeliveryDetailsAvailable: boolean;
   etaDate;
   isShowStepper: boolean;
@@ -97,6 +106,17 @@ export class WsInvoiceComponent implements OnInit {
       };
       this.updateDelivery(this.item);
     }
+  }
+  onReviewSubmit() {
+    this.reviewSubmit = true;
+    this.submitReview({
+      store: this.item?.store?._id || this.item?.store,
+      invoice: this.item._id,
+      productQuality: this.productQualityRating,
+      sellerService: this.sellerServiceRating,
+      deliveryService: this.deliveryServiceRating,
+      comment: this.comment
+    });
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();

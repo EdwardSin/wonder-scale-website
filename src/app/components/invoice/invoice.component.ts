@@ -5,9 +5,10 @@ import { WsToastService } from '@elements/ws-toast/ws-toast.service';
 import { PaymentMethodEnum } from '@enum/payment-method.enum';
 import { ImageHelper } from '@helpers/imagehelper/image.helper';
 import { AuthInvoiceService } from '@services/http/auth/auth-invoice.service';
+import { AuthReviewService } from '@services/http/auth/auth-review.service';
 import { InvoiceService } from '@services/http/public/invoice.service';
 import { SharedUserService } from '@services/shared/shared-user.service';
-import { interval, Observable, Subject } from 'rxjs';
+import { interval, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -27,6 +28,7 @@ export class InvoiceComponent implements OnInit {
   PaymentMethodEnum = PaymentMethodEnum;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
   constructor(private invoiceService: InvoiceService, private route: ActivatedRoute,
+    private authReviewService: AuthReviewService,
     private sharedUserService: SharedUserService,
     private authInvoiceService: AuthInvoiceService,
     private router: Router) {
@@ -136,6 +138,25 @@ export class InvoiceComponent implements OnInit {
         this.isSaved = false;
       }
     });
+  }
+  onReviewSubmit(obj) {
+    this.authReviewService.addReview(obj).pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      let overall = (obj.productQuality + obj.sellerService + obj.deliveryService) / 3;
+      let user = this.sharedUserService.user.getValue();
+      this.item.review = {
+        productQuality: obj.productQuality,
+        sellerService: obj.sellerService,
+        deliveryService: obj.deliveryService,
+        overall: Math.round(overall),
+        user: {
+          firstName: user.firstName,
+          profileImage: user.profileImage
+        },
+        createdAt: new Date(),
+        comment: obj.comment
+      };
+      WsToastService.toastSubject.next({ content: 'Successfully posted your review!', type: 'success'});
+    })
   }
   copy(event, value) {
     event.stopPropagation();
