@@ -110,6 +110,8 @@ export class InvoiceComponent implements OnInit {
           this.uploadingFiles = [];
           WsToastService.toastSubject.next({ content: 'It will take a moment for the confirmation!', type: 'success' });
         }
+      }, err => {
+        WsToastService.toastSubject.next({ content: err.error, type: 'danger'});
       });
     } else {
       WsToastService.toastSubject.next({ content: 'Please upload an image!', type: 'danger' });
