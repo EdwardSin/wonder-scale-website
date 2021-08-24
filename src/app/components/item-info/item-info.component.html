@@ -1,10 +1,10 @@
 
 <div *ngIf="!loading.isRunning() && item; else loadingTemplate" class="item-info__profile-container row no-gutters mb-2">
     <div class="item-info__profile mb-2">
-        <swiper *ngIf="profileImages.length" #galleryThumbs [(index)]="selectedProfileIndex" [config]="{
-            pagination: false,
-            navigation: false}">
-            <img style="width: 100%; object-fit: contain;" *ngFor="let image of profileImages" [src]="environment.IMAGE_URL + image" alt="image"/>
+        <swiper *ngIf="profileImages.length" class="h-100" #galleryThumbs [(index)]="selectedProfileIndex" [pagination]="false" [navigation]="false">
+            <ng-template swiperSlide *ngFor="let image of profileImages">
+                <img class="w-100 h-100" style="object-fit: contain;" [src]="environment.IMAGE_URL + image" alt="image"/>
+            </ng-template>
         </swiper>
         <div class="w-100 px-4 d-none d-sm-block" style="margin-top: -110px; position: relative; z-index: 9999">
             <span *ngFor="let image of profileImages; let i = index" class="item-info__profile-image-container mr-1 mb-1 clickable">

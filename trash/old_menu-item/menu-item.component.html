@@ -9,10 +9,10 @@
                 </span>
                 <div *ngIf="isImagesOpened" class="images-fullscreen-container position-fixed pt-2">
                     <span class="images-fullscreen__icon fas fa-times" (click)="isImagesOpened = false"></span>
-                    <swiper [index]="selectedImagesIndex" [config]="{slidesPerView: 'auto', spaceBetween: 10, navigation: false, centeredSlides: true, direction: 'horizontal', mousewheel: true}"> 
-                        <ng-container class="swiper-slide" *ngFor="let image of images">
+                    <swiper [index]="selectedImagesIndex" [slidesPerView]="'auto'" [spaceBetween]="10" [navigation]="false" [centeredSlides]="true" [direction]="'horizontal'" [mousewheel]="true">
+                        <ng-template swiperSlide class="swiper-slide" *ngFor="let image of images">
                             <img class="w-100 mb-2" style="object-fit: contain;" [src]="environment.IMAGE_URL + image" alt="upload-image" />
-                        </ng-container>
+                        </ng-template>
                     </swiper>
                 </div>
             </span>
