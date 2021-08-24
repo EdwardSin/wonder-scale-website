@@ -5,6 +5,9 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { SharedLoadingService } from '@services/shared/shared-loading.service';
 import { ScreenService } from '@services/general/screen.service';
+import SwiperCode, {Navigation, Pagination} from 'swiper/core';
+
+SwiperCode.use([Navigation, Pagination]);
 
 @Component({
   selector: 'app-root',

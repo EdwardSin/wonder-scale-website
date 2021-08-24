@@ -7,7 +7,6 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { SwiperModule } from 'ngx-swiper-wrapper';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
@@ -33,7 +32,6 @@ import { OrderModule } from 'ngx-order-pipe';
     OrderModule,
     PipeModule,
     ElementModule,
-    SwiperModule,
     FacebookModule,
     MDBBootstrapModule.forRoot(),
     AgmCoreModule.forRoot({
@@ -50,7 +48,6 @@ import { OrderModule } from 'ngx-order-pipe';
     MatSelectModule,
     MatSliderModule,
     MatCheckboxModule,
-    SwiperModule,
     DirectiveModule,
     PipeModule,
     ElementModule,

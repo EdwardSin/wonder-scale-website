@@ -6,7 +6,6 @@ import { Item } from '@objects/item';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment';
 import * as _ from 'lodash';
-import { SwiperDirective } from 'ngx-swiper-wrapper';
 import { WsLoading } from 'src/app/elements/ws-loading/ws-loading';
 
 @Component({

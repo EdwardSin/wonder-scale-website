@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MerchantMobileInfoComponent } from './merchant-mobile-info.component';
 
@@ -6,7 +6,7 @@ describe('MerchantMobileInfoComponent', () => {
   let component: MerchantMobileInfoComponent;
   let fixture: ComponentFixture<MerchantMobileInfoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MerchantMobileInfoComponent ]
     })

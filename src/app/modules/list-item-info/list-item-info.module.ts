@@ -5,9 +5,9 @@ import { ListItemInfoRoutingModule } from './list-item-info-routing.module';
 import { ListItemInfoComponent } from '@components/list-item-info/list-item-info.component';
 import { ElementModule } from '../public/element/element.module';
 import { PipeModule } from '../public/pipe/pipe.module';
-import { SwiperModule } from 'ngx-swiper-wrapper';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { SharedModule } from '../public/shared/shared.module';
 
 
 @NgModule({
@@ -15,8 +15,8 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
   imports: [
     CommonModule,
     ElementModule,
+    SharedModule,
     PipeModule,
-    SwiperModule,
     ClipboardModule,
     LazyLoadImageModule,
     ListItemInfoRoutingModule

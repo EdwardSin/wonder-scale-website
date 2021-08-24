@@ -23,7 +23,7 @@ export class QRCodeBuilder {
                     if (option['callback']) {
                         option['callback']();
                     }
-                    resolve();
+                    resolve(null);
                 }
             });
         });

@@ -23,18 +23,15 @@
                 <p *ngIf="onSellingItem?.item?.description" class="list-item-info__description">{{ onSellingItem?.item?.description }}</p>
                 <div *ngIf="profileImages.length" class="list-item-info__profile-container row no-gutters">
                     <div class="list-item-info__profile mb-2">
-                        <swiper #galleryThumbs (indexChange)="onIndexChange($event)" [(index)]="selectedProfileIndex" [config]="{
-                            centeredSlides: true,
-                            pagination: false,
-                            navigation: false}">
-                            <div *ngFor="let image of profileImages" class="d-flex" style="background: #fefefe;">
+                        <swiper #galleryThumbs class="h-100" (indexChange)="onIndexChange($event)" [(index)]="selectedProfileIndex" [centeredSlides]="true" [pagination]="false" [navigation]="false">
+                            <ng-template swiperSlide *ngFor="let image of profileImages" class="d-flex" style="background: #fefefe;">
                                 <img style="width: 100%; object-fit: contain; height: initial" [lazyLoad]="environment.IMAGE_URL + image" [defaultImage]="'assets/images/png/itemProfile.png'" alt="image"/>
                                 <div [class.swiper__image-label-offer]="onSellingItem?.item?.isOffer" class="swiper__image-label w-100 text-center font-8">
                                     <p class="d-inline-block mb-0">
                                         <span class="mb-1"><span class="pr-1">RM</span>{{ selectedType?.price | wsCurrency: 1: 1 }}</span>
                                     </p>
                                 </div>
-                            </div>
+                            </ng-template>
                         </swiper>
                     </div>
                     <div *ngIf="onSellingItem?.item.types?.length > 1" class="w-100 py-3" style="position: relative; z-index: 1">
@@ -67,17 +64,17 @@
 <ws-modal *ngIf="isShareModalOpened" [maxWidth]="500" [(isOpened)]="isShareModalOpened">
     <div modalBody class="share-media__container">
         <h4>Share:</h4>
-        <!-- <swiper class="py-4 d-block" [config]="{slidesPerView: 7, spaceBetween: 10, slidesPerGroup: 7, navigation: false, pagination: false}"> -->
-            <a class="share-media__icon fb" href="javascript:void(0)" (click)="shareThroughFB()">
+        <swiper class="py-4 d-block" [slidesPerView]="7" [spaceBetween]="10" [slidesPerGroup]="7" [navigation]="false" [pagination]="false">
+            <a swiperSlide class="share-media__icon fb" href="javascript:void(0)" (click)="shareThroughFB()">
                 <span class="fab fa-facebook-f"></span>
             </a>
-            <a class="share-media__icon twitter" target="_blank" href="{{ shareLinkThroughTwitter }}">
+            <a swiperSlide class="share-media__icon twitter" target="_blank" href="{{ shareLinkThroughTwitter }}">
                 <span class="fab fa-twitter"></span>
             </a>
-            <a class="share-media__icon email" href="{{ shareLinkThroughEmail }}">
+            <a swiperSlide class="share-media__icon email" href="{{ shareLinkThroughEmail }}">
                 <span class="fas fa-envelope"></span>
             </a>
-        <!-- </swiper> -->
+        </swiper>
         <div class="input-group">
             <input class="form-control" style='background-color: #fff' readonly [value]="link" />
             <div class="input-group-append">

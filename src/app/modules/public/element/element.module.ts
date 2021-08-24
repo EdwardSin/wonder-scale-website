@@ -15,6 +15,7 @@ import { WsModalComponent } from '@elements/ws-modal/ws-modal.component';
 import { WsStepperComponent } from '@elements/ws-stepper/ws-stepper.component';
 import { WsReviewComponent } from '@elements/ws-review/ws-review.component';
 import { WsRatingComponent } from '@elements/ws-rating/ws-rating.component';
+import { SwiperModule } from 'swiper/angular';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { WsRatingComponent } from '@elements/ws-rating/ws-rating.component';
   ],
   imports: [
     CommonModule,
-    ElementRoutingModule
+    ElementRoutingModule,
+    SwiperModule
   ],
   exports: [
     WsLoadingComponent,
@@ -50,7 +52,8 @@ import { WsRatingComponent } from '@elements/ws-rating/ws-rating.component';
     WsLoadingScreenComponent,
     WsStepperComponent,
     WsReviewComponent,
-    WsRatingComponent
+    WsRatingComponent,
+    SwiperModule
   ]
 })
 export class ElementModule { }
