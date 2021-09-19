@@ -4,17 +4,17 @@
             <a [routerLink]="['/']" class="header__label" style="display: flex">
                 <object style="pointer-events: none;" type="image/svg+xml" data="assets/images/svg/icon-title.svg" height="70" width="150"></object>
             </a>
-            <div *ngIf="false" class="position-relative col-sm-auto col pr-2">
+            <div class="col-sm-auto col px-4 header-searchbar">
                 <input #headerKeyword class="form-control header__searchbar" placeholder="Search..." (keydown.enter)="navigateTo()" [(ngModel)]="keyword"/>
                 <span class="header__searchbar-icon fas fa-search" [routerLink]="['/search']" [queryParams]="{keyword: keyword}"></span>
             </div>
             <ul class="nav d-none d-lg-flex align-items-center">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a [routerLink]="['/']" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
                     <a target="_blank" [href]="environment.MERCHANT_URL" class="nav-link">Start Listing</a>
-                </li>
+                </li> -->
             </ul>
         </div>
         <div class="user-container">

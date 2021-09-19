@@ -1,11 +1,11 @@
-<div class="home text-center center">
+<div class="home center">
     <div class="container">
-        <div class="home-logo__container">
+        <!-- <div class="home-logo__container">
             <object style="pointer-events: none" type="image/svg+xml" data="assets/images/svg/icon-title.svg" width="300"></object>
         </div>
-        <p class="home__label">Find, view and collect your favorite stores</p>
+        <p class="home__label">Find, view and collect your favorite stores</p> -->
 
-        <div class="col-lg-6 center">
+        <!-- <div class="col-lg-6 center">
             <div class="searchbar input-group">
                 <input name="keyword" class="searchbar__input form-control" placeholder="Search..." [(ngModel)]="keyword" (keydown.enter)="navigationSearch()" />
                 <div class="input-group-append">
@@ -14,8 +14,8 @@
                     </a>
                 </div>
             </div>
-        </div>
-        <div class="mt-5" *ngIf="false">
+        </div> -->
+        <!-- <div class="mt-5" *ngIf="false">
             <div class="row no-gutters">
                 <div class="offset-sm-3 col-sm-3">
                     <a href="javascript:void(0)"><img class="px-2 w-100" src="assets/images/png/apple-store.png" alt="apple store" /></a>
@@ -24,9 +24,100 @@
                     <a href="javascript:void(0)"><img class="px-2 w-100" src="assets/images/png/google-play-badge.png" alt="google play" /></a>
                 </div>
             </div>
+        </div> -->
+        <div class="py-3 row no-gutters justify-content-center">
+            <div class="col-auto" style="width: 720px">
+                <swiper *ngIf="largeAds.length" [pagination]="{clickable: true}" [loop]="true" [slidesPerView]="1" [navigation]="true" [autoplay]="{running: true, delay: environment.MAX_DELAY_SWIPER_ADS_LARGE_IN_MS}">
+                    <ng-template swiperSlide *ngFor="let ads of largeAds">
+                        <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="ads"></ws-ads-banner>
+                    </ng-template>
+                </swiper>
+                <div *ngIf="!largeAds.length" style="background-color: #fff; width: 720px; height: 240px" >
+                    <a [href]="environment.MERCHANT_URL" class="d-block w-100 h-100" target="_black">
+                        <img src="/assets/images/png/ads_available_large.png" alt="ads_available_large" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-auto">
+                <ws-ads-banner [isNavigable]="true" [service]="advertisementService" *ngIf="smallAds.length > 0" class="d-block" [item]="smallAds[0]"></ws-ads-banner>
+                <ws-ads-banner [isNavigable]="true" [service]="advertisementService" *ngIf="smallAds.length > 1" [item]="smallAds[1]"></ws-ads-banner>
+                <div *ngIf="smallAds.length < 1" style="background-color: #fff; width: 360px; height: 120px; border-left: 1px solid #f7f7f7;">
+                    <a [href]="environment.MERCHANT_URL" class="d-block w-100" target="_black">
+                        <img src="/assets/images/png/ads_available_small.png" style="height:120px" alt="ads_available_small" />
+                    </a>
+                </div>
+                <div *ngIf="smallAds.length < 2" style="background-color: #fff; width: 360px; height: 120px; border-left: 1px solid #f7f7f7; border-top: 1px solid #f7f7f7">
+                    <a [href]="environment.MERCHANT_URL" class="d-block w-100" target="_black">
+                        <img src="/assets/images/png/ads_available_small.png" style="height:120px" alt="ads_available_small" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="px-3" *ngIf="recommendedStores.length">
+            <h1 class="h6 d-inline-block mb-0">Recommended Stores:</h1>
+            <!-- <a class="float-right font-8" href="javascript:void(0)">View More</a> -->
+        </div>
+        <div style="width: 1110px" *ngIf="recommendedStores.length">
+            <swiper class="py-3"
+            [slidesPerGroup]="5" [slidesPerView]="5" [navigation]="true" [allowTouchMove]="false">
+                <ng-template swiperSlide *ngIf="squareAds.length == 0">
+                    <a [href]="environment.MERCHANT_URL" target="_black">
+                        <img src="/assets/images/png/ads_available_square.png" class="w-100" alt="ads-available-square" />
+                    </a>
+                </ng-template>
+                <ng-template swiperSlide *ngIf="squareAds.length > 0">
+                    <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="squareAds[0]"></ws-ads-banner>
+                </ng-template>
+                <ng-template swiperSlide *ngFor="let store of recommendedStores">
+                    <page [item]="store"></page>
+                </ng-template>
+            </swiper>
+        </div>
+        <div class="mb-3 justify-content-center d-flex" style="margin-left: .65rem; margin-right: .65rem" *ngIf="!mediumAds.length">
+            <a [href]="environment.MERCHANT_URL" target="_black" class="w-100">
+                <img src="/assets/images/png/ads_available_medium.png" class="w-100" alt="ads-available-medium" />
+            </a>
+            <!-- <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="mediumAds[0]"></ws-ads-banner> -->
+        </div>
+        <div class="mb-3 justify-content-center d-flex" *ngIf="mediumAds.length > 0">
+            <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="mediumAds[0]"></ws-ads-banner>
+        </div>
+        <div class="px-2 mb-3 row no-gutters justify-content-center" *ngIf="smallAds.length > 4">
+            <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="smallAds[2]"></ws-ads-banner>
+            <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="smallAds[3]"></ws-ads-banner>
+            <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="smallAds[4]"></ws-ads-banner>
+        </div>
+        <!-- <div class="px-3">
+            <h1 class="h6 d-inline-block">Promotions:</h1> -->
+            <!-- <a class="float-right font-8" href="javascript:void(0)">View More</a> -->
+        <!-- </div>
+        <div>
+            <swiper style="height: 530px" [slidesPerGroup]="10" [slidesPerView]="5" [slidesPerColumn]="2" [navigation]="true" [allowTouchMove]="false">
+                <ng-template swiperSlide *ngFor="let store of recommendedStores">
+                    <page [item]="store"></page>
+                </ng-template>
+            </swiper>
+        </div> -->
+        <div class="px-2 mb-3 row no-gutters justify-content-center" *ngIf="smallAds.length > 6">
+            <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="smallAds[5]"></ws-ads-banner>
+            <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="smallAds[6]"></ws-ads-banner>
+            <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="smallAds[7]"></ws-ads-banner>
+        </div>
+        <div class="px-3" *ngIf="recommendedProducts.length">
+            <h1 class="h6 d-inline-block">Recommended Products:</h1>
+            <!-- <a class="float-right font-8" href="javascript:void(0)">View More</a> -->
+        </div>
+        <div *ngIf="recommendedProducts.length">
+            <swiper style="height: 530px" [slidesPerGroup]="10" [slidesPerView]="5" [slidesPerColumn]="2" [navigation]="true" [allowTouchMove]="false">
+                <ng-template swiperSlide *ngFor="let store of recommendedProducts">
+                    <page [item]="store"></page>
+                </ng-template>
+            </swiper>
         </div>
     </div>
+    <div style="height: 1rem"></div>
 </div>
+<ws-ads-popout [isNavigable]="true" [service]="advertisementService" [item]="popOutAds[0]" [isModal]="true" [isOpen]="isOpenModal"></ws-ads-popout>
 <footer class="pt-3">
     <div></div>
     <div class='container-fluid col-md-8 pt-20 pl-0 pr-0'>

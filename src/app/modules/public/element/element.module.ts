@@ -16,6 +16,9 @@ import { WsStepperComponent } from '@elements/ws-stepper/ws-stepper.component';
 import { WsReviewComponent } from '@elements/ws-review/ws-review.component';
 import { WsRatingComponent } from '@elements/ws-rating/ws-rating.component';
 import { SwiperModule } from 'swiper/angular';
+import { WsAdsPopoutComponent } from '@elements/ws-ads-popout/ws-ads-popout.component';
+import { WsAdsBannerComponent } from '@elements/ws-ads-banner/ws-ads-banner.component';
+import { WsUploaderComponent } from '@elements/ws-uploader/ws-uploader.component';
 
 
 @NgModule({
@@ -32,7 +35,10 @@ import { SwiperModule } from 'swiper/angular';
     WsLoadingScreenComponent,
     WsStepperComponent,
     WsReviewComponent,
-    WsRatingComponent
+    WsRatingComponent,
+    WsAdsPopoutComponent,
+    WsAdsBannerComponent,
+    WsUploaderComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +59,10 @@ import { SwiperModule } from 'swiper/angular';
     WsStepperComponent,
     WsReviewComponent,
     WsRatingComponent,
-    SwiperModule
+    SwiperModule,
+    WsAdsPopoutComponent,
+    WsAdsBannerComponent,
+    WsUploaderComponent
   ]
 })
 export class ElementModule { }
