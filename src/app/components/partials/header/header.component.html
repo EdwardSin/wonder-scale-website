@@ -4,7 +4,7 @@
             <a [routerLink]="['/']" class="header__label" style="display: flex">
                 <object style="pointer-events: none;" type="image/svg+xml" data="assets/images/svg/icon-title.svg" height="70" width="150"></object>
             </a>
-            <div class="col-sm-auto col px-4 header-searchbar">
+            <div *ngIf="!isMobileSize" class="col-sm-auto col px-4 header-searchbar">
                 <input #headerKeyword class="form-control header__searchbar" placeholder="Search..." (keydown.enter)="navigateTo()" [(ngModel)]="keyword"/>
                 <span class="header__searchbar-icon fas fa-search" [routerLink]="['/search']" [queryParams]="{keyword: keyword}"></span>
             </div>
@@ -30,6 +30,9 @@
                 [routerLink]="[]" [queryParams]="{modal: 'login'}" [queryParamsHandling]="'merge'">
                     <span class="fas fa-sign-in-alt"></span>
                 </a>
+            </div>
+            <div class="position-relative px-2" *ngIf="isMobileSize">
+                <span class="search-icon fas fa-search" [routerLink]="['/search']" [queryParams]="{keyword: keyword}"></span>
             </div>
             <div *ngIf="user" class="position-relative" (clickOutside)="loadedNewNotifications()">
                 <div class="user-container__notification-container" wsDebounceClick [debounceTime]="250" (debounceClick)="openNotificationDropdown()">

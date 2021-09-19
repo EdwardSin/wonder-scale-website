@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { Store } from '@objects/store';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
 import { AdvertisementService } from '@services/http/public/advertisement.service';
+import { ScreenService } from '@services/general/screen.service';
 
 @Component({
   selector: 'search',
@@ -28,6 +29,7 @@ export class SearchComponent implements OnInit {
     order: 'name',
     orderBy: 'asc'
   }
+  isMobileSize: boolean;
   squareAds = [];
   mediumAds = [];
   smallAds = [];
@@ -36,6 +38,7 @@ export class SearchComponent implements OnInit {
   constructor(private router: Router,
     public advertisementService: AdvertisementService,
     private route: ActivatedRoute,
+    private screenService: ScreenService,
     private storeService: StoreService) {
     let queryParams = this.route.snapshot.queryParams;
     this.queryParams = {
@@ -44,6 +47,10 @@ export class SearchComponent implements OnInit {
       order: queryParams['order'],
       orderBy: queryParams['orderBy']
     }
+    window.scrollTo(0, 0);
+    this.screenService.isMobileSize.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.isMobileSize = result;
+    });
     if (this.queryParams.keyword) {
       DocumentHelper.setWindowTitleWithWonderScale(this.queryParams.keyword);
     } else {

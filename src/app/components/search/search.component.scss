@@ -6,13 +6,12 @@
 .search__container{
     padding: 1.5rem 6px;
     .search__searchbar{
-        width: 300px;
+        width: 100%;
         .search__searchbar__input{
-            background-color: #f7f7f7;
+            background-color: #fff;
             border: 0;
         }
         .search__searchbar__button{
-            background-color: #f7f7f7;
             border: 0;
         }
     }

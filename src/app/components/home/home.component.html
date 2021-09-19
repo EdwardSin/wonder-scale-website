@@ -32,14 +32,14 @@
                         <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="ads"></ws-ads-banner>
                     </ng-template>
                 </swiper>
-                <div *ngIf="!largeAds.length" style="background-color: #fff; width: 720px; height: 240px" >
+                <div *ngIf="!isMobileSize && !largeAds.length" style="background-color: #fff; width: 720px; height: 240px" >
                     <a [href]="environment.MERCHANT_URL" class="d-block w-100 h-100" target="_black">
                         <img src="/assets/images/png/ads_available_large.png" alt="ads_available_large" />
                     </a>
                 </div>
             </div>
-            <div class="col-auto">
-                <ws-ads-banner [isNavigable]="true" [service]="advertisementService" *ngIf="smallAds.length > 0" class="d-block" [item]="smallAds[0]"></ws-ads-banner>
+            <div class="col-auto" *ngIf="!isMobileSize">
+                <ws-ads-banner [isNavigable]="true" [service]="advertisementService" *ngIf="smallAds.length > 0" [item]="smallAds[0]"></ws-ads-banner>
                 <ws-ads-banner [isNavigable]="true" [service]="advertisementService" *ngIf="smallAds.length > 1" [item]="smallAds[1]"></ws-ads-banner>
                 <div *ngIf="smallAds.length < 1" style="background-color: #fff; width: 360px; height: 120px; border-left: 1px solid #f7f7f7;">
                     <a [href]="environment.MERCHANT_URL" class="d-block w-100" target="_black">
@@ -57,7 +57,7 @@
             <h1 class="h6 d-inline-block mb-0">Recommended Stores:</h1>
             <!-- <a class="float-right font-8" href="javascript:void(0)">View More</a> -->
         </div>
-        <div style="width: 1110px" *ngIf="recommendedStores.length">
+        <div *ngIf="recommendedStores.length && !isMobileSize">
             <swiper class="py-3"
             [slidesPerGroup]="5" [slidesPerView]="5" [navigation]="true" [allowTouchMove]="false">
                 <ng-template swiperSlide *ngIf="squareAds.length == 0">
@@ -73,7 +73,12 @@
                 </ng-template>
             </swiper>
         </div>
-        <div class="mb-3 justify-content-center d-flex" style="margin-left: .65rem; margin-right: .65rem" *ngIf="!mediumAds.length">
+        <div class="row no-gutters" *ngIf="recommendedStores.length && isMobileSize">
+            <div class="col-6 px-2" *ngFor="let store of recommendedStores">
+                <page [item]="store"></page>
+            </div>
+        </div>
+        <div class="mb-3 justify-content-center d-flex" style="margin-left: .65rem; margin-right: .65rem" *ngIf="!isMobileSize && !mediumAds.length">
             <a [href]="environment.MERCHANT_URL" target="_black" class="w-100">
                 <img src="/assets/images/png/ads_available_medium.png" class="w-100" alt="ads-available-medium" />
             </a>

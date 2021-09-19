@@ -7,9 +7,9 @@ import { LocalStorageHelper } from '@helpers/storagehelper/storage.helper';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import SwiperCore, { Pagination, Navigation, Autoplay } from "swiper/core";
-import * as moment from 'moment';
 import { StoreService } from '@services/http/public/store.service';
 import { ItemService } from '@services/http/public/item.service';
+import { ScreenService } from '@services/general/screen.service';
 
 // install Swiper modules
 SwiperCore.use([Pagination, Navigation, Autoplay]);
@@ -30,11 +30,13 @@ export class HomeComponent implements OnInit {
   mediumAds = [];
   smallAds = [];
   currentNumber: number = 0;
+  isMobileSize: boolean;
   environment = environment;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
   constructor(private storeService: StoreService,
     private itemService: ItemService,
-    private router: Router, public advertisementService: AdvertisementService) { 
+    private router: Router, public advertisementService: AdvertisementService,
+    private screenService: ScreenService) { 
     DocumentHelper.setWindowTitle('Wonder Scale');
   }
 
@@ -42,11 +44,13 @@ export class HomeComponent implements OnInit {
     this.getAdvertisements();
     this.getRecommendedStores();
     this.getRecommendedProducts();
+    this.screenService.isMobileSize.pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      this.isMobileSize = result;
+    });
   }
   displayAdvertisements = [];
   getAdvertisements() {
     this.advertisementService.getAdvertisements().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      console.log(result);
       this.popOutAds = this.advertisementService.getCurrentAdvertisement(result['popOutAds'], result['currentNumber']);
       this.squareAds = this.advertisementService.getCurrentAdvertisement(result['squareAds'], result['currentNumber']);
       this.largeAds = this.advertisementService.getCurrentAdvertisement(result['largeAds'], result['currentNumber']);
