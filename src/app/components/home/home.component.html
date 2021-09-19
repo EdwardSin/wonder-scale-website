@@ -26,13 +26,13 @@
             </div>
         </div> -->
         <div class="py-3 row no-gutters justify-content-center">
-            <div class="col-auto" style="width: 720px">
+            <div *ngIf="!isMobileSize" class="col-auto" style="width: 720px">
                 <swiper *ngIf="largeAds.length" [pagination]="{clickable: true}" [loop]="true" [slidesPerView]="1" [navigation]="true" [autoplay]="{running: true, delay: environment.MAX_DELAY_SWIPER_ADS_LARGE_IN_MS}">
                     <ng-template swiperSlide *ngFor="let ads of largeAds">
                         <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="ads"></ws-ads-banner>
                     </ng-template>
                 </swiper>
-                <div *ngIf="!isMobileSize && !largeAds.length" style="background-color: #fff; width: 720px; height: 240px" >
+                <div *ngIf="!largeAds.length" style="background-color: #fff; width: 720px; height: 240px" >
                     <a [href]="environment.MERCHANT_URL" class="d-block w-100 h-100" target="_black">
                         <img src="/assets/images/png/ads_available_large.png" alt="ads_available_large" />
                     </a>
@@ -84,10 +84,10 @@
             </a>
             <!-- <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="mediumAds[0]"></ws-ads-banner> -->
         </div>
-        <div class="mb-3 justify-content-center d-flex" *ngIf="mediumAds.length > 0">
+        <div class="mb-3 justify-content-center d-flex" *ngIf="!isMobileSize && mediumAds.length > 0">
             <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="mediumAds[0]"></ws-ads-banner>
         </div>
-        <div class="px-2 mb-3 row no-gutters justify-content-center" *ngIf="smallAds.length > 4">
+        <div class="px-2 mb-3 row no-gutters justify-content-center" *ngIf="!isMobileSize && smallAds.length > 4">
             <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="smallAds[2]"></ws-ads-banner>
             <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="smallAds[3]"></ws-ads-banner>
             <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="smallAds[4]"></ws-ads-banner>
