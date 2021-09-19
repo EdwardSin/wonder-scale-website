@@ -24,7 +24,7 @@ export class StoreService {
       }
     });
   }
-  getRecommandedStores(): Observable<Result<Array<Store>>> {
-    return this.http.get<Result<Array<Store>>>(StoreUrl.getRecommandedStoresUrl);
+  getRecommendedStores(): Observable<Result<Array<Store>>> {
+    return this.http.get<Result<Array<Store>>>(StoreUrl.getRecommendedStoresUrl);
   }
 }

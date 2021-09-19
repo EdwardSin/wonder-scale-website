@@ -11,6 +11,8 @@ export const environment = {
     QRCODE_BORDER: 'assets/images/png/icon-with-profile-image-borderless.png',
     ACTIVATED_MESSAGE: 'Start to view page now!',
     MERCHANT_URL: 'https://merchant-testing.wonderscale.com/',
-    braintreeAuthorization: 'sandbox_8tn3f6nk_bm2v725w33trg4y8'
+    braintreeAuthorization: 'sandbox_8tn3f6nk_bm2v725w33trg4y8',
+    MAX_NUMBER_ADS_POPOUT: 5,
+    MAX_DELAY_SWIPER_ADS_LARGE_IN_MS: 5000
   };
   

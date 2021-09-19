@@ -1,6 +1,6 @@
 <div class="container">
     <div class="search__container">
-        <div class="search__searchbar input-group mb-3">
+        <div *ngIf="isMobileSize" class="search__searchbar input-group mb-3">
             <input class="search__searchbar__input form-control" (input)="valueChanged($event)" [value]="queryParams.keyword" placeholder="Search..." />
             <div class="input-group-append">
                 <button class="search__searchbar__button input-group-text">
@@ -9,17 +9,56 @@
             </div>
         </div>
         <div *ngIf="!loading.isRunning() && stores.length; else loadingTemplate">
-            <div class="row no-gutters mb-4">
+            <div class="row no-gutters">
                 <page class="col-sm-6 col-lg-5ths p-2" *ngFor="let store of stores" [item]="store"></page>
             </div>
         </div>
+        <div class="text-center my-3" style="overflow: hidden">
+            <span id="continueSpan" class="p-3 position-relative">
+              <span class="innerSpan">
+                <span style="color: #ccc">End Page</span>
+              </span>
+            </span>
+          </div>
         <div class="pb-4">
             <pagination [pageSize]="environment.ITEMS_PER_PAGE" [isDisplayed]="true" [currentPage]="queryParams.page" [total]="total" (getPageNumber)="navigateTo({page: $event})"></pagination>
         </div>
-        <div *ngIf="!loading.isRunning() && recommandedStores.length">
-            <h1 class="h5 mb-3">Recommandation</h1>
-            <div class="row no-gutters">
-                <page class="col-sm-6 col-lg-5ths p-2" *ngFor="let store of recommandedStores" [item]="store"></page>
+        <div class="mb-3 justify-content-center d-flex" *ngIf="mediumAds.length > 0 && !isMobileSize">
+            <ws-ads-banner [isNavigable]="true" [service]="advertisementService" [item]="mediumAds[0]"></ws-ads-banner>
+        </div>
+        <div class="mb-3 justify-content-center d-flex" style="margin-left: .65rem; margin-right: .65rem" *ngIf="!mediumAds.length">
+            <a [href]="environment.MERCHANT_URL" target="_black" class="w-100">
+                <img src="/assets/images/png/ads_available_medium.png" class="w-100" alt="ads-available-medium" />
+            </a>
+        </div>
+        <div class="px-2 mb-3 row no-gutters justify-content-center" *ngIf="!isMobileSize">
+            <ws-ads-banner *ngIf="smallAds.length > 0" [service]="advertisementService" [item]="smallAds[0]"></ws-ads-banner>
+            <ws-ads-banner *ngIf="smallAds.length > 1" [service]="advertisementService" [item]="smallAds[1]"></ws-ads-banner>
+            <ws-ads-banner *ngIf="smallAds.length > 2" [service]="advertisementService" [item]="smallAds[2]"></ws-ads-banner>
+            <a *ngIf="smallAds.length < 3" [href]="environment.MERCHANT_URL" target="_black" style="width: 360px; height:116px">
+                <img src="/assets/images/png/ads_available_small.png" class="w-100" alt="ads-available-small" />
+            </a>
+            <a *ngIf="smallAds.length < 2" [href]="environment.MERCHANT_URL" target="_black" style="width: 360px; height:116px">
+                <img src="/assets/images/png/ads_available_small.png" class="w-100" alt="ads-available-small" />
+            </a>
+            <a *ngIf="smallAds.length < 1" [href]="environment.MERCHANT_URL" target="_black" style="width: 360px; height:116px">
+                <img src="/assets/images/png/ads_available_small.png" class="w-100" alt="ads-available-small" />
+            </a>
+        </div>
+        <div class="px-3" *ngIf="recommendedStores.length">
+            <h1 class="h6 d-inline-block mb-0">Recommended Stores:</h1>
+        </div>
+        <div style="width: 1110px" *ngIf="recommendedStores.length && !isMobileSize">
+            <swiper class="py-3" [pagination]="{clickable: true}"
+            [slidesPerGroup]="5" [slidesPerView]="5" [navigation]="true" [allowTouchMove]="false">
+                <ng-template swiperSlide *ngFor="let store of recommendedStores">
+                    <page [item]="store"></page>
+                </ng-template>
+            </swiper>
+        </div>
+        <div class="row no-gutters" *ngIf="recommendedStores.length && isMobileSize">
+            <div class="col-6 px-2" *ngFor="let store of recommendedStores">
+                <page [item]="store"></page>
             </div>
         </div>
     </div>

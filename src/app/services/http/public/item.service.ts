@@ -29,5 +29,8 @@ export class ItemService {
   getItemsByCategoryId(categoryId): Observable<Result<Array<Item>>> {
     return this.http.get<Result<Array<Item>>>(ItemUrl.getItemsByCategoryIdUrl + '/' + categoryId);
   }
+  getRecommendedProducts(): Observable<Result<Array<Item>>> {
+    return this.http.get<Result<Array<Item>>>(ItemUrl.getRecommendedItemsUrl);
+  }
 }
 
