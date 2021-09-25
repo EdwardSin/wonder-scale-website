@@ -2,9 +2,7 @@
     <div id="info" class="information-container mb-2" *ngIf="store?.informationImages?.length > 0 || isEditing">
         <swiper *ngIf="banners?.length" [slidesPerView]="'auto'" [spaceBetween]="5" [pagination]="false" [navigation]="false" [autoHeight]="true">
             <ng-template swiperSlide *ngFor="let image of banners; let i = index">
-                <!-- <div  class="swiper-slide d-inline-block"> -->
                 <img class="swiper-container__image" [src]="image" alt="upload-image" (click)="openInformation(i)"/>
-                <!-- </div> -->
             </ng-template>
         </swiper>
         <div class="information-container__empty" *ngIf="!banners.length"></div>
@@ -12,7 +10,7 @@
             <span class="fas fa-edit mr-2 d-inline-block"></span>Edit Banners
         </button>
     </div>
-    <div *ngIf="isInformationOpened" class="information-fullscreen-container position-fixed pt-2">
+    <div *ngIf="isInformationOpened" class="information-fullscreen-container position-fixed">
         <span class="information-fullscreen__icon fas fa-times" (click)="isInformationOpened = false"></span>
         <swiper class="h-100" [index]="selectedInformationIndex" [slidesPerView]="'auto'" [spaceBetween]="10" [navigation]="false" [pagination]="true" [centeredSlides]="true" [direction]="'horizontal'" [mousewheel]="true">
             <ng-template swiperSlide *ngFor="let image of banners">
@@ -69,8 +67,8 @@
                         <h5 class="font-weight-normal d-flex align-items-center">Quick {{ store?.type == 'restaurant' ? 'Menu' : 'Catalogue'}}<button *ngIf="isEditing" class="ml-2 btn btn-sm btn-controller btn-edit" (click)="onEditQuickMenuClicked.emit($event)"><span class="fas fa-edit"></span></button></h5>
                         <div *ngIf="menuImages?.length > 0" class="quick-menu-container pb-5 pt-3">
                             <swiper *ngIf="menuImages?.length" [slidesPerView]="'auto'" [spaceBetween]="5" [pagination]="false" [navigation]="false" [autoHeight]="true">
-                                <ng-template swiperSlide>
-                                    <div class="swiper-slide d-inline-block" style="border-radius: 5px" *ngFor="let image of menuImages; let i = index">
+                                <ng-template swiperSlide *ngFor="let image of menuImages; let i = index">
+                                    <div style="border-radius: 5px; overflow: hidden">
                                         <img class="swiper-container__image" [src]="image" alt="upload-image" (click)="openQuickMenu(i)"/>
                                     </div>
                                 </ng-template>
@@ -80,12 +78,10 @@
                     </div>
                     <div *ngIf="isQuickMenuOpened" class="quick-menu-fullscreen-container position-fixed">
                         <span class="quick-menu-fullscreen__icon fas fa-times" (click)="isQuickMenuOpened = false"></span>
-                        <swiper [index]="selectedQuickMenuIndex" [navigation]="false" [spaceBetween]="10" [direction]="'horizontal'" [mousewheel]="true" [slidesPerView]="'auto'" [centeredSlides]="true">
-                            <ng-container *ngIf="menuImages.length">
-                                <ng-container *ngFor="let image of menuImages">
-                                    <img class="swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
-                                </ng-container>
-                            </ng-container>
+                        <swiper class="h-100" [index]="selectedQuickMenuIndex" [slidesPerView]="'auto'" [spaceBetween]="10" [navigation]="false" [pagination]="true" [centeredSlides]="true" [direction]="'horizontal'" [mousewheel]="true">
+                            <ng-template swiperSlide *ngFor="let image of menuImages">
+                                <img class="d-block swiper-slide swiper-container__image center" [src]="image" alt="upload-image" />
+                            </ng-template>
                         </swiper>
                     </div>
 
