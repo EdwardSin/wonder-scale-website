@@ -25,7 +25,7 @@
                     <div class="list-item-info__profile mb-2">
                         <swiper #galleryThumbs class="h-100" (indexChange)="onIndexChange($event)" [(index)]="selectedProfileIndex" [centeredSlides]="true" [pagination]="false" [navigation]="false">
                             <ng-template swiperSlide *ngFor="let image of profileImages" class="d-flex" style="background: #fefefe;">
-                                <img style="width: 100%; object-fit: contain; height: initial" [lazyLoad]="environment.IMAGE_URL + image" [defaultImage]="'assets/images/png/itemProfile.png'" alt="image"/>
+                                <img style="object-fit: contain; padding-bottom: 30px" [lazyLoad]="environment.IMAGE_URL + image" [defaultImage]="'assets/images/png/itemProfile.png'" alt="image"/>
                                 <div [class.swiper__image-label-offer]="onSellingItem?.item?.isOffer" class="swiper__image-label w-100 text-center font-8">
                                     <p class="d-inline-block mb-0">
                                         <span class="mb-1"><span class="pr-1">RM</span>{{ selectedType?.price | wsCurrency: 1: 1 }}</span>

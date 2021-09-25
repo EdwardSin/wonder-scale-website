@@ -20,6 +20,7 @@ import { WsLoading } from '@elements/ws-loading/ws-loading';
 declare var jQuery: any;
 import * as $ from 'jquery';
 import { DocumentHelper } from '@helpers/documenthelper/document.helper';
+import { UploadHelper } from '@helpers/uploadhelper/upload.helper';
 
 @Component({
   selector: 'profile-settings',
@@ -46,6 +47,7 @@ export class ProfileSettingsComponent implements OnInit {
   private ngUnsubscribe: Subject<any> = new Subject;
   constructor(private authUserService: AuthUserService,
     private sharedUserService: SharedUserService,
+    private uploadHelper: UploadHelper,
     private sanitization: DomSanitizer) { 
       DocumentHelper.setWindowTitleWithWonderScale('Profile');
     this.form = WsFormBuilder.createInfoForm();
@@ -81,11 +83,16 @@ export class ProfileSettingsComponent implements OnInit {
   fileChangeEvent(event) {
     let files = <Array<File>>event.target.files;
     for(let file of files) {
-      this.previewImageFunc(file, (result) =>{
-        result.url = this.sanitization.bypassSecurityTrustResourceUrl(result.url);
-        this.previewImage = result.url;
-        this.uploadImageModalChange();
-      });
+      const result = this.uploadHelper.validate(file, true, 15);
+      if (result.result) {
+        this.previewImageFunc(file, (result) =>{
+          result.url = this.sanitization.bypassSecurityTrustResourceUrl(result.url);
+          this.previewImage = result.url;
+          this.uploadImageModalChange();
+        });
+      } else {
+        WsToastService.toastSubject.next({content: result.error, type: 'danger'});
+      }
     }
     event.target.value = "";
   }
@@ -164,7 +171,10 @@ export class ProfileSettingsComponent implements OnInit {
       });
     }
   }
-
+  onUploadModalOpened() {
+    this.isProfileUploaderOpened = true;
+    this.previewImage = null;
+  }
   isValidated() {
     let emailController = this.form.get('email');
     let firstNameController = this.form.get('firstName');

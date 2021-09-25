@@ -10,6 +10,7 @@ import { InvoiceService } from '@services/http/public/invoice.service';
 import { SharedUserService } from '@services/shared/shared-user.service';
 import { interval, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
+import { UploadHelper } from '@helpers/uploadhelper/upload.helper';
 
 @Component({
   selector: 'invoice',
@@ -28,6 +29,7 @@ export class InvoiceComponent implements OnInit {
   PaymentMethodEnum = PaymentMethodEnum;
   private ngUnsubscribe: Subject<any> = new Subject<any>();
   constructor(private invoiceService: InvoiceService, private route: ActivatedRoute,
+    private uploadHelper: UploadHelper,
     private authReviewService: AuthReviewService,
     private sharedUserService: SharedUserService,
     private authInvoiceService: AuthInvoiceService,
@@ -85,16 +87,22 @@ export class InvoiceComponent implements OnInit {
   fileChangeEvent(event) {
     this.previewLoading.start();
     event.forEach(item => {
-      ImageHelper.resizeImage(item.base64, null, null, .5).then(result => {
-        let exist = this.uploadingFiles.find(image => {
-          return image.name == item.name && image.file.size == item.file.size;
-        })
-        if (!exist) {
-          this.uploadingFiles.push(item);
-          this.uploadingImage = item.base64;
-          this.previewLoading.stop();
-        }
-      });
+      const result = this.uploadHelper.validate(item.file, true, 15);
+      if (result.result) {
+        ImageHelper.resizeImage(item.base64, null, null, .5).then(result => {
+          let exist = this.uploadingFiles.find(image => {
+            return image.name == item.name && image.file.size == item.file.size;
+          })
+          if (!exist) {
+            this.uploadingFiles.push(item);
+            this.uploadingImage = item.base64;
+            this.previewLoading.stop();
+          }
+        });
+      } else {
+        this.previewLoading.stop();
+        WsToastService.toastSubject.next({content: result.error, type: 'danger'});
+      }
     });
   }
   uploadPayslip() {

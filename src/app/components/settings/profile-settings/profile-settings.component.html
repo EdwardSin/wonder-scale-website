@@ -8,7 +8,7 @@
                     <span class="fas fa-camera"></span>
                 </button>
                 <div class="dropdown-menu dropdown-primary" style="top: 15px; left: 15px">
-                    <a href="javascript:void(0)" class="dropdown-item" (click)="isProfileUploaderOpened = true">Upload</a>
+                    <a href="javascript:void(0)" class="dropdown-item" (click)="onUploadModalOpened()">Upload</a>
                     <a href="javascript:void(0)" (click)="removeProfileImage()" class="dropdown-item">Remove</a>
                 </div>
             </div>    
@@ -73,7 +73,7 @@
     <ws-spinner *ngIf="loading.isRunning();" class="text-center d-block w-100" [borderWidth]="1" [spinnerColor]="'#b71c1c'" style="padding-top: 30vh; padding-bottom: 30vh"></ws-spinner>
 </ng-template>
 
-<ws-modal *ngIf="isProfileUploaderOpened" [isCloseIconDisplayed]="false" [(isOpened)]="isProfileUploaderOpened" [maxWidth]="400">
+<ws-modal *ngIf=" isProfileUploaderOpened" [isCloseIconDisplayed]="false" [(isOpened)]=" isProfileUploaderOpened" [maxWidth]="400">
     <div class="pt-3" modalBody>
         <div class='preview-image__container center'>
             <span class="preview-image__remove-icon fas fa-times" (click)="removePreviewImage()"></span>
@@ -84,9 +84,9 @@
             <img *ngIf="previewImage" id="id-preview-image" class="preview-image" [src]="previewImage" alt="preview profile image" />
         </div>
         <div class="float-right mt-5">
-            <button class="btn btn-controller mr-1" (click)="uploadImage()" [disabled]="!previewImage">
-                <ws-spinner *ngIf="uploadLoading?.isRunning()" [width]="15" [height]="15" [borderWidth]="3"  class="mr-2"></ws-spinner>Upload</button>
-            <button class="btn btn-controller" (click)="isProfileUploaderOpened = false">Cancel</button>
+            <button class="btn btn-sm btn-controller mr-1" (click)="uploadImage()" [disabled]="!previewImage">
+                <ws-spinner *ngIf="uploadLoading?.isRunning()" [width]="15" [height]="15" [borderWidth]="1" [spinnerColor]="'#b71c1c'"  class="mr-2"></ws-spinner>Upload</button>
+            <button class="btn btn-sm btn-controller" (click)="isProfileUploaderOpened = false">Cancel</button>
         </div>
         <input hidden id="id-profile-image-upload" type="file" name="profile-image" (change)="fileChangeEvent($event)"/>
     </div>

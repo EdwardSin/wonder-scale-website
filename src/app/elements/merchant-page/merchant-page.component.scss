@@ -469,8 +469,10 @@
     }
 
     .swiper-container__image {
-        width: fit-content !important;
-        height: 100%;
+        width: initial;
+        height: initial;
+        max-height:100%;
+        max-width: 100%;
         object-fit: contain;
     }
 
