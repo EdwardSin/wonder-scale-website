@@ -2,8 +2,9 @@
     <div class="menu-cart-item">
         <div class="row no-gutters">
             <span class="menu-cart-item__image-container">
-                <img *ngIf="item?.profileImage" [src]="environment.IMAGE_URL + item?.profileImage" class="menu-cart-item__image" alt="profile Image" />
-                <img *ngIf="!item?.profileImage" src="/assets/images/png/profileImage.png" class="menu-cart-item__image" alt="item detault profile image" />
+                <!-- <img *ngIf="item?.profileImage" [src]="environment.IMAGE_URL + item?.profileImage" class="menu-cart-item__image" alt="profile Image" />
+                <img *ngIf="!item?.profileImage" src="/assets/images/png/profileImage.png" class="menu-cart-item__image" alt="item detault profile image" /> -->
+                <img src="/assets/images/png/profileImage.png" class="menu-cart-item__image" alt="item detault profile image" />
             </span>
             <div class="menu-cart-item__middle col px-2">
                 <p class="menu-cart-item__text">{{ item?.name }}</p>

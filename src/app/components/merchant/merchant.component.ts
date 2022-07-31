@@ -100,7 +100,22 @@ export class MerchantComponent implements OnInit {
         this.sharedStoreService.store.next(this.store);
         this.banners = this.store.informationImages.map(informationImage => environment.IMAGE_URL + informationImage);
         this.menuImages = this.store.menuImages.map(menuImage => environment.IMAGE_URL + menuImage);
-        this.profileImage = this.store.profileImage ? environment.IMAGE_URL + this.store.profileImage: null;
+
+        // this.profileImage = this.store.profileImage ? environment.IMAGE_URL + this.store.profileImage: null;
+        this.banners = [
+          '/assets/images/extra/bagel_01.jpg',
+          '/assets/images/extra/bagel_02.jpg',
+          '/assets/images/extra/bagel_03.jpg',
+          '/assets/images/extra/bagel_04.jpg',
+          '/assets/images/extra/bagel_05.jpg',
+          '/assets/images/extra/bagel_06.jpg'
+        ];
+        this.menuImages = [
+          '/assets/images/extra/chips_01.jpg',
+          '/assets/images/extra/chips_02.jpg',
+          '/assets/images/extra/chips_03.jpg'
+        ];
+        this.profileImage = '/assets/images/extra/icon.jpg';
         if (this.platform) {
           DocumentHelper.setWindowTitleWithWonderScale(this.store.name);
         }
