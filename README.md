@@ -13,7 +13,7 @@ Store Page - Cart List:
 <kbd>![Store Page Cart List](./screenshots/03_store_page_cart_list.png)</kbd>
 
 Store Page - Mobile - Cart List:
-<kbd>![Store Page Cart List](./screenshots/03_store_page_mobile_cart_list.png)</kbd>
+<kbd>![Store Page Mobile Cart List](./screenshots/04_store_page_mobile_cart_list.png)</kbd>
 
 Store Page - Items:
 <kbd>![Store Page Items](./screenshots/06_store_page_items.png)</kbd>
