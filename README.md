@@ -3,32 +3,32 @@ A website to display the information of the merchant's store. User can purchase 
 
 # Screen Shots:
 Store Page - Website:
-![Store Page 01](./screenshots/01_store_page_01.png)
-![Store Page 02](./screenshots/01_store_page_02.png)
+<kbd>![Store Page 01](./screenshots/01_store_page_01.png)</kbd>
+<kbd>![Store Page 02](./screenshots/01_store_page_02.png)</kbd>
 
 Store Page - Mobile:
-![Store Page Mobile](./screenshots/02_store_page_mobile_size.png)
+<kbd>![Store Page Mobile](./screenshots/02_store_page_mobile_size.png)</kbd>
 
 Store Page - Cart List:
-![Store Page Cart List](./screenshots/03_store_page_cart_list.png)
+<kbd>![Store Page Cart List](./screenshots/03_store_page_cart_list.png)</kbd>
 
 Store Page - Mobile - Cart List:
-![Store Page Cart List](./screenshots/03_store_page_mobile_cart_list.png)
+<kbd>![Store Page Cart List](./screenshots/03_store_page_mobile_cart_list.png)</kbd>
 
 Store Page - Items:
-![Store Page Items](./screenshots/06_store_page_items.png)
+<kbd>![Store Page Items](./screenshots/06_store_page_items.png)</kbd>
 
 Items Purchase Status:
-![Purchase Status](./screenshots/07_purchase_status.png)
+<kbd>![Purchase Status](./screenshots/07_purchase_status.png)</kbd>
 
 User profile - Page:
-![User Profile](./screenshots/08_user_profile_page.png)
+<kbd>![User Profile](./screenshots/08_user_profile_page.png)</kbd>
 
 User profile - Address:
-![User Profile Address](./screenshots/08_user_profile_address.png)
+<kbd>![User Profile Address](./screenshots/08_user_profile_address.png)</kbd>
 
 User profile - Security:
-![User Profile Security](./screenshots/08_user_profile_security.png)
+<kbd>![User Profile Security](./screenshots/08_user_profile_security.png)</kbd>
 
 # WonderScaleWebsite
 
