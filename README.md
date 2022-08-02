@@ -1,5 +1,6 @@
 # Wonder Scale Website
 A website to display the information of the merchant's store. User can purchase and keep track on the status in the website.
+(!) The App requires to function well with server, server is not shared in public.
 
 # Screen Shots:
 Store Page - Website:
